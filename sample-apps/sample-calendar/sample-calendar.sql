@@ -1,9 +1,8 @@
 --------------------------------------------------------------------------------
+-- Name: Sample Calendar
 -- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
--- 
--- Licensed under the Universal Permissive License v 1.0 as shown 
--- at https://oss.oracle.com/licenses/upl/
--- 
+-- Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+--
 -- This script makes use of the FullCalendar product. Refer to
 -- THIRD_PARTY_LICENSES.txt in the top directory of this project
 -- or at https://github.com/oracle/apex-samples for license information.
@@ -16,15 +15,15 @@ set define off verify off feedback off
 -- ORACLE Application Express (APEX) export file
 --
 -- You should run the script connected to SQL*Plus as the Oracle user
--- APEX_210200 or as the owner (parsing schema) of the application.
+-- APEX_210100 or as the owner (parsing schema) of the application.
 --
 -- NOTE: Calls to apex_application_install override the defaults below.
 --
 --------------------------------------------------------------------------------
 begin
 wwv_flow_api.import_begin (
- p_version_yyyy_mm_dd=>'2099.99.99'
-,p_release=>'21.2.0.00.00'
+ p_version_yyyy_mm_dd=>'2021.04.15'
+,p_release=>'21.1.0-13'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7820
 ,p_default_id_offset=>0
@@ -38,7 +37,7 @@ prompt APPLICATION 7820 - Sample Calendar
 -- Application Export:
 --   Application:     7820
 --   Name:            Sample Calendar
---   Date and Time:   17:08 Monday March 8, 2021
+--   Date and Time:   07:43 Wednesday April 14, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -82,8 +81,8 @@ prompt APPLICATION 7820 - Sample Calendar
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          3
---   Version:         21.2.0.00.00
---   Instance ID:     696285138374724
+--   Version:         21.1.0-13
+--   Instance ID:     203745984637177
 --
 
 prompt --application/delete_application
@@ -141,8 +140,8 @@ wwv_flow_api.create_flow(
 ,p_substitution_value_01=>'Sample Calendar'
 ,p_substitution_string_02=>'GETTING_STARTED_URL'
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
-,p_last_updated_by=>'SYS'
-,p_last_upd_yyyymmddhh24miss=>'20210303054635'
+,p_last_updated_by=>'HILARY'
+,p_last_upd_yyyymmddhh24miss=>'20210309053857'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_ui_type_name => null
 ,p_print_server_type=>'INSTANCE'
@@ -13604,7 +13603,7 @@ wwv_flow_api.create_plugin(
 '    sys.htp.p(''</li>'');',
 '    sys.htp.p(''<li class="t-Cards-item">'');',
 '    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137" target="_blank" class="t-Card-wrap">'');',
+'    sys.htp.p(''    <a href="https://community.oracle.com/tech/developers/categories/1application_express" target="_blank" class="t-Card-wrap">'');',
 '    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-comments-o" style="color: #707070"></span></div>'');',
 '    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Discussion Forums</h3></div>'');',
 '    sys.htp.p(''    </a>'');',
@@ -14524,7 +14523,8 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210223105817'
+,p_last_updated_by=>'HILARY'
+,p_last_upd_yyyymmddhh24miss=>'20210309053857'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1297506548652359214)
@@ -14601,6 +14601,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223050845'
 );
 wwv_flow_api.create_page_plug(
@@ -14941,6 +14942,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -15166,6 +15168,7 @@ wwv_flow_api.create_page(
 ,p_navigation_list_position=>'TOP'
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043513'
 );
 wwv_flow_api.create_page_plug(
@@ -15490,6 +15493,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'ANTHONY'
 ,p_last_upd_yyyymmddhh24miss=>'20210225130547'
 );
 wwv_flow_api.create_page_plug(
@@ -15713,6 +15717,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -16339,6 +16344,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_report_region(
@@ -16753,6 +16759,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -17026,6 +17033,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -17067,6 +17075,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -17111,6 +17120,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210303054635'
 );
 wwv_flow_api.create_page_plug(
@@ -17291,6 +17301,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223105936'
 );
 wwv_flow_api.create_page_plug(
@@ -17408,6 +17419,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'ANTHONY'
 ,p_last_upd_yyyymmddhh24miss=>'20210225130547'
 );
 wwv_flow_api.create_page_plug(
@@ -17573,6 +17585,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'ANTHONY'
 ,p_last_upd_yyyymmddhh24miss=>'20210225130547'
 );
 wwv_flow_api.create_page_plug(
@@ -17745,6 +17758,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'ANTHONY'
 ,p_last_upd_yyyymmddhh24miss=>'20210225130547'
 );
 wwv_flow_api.create_page_plug(
@@ -18027,6 +18041,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223112120'
 );
 wwv_flow_api.create_page_plug(
@@ -18144,7 +18159,6 @@ wwv_flow_api.create_page_item(
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attribute_01=>'ROW'
 ,p_attribute_02=>'FACET'
-,p_fc_show_chart=>false
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(609179088842559603)
@@ -18229,6 +18243,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -18286,6 +18301,7 @@ wwv_flow_api.create_page(
 '}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223110124'
 );
 wwv_flow_api.create_page_plug(
@@ -18698,6 +18714,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'ANTHONY'
 ,p_last_upd_yyyymmddhh24miss=>'20210225130547'
 );
 wwv_flow_api.create_page_plug(
@@ -18941,6 +18958,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'ANTHONY'
 ,p_last_upd_yyyymmddhh24miss=>'20210225130547'
 );
 wwv_flow_api.create_page_plug(
@@ -19152,6 +19170,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'ANTHONY'
 ,p_last_upd_yyyymmddhh24miss=>'20210225130547'
 );
 wwv_flow_api.create_page_plug(
@@ -19358,6 +19377,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -19409,6 +19429,7 @@ wwv_flow_api.create_page(
 '}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223110253'
 );
 wwv_flow_api.create_page_plug(
@@ -19779,6 +19800,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223110308'
 );
 wwv_flow_api.create_page_plug(
@@ -20074,6 +20096,7 @@ wwv_flow_api.create_page(
 '}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210224011715'
 );
 wwv_flow_api.create_page_plug(
@@ -20472,6 +20495,7 @@ wwv_flow_api.create_page(
 '}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210224011833'
 );
 wwv_flow_api.create_page_plug(
@@ -21160,6 +21184,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -21262,6 +21287,7 @@ wwv_flow_api.create_page(
 ''))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223110416'
 );
 wwv_flow_api.create_page_plug(
@@ -21403,6 +21429,7 @@ wwv_flow_api.create_page(
 '}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210224013020'
 );
 wwv_flow_api.create_page_plug(
@@ -21543,6 +21570,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -21696,6 +21724,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223043514'
 );
 wwv_flow_api.create_page_plug(
@@ -21740,6 +21769,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223110357'
 );
 wwv_flow_api.create_page_plug(
@@ -21913,6 +21943,7 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_last_updated_by=>'DANIEL'
 ,p_last_upd_yyyymmddhh24miss=>'20210223110234'
 );
 wwv_flow_api.create_page_plug(
