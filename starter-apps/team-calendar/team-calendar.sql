@@ -1,9 +1,12 @@
 --------------------------------------------------------------------------------
--- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
--- 
+-- Name: Team Calendar
+-- Copyright (c)2012, 2021 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0 as shown 
 -- at https://oss.oracle.com/licenses/upl/
 --
+-- This script makes use of the FullCalendar product. Refer to
+-- THIRD_PARTY_LICENSES.txt in the top directory of this project
+-- or at https://github.com/oracle/apex for license information.
 --------------------------------------------------------------------------------
 
 prompt --application/set_environment
@@ -18,11 +21,10 @@ set define off verify off feedback off
 -- NOTE: Calls to apex_application_install override the defaults below.
 --
 --------------------------------------------------------------------------------
-
 begin
 wwv_flow_api.import_begin (
- p_version_yyyy_mm_dd=>'2099.99.99'
-,p_release=>'21.1.0.00.08'
+ p_version_yyyy_mm_dd=>'2021.04.15'
+,p_release=>'21.1.0-13'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7090
 ,p_default_id_offset=>0
@@ -36,7 +38,7 @@ prompt APPLICATION 7090 - Team Calendar
 -- Application Export:
 --   Application:     7090
 --   Name:            Team Calendar
---   Date and Time:   12:48 Tuesday March 2, 2021
+--   Date and Time:   14:39 Friday April 16, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -84,7 +86,7 @@ prompt APPLICATION 7090 - Team Calendar
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:         44
---   Version:         21.1.0.00.08
+--   Version:         21.1.0-13
 --   Instance ID:     203745984637177
 --
 

@@ -4,7 +4,9 @@ This directory contains sample code, sample apps and starter apps for Oracle APE
 
 | Repo/Folder name  | Description |
 | ------------- | ------------- |
+| [plugins](./plugins) | Plug-In examples |
 | [sample-apps](./sample-apps) | Sample Apps |
+| [sample-code](./sample-code) | Sample Code |
 | [starter-apps](./starter-apps) | Starter Apps |
 
 ## Documentation

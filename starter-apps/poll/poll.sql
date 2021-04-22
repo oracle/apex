@@ -1,8 +1,10 @@
 --------------------------------------------------------------------------------
--- Name: #APP NAME HERE#
+-- Name: Poll
 -- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
--- Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+-- Licensed under the Universal Permissive License v 1.0
+-- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
+
 prompt --application/set_environment
 set define off verify off feedback off
 --------------------------------------------------------------------------------
@@ -32,7 +34,7 @@ prompt APPLICATION 7040 - Poll
 -- Application Export:
 --   Application:     7040
 --   Name:            Poll
---   Date and Time:   07:55 Friday April 9, 2021
+--   Date and Time:   13:43 Friday April 16, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -114,7 +116,7 @@ wwv_flow_api.create_flow(
 ,p_documentation_banner=>'1.0.2 -> 1.0.3: Error handling procedure updated to resolve bug 17516350'
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(8047886034395415703)
-,p_application_tab_set=>0
+,p_application_tab_set=>1
 ,p_logo_type=>'T'
 ,p_logo_text=>'&APPLICATION_TITLE.'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-live-poll.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-live-poll-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PREFIX#apex_ui/img/favi'

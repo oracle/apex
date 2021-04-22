@@ -1,11 +1,12 @@
 --------------------------------------------------------------------------------
 -- Name: Sample Calendar
 -- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
--- Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+-- Licensed under the Universal Permissive License v 1.0 as shown
+-- at https://oss.oracle.com/licenses/upl/
 --
 -- This script makes use of the FullCalendar product. Refer to
 -- THIRD_PARTY_LICENSES.txt in the top directory of this project
--- or at https://github.com/oracle/apex-samples for license information.
+-- or at https://github.com/oracle/apex for license information.
 --------------------------------------------------------------------------------
 
 prompt --application/set_environment
@@ -37,7 +38,7 @@ prompt APPLICATION 7820 - Sample Calendar
 -- Application Export:
 --   Application:     7820
 --   Name:            Sample Calendar
---   Date and Time:   07:43 Wednesday April 14, 2021
+--   Date and Time:   14:03 Friday April 16, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export

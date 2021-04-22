@@ -1,9 +1,8 @@
 --------------------------------------------------------------------------------
+-- Name: Sample Reporting
 -- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
--- 
--- Licensed under the Universal Permissive License v 1.0 as shown 
--- at https://oss.oracle.com/licenses/upl/
---
+-- Licensed under the Universal Permissive License v 1.0
+-- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
 
 prompt --application/set_environment
@@ -18,11 +17,10 @@ set define off verify off feedback off
 -- NOTE: Calls to apex_application_install override the defaults below.
 --
 --------------------------------------------------------------------------------
-
 begin
 wwv_flow_api.import_begin (
- p_version_yyyy_mm_dd=>'2099.99.99'
-,p_release=>'21.1.0.00.08'
+ p_version_yyyy_mm_dd=>'2021.04.15'
+,p_release=>'21.1.0-13'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7810
 ,p_default_id_offset=>0
@@ -36,7 +34,7 @@ prompt APPLICATION 7810 - Sample Reporting
 -- Application Export:
 --   Application:     7810
 --   Name:            Sample Reporting
---   Date and Time:   13:03 Tuesday March 2, 2021
+--   Date and Time:   14:01 Friday April 16, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -78,7 +76,7 @@ prompt APPLICATION 7810 - Sample Reporting
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:         11
---   Version:         21.1.0.00.08
+--   Version:         21.1.0-13
 --   Instance ID:     203745984637177
 --
 
@@ -136,8 +134,8 @@ wwv_flow_api.create_flow(
 ,p_substitution_value_01=>'Sample Reporting'
 ,p_substitution_string_02=>'GETTING_STARTED_URL'
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
-,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210301102627'
+,p_last_updated_by=>'HILARY'
+,p_last_upd_yyyymmddhh24miss=>'20210309053856'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>7
 ,p_ui_type_name => null
@@ -14224,7 +14222,7 @@ wwv_flow_api.create_plugin(
 '    sys.htp.p(''</li>'');',
 '    sys.htp.p(''<li class="t-Cards-item">'');',
 '    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137" target="_blank" class="t-Card-wrap">'');',
+'    sys.htp.p(''    <a href="https://community.oracle.com/tech/developers/categories/1application_express" target="_blank" class="t-Card-wrap">'');',
 '    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-comments-o" style="color: #707070"></span></div>'');',
 '    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Discussion Forums</h3></div>'');',
 '    sys.htp.p(''    </a>'');',
@@ -16785,7 +16783,8 @@ wwv_flow_api.create_page(
 '}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
-,p_last_upd_yyyymmddhh24miss=>'20200825063156'
+,p_last_updated_by=>'HILARY'
+,p_last_upd_yyyymmddhh24miss=>'20210309053856'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1224254750075498654)

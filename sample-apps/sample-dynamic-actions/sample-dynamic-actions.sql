@@ -1,8 +1,10 @@
 --------------------------------------------------------------------------------
--- Name: #APP NAME HERE#
+-- Name: Sample Dynamic Actions
 -- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
--- Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+-- Licensed under the Universal Permissive License v 1.0
+-- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
+
 prompt --application/set_environment
 set define off verify off feedback off
 --------------------------------------------------------------------------------
@@ -32,7 +34,7 @@ prompt APPLICATION 7840 - Sample Dynamic Actions
 -- Application Export:
 --   Application:     7840
 --   Name:            Sample Dynamic Actions
---   Date and Time:   08:06 Friday April 9, 2021
+--   Date and Time:   13:41 Friday April 16, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export

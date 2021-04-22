@@ -1,9 +1,8 @@
 --------------------------------------------------------------------------------
+-- Name: Opportunities
 -- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
--- 
--- Licensed under the Universal Permissive License v 1.0 as shown 
--- at https://oss.oracle.com/licenses/upl/
---
+-- Licensed under the Universal Permissive License v 1.0
+-- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
 
 prompt --application/set_environment
@@ -18,11 +17,10 @@ set define off verify off feedback off
 -- NOTE: Calls to apex_application_install override the defaults below.
 --
 --------------------------------------------------------------------------------
-
 begin
 wwv_flow_api.import_begin (
- p_version_yyyy_mm_dd=>'2099.99.99'
-,p_release=>'21.1.0.00.08'
+ p_version_yyyy_mm_dd=>'2021.04.15'
+,p_release=>'21.1.0-13'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7050
 ,p_default_id_offset=>0
@@ -36,7 +34,7 @@ prompt APPLICATION 7050 - Opportunities
 -- Application Export:
 --   Application:     7050
 --   Name:            Opportunities
---   Date and Time:   12:47 Tuesday March 2, 2021
+--   Date and Time:   14:00 Friday April 16, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -84,7 +82,7 @@ prompt APPLICATION 7050 - Opportunities
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:         93
---   Version:         21.1.0.00.08
+--   Version:         21.1.0-13
 --   Instance ID:     203745984637177
 --
 
@@ -150,8 +148,8 @@ wwv_flow_api.create_flow(
 ,p_substitution_value_03=>'Opportunities'
 ,p_substitution_string_04=>'APP_DATE_TIME_FMT'
 ,p_substitution_value_04=>'DD-MON-YYYY HH:MI PM'
-,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210301101416'
+,p_last_updated_by=>'CBCHO'
+,p_last_upd_yyyymmddhh24miss=>'20210413141650'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_ui_type_name => null
 ,p_print_server_type=>'INSTANCE'
@@ -19916,6 +19914,16 @@ wwv_flow_api.create_load_table(
 ,p_skip_validation=>'N'
 );
 wwv_flow_api.create_load_table_lookup(
+ p_id=>wwv_flow_api.id(8376305621098498636)
+,p_load_table_id=>wwv_flow_api.id(9046537339017424611)
+,p_load_column_name=>'TERRITORY_ID'
+,p_lookup_owner=>'#OWNER#'
+,p_lookup_table_name=>'EBA_SALES_TERRITORIES'
+,p_key_column=>'ID'
+,p_display_column=>'TERRITORY_NAME'
+,p_insert_new_value=>'N'
+);
+wwv_flow_api.create_load_table_lookup(
  p_id=>wwv_flow_api.id(9046538036262424633)
 ,p_load_table_id=>wwv_flow_api.id(9046537339017424611)
 ,p_load_column_name=>'ACCOUNT_STANDING_ID'
@@ -19943,16 +19951,6 @@ wwv_flow_api.create_load_table_lookup(
 ,p_lookup_table_name=>'EBA_SALES_RISK_ASSESSMENTS'
 ,p_key_column=>'ID'
 ,p_display_column=>'ASSESSMENT_TEXT'
-,p_insert_new_value=>'N'
-);
-wwv_flow_api.create_load_table_lookup(
- p_id=>wwv_flow_api.id(8376305621098498636)
-,p_load_table_id=>wwv_flow_api.id(9046537339017424611)
-,p_load_column_name=>'TERRITORY_ID'
-,p_lookup_owner=>'#OWNER#'
-,p_lookup_table_name=>'EBA_SALES_TERRITORIES'
-,p_key_column=>'ID'
-,p_display_column=>'TERRITORY_NAME'
 ,p_insert_new_value=>'N'
 );
 end;
