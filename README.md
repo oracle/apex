@@ -2,13 +2,6 @@
 
 This directory contains sample code, sample apps and starter apps for Oracle APEX.
 
-| Repo/Folder name  | Description |
-| ------------- | ------------- |
-| [plugins](./plugins) | Plug-In examples |
-| [sample-apps](./sample-apps) | Sample Apps |
-| [sample-code](./sample-code) | Sample Code |
-| [starter-apps](./starter-apps) | Starter Apps |
-
 ## Documentation
 Review the [Oracle Application Express online documentation](https://docs.oracle.com/en/database/oracle/application-express/20.2/index.html).
 
