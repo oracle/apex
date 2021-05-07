@@ -1,3 +1,10 @@
+--------------------------------------------------------------------------------
+-- Name: Universal Theme Sample App
+-- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
+-- Licensed under the Universal Permissive License v 1.0
+-- as shown at https://oss.oracle.com/licenses/upl/
+--------------------------------------------------------------------------------
+
 prompt --application/set_environment
 set define off verify off feedback off
 --------------------------------------------------------------------------------
@@ -27,7 +34,7 @@ prompt APPLICATION 8940 - Universal Theme Sample Application
 -- Application Export:
 --   Application:     8940
 --   Name:            Universal Theme Sample Application
---   Date and Time:   12:40 Wednesday April 28, 2021
+--   Date and Time:   15:56 Thursday May 6, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -87,7 +94,7 @@ wwv_flow_api.create_flow(
 ,p_application_group_name=>'21.1 Sample Apps'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'N'
-,p_checksum_salt_last_reset=>'20210428122622'
+,p_checksum_salt_last_reset=>'20210430100742'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_compatibility_mode=>'19.2'
@@ -122,7 +129,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_02=>'PRISMJS_PATH'
 ,p_substitution_value_02=>'#IMAGE_PREFIX#libraries/prismjs/1.23.0'
 ,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210428122622'
+,p_last_upd_yyyymmddhh24miss=>'20210430100742'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>198
 ,p_ui_type_name => null
@@ -51692,8 +51699,8 @@ wwv_flow_api.create_page(
 ,p_inline_css=>'.te_padding {padding: 8px 0px 8px 8px;}'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
-,p_last_updated_by=>'STEFAN'
-,p_last_upd_yyyymmddhh24miss=>'20210226111706'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20210430100742'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(761087834994584702)
@@ -51721,7 +51728,7 @@ wwv_flow_api.create_page_plug(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3673175484831412991)
-,p_plug_name=>'Conferences'
+,p_plug_name=>'Conferences (Pagination)'
 ,p_parent_plug_id=>wwv_flow_api.id(3797453955494976146)
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--styleC'
 ,p_component_template_options=>'#DEFAULT#'
@@ -51775,6 +51782,7 @@ wwv_flow_api.create_card(
 ,p_media_url=>'&IMAGE.'
 ,p_media_display_position=>'BODY'
 ,p_media_sizing=>'COVER'
+,p_media_description=>'&TITLE.'
 ,p_pk1_column_name=>'ID'
 );
 wwv_flow_api.create_card_action(
@@ -51804,7 +51812,7 @@ wwv_flow_api.create_card_action(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3797455862345976165)
-,p_plug_name=>'Region Configuration'
+,p_plug_name=>'Pagination Demo Region Configuration'
 ,p_parent_plug_id=>wwv_flow_api.id(3797453955494976146)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(1215306280710140812)
@@ -51852,7 +51860,7 @@ wwv_flow_api.create_page_plug(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3793143587242278342)
-,p_plug_name=>'Conferences'
+,p_plug_name=>'Conferences (Backgrounds)'
 ,p_parent_plug_id=>wwv_flow_api.id(3797454077822976147)
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--styleA'
 ,p_component_template_options=>'#DEFAULT#'
@@ -51905,6 +51913,7 @@ wwv_flow_api.create_card(
 ,p_media_url=>'&IMAGE.'
 ,p_media_display_position=>'BACKGROUND'
 ,p_media_sizing=>'COVER'
+,p_media_description=>'&TITLE.'
 ,p_pk1_column_name=>'ID'
 );
 wwv_flow_api.create_card_action(
@@ -51921,7 +51930,7 @@ wwv_flow_api.create_card_action(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3797455971771976166)
-,p_plug_name=>'Region Configuration'
+,p_plug_name=>'Backgrounds Demo Region Configuration'
 ,p_parent_plug_id=>wwv_flow_api.id(3797454077822976147)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(1215306280710140812)
@@ -51968,7 +51977,7 @@ wwv_flow_api.create_page_plug(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3793143789858278344)
-,p_plug_name=>'Workshops'
+,p_plug_name=>'Workshops (Widescreen)'
 ,p_parent_plug_id=>wwv_flow_api.id(3797454413485976150)
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--styleB'
 ,p_component_template_options=>'#DEFAULT#'
@@ -52022,11 +52031,12 @@ wwv_flow_api.create_card(
 ,p_media_display_position=>'FIRST'
 ,p_media_appearance=>'WIDESCREEN'
 ,p_media_sizing=>'COVER'
+,p_media_description=>'&TITLE.'
 ,p_pk1_column_name=>'ID'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3797456262658976169)
-,p_plug_name=>'Region Configuration'
+,p_plug_name=>'Widescreen Image Demo Region Configuration'
 ,p_parent_plug_id=>wwv_flow_api.id(3797454413485976150)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(1215306280710140812)
@@ -52072,7 +52082,7 @@ wwv_flow_api.create_page_plug(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3797453745916976144)
-,p_plug_name=>'Workshops'
+,p_plug_name=>'Workshops (Block Cards)'
 ,p_parent_plug_id=>wwv_flow_api.id(3797454607851976152)
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--styleB'
 ,p_component_template_options=>'#DEFAULT#'
@@ -52129,7 +52139,7 @@ wwv_flow_api.create_card_action(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3797456368486976170)
-,p_plug_name=>'Region Configuration'
+,p_plug_name=>'Block Cards Demo Region Configuration'
 ,p_parent_plug_id=>wwv_flow_api.id(3797454607851976152)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(1215306280710140812)
@@ -52232,7 +52242,7 @@ wwv_flow_api.create_card_action(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3797456056075976167)
-,p_plug_name=>'Region Configuration'
+,p_plug_name=>'Badges Demo Region Configuration'
 ,p_parent_plug_id=>wwv_flow_api.id(3797455166430976158)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(1215306280710140812)
