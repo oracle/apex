@@ -38,7 +38,7 @@ prompt APPLICATION 7830 - Sample Charts
 -- Application Export:
 --   Application:     7830
 --   Name:            Sample Charts
---   Date and Time:   15:37 Thursday May 6, 2021
+--   Date and Time:   08:12 Friday May 21, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -46,7 +46,7 @@ prompt APPLICATION 7830 - Sample Charts
 --       Items:                   16
 --       Computations:            17
 --       Processes:                6
---       Regions:                294
+--       Regions:                297
 --       Buttons:                 46
 --       Dynamic Actions:         53
 --     Shared Components:
@@ -147,8 +147,8 @@ wwv_flow_api.create_flow(
 ,p_substitution_value_05=>'https://www.oracle.com/webfolder/technetwork/jet/index.html?_ojCoreRouter=getstarted'
 ,p_substitution_string_06=>'OJCHART_ITEM_API_URL'
 ,p_substitution_value_06=>'https://www.oracle.com/webfolder/technetwork/jet/jsdocs/oj.ojChartItem.html'
-,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210506121821'
+,p_last_updated_by=>'HILARY'
+,p_last_upd_yyyymmddhh24miss=>'20210517085554'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>6
 ,p_ui_type_name => null
@@ -30198,8 +30198,123 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210301102803'
+,p_last_updated_by=>'HILARY'
+,p_last_upd_yyyymmddhh24miss=>'20210517085554'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(569805454261147046)
+,p_plug_name=>'Range - Area Range'
+,p_region_name=>'rangeLines'
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--noBorder:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>wwv_flow_api.id(1521110414840267263)
+,p_plug_display_sequence=>40
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_point=>'BODY'
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_query_num_rows=>15
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_jet_chart(
+ p_id=>wwv_flow_api.id(569805757372147049)
+,p_region_id=>wwv_flow_api.id(569805454261147046)
+,p_chart_type=>'range'
+,p_width=>'600'
+,p_height=>'450'
+,p_animation_on_display=>'none'
+,p_animation_on_data_change=>'none'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'none'
+,p_hover_behavior=>'none'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'auto'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'function( options ){',
+'    options.styleDefaults = $.extend( options.styleDefaults, { lineType: ''none'', markerDisplayed: ''on'' });',
+'    options.orientation = ''horizontal'';',
+'    return options;',
+'}'))
+);
+wwv_flow_api.create_jet_chart_series(
+ p_id=>wwv_flow_api.id(569805878133147050)
+,p_chart_id=>wwv_flow_api.id(569805757372147049)
+,p_seq=>10
+,p_name=>'Product Sales'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select b.product_name, min(a.quantity), max(a.quantity) from eba_demo_chart_orders a, eba_demo_chart_products b',
+'where a.product_id = b.product_id',
+'group by a.product_id, b.product_name',
+'order by b.product_name asc'))
+,p_series_type=>'areaRange'
+,p_items_low_column_name=>'MIN(A.QUANTITY)'
+,p_items_high_column_name=>'MAX(A.QUANTITY)'
+,p_items_label_column_name=>'PRODUCT_NAME'
+,p_items_label_rendered=>true
+,p_items_label_position=>'outsideBarEdge'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(815236228198591301)
+,p_chart_id=>wwv_flow_api.id(569805757372147049)
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_api.create_jet_chart_axis(
+ p_id=>wwv_flow_api.id(815236341839591302)
+,p_chart_id=>wwv_flow_api.id(569805757372147049)
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>0
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(815236496205591303)
+,p_plug_name=>'Information - Area Range'
+,p_parent_plug_id=>wwv_flow_api.id(569805454261147046)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_api.id(1521106216817267253)
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'BODY'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'This example demonstrates an Area Range chart with lines and markers displayed.<p/>',
+'<strong>Type</strong> - Series-level attribute to set the type of range, which is Area Range in this example.<p/> ',
+'<strong>JavaScript Initialization Code</strong> - Use the chart-level attribute to apply the necessary LineType, and markerDisplayed attributes, as well as the Orientation.',
+'<pre>',
+'function( options ){',
+'    options.styleDefaults = $.extend( options.styleDefaults, { lineType: ''none'', markerDisplayed: ''on'' });',
+'    options.orientation = ''horizontal'';',
+'    return options;',
+'}',
+'</pre>',
+'<p/>',
+'<p/>',
+'For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=lineTypes" target="_blank">Range Chart: Line Types</a> example.'))
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(612407981798592807)
@@ -30223,12 +30338,12 @@ wwv_flow_api.create_page_plug(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(612415948765605854)
-,p_plug_name=>'Range'
+,p_plug_name=>'Range - Bar Range'
 ,p_region_name=>'range'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_api.id(1521110414840267263)
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'BODY'
 ,p_plug_source_type=>'NATIVE_JET_CHART'
@@ -30340,14 +30455,15 @@ wwv_flow_api.create_jet_chart_axis(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(612408540816592817)
-,p_plug_name=>'Information'
+,p_plug_name=>'Information - Bar Range'
 ,p_parent_plug_id=>wwv_flow_api.id(612415948765605854)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_api.id(1521106216817267253)
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'BODY'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'This example demonstrates a Range chart with data labels.<p/>',
+'This example demonstrates a Bar Range chart with data labels.<p/>',
+'<strong>Type</strong> - Series-level attribute to set the type of range, which is Bar Range in this example.<p/> ',
 '<strong>Maximum Width & Height</strong> - Chart-level attributes Maximum Width and Height have been set to 600px and 450px respectively, to size the chart within its region.  If you wish to default to using 100% width and height of the given region, '
 ||'simply remove these values, and utilitise the Template Options of the region to control the height as you wish.<p/> ',
 '<strong>Label Position</strong> - Use the series-level attribute to define the position of the labels. Valid label positions for a Bar Range series are ''Automatic'', ''Center'', ''Inside Bar Edge'', and ''Outside Bar Edge''. The default is ''Inside Bar Edge'''
@@ -30374,6 +30490,17 @@ wwv_flow_api.create_page_plug(
 ,p_menu_template_id=>wwv_flow_api.id(1521131207912267335)
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 );
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(815236570701591304)
+,p_plug_name=>'Region Display Selector'
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'BODY'
+,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'STANDARD'
+,p_attribute_02=>'Y'
+,p_attribute_03=>'Y'
+);
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(612764624751104522)
 ,p_button_sequence=>10
@@ -30384,6 +30511,7 @@ wwv_flow_api.create_page_button(
 ,p_button_template_id=>wwv_flow_api.id(1521130299556267327)
 ,p_button_image_alt=>'Horizontal'
 ,p_button_position=>'REGION_TEMPLATE_PREVIOUS'
+,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-bars'
 );
 wwv_flow_api.create_page_button(
@@ -30396,6 +30524,7 @@ wwv_flow_api.create_page_button(
 ,p_button_template_id=>wwv_flow_api.id(1521130299556267327)
 ,p_button_image_alt=>'Vertical'
 ,p_button_position=>'REGION_TEMPLATE_PREVIOUS'
+,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-bar-chart'
 );
 wwv_flow_api.create_page_da_event(

@@ -34,7 +34,7 @@ prompt APPLICATION 7810 - Sample Reporting
 -- Application Export:
 --   Application:     7810
 --   Name:            Sample Reporting
---   Date and Time:   15:32 Thursday May 6, 2021
+--   Date and Time:   08:07 Friday May 21, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -135,7 +135,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_02=>'GETTING_STARTED_URL'
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
 ,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210506121654'
+,p_last_upd_yyyymmddhh24miss=>'20210519085824'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>7
 ,p_ui_type_name => null
@@ -15231,7 +15231,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210301102626'
+,p_last_upd_yyyymmddhh24miss=>'20210519085824'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1299569676115153667)
@@ -25494,7 +25494,8 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
-,p_last_upd_yyyymmddhh24miss=>'20200828061946'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20210519083156'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(602864784115198011)
@@ -25574,7 +25575,7 @@ wwv_flow_api.create_card_action(
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1943856523428956650)
 ,p_plug_name=>'About this page'
-,p_region_template_options=>'#DEFAULT#'
+,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
 ,p_plug_template=>wwv_flow_api.id(1572214099100297374)
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'BODY'
