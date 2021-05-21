@@ -34,14 +34,14 @@ prompt APPLICATION 7940 - Sample Collections
 -- Application Export:
 --   Application:     7940
 --   Name:            Sample Collections
---   Date and Time:   15:53 Thursday May 6, 2021
+--   Date and Time:   08:17 Friday May 21, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     14
 --       Items:                   41
 --       Validations:              1
---       Processes:               24
+--       Processes:               25
 --       Regions:                 56
 --       Buttons:                 29
 --       Dynamic Actions:          3
@@ -117,7 +117,7 @@ wwv_flow_api.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'1.2.1'
+,p_flow_version=>'1.2.2'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable.'
 ,p_exact_substitutions_only=>'Y'
@@ -132,7 +132,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_02=>'APP_NAME'
 ,p_substitution_value_02=>'Sample Collections'
 ,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210506122156'
+,p_last_upd_yyyymmddhh24miss=>'20210513082320'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_ui_type_name => null
 ,p_print_server_type=>'INSTANCE'
@@ -12339,8 +12339,8 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'HILARY'
-,p_last_upd_yyyymmddhh24miss=>'20210309053857'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20210513080230'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1224506178237833142)
@@ -12634,7 +12634,7 @@ wwv_flow_api.create_page_button(
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Create Collection'
 ,p_button_position=>'REGION_TEMPLATE_CREATE'
-,p_button_redirect_url=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP::'
+,p_button_redirect_url=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP,2::'
 );
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(8866762509511056586)
@@ -12678,11 +12678,10 @@ wwv_flow_api.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>wwv_flow_api.id(1774846340824936463)
 ,p_page_template_options=>'#DEFAULT#'
-,p_dialog_height=>'250'
-,p_dialog_width=>'450'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20200116130020'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20210513080510'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1713164201739995053)
@@ -12761,11 +12760,11 @@ wwv_flow_api.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>2000
-,p_field_template=>wwv_flow_api.id(1774882441270936571)
+,p_field_template=>wwv_flow_api.id(274822744073356429)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_encrypt_session_state_yn=>'Y'
-,p_attribute_01=>'N'
+,p_attribute_01=>'Y'
 ,p_attribute_02=>'N'
 ,p_attribute_04=>'TEXT'
 ,p_attribute_05=>'NONE'
@@ -12785,8 +12784,23 @@ wwv_flow_api.create_page_process(
 ,p_process_success_message=>'Successfully created collection <b>&P2_NAME.</b>.'
 );
 wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(1156315145607388521)
+,p_process_sequence=>20
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Create on Return Key Submit'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'apex_collection.create_collection( p_collection_name => :P2_NAME );',
+'commit;'))
+,p_process_clob_language=>'PLSQL'
+,p_process_error_message=>'Error creating collection <b>&P2_NAME.</b>.'
+,p_process_when=>'P2_NAME'
+,p_process_when_type=>'REQUEST_EQUALS_CONDITION'
+,p_process_success_message=>'Successfully created collection <b>&P2_NAME.</b>.'
+);
+wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(8866750420045010910)
-,p_process_sequence=>10
+,p_process_sequence=>30
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Create/Replace'
