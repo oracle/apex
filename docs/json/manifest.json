@@ -1,0 +1,171 @@
+{
+    "sampleApps": [
+        {
+            "name": "Sample Calendar",
+            "description": "This application highlights the native calendaring capabilities of Oracle Application Express. It features a monthly calendar with stylized daily tasks. The dates can be changed using drag and drop, which is all declarative and easily created using native Application Express wizards.",
+            "slug": "sample-calendar",
+            "url": "https://github.com/oracle/apex/blob/21.1/sample-apps/sample-calendar",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-calendar/sample-calendar.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-calendar/sample-calendar.zip",
+            "license": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-calendar/THIRD_PARTY_LICENSES.txt"
+        },
+        {
+            "name": "Sample Cards",
+            "description": "This application highlights Cards regions in Oracle Application Express (APEX). Cards regions are a native region type. They provide developers with a powerful and flexible new way to display data in bite-sized blocks, ideal for use in faceted search, or presenting at-a-glance information.",
+            "slug": "sample-cards",
+            "url": "https://github.com/oracle/apex/blob/21.1/sample-apps/sample-cards",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-cards/sample-cards.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-calendar/sample-cards.zip",
+            "license": ""
+        },
+
+        {
+            "name": "Sample Charts",
+            "description": "This application highlights the charting capabilities of Oracle Application Express (APEX). It demonstrates how you can enhance your applications to visually represent your data, using declarative and plug-in based charting solutions.",
+            "slug": "sample-charts",
+            "url": "https://github.com/oracle/apex/blob/21.1/sample-apps/sample-charts",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-charts/sample-charts.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-charts/sample-charts.zip",
+            "license": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-charts/THIRD_PARTY_LICENSES.txt"
+        },
+        {
+            "name": "Sample Collections",
+            "description": "Sample Collections enables you to store rows of data for use within an Oracle Application Express session. This database application illustrates how to use PL/SQL to create and manage collection-based session state.",
+            "slug": "sample-collections",
+            "url": "https://github.com/oracle/apex/blob/21.1/sample-apps/sample-collections",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-collections/sample-collections.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-collections/sample-collections.zip",
+            "license": ""
+        },
+        {
+            "name": "Sample Dynamic Actions",
+            "description": "This application demonstrates a number of different dynamic actions that can be incorporated into an application. These declarative client-side behaviors include simple examples for manipulating the display of components, style examples for changing the appearance of components, and server-side examples which interact with the database.",
+            "slug": "sample-dynamic-actions",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-dynamic-actions",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-dynamic-actions/sample-dynamic-actions.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-dynamic-actions/sample-dynamic-actions.zip",
+            "license": ""
+        },
+        {
+            "name": "Sample File Upload and Download",
+            "description": "Learn how to create Oracle Application Express applications that include file upload and download. Upload files using dialogs as well as dedicated pages. See how to download files stored in Oracle database BLOB columns within database tables. Specifically see how to produce file download links in interactive reports, classic reports, forms, and dynamically created HTML content.",
+            "slug": "sample-file-up-an-down",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-file-upload-download",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-file-upload-download/sample-file-upload-download.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-file-upload-download/sample-file-upload-download.zip",
+            "license": ""
+        },
+        {
+            "name": "Sample Interactive Grids",
+            "description": "This application highlights the features and functionality of the Oracle Application Express Interactive Grid. The interactive grid sample pages highlight the following declarative features.",
+            "slug": "sample-interactive-grids",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-interactive-grids",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-interactive-grids/sample-interactive-grids.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-interactive-grids/sample-interactive-grids.zip",
+            "license": ""
+        },
+        {
+            "name": "Sample Maps",
+            "description": "This application contains numerous examples of visualizing coordinate data on a map. Use Map Markers, Lines or Polygons, or the Heat Map feature. The APEX Map Region can easily be combined with Oracle Spatial functionality (which is included in every Oracle Database) to perform a 'Within Distance Search', 'Nearest Neighbor Search', or other spatial analysis.",
+            "slug": "sample-maps",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-maps",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-maps/sample-maps.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-maps/sample-maps.zip",
+            "license": ""
+        },
+        {
+            "name": "Sample Master Detail",
+            "description": "This application highlights the native master detail capabilities of Oracle Application Express. The application contains four different master detail page layouts. The first two layouts display master detail in a single page using editable Interactive Grids. The last two layouts display master detail in two pages with mix of editable Interactive Grids, form items, classic reports and modal popups.",
+            "slug": "sample-master-detail",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-master-detail",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-master-detail/sample-master-detail.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-master-detail/sample-master-detail.zip",
+            "license": ""
+        },
+        {
+            "name": "Sample Reporting",
+            "description": "This application highlights the reporting capabilities of Oracle Application Express. You can create Interactive Reports, Interactive Grids, Faceted Search Reports, Cards Reports, and Classic Reports declaratively using SQL.",
+            "slug": "sample-reporting",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-reporting",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-reporting/sample-reporting.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-reporting/sample-reporting.zip",
+            "license": ""
+        },
+        {
+            "name": "Sample REST Services",
+            "description": "This application showcases how to access external REST services from Oracle Application Express. The app works on the sample RESTful Service, oracle.example.hr. The examples in this application illustrate how to create a simple tabular report on REST service data, how to filter, and how to add pagination.",
+            "slug": "sample-rest",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-rest-services",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-rest-services/sample-rest-services.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-rest-services/sample-rest-services.zip",
+            "license": ""
+        },
+        {
+            "name": "Sample Trees",
+            "description": "Learn how to create a tree control using a SQL query. This application shows various methods of integrating tree controls into your Oracle Application Express application.",
+            "slug": "sample-trees",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-trees",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-trees/sample-trees.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-trees/sample-trees.zip",
+            "license": ""
+        },
+        {
+            "name": "Universal Theme Sample App",
+            "description": "This app introduces you to Universal Theme by providing an easy way to browse through the various templates, template options, and theme styles. The examples demonstrate how you can easily control the layout of your pages, to create a great looking application.",
+            "slug": "sample-ut",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/universal-theme-sample-application",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/universal-theme-sample-application/universal-theme-sample-application.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/universal-theme-sample-application/universal-theme-sample-application.zip",
+            "license": ""
+        }
+    ],
+    "starterApps": [
+        {
+            "name": "Customers",
+            "description": "Customers helps you improve your customer interactions by offering a centralized repository of information about your customers. Each customer can have multiple contacts and be associated with multiple products. Customers gives you the ability to define your own standards for attributes such as categories, statuses, customer types, activity types, and products, allowing you to create a customized version of Customers to meet your own needs.",
+            "slug": "customers",
+            "url": "https://github.com/oracle/apex/tree/21.1/starter-apps/customers",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/customers/customers.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/customers/customers.zip",
+            "license": ""
+        },
+        {
+            "name": "Opportunities",
+            "description": "Opportunities helps you to track your sales opportunities throughout their lifespan, while giving sales management a quick and easy tool to both see the current state of the sales pipeline and analyze past sales performance. With Opportunities, you can define accounts, contacts, territories, products and competitors and combine these to define leads and opportunities. Opportunities includes a rich set of reports on opportunities, pipeline analysis, key accounts, projected closing dates and different snapshots of sales by rep.",
+            "slug": "opportunities",
+            "url": "https://github.com/oracle/apex/tree/21.1/starter-apps/opportunities",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/opportunities/opportunities.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/opportunities/opportunities.zip",
+            "license": ""
+        },
+        {
+            "name": "Poll",
+            "description": "This application allows you to conduct a simple poll or quiz. Results of the poll or quiz can be displayed in real time. You can use this app during meetings or presentations to get instant feedback and to facilitate discussions.",
+            "slug": "poll",
+            "url": "https://github.com/oracle/apex/tree/21.1/starter-apps/poll",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/poll/poll.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/poll/poll.zip",
+            "license": ""
+        },
+        {
+            "name": "Team Calendar",
+            "description": "The Team Calendar application gives you a way to list all your events on an easy to use, Web-accessible calendar. The Home page for the Team Calendar displays events in a monthly, weekly or daily format, with embedded links to detailed information about each event. You can also create customized reports on events. Each event is classified by event type and automatically displayed in an associated color. You can create your own event types or modify existing event type attributes. You can send emails to individuals or groups with information about upcoming meetings, and you have the ability to create your own groups to match your needs.",
+            "slug": "team-calendar",
+            "url": "https://github.com/oracle/apex/tree/21.1/starter-apps/team-calendar",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/team-calendar/team-calendar.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/team-calendar/team-calendar.zip",
+            "license": "https://raw.githubusercontent.com/oracle/apex/21.1/starter-apps/team-calendar/THIRD_PARTY_LICENSES.txt"
+        }
+    ],
+    "plugins": [
+        {
+            "name": "REST Source Pagination",
+            "description": "This example plug-in demonstrates how to implement pagination support for a REST API which uses a fixed page size and URL parameter for the page number. The plug-in uses \"api.themoviedb.org\" as the example REST API.",
+            "slug": "sample-rest",
+            "url": "https://github.com/oracle/apex/tree/21.1/plugins/rest-source/fixed-page-size",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/plugins/rest-source/fixed-page-size/web_source_type_fixedpagesize.sql",
+            "zip": "",
+            "license": ""
+        }
+    ]
+}

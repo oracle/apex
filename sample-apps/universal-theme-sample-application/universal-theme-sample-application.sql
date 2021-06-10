@@ -1,10 +1,3 @@
---------------------------------------------------------------------------------
--- Name: Universal Theme Sample App
--- Copyright (c) 2012, 2021 Oracle and/or its affiliates.
--- Licensed under the Universal Permissive License v 1.0
--- as shown at https://oss.oracle.com/licenses/upl/
---------------------------------------------------------------------------------
-
 prompt --application/set_environment
 set define off verify off feedback off
 --------------------------------------------------------------------------------
@@ -34,7 +27,7 @@ prompt APPLICATION 8940 - Universal Theme Sample Application
 -- Application Export:
 --   Application:     8940
 --   Name:            Universal Theme Sample Application
---   Date and Time:   08:04 Friday May 21, 2021
+--   Date and Time:   10:44 Wednesday June 9, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -94,7 +87,7 @@ wwv_flow_api.create_flow(
 ,p_application_group_name=>'21.1 Sample Apps'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'N'
-,p_checksum_salt_last_reset=>'20210520064449'
+,p_checksum_salt_last_reset=>'20210609104336'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_compatibility_mode=>'19.2'
@@ -128,8 +121,8 @@ wwv_flow_api.create_flow(
 ,p_substitution_value_01=>'Day Month DD, YYYY'
 ,p_substitution_string_02=>'PRISMJS_PATH'
 ,p_substitution_value_02=>'#IMAGE_PREFIX#libraries/prismjs/1.23.0'
-,p_last_updated_by=>'SHAKEEB'
-,p_last_upd_yyyymmddhh24miss=>'20210520064449'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20210609104336'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>204
 ,p_ui_type_name => null
@@ -510,6 +503,16 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_for_pages=>'1407'
 );
 wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(775201947420869417)
+,p_list_item_display_sequence=>227
+,p_list_item_link_text=>'Contextual Info'
+,p_list_item_link_target=>'f?p=&APP_ID.:1307:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-layout-list-right'
+,p_parent_list_item_id=>wwv_flow_api.id(404962211197814314)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'1307'
+);
+wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(404967011884814319)
 ,p_list_item_display_sequence=>230
 ,p_list_item_link_text=>'Data Tables and Reports'
@@ -766,15 +769,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_icon=>'fa-wizard'
 ,p_parent_list_item_id=>wwv_flow_api.id(404962211197814314)
 ,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(775201947420869417)
-,p_list_item_display_sequence=>940
-,p_list_item_link_text=>'Contextual Info'
-,p_list_item_link_target=>'f?p=&APP_ID.:1307:&APP_SESSION.::&DEBUG.:::'
-,p_parent_list_item_id=>wwv_flow_api.id(404962211197814314)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'1307'
 );
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(404965403854814318)

@@ -34,7 +34,7 @@ prompt APPLICATION 7040 - Poll
 -- Application Export:
 --   Application:     7040
 --   Name:            Poll
---   Date and Time:   07:58 Friday May 21, 2021
+--   Date and Time:   07:53 Wednesday May 26, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -142,7 +142,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_02=>'APP_NAME'
 ,p_substitution_value_02=>'Polls'
 ,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210521075123'
+,p_last_upd_yyyymmddhh24miss=>'20210526075241'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>21
 ,p_ui_type_name => null
@@ -30324,7 +30324,7 @@ wwv_flow_api.create_page(
  p_id=>50
 ,p_user_interface_id=>wwv_flow_api.id(14332515601885435799)
 ,p_name=>'&POLL_NAME.'
-,p_alias=>'POLL-NAME2'
+,p_alias=>'POLL-FORM'
 ,p_step_title=>'&POLL_NAME.'
 ,p_allow_duplicate_submissions=>'N'
 ,p_reload_on_submit=>'A'
@@ -30444,7 +30444,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20210518144345'
+,p_last_upd_yyyymmddhh24miss=>'20210526075241'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1229131081295590702)
@@ -31346,7 +31346,6 @@ wwv_flow_api.create_page_item(
 ,p_item_sequence=>60
 ,p_item_plug_id=>wwv_flow_api.id(13915152887902477306)
 ,p_display_as=>'NATIVE_HIDDEN'
-,p_protection_level=>'S'
 ,p_attribute_01=>'Y'
 );
 wwv_flow_api.create_page_computation(
