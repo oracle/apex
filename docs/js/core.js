@@ -2,8 +2,7 @@ const stuck = "is-stuck",
       headerContianer = document.querySelector(".m-HeaderContainer");
 
 (function () {
-    //const manifestURL = "https://raw.githubusercontent.com/oracle/apex/21.1/manifest.json";
-    const manifestURL = "../manifest.json";
+    const manifestURL = "json/manifest.json";
     const applyTemplate = function (pData) {
         const data = pData || {};
 
