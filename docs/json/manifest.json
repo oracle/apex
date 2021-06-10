@@ -15,7 +15,7 @@
             "slug": "sample-cards",
             "url": "https://github.com/oracle/apex/blob/21.1/sample-apps/sample-cards",
             "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-cards/sample-cards.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-calendar/sample-cards.zip",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-cards/sample-cards.zip",
             "license": ""
         },
 
