@@ -1,25 +1,22 @@
-# Oracle APEX Sample Code
+# [Oracle APEX on GitHub](https://oracle.github.io/apex/)
 
-This directory contains sample code, sample apps and starter apps for Oracle APEX.
+Oracle Application Express (APEX) is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.  
+
+This GitHub project contains starter apps, sample apps, sample code, and plug-ins that you can use with [Oracle APEX](https://apex.oracle.com/).
+
+## Getting Started
+Get started with APEX and the code samples found in this project by requesting your own workspace on [apex.oracle.com](https://apex.oracle.com/en/learn/getting-started/).
 
 ## Documentation
-Review the [Oracle Application Express online documentation](https://docs.oracle.com/en/database/oracle/application-express/20.2/index.html).
-
-## apex.oracle.com
-Try out the sample apps, starter apps and sample code using the [Oracle Application Express public evaluation instance](https://apex.oracle.com).
+Review the [Oracle Application Express online documentation](https://docs.oracle.com/en/database/oracle/application-express/21.1/index.html).
 
 ## Contributing
-
-This project welcomes contributions from the community. Before submitting a pull
-request, please [review our contribution guide](./CONTRIBUTING.md).
+This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md).
 
 ## Security
-
-Please consult the [security guide](./SECURITY.md) for our responsible security
-vulnerability disclosure process.
+Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process.
 
 ## License
-
 Copyright (c) 2021 Oracle and/or its affiliates.
 
 Released under the Universal Permissive License v1.0 as shown at
