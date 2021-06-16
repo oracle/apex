@@ -38,6 +38,15 @@
             "license": ""
         },
         {
+            "name": "Sample Data Loading",
+            "description": "This application is built on simple EMP and DEPT tables to highlight how developers can define pages to allow end users to upload spreadsheet data into an existing table.",
+            "slug": "sample-data-loading",
+            "url": "https://github.com/oracle/apex/tree/21.1/sample-apps/sample-data-loading",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-data-loading/sample-data-loading.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.1/sample-apps/sample-data-loading/sample-data-loading.zip",
+            "license": ""
+        },
+        {
             "name": "Sample Dynamic Actions",
             "description": "This application demonstrates a number of different dynamic actions that can be incorporated into an application. These declarative client-side behaviors include simple examples for manipulating the display of components, style examples for changing the appearance of components, and server-side examples which interact with the database.",
             "slug": "sample-dynamic-actions",

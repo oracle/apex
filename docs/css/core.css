@@ -3643,6 +3643,10 @@ a.m-Notice-cta--secondary:active {
   background-image: url(../img/rw/apps/app-sample-collections.svg);
 }
 
+.sample-data-loading {
+  background-image: url(../img/rw/apps/app-sample-data-loading.svg);
+}
+
 .sample-dynamic-actions {
   background-image: url(../img/rw/apps/app-sample-dynamic-actions.svg);
 }
