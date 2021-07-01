@@ -34,7 +34,7 @@ prompt APPLICATION 7880 - Sample Interactive Grids
 -- Application Export:
 --   Application:     7880
 --   Name:            Sample Interactive Grids
---   Date and Time:   15:48 Thursday May 6, 2021
+--   Date and Time:   06:27 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -105,7 +105,7 @@ wwv_flow_api.create_flow(
 ,p_flow_image_prefix => nvl(wwv_flow_application_install.get_image_prefix,'')
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(1323694043446702242)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'&APP_NAME.'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-ig.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-ig-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PREFIX#apex_ui/img/favi'

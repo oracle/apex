@@ -34,7 +34,7 @@ prompt APPLICATION 7930 - Sample REST Services
 -- Application Export:
 --   Application:     7930
 --   Name:            Sample REST Services
---   Date and Time:   15:52 Thursday May 6, 2021
+--   Date and Time:   06:30 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -111,7 +111,7 @@ wwv_flow_api.create_flow(
 '1.0.3 -> 1.0.4: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie'))
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(10522650996600832035)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'&APP_NAME.'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-restful-services.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-restful-services-16x16.png"><link rel="icon" sizes="32x32" href="#I'

@@ -34,7 +34,7 @@ prompt APPLICATION 7040 - Poll
 -- Application Export:
 --   Application:     7040
 --   Name:            Poll
---   Date and Time:   07:53 Wednesday May 26, 2021
+--   Date and Time:   06:15 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export

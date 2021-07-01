@@ -27,7 +27,7 @@ prompt APPLICATION 8940 - Universal Theme Sample Application
 -- Application Export:
 --   Application:     8940
 --   Name:            Universal Theme Sample Application
---   Date and Time:   10:44 Wednesday June 9, 2021
+--   Date and Time:   06:32 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -99,7 +99,7 @@ wwv_flow_api.create_flow(
 ,p_documentation_banner=>'Created 08/12/2004 11:25:08 AM'
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(6617513688278274885)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Universal Theme'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-universal-theme.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-universal-theme-16x16.png"><link rel="icon" sizes="32x32" href="#IMA'

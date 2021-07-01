@@ -38,7 +38,7 @@ prompt APPLICATION 7090 - Team Calendar
 -- Application Export:
 --   Application:     7090
 --   Name:            Team Calendar
---   Date and Time:   10:05 Friday May 7, 2021
+--   Date and Time:   06:20 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -130,7 +130,7 @@ wwv_flow_api.create_flow(
 '1.0.35 -> 1.0.36: Implemented redesigned administrative ACL controls'))
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(8920370756093394734)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'&APPLICATION_TITLE.'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-group-calendar.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-group-calendar-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PREFIX#apex_u'

@@ -34,7 +34,7 @@ prompt APPLICATION 7940 - Sample Collections
 -- Application Export:
 --   Application:     7940
 --   Name:            Sample Collections
---   Date and Time:   08:17 Friday May 21, 2021
+--   Date and Time:   06:30 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -109,7 +109,7 @@ wwv_flow_api.create_flow(
 '1.0.3 -> 1.0.4: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie'))
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(8706951165162370193)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Collections'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-collections.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-collections-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PREFI'

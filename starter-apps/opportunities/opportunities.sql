@@ -34,7 +34,7 @@ prompt APPLICATION 7050 - Opportunities
 -- Application Export:
 --   Application:     7050
 --   Name:            Opportunities
---   Date and Time:   15:20 Thursday May 6, 2021
+--   Date and Time:   06:17 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -119,7 +119,7 @@ wwv_flow_api.create_flow(
 '0.9.28 -> 1.1.26: Updated version level to match APEX metadata'))
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(10495269307775772421)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'&APPLICATION_TITLE.'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-opportunity-tracker.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-opportunity-tracker-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PRE'

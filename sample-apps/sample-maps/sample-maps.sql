@@ -34,7 +34,7 @@ prompt APPLICATION 7970 - Sample Maps
 -- Application Export:
 --   Application:     7970
 --   Name:            Sample Maps
---   Date and Time:   09:27 Wednesday June 9, 2021
+--   Date and Time:   06:31 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -106,7 +106,7 @@ wwv_flow_api.create_flow(
 ,p_documentation_banner=>'Application created from create application wizard 2021.02.21.'
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(1548320278776069280)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Maps'
 ,p_app_builder_icon_name=>'app-icon.svg'

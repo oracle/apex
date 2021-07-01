@@ -34,7 +34,7 @@ prompt APPLICATION 7850 - Sample Data Loading
 -- Application Export:
 --   Application:     7850
 --   Name:            Sample Data Loading
---   Date and Time:   11:07 Friday June 11, 2021
+--   Date and Time:   06:26 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -112,7 +112,7 @@ wwv_flow_api.create_flow(
 '1.0.7 -> 1.0.8: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie'))
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(9852203659837511470)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Data Loading'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-data-loading.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-data-loading-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PRE'

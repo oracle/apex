@@ -34,7 +34,7 @@ prompt APPLICATION 7920 - Sample Cards
 -- Application Export:
 --   Application:     7920
 --   Name:            Sample Cards
---   Date and Time:   09:26 Wednesday June 9, 2021
+--   Date and Time:   06:29 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -103,7 +103,7 @@ wwv_flow_api.create_flow(
 ,p_documentation_banner=>'Application created from create application wizard 2020.08.14.'
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(5965295125454567522)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Cards'
 ,p_app_builder_icon_name=>'app-icon.svg'

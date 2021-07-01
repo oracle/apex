@@ -38,7 +38,7 @@ prompt APPLICATION 7830 - Sample Charts
 -- Application Export:
 --   Application:     7830
 --   Name:            Sample Charts
---   Date and Time:   08:12 Friday May 21, 2021
+--   Date and Time:   06:24 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -115,7 +115,7 @@ wwv_flow_api.create_flow(
 '1.0.12 -> 1.0.13: Added D3 Collapsible Treemap region to page 16'))
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(8193497555425641623)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Charts'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-charts.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-charts-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PREFIX#apex_ui/'

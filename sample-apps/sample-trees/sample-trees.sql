@@ -34,7 +34,7 @@ prompt APPLICATION 7910 - Sample Trees
 -- Application Export:
 --   Application:     7910
 --   Name:            Sample Trees
---   Date and Time:   15:50 Thursday May 6, 2021
+--   Date and Time:   06:29 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -112,7 +112,7 @@ wwv_flow_api.create_flow(
 '1.0.5 -> 1.0.6: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie'))
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(7263490156395758696)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Trees'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-trees.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-trees-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PREFIX#apex_ui/im'

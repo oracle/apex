@@ -34,7 +34,7 @@ prompt APPLICATION 7810 - Sample Reporting
 -- Application Export:
 --   Application:     7810
 --   Name:            Sample Reporting
---   Date and Time:   08:07 Friday May 21, 2021
+--   Date and Time:   06:22 Thursday July 1, 2021
 --   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -110,7 +110,7 @@ wwv_flow_api.create_flow(
 '1.0.11 -> 1.0.12: Added page 27 "Use Cases - String Functions" and associated list entry to use cases list on page 9.'))
 ,p_authentication=>'PLUGIN'
 ,p_authentication_id=>wwv_flow_api.id(6272075996692456970)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Reporting'
 ,p_favicons=>'<link rel="shortcut icon" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-reporting.ico"><link rel="icon" sizes="16x16" href="#IMAGE_PREFIX#apex_ui/img/favicons/app-sample-reporting-16x16.png"><link rel="icon" sizes="32x32" href="#IMAGE_PREFIX#ap'
