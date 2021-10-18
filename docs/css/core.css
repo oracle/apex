@@ -2247,7 +2247,7 @@ button:-moz-focusring {
 }
 
 fieldset {
-  padding: 0.35em 0.75em 0.625em;
+  padding: 0.35em .75em 0.625em;
 }
 
 legend {
@@ -2337,7 +2337,8 @@ a:focus,
 button:focus,
 div[tabindex]:focus,
 li[tabindex]:focus,
-span[tabindex]:focus {
+span[tabindex]:focus,
+select:focus {
   outline-color: currentColor;
   outline-offset: 2px;
   outline-width: 2px;
@@ -2348,7 +2349,8 @@ a:focus:active,
 button:focus:active,
 div[tabindex]:focus:active,
 li[tabindex]:focus:active,
-span[tabindex]:focus:active {
+span[tabindex]:focus:active,
+select:focus:active {
   outline-color: transparent;
 }
 
@@ -2490,7 +2492,7 @@ h6 {
 
 small {
   font-size: 85%;
-  opacity: 0.65;
+  opacity: .7;
 }
 
 
@@ -3404,7 +3406,7 @@ a.m-Notice-cta--secondary:active {
 
 
 .m-FooterContainer {
-  color: hsla(0, 0%, 100%, 0.7);
+  color: hsla(0, 0%, 100%, .7);
   background-color: var(--rw-palette-neutral-170);
 }
 
@@ -3580,13 +3582,13 @@ a.m-Notice-cta--secondary:active {
   display: flex;
   margin-bottom: 32px;
   font-size: 13px;
-  color: rgba(22, 21, 19, 0.7);
+  color: rgba(22, 21, 19, .7);
   -ms-flex-align: start;
   align-items: center;
 }
 
 .is-dark-mode .m-App {
-  color: hsla(30, 12%, 94%, 0.7);
+  color: hsla(30, 12%, 94%, .7);
 }
 
 @media only screen and (max-width: 768px) {
@@ -3703,7 +3705,7 @@ a.m-Notice-cta--secondary:active {
 .m-App-details {
   width: 70%;
   font-size: 14px;
-  color: rgba(22, 21, 19, 0.7);
+  color: rgba(22, 21, 19, .7);
   -ms-flex-positive: 1;
   flex-grow: 1;
   -ms-flex-negative: 1;
@@ -3721,7 +3723,7 @@ a.m-Notice-cta--secondary:active {
 }
 
 .is-dark-mode .m-App-details {
-  color: hsla(30, 12%, 94%, 0.7);
+  color: hsla(30, 12%, 94%, .7);
 }
 
 .m-App-title {
@@ -3804,4 +3806,52 @@ a.m-Notice-cta--secondary:active {
 .is-dark-mode .m-App-cta:focus {
   background-color: rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 0 0 1px var(--rw-palette-neutral-0);
+}
+
+
+.m-VersionSwitcher {
+  /* margin-top: 24px; */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.m-VersionSwitcher small {
+  display: block;
+  /* flex-basis: 100%; */
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.m-VersionSwitcher label {
+  display: block;
+  margin-bottom: 4px;
+  /* font-size: 14px; */
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 12px;
+}
+
+.m-VersionSwitcher select {
+  width: 200px;
+  display: block;
+  margin-bottom: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 20px;
+  line-height: 20px;
+  padding: 8px 40px 8px 12px;
+  height: 52px;
+  color: inherit;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Cpath d='M20 23l6 6 6-6H20z' fill-rule='evenodd' clip-rule='evenodd' fill='%23fff'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 52px 52px;
+  background-position: right center;
+  border: 1px solid rgba(255, 255, 255, .5);
+  margin-right: 12px;
 }

@@ -1,17 +1,56 @@
 const stuck = "is-stuck",
-      headerContianer = document.querySelector(".m-HeaderContainer");
+      headerContainer = document.querySelector( ".m-HeaderContainer" ),
+      apexVersionElement = document.getElementById( "apex_version" ),
+      apexVersionText = document.querySelector( ".m-VersionSwitcher-version" );
 
-(function () {
-    const manifestURL = "json/manifest.json";
-    const applyTemplate = function (pData) {
+function getURLParamValue( pParamName ) {
+    const queryString = window.location.search,
+          urlParams = new URLSearchParams( queryString );
+    return urlParams.get( pParamName );
+}
+
+function loadAPEXVersions() {
+    const apiURL = "https://api.github.com/repos/oracle/apex/branches",
+          versionURL = getURLParamValue( "version" );
+
+    const applyVersions = function ( pData ) {
+        const data = pData || [],
+              filteredData = data.filter( ( row ) => row.name !== "main" );
+        let option;
+
+        for ( let i = 0; i < filteredData.length; i++ ) {
+            if ( i === 0 ) {
+                option = new Option( "APEX " + filteredData[i].name, filteredData[i].name, true, false );
+            } else {
+                option = new Option( "APEX " + filteredData[i].name, filteredData[i].name, false, false );
+            }
+            apexVersionElement.add( option );
+        }
+
+        if ( versionURL && apexVersionElement.querySelector( '[value="' + versionURL + '"]' ) ) {
+            apexVersionElement.value = versionURL;
+        }
+        apexVersionElement.dispatchEvent( new Event( "change" ) );
+    };
+    fetch( apiURL )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => applyVersions( data ) );
+}
+
+function loadContent() {
+    const apexVersion = apexVersionElement.value,
+          manifestURL = "https://raw.githubusercontent.com/oracle/apex/" + apexVersion + "/docs/json/manifest.json";
+
+    const applyTemplate = function ( pData ) {
         const data = pData || {};
 
-        const getTemplate = function (pList, pButtonLabel) {
-        const list = pList || [],
+        const getTemplate = function ( pList, pButtonLabel ) {
+            const list = pList || [],
                   buttonLabel = pButtonLabel || "Download App";
 
-            return list.map(
-                    (entry) => `<div class="u-Grid-row">
+            return list
+                .map(
+                    ( entry ) => `<div class="u-Grid-row">
                                     <div class="m-App">
                                         <div class="m-App-icon ${entry.slug}"></div>
                                         <div class="m-App-details">
@@ -23,35 +62,49 @@ const stuck = "is-stuck",
                                         </div>
                                     </div>
                                 </div>`
-                    ).join("");
+                )
+                .join( "" );
         };
 
-        document.getElementById("samples").innerHTML = document.getElementById("samples").innerHTML + getTemplate(data.sampleApps);
-        document.getElementById("apps").innerHTML = document.getElementById("apps").innerHTML + getTemplate(data.starterApps);
-        document.getElementById("plug-ins").innerHTML = document.getElementById("plug-ins").innerHTML + getTemplate(data.plugins, "Download Plug-In");
+        document.getElementById( "samples" ).innerHTML = getTemplate( data.sampleApps );
+        document.getElementById( "apps" ).innerHTML = getTemplate( data.starterApps );
+        document.getElementById( "plug-ins" ).innerHTML = getTemplate( data.plugins, "Download Plug-In" );
     };
 
-    fetch(manifestURL)
-        .then((response) => response.json())
-        .then((data) => applyTemplate(data));
-    })();
+    fetch( manifestURL )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => applyTemplate( data ) );
+}
 
-function toggleStuck(){
-    if(window.pageYOffset > 0){
-        if(!headerContianer.classList.contains(stuck)){
-            headerContianer.classList.add(stuck)
+function toggleStuck() {
+    if ( window.pageYOffset > 0 ) {
+        if ( !headerContainer.classList.contains( stuck ) ) {
+            headerContainer.classList.add( stuck );
         }
-    }else{
-        if(headerContianer.classList.contains(stuck)){
-            headerContianer.classList.remove(stuck)
+    } else {
+        if ( headerContainer.classList.contains( stuck ) ) {
+            headerContainer.classList.remove( stuck );
         }
     }
 }
 
-window.addEventListener('scroll', function() {
-    toggleStuck();
-});
+function updateVersionText() {
+    apexVersionText.textContent = apexVersionElement.value;
+}
 
-document.addEventListener('DOMContentLoaded', function(event) {
+apexVersionElement.addEventListener( "change", function () {
+    updateVersionText();
+    loadContent();
+} );
+
+window.addEventListener( "scroll", function () {
     toggleStuck();
-});
+} );
+
+document.addEventListener( "DOMContentLoaded", function ( event ) {
+    toggleStuck();
+} );
+
+( function () {
+    loadAPEXVersions();
+} )();
