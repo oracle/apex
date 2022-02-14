@@ -28,24 +28,24 @@ prompt APPLICATION 9042 - Universal Theme 21.2 Reference
 -- Application Export:
 --   Application:     9042
 --   Name:            Universal Theme 21.2 Reference
---   Date and Time:   07:40 Thursday October 28, 2021
+--   Date and Time:   05:19 Saturday February 12, 2022
 --   Exported By:     VMORNEAU
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                    116
+--     Pages:                    105
 --       Items:                   49
 --       Processes:                5
---       Regions:                816
---       Buttons:                151
+--       Regions:                789
+--       Buttons:                149
 --       Dynamic Actions:         45
 --     Shared Components:
 --       Logic:
 --         Processes:              1
 --       Navigation:
 --         Parent Tabs:            2
---         Lists:                 29
+--         Lists:                 22
 --         Breadcrumbs:            1
---           Entries:             97
+--           Entries:             86
 --         NavBar Entries:         1
 --       Security:
 --         Authentication:         1
@@ -89,7 +89,7 @@ wwv_flow_api.create_flow(
 ,p_application_group_name=>'Universal Theme'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'N'
-,p_checksum_salt_last_reset=>'20211028064741'
+,p_checksum_salt_last_reset=>'20220210130051'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_compatibility_mode=>'21.2'
@@ -143,8 +143,8 @@ wwv_flow_api.create_flow(
 ,p_auto_time_zone=>'N'
 ,p_substitution_string_01=>'APP_DATE_FMT'
 ,p_substitution_value_01=>'Day Month DD, YYYY'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211028064741'
+,p_last_updated_by=>'APEX_210200'
+,p_last_upd_yyyymmddhh24miss=>'20220210130051'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>240
 ,p_ui_type_name => null
@@ -164,8 +164,24 @@ wwv_flow_api.create_list(
 '       label, ',
 '       target, ',
 '       is_current_list_entry,',
-'       image',
+'       image,',
+'       null image_attribute,',
+'       null image_alt_attribute,',
+'       null attribute1,',
+'       li_class attribute2',
 '  from ( ',
+'',
+'select 3 node_id,',
+'       null parent_node_id,',
+'       ''Install App'' label, ',
+'       ''#'' target, ',
+'       ''NO'' is_current_list_entry,',
+'       ''fa-cloud-download'' image,',
+'       0 seq,',
+'       ''a-pwaInstall'' li_class',
+'  from dual',
+'',
+'union all',
 '',
 'select 0 node_id,',
 '       null parent_node_id,',
@@ -173,7 +189,8 @@ wwv_flow_api.create_list(
 '       ''javascript:toggleRtl();'' target, ',
 '       ''NO'' is_current_list_entry,',
 '       ''fa-arrow-right'' image,',
-'       1 seq',
+'       1 seq,',
+'       null li_class',
 '  from dual',
 '',
 'union all',
@@ -183,8 +200,9 @@ wwv_flow_api.create_list(
 '       ''Theme Version'' label, ',
 '       ''#'' target, ',
 '       ''NO'' is_current_list_entry,',
-'       null image,',
-'       1 seq',
+'       ''fa-hashtag'' image,',
+'       1 seq,',
+'       null li_class',
 '  from dual',
 '',
 'union all',
@@ -194,25 +212,27 @@ wwv_flow_api.create_list(
 '       ''Theme Style'' label, ',
 '       ''#'' target, ',
 '       ''NO'' is_current_list_entry,',
-'       null image,',
-'       2 seq',
+'       ''fa-paint-brush'' image,',
+'       2 seq,',
+'       null li_class',
 '  from dual',
 '',
 'union all',
 '',
 'select null node_id,',
 '       1 parent_node_id,',
-'       a.version || case when a.application_id = :app_id then '' (Current)'' end label, ',
+'       a.version || case when a.application_id = to_number(:app_id) then '' (Current)'' end label, ',
 '       coalesce ( ( select apex_page.get_url (',
-'                                p_application => ap.application_id,',
-'                                p_page        => ap.page_id )',
+'                               p_application => ap.application_id,',
+'                               p_page        => ap.page_id )',
 '                      from apex_application_pages ap',
 '                     where ap.application_id = a.application_id',
-'                       and ap.page_id        = :app_page_id ), ',
-'                 apex_util.prepare_url (p_url => ''f?p='' || a.application_id ) ) target, ',
-'       case when a.application_id = :app_id then ''YES'' else ''NO'' end is_current_list_entry,',
+'                       and ap.page_id        = to_number(:app_page_id) ), ',
+'                  apex_util.prepare_url ( p_url => ''f?p='' || a.application_id ) ) target, ',
+'       case when a.application_id = to_number(:app_id) then ''YES'' else ''NO'' end is_current_list_entry,',
 '       null image,',
-'       row_number() over (order by a.version) seq',
+'       row_number() over ( order by a.version desc ) seq,',
+'       null li_class',
 ' from apex_applications a',
 'where a.application_group = ''Universal Theme''',
 '',
@@ -225,17 +245,18 @@ wwv_flow_api.create_list(
 '       end ||',
 '       ts.name ||',
 '       case ',
-'         when :P0_THEME_STYLE_ID is not null and ts.theme_style_id = :P0_THEME_STYLE_ID then '' (Current)'' ',
-'         when :P0_THEME_STYLE_ID is null and ts.is_current = ''Yes'' then '' (Current)'' ',
+'         when :p0_theme_style_id is not null and ts.theme_style_id = to_number(:p0_theme_style_id) then '' (Current)'' ',
+'         when :p0_theme_style_id is null and ts.is_current = ''Yes'' then '' (Current)'' ',
 '         when name = ''Vita'' then '' (Default)'' ',
 '       end ',
 '       as label,',
 '       ''javascript:apex.jQuery(''''.ut-TemplateOptions--preview input'''').remove(); apex.page.submit( { request: ''''APPLY_THEME_STYLE'''', set: { ''''P0_THEME_STYLE_ID'''': '''''' || ts.theme_style_id || '''''' }, showWait: true } );'' target, ',
-'       case when :P0_THEME_STYLE_ID = ts.name then ''YES'' else ''NO'' end is_current_list_entry,',
+'       case when ts.theme_style_id = to_number(:p0_theme_style_id) then ''YES'' else ''NO'' end is_current_list_entry,',
 '       null image,',
-'       row_number() over (order by decode(ts.theme_roller_read_only, ''Y'', 1, 2), ts.name) seq',
+'       row_number() over (order by decode(ts.theme_roller_read_only, ''Y'', 1, 2), ts.name) seq,',
+'       null li_class',
 ' from apex_application_theme_styles ts',
-'where application_id = :app_id',
+'where application_id = to_number(:app_id)',
 '',
 'union all',
 '',
@@ -245,10 +266,12 @@ wwv_flow_api.create_list(
 '       ''separator'' target, ',
 '       ''NO'' is_current_list_entry,',
 '       null image,',
-'       count(1) + 0.5 seq',
+'       count(1) + 0.5 seq,',
+'       null li_class',
 ' from apex_application_theme_styles',
-'where application_id = :app_id',
+'where application_id         = to_number(:app_id)',
 '  and theme_roller_read_only = ''Y''',
+'',
 '  )',
 '',
 'start with parent_node_id is null',
@@ -292,69 +315,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288113639185098025)
-,p_list_item_display_sequence=>760
-,p_list_item_link_text=>'Customization'
-,p_list_item_link_target=>'f?p=&APP_ID.:403:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(1288082983238983338)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288113921595098904)
-,p_list_item_display_sequence=>770
-,p_list_item_link_text=>'Data Entry'
-,p_list_item_link_target=>'f?p=&APP_ID.:404:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(1288082983238983338)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288114243112100219)
-,p_list_item_display_sequence=>780
-,p_list_item_link_text=>'Layout'
-,p_list_item_link_target=>'f?p=&APP_ID.:300:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-3row'
-,p_parent_list_item_id=>wwv_flow_api.id(1288082983238983338)
-,p_list_text_10=>'700'
-,p_list_item_current_type=>'NEVER'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1211277265906280105)
-,p_list_item_display_sequence=>830
-,p_list_item_link_text=>'Grid Layout'
-,p_list_item_link_target=>'f?p=&APP_ID.:300:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(1288114243112100219)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'300'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(902864028823208655)
-,p_list_item_display_sequence=>840
-,p_list_item_link_text=>'Page Templates'
-,p_list_item_link_target=>'f?p=&APP_ID.:1100:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(1288114243112100219)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288117820140110975)
-,p_list_item_display_sequence=>850
-,p_list_item_link_text=>'Responsive Design'
-,p_list_item_link_target=>'f?p=&APP_ID.:701:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(1288114243112100219)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288114531796101302)
-,p_list_item_display_sequence=>790
-,p_list_item_link_text=>'Notifications and Messaging'
-,p_list_item_link_target=>'f?p=&APP_ID.:406:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(1288082983238983338)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(1288114887402102139)
 ,p_list_item_display_sequence=>800
 ,p_list_item_link_text=>'Navigation'
@@ -364,58 +324,37 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1211317425286361560)
-,p_list_item_display_sequence=>810
-,p_list_item_link_text=>'UI Patterns'
-,p_list_item_link_target=>'f?p=&APP_ID.:5000:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
+ p_id=>wwv_flow_api.id(1211277265906280105)
+,p_list_item_display_sequence=>830
+,p_list_item_link_text=>'Grid Layout'
+,p_list_item_link_target=>'f?p=&APP_ID.:300:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-layout-3row'
 ,p_parent_list_item_id=>wwv_flow_api.id(1288082983238983338)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'5000'
+,p_list_item_current_for_pages=>'300'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288108083768087215)
-,p_list_item_display_sequence=>690
-,p_list_item_link_text=>'Login Page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5001:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(1211317425286361560)
+ p_id=>wwv_flow_api.id(902864028823208655)
+,p_list_item_display_sequence=>840
+,p_list_item_link_text=>'Page Templates'
+,p_list_item_link_target=>'f?p=&APP_ID.:1100:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-layout-header-nav-left-right-footer'
+,p_parent_list_item_id=>wwv_flow_api.id(1288082983238983338)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288110304665088861)
-,p_list_item_display_sequence=>700
-,p_list_item_link_text=>'Home and Dashboard'
-,p_list_item_link_target=>'f?p=&APP_ID.:5002:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(1211317425286361560)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288110676234089802)
-,p_list_item_display_sequence=>710
-,p_list_item_link_text=>'Filter Page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5003:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(1211317425286361560)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288110906806090763)
-,p_list_item_display_sequence=>720
-,p_list_item_link_text=>'Marquee page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5004:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(1211317425286361560)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1288111213759091840)
-,p_list_item_display_sequence=>730
-,p_list_item_link_text=>'Modal Dialogs'
-,p_list_item_link_target=>'f?p=&APP_ID.:5005:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(1211317425286361560)
-,p_list_item_current_type=>'TARGET_PAGE'
+ p_id=>wwv_flow_api.id(497924369152826486)
+,p_list_item_display_sequence=>940
+,p_list_item_link_text=>'Theme Styles'
+,p_list_item_link_target=>'f?p=&APP_ID.:405:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-paint-brush'
+,p_parent_list_item_id=>wwv_flow_api.id(1288082983238983338)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'405'
 );
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(1159988475592885298)
-,p_list_item_display_sequence=>820
+,p_list_item_display_sequence=>950
 ,p_list_item_link_text=>'Mobile Patterns'
 ,p_list_item_link_target=>'f?p=&APP_ID.:421:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-mobile'
@@ -463,30 +402,11 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(497924369152826486)
-,p_list_item_display_sequence=>940
-,p_list_item_link_text=>'Theme Styles'
-,p_list_item_link_target=>'f?p=&APP_ID.:405:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-paint-brush'
-,p_parent_list_item_id=>wwv_flow_api.id(1288082983238983338)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'405'
-);
-wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(902863605450208655)
 ,p_list_item_display_sequence=>30
 ,p_list_item_link_text=>'Components'
 ,p_list_item_link_target=>'f?p=&APP_ID.:3000:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-shapes'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(902880836954208670)
-,p_list_item_display_sequence=>100
-,p_list_item_link_text=>'Activity Timeline'
-,p_list_item_link_target=>'f?p=&APP_ID.:1406:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-history'
-,p_parent_list_item_id=>wwv_flow_api.id(902863605450208655)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -733,15 +653,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_for_pages=>'1700'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(345682239821056480)
-,p_list_item_display_sequence=>273
-,p_list_item_link_text=>'Map Chart'
-,p_list_item_link_target=>'f?p=&APP_ID.:1904:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-globe'
-,p_parent_list_item_id=>wwv_flow_api.id(902863605450208655)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(902871256560208662)
 ,p_list_item_display_sequence=>274
 ,p_list_item_link_text=>'Media List'
@@ -871,6 +782,15 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_text=>'Tabs'
 ,p_list_item_link_target=>'f?p=&APP_ID.:1907:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-tabs'
+,p_parent_list_item_id=>wwv_flow_api.id(902863605450208655)
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(902880836954208670)
+,p_list_item_display_sequence=>369
+,p_list_item_link_text=>'Timeline'
+,p_list_item_link_target=>'f?p=&APP_ID.:1406:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-history'
 ,p_parent_list_item_id=>wwv_flow_api.id(902863605450208655)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -1016,399 +936,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:6305:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-history'
 ,p_parent_list_item_id=>wwv_flow_api.id(1211303527560306071)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/template_regions
-begin
-wwv_flow_api.create_list(
- p_id=>wwv_flow_api.id(974332733620661859)
-,p_name=>'Template - Regions'
-,p_list_status=>'PUBLIC'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974333377030661866)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Alert'
-,p_list_item_link_target=>'f?p=&APP_ID.:1202:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-exclamation-triangle'
-,p_list_text_01=>'Alert Notify your users with alerts, confirmations, and other action-oriented messages.'
-,p_list_text_03=>'LS'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974334163286661867)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Buttons Container'
-,p_list_item_link_target=>'f?p=&APP_ID.:1250:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-square-o'
-,p_list_text_01=>'Organize your button bars, toolbars, and simple horizontal forms.'
-,p_list_text_03=>'BC'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974334511329661868)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Carousel'
-,p_list_item_link_target=>'f?p=&APP_ID.:1205:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-arrows-h'
-,p_list_text_01=>'Show off one sub region at a time. For example, displaying a report and a chart, a slideshow, or different views of the same data.'
-,p_list_text_03=>'CS'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974334911059661868)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Collapsible'
-,p_list_item_link_target=>'f?p=&APP_ID.:1206:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-folder-open-o'
-,p_list_text_01=>'Allow your users to toggle the visibility of a region''s content on the page.'
-,p_list_text_03=>'DL'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783434198812844312)
-,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Content Block'
-,p_list_item_icon=>'fa-file'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974333764115661867)
-,p_list_item_display_sequence=>60
-,p_list_item_link_text=>'Hero'
-,p_list_item_link_target=>'f?p=&APP_ID.:1203:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-bullhorn'
-,p_list_text_01=>'Capture your users'' attention on homepage, dashboard, and other introductory-style pages. This region template displays an icon, heading and sub headings, and buttons.'
-,p_list_text_03=>'HR'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783434494724844313)
-,p_list_item_display_sequence=>70
-,p_list_item_link_text=>'Inline Dialog'
-,p_list_item_link_target=>'f?p=&APP_ID.:1911:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-modal-header'
-,p_list_text_01=>'An inline dialog displays a region on the current page within a modal dialog.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783434906238844313)
-,p_list_item_display_sequence=>80
-,p_list_item_link_text=>'Interactive Report'
-,p_list_item_link_target=>'f?p=&APP_ID.:1402:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-sort-amount-desc'
-,p_list_text_01=>'Interactive Reports provide powerful features for customizing your report such as searching, filtering, sorting, highlighting, group-by, pivot, aggregations, calculations, charting, and more.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783435339822844313)
-,p_list_item_display_sequence=>90
-,p_list_item_link_text=>'Login'
-,p_list_item_link_target=>'f?p=&APP_ID.:1100:&SESSION.:other:&DEBUG.::::'
-,p_list_item_icon=>'fa-file-o'
-,p_list_text_01=>'A generic login screen.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974332931192661864)
-,p_list_item_display_sequence=>100
-,p_list_item_link_text=>'Standard'
-,p_list_item_link_target=>'f?p=&APP_ID.:1201:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-align-justify'
-,p_list_text_01=>'The generic region template. It works well with all widgets and can be heavily customized.'
-,p_list_text_03=>'SD'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783435777245844314)
-,p_list_item_display_sequence=>110
-,p_list_item_link_text=>'Tab Container'
-,p_list_item_link_target=>'f?p=&APP_ID.:1907:&SESSION.:tab_container:&DEBUG.::::'
-,p_list_item_icon=>'fa-tabs'
-,p_list_text_01=>'The Tabs Container Region Template can be used to create a set tabs within your page.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974335338803661868)
-,p_list_item_display_sequence=>120
-,p_list_item_link_text=>'Title Bar'
-,p_list_item_link_target=>'f?p=&APP_ID.:1207:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-adn'
-,p_list_text_01=>'Group breadcrumbs, page title, and primary page actions at the top of the page.'
-,p_list_text_03=>'TB'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974341771409015957)
-,p_list_item_display_sequence=>130
-,p_list_item_link_text=>'Wizard Container'
-,p_list_item_link_target=>'f?p=&APP_ID.:1208:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-magic'
-,p_list_text_01=>'Use this region template for the Wizard Progress list, and as the container for your forms.'
-,p_list_text_03=>'WZ'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/template_lists
-begin
-wwv_flow_api.create_list(
- p_id=>wwv_flow_api.id(974474777450086212)
-,p_name=>'Template - Lists'
-,p_list_status=>'PUBLIC'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783410675396721492)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Badge List'
-,p_list_item_link_target=>'f?p=&APP_ID.:1304:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-badge-list'
-,p_list_text_01=>'This list template is useful for displaying badges or counters.'
-,p_list_text_03=>'BL'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783411119697726015)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Cards'
-,p_list_item_link_target=>'f?p=&APP_ID.:3100:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-cards'
-,p_list_text_01=>'Presents a variety of information in small blocks and can be heavily customized'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974475696049086221)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Links List'
-,p_list_item_link_target=>'f?p=&APP_ID.:1303:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-list'
-,p_list_text_01=>'This list template provides a list of links which can be used for navigation and other action-oriented tasks. You can optionally show badges, icons, sub list items, and more.'
-,p_list_text_03=>'LS'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974474957468086218)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Media List'
-,p_list_item_link_target=>'f?p=&APP_ID.:1301:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-media-list'
-,p_list_text_01=>'This list template is a very common design pattern involving an icon, heading, description, and a badge.'
-,p_list_text_03=>'ML'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783411469335726015)
-,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Menu Bar'
-,p_list_item_link_target=>'f?p=&APP_ID.:1305:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-tabs'
-,p_list_text_01=>'This list template is used to display a menu bar control and is useful for building pages with advanced interaction.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783411875402726016)
-,p_list_item_display_sequence=>60
-,p_list_item_link_text=>'Menu Popup'
-,p_list_item_link_target=>'f?p=&APP_ID.:1306:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-list-alt'
-,p_list_text_01=>'You can easily create a popup menu in your application by using Lists and associating a button with the menu.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783412259549726016)
-,p_list_item_display_sequence=>70
-,p_list_item_link_text=>'Navigation Bar'
-,p_list_item_link_target=>'f?p=&APP_ID.:407:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-breadcrumb'
-,p_list_text_01=>'Navigation is an important part of your application and can determine the how your users navigate within your application.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783412649257726016)
-,p_list_item_display_sequence=>80
-,p_list_item_link_text=>'Tabs'
-,p_list_item_link_target=>'f?p=&APP_ID.:1907:&SESSION.:tab_list:&DEBUG.::::'
-,p_list_item_icon=>'fa-tabs'
-,p_list_text_01=>'You can use Tabs within your application pages to improve navigation,'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783413031964726017)
-,p_list_item_display_sequence=>90
-,p_list_item_link_text=>'Wizard Progress'
-,p_list_item_link_target=>'f?p=&APP_ID.:1208:&SESSION.:wizard_list:&DEBUG.::::'
-,p_list_item_icon=>'fa-wizard'
-,p_list_text_01=>'The Wizard Progress List Template is used to display the total steps of a wizard along with a marker of the current step the user is on.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/template_reports
-begin
-wwv_flow_api.create_list(
- p_id=>wwv_flow_api.id(974481113517127796)
-,p_name=>'Template - Reports'
-,p_list_status=>'PUBLIC'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783463101971930567)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Alerts'
-,p_list_item_link_target=>'f?p=&APP_ID.:1202:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-exclamation-triangle'
-,p_list_text_01=>'Display alerts, confirmations, and other action-oriented messages.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2783463395669930568)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Badge List'
-,p_list_item_link_target=>'f?p=&APP_ID.:1304:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-badge-list'
-,p_list_text_01=>'Displaying badges or counters.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2680445173010661440)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Cards'
-,p_list_item_link_target=>'f?p=&APP_ID.:3100:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-cards'
-,p_list_text_01=>'This report template provides the Cards UI and is useful for presenting a variety of information. Cards can be displayed in three styles, with icons or initials, and you can control the layout.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974482932692127799)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Comments'
-,p_list_item_link_target=>'f?p=&APP_ID.:1405:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-comments-o'
-,p_list_text_01=>'This report template is used to display user comments and status updates.'
-,p_list_text_03=>'CM'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1273122063192336060)
-,p_list_item_display_sequence=>45
-,p_list_item_link_text=>'Contextual Info'
-,p_list_item_link_target=>'f?p=&APP_ID.:1307:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-list-right'
-,p_list_text_01=>'This report template is best used to display key value pairs.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974481370004127796)
-,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Standard'
-,p_list_item_link_target=>'f?p=&APP_ID.:1401:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-table'
-,p_list_text_01=>'This is the default report template used for displaying tabular data.'
-,p_list_text_03=>'RP'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974484952383153166)
-,p_list_item_display_sequence=>60
-,p_list_item_link_text=>'Timeline'
-,p_list_item_link_target=>'f?p=&APP_ID.:1406:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-clock-o'
-,p_list_text_01=>'This timeline report template is useful for displaying recent updates and interactions within an application.'
-,p_list_text_03=>'TL'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(974482192067127798)
-,p_list_item_display_sequence=>70
-,p_list_item_link_text=>'Value Attribute Pairs'
-,p_list_item_link_target=>'f?p=&APP_ID.:1403:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-pause'
-,p_list_text_01=>'This report template is useful for displaying attribute value / key value pairs and works well with both Row or Column based queries.'
-,p_list_text_03=>'VA'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2800899496828020377)
-,p_list_item_display_sequence=>80
-,p_list_item_link_text=>'Search Results'
-,p_list_item_icon=>'fa-table'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/template_buttons
-begin
-wwv_flow_api.create_list(
- p_id=>wwv_flow_api.id(974485800259167220)
-,p_name=>'Template - Buttons'
-,p_list_status=>'PUBLIC'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(300725361321284356)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Text Only'
-,p_list_item_link_target=>'f?p=&APP_ID.:1500:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-file-text-o'
-,p_list_text_01=>'Display only text within a button. This is the standard button in Universal Theme.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(300725692594284355)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Icon Only'
-,p_list_item_link_target=>'f?p=&APP_ID.:1500:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-photo'
-,p_list_text_01=>'Display only an icon in a button.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(300726019592284354)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Text with Icon'
-,p_list_item_link_target=>'f?p=&APP_ID.:1500:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-file-picture-o'
-,p_list_text_01=>'Display an icon to either the right or left of text in a button.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/template_forms
-begin
-wwv_flow_api.create_list(
- p_id=>wwv_flow_api.id(974490162833188150)
-,p_name=>'Template - Forms'
-,p_list_status=>'PUBLIC'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(300722217323302929)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Floating Labels'
-,p_list_item_link_target=>'f?p=&APP_ID.:1600:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-forms'
-,p_list_text_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Float labels in form fields so they take up the space of an empty field and automatically shrink as data is entered.',
-''))
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(300722500795302921)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Labels Above'
-,p_list_item_link_target=>'f?p=&APP_ID.:1600:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-forms'
-,p_list_text_01=>'Position form field labels above the field.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(300722951562302921)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Labels Horizontal'
-,p_list_item_link_target=>'f?p=&APP_ID.:1600:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-forms'
-,p_list_text_01=>'Position form field labels to the left of the field.'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
@@ -1738,46 +1265,6 @@ wwv_flow_api.create_list(
  p_id=>wwv_flow_api.id(1211321025744361569)
 ,p_name=>'UT - Design Patterns'
 ,p_list_status=>'PUBLIC'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1211321371400361569)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Login Page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5001:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-key'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1211321719645361570)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Home and Dashboard'
-,p_list_item_link_target=>'f?p=&APP_ID.:5002:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-home'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1211322143248361570)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Filter Page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5003:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-header-sidebar-left'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1211322561177361570)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Marquee Page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5004:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-check-circle-o'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(1211322988399361570)
-,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Modal Dialogs'
-,p_list_item_link_target=>'f?p=&APP_ID.:5005:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-modal-blank'
-,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
 /
@@ -2325,7 +1812,7 @@ wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(2415756159154480742)
 ,p_list_item_display_sequence=>10
 ,p_list_item_link_text=>'Both Side Columns'
-,p_list_item_link_target=>'f?p=&APP_ID.:1100:&SESSION.:both_sides:&DEBUG.::::'
+,p_list_item_link_target=>'#both_sides'
 ,p_list_item_icon=>'fa fa-columns'
 ,p_list_text_01=>'Organize complex pages with both the left side column and the collapsible right side column.'
 ,p_list_text_03=>'BS'
@@ -2420,125 +1907,11 @@ wwv_flow_api.create_list_item(
 );
 end;
 /
-prompt --application/shared_components/navigation/lists/top_data_tables_and_reports
-begin
-wwv_flow_api.create_list(
- p_id=>wwv_flow_api.id(2508847961932466157)
-,p_name=>'Top - Data Tables and Reports'
-,p_list_status=>'PUBLIC'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2508848107643466159)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Classic Report'
-,p_list_item_link_target=>'f?p=&APP_ID.:1401:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-table'
-,p_list_text_01=>'This is the default report template used for displaying tabular data.'
-,p_list_text_03=>'CR'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2508848561983466161)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Interactive Report'
-,p_list_item_link_target=>'f?p=&APP_ID.:1402:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-table-pointer'
-,p_list_text_01=>'Customizing your report such as searching, filtering, sorting, highlighting, group-by, pivot, aggregations, calculations, charting, and more.'
-,p_list_text_03=>'IR'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2508870646585475641)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Interactive Grid'
-,p_list_item_link_target=>'f?p=&APP_ID.:1410:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-table-cursor'
-,p_list_text_01=>'Extensible and Customizable, makeing it effortless to create master-detail relationships.'
-,p_list_text_03=>'IG'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(813869174986429097)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Reflow Report'
-,p_list_item_link_target=>'f?p=&APP_ID.:1710:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-tablet'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(813869430176432750)
-,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Column Toggle Report'
-,p_list_item_link_target=>'f?p=&APP_ID.:1710:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-toggle-on'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/top_modal_dialogs
-begin
-wwv_flow_api.create_list(
- p_id=>wwv_flow_api.id(2508954596290811159)
-,p_name=>'Top - Modal Dialogs'
-,p_list_status=>'PUBLIC'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2508954827333811163)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Page Dialog'
-,p_list_item_link_target=>'f?p=&APP_ID.:1910:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-modal-header'
-,p_list_text_01=>'Include a full page inside another page. You will be able to utilize Page Process and Page Validation from that page.'
-,p_list_text_03=>'PM'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(712727154826719381)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Page Drawer'
-,p_list_item_link_target=>'f?p=&APP_ID.:1917:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-modal-header'
-,p_list_text_01=>'Include a full page inside another page. You will be able to utilize Page Process and Page Validation from that page.'
-,p_list_text_03=>'PD'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2508955290080811165)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Inline Dialog'
-,p_list_item_link_target=>'f?p=&APP_ID.:1911:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-modal-header'
-,p_list_text_01=>'Essentially a hidden Region on the same page displayed as a dialog.'
-,p_list_text_03=>'ID'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(710056525906603823)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Inline Drawer'
-,p_list_item_link_target=>'f?p=&APP_ID.:1916:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-modal-nav-right'
-,p_list_text_01=>'Essentially a hidden Region on the same page displayed as a drawer.'
-,p_list_text_03=>'DR'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(708078593241981993)
-,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Inline Popup'
-,p_list_item_link_target=>'f?p=&APP_ID.:1915:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-layout-modal-blank'
-,p_list_text_01=>'Essentially a hidden Region on the same page displayed as an inline popup.'
-,p_list_text_03=>'IP'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/templates_region_types
+prompt --application/shared_components/navigation/lists/templates_components
 begin
 wwv_flow_api.create_list(
  p_id=>wwv_flow_api.id(2553813184178510886)
-,p_name=>'Templates - Region Types'
+,p_name=>'Templates - Components'
 ,p_list_status=>'PUBLIC'
 );
 wwv_flow_api.create_list_item(
@@ -2548,54 +1921,60 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1202:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-exclamation-triangle'
 ,p_list_text_01=>'Display alerts, confirmations, and other action-oriented messages.'
+,p_list_text_02=>'Region'
 ,p_list_text_03=>'LS'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(3114169695405708360)
-,p_list_item_display_sequence=>30
+,p_list_item_display_sequence=>20
 ,p_list_item_link_text=>'Badges List'
 ,p_list_item_link_target=>'f?p=&APP_ID.:1304:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-badge-list'
 ,p_list_text_01=>'Display badges or counters.'
+,p_list_text_02=>'List'
 ,p_list_text_03=>'BL'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(2553813347280510889)
-,p_list_item_display_sequence=>50
+,p_list_item_display_sequence=>30
 ,p_list_item_link_text=>'Breadcrumb'
 ,p_list_item_link_target=>'f?p=&APP_ID.:3810:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-breadcrumb'
 ,p_list_text_01=>'Indicate where the user is within the application with a hierarchical list of links.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(345671050303886387)
-,p_list_item_display_sequence=>52
-,p_list_item_link_text=>'Buttons'
+ p_id=>wwv_flow_api.id(667798219209797786)
+,p_list_item_display_sequence=>40
+,p_list_item_link_text=>'Button'
 ,p_list_item_link_target=>'f?p=&APP_ID.:1500:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-button'
-,p_list_text_01=>'Link pages, execute dynamic actions, and more.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(345671387477892421)
-,p_list_item_display_sequence=>56
-,p_list_item_link_text=>'Button Group'
-,p_list_item_link_target=>'f?p=&APP_ID.:1204:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-button-group'
-,p_list_text_01=>'Group buttons to appear together to make a single control.'
+,p_list_text_01=>'Display text, icon or both within a button.'
+,p_list_text_02=>'Button'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(1305088863137634835)
-,p_list_item_display_sequence=>60
+,p_list_item_display_sequence=>50
 ,p_list_item_link_text=>'Button Container'
 ,p_list_item_link_target=>'f?p=&APP_ID.:1250:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-button-container'
 ,p_list_text_01=>'Organize buttons, toolbars, and simple horizontal forms.'
+,p_list_text_02=>'Region'
 ,p_list_text_03=>'BC'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(345671387477892421)
+,p_list_item_display_sequence=>60
+,p_list_item_link_text=>'Button Group'
+,p_list_item_link_target=>'f?p=&APP_ID.:1204:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-button-group'
+,p_list_text_01=>'Group buttons to appear together to make a single control.'
+,p_list_text_02=>'Button'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2605,6 +1984,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1800:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-calendar'
 ,p_list_text_01=>'Display a calendar based on the Full Calendar library that supports drag and drop, multiple views, and more.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2614,6 +1994,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:3110:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-address-card-o'
 ,p_list_text_01=>'Present a variety of information in small blocks and can be heavily customized.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2623,6 +2004,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:3100:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-cards'
 ,p_list_text_01=>'Style regions like Classic Reports or Lists to look like a Cards region.'
+,p_list_text_02=>'Report, List'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2632,6 +2014,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1205:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-carousel'
 ,p_list_text_01=>'Show off one sub region at a time. For example, display a report and a chart, a slideshow, or different views of the same data.'
+,p_list_text_02=>'Region'
 ,p_list_text_03=>'CS'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2642,6 +2025,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1902:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-bar-chart'
 ,p_list_text_01=>'Visualize data in a variety of different ways based on Oracle JavaScript Extension Toolkit (JET) Data Visualizations.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2651,6 +2035,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1401:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-table'
 ,p_list_text_01=>'Display tabular data in a default report template.'
+,p_list_text_02=>'Report'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2660,6 +2045,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1206:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-collapsible'
 ,p_list_text_01=>'Toggle the visibility of a region''s content on the page.'
+,p_list_text_02=>'Region'
 ,p_list_text_03=>'DL'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2670,6 +2056,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1720:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-toggle-on'
 ,p_list_text_01=>'Quickly choose columns to display when screen size is limited.'
+,p_list_text_02=>'Report'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2679,6 +2066,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1405:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-comments-o'
 ,p_list_text_01=>'Display user comments and status updates.'
+,p_list_text_02=>'Report'
 ,p_list_text_03=>'CM'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2689,6 +2077,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1209:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-align-justify'
 ,p_list_text_01=>'Display region content in a simple block.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2698,6 +2087,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1407:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-layout-list-left'
 ,p_list_text_01=>'Display content using a column for selection, such as a checkbox or radio button, an icon, and actions.'
+,p_list_text_02=>'Report'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2707,15 +2097,17 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1307:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-layout-list-right'
 ,p_list_text_01=>'Display key-value pairs in a report.'
+,p_list_text_02=>'Report'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(345681453761026423)
+ p_id=>wwv_flow_api.id(667794468096814177)
 ,p_list_item_display_sequence=>175
-,p_list_item_link_text=>'Forms'
+,p_list_item_link_text=>'Form Field'
 ,p_list_item_link_target=>'f?p=&APP_ID.:1600:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-forms'
-,p_list_text_01=>'Declaratively design and control form layout, field templates, and label column widths.'
+,p_list_text_01=>'Position form field such as inputs, select lists and more on a page..'
+,p_list_text_02=>'Form'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2725,6 +2117,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1903:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-info-circle'
 ,p_list_text_01=>'Provide page-level help to users.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2734,6 +2127,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1203:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-bullhorn'
 ,p_list_text_01=>'Capture attention and display an icon, heading, sub-headings, and buttons on a homepage, dashboard, and other introductory-style pages.'
+,p_list_text_02=>'Region'
 ,p_list_text_03=>'HR'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2744,6 +2138,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1911:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-layout-modal-header'
 ,p_list_text_01=>'Display a region on the current page within a modal dialog.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2753,6 +2148,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1410:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-layout-modal-grid-2x'
 ,p_list_text_01=>'Customize reports using powerful features in this native APEX component.'
+,p_list_text_02=>'Report'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2762,6 +2158,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1402:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-sort-amount-desc'
 ,p_list_text_01=>'Create powerful reports using fixed headers, frozen columns, scroll pagination, multiple filters, sorting, aggregates, computations, and more.'
+,p_list_text_02=>'Report'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2771,6 +2168,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1303:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-list'
 ,p_list_text_01=>'Use a list of links for navigation and other action-oriented tasks, with the option to show badges, icons, sub-list items, and more.'
+,p_list_text_02=>'List'
 ,p_list_text_03=>'LS'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2781,15 +2179,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1700:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-list-alt'
 ,p_list_text_01=>'Display a simple list-based user interface that has a wide range of features such as built in search, list dividers, nested lists, and more.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2553864897381722349)
-,p_list_item_display_sequence=>260
-,p_list_item_link_text=>'Map Chart'
-,p_list_item_link_target=>'f?p=&APP_ID.:1904:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-globe'
-,p_list_text_01=>'Visualize geo-related data.'
+,p_list_text_02=>'List'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2799,6 +2189,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1301:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-media-list'
 ,p_list_text_01=>'Design lists that involve an icon, heading, description, and a badge.'
+,p_list_text_02=>'List'
 ,p_list_text_03=>'ML'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2809,6 +2200,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1305:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-tabs'
 ,p_list_text_01=>'Display a menu bar control.'
+,p_list_text_02=>'List'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2818,6 +2210,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1306:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-list-alt'
 ,p_list_text_01=>'Display a menu that pops up on a page by using Lists and associating a button with the menu.'
+,p_list_text_02=>'List'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2827,6 +2220,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:407:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-layout-header'
 ,p_list_text_01=>'Determine how users navigate within an application.'
+,p_list_text_02=>'List'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2836,6 +2230,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1908:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-dynamic-content'
 ,p_list_text_01=>'Render HTML or text using the PL/SQL Web Toolkit.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2845,6 +2240,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1710:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-tablet'
 ,p_list_text_01=>'Display data vertically to save space when screen size becomes small.'
+,p_list_text_02=>'Report'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2854,14 +2250,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1907:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-tabs'
 ,p_list_text_01=>'Show and hide controls for regions.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(3131661237666008237)
-,p_list_item_display_sequence=>340
-,p_list_item_link_text=>'Search Results'
-,p_list_item_icon=>'fa-table'
-,p_list_item_disp_cond_type=>'NEVER'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2871,6 +2260,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1201:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-layout-header'
 ,p_list_text_01=>'Display widgets in a generic region template that can be heavily customized.'
+,p_list_text_02=>'Region'
 ,p_list_text_03=>'SD'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2881,15 +2271,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1905:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-code'
 ,p_list_text_01=>'Use HTML markup directly on the page.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(3114190477096817282)
-,p_list_item_display_sequence=>380
-,p_list_item_link_text=>'Tab Container'
-,p_list_item_link_target=>'f?p=&APP_ID.:1907:&SESSION.:tab_container:&DEBUG.::::'
-,p_list_item_icon=>'fa-tabs'
-,p_list_text_01=>'Group a set of tabs together within a page.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2899,6 +2281,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1907:&SESSION.:tab_list:&DEBUG.::::'
 ,p_list_item_icon=>'fa-tabs'
 ,p_list_text_01=>'Improve navigation, flow, and usability of pages in an application.'
+,p_list_text_02=>'Region, List'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2908,6 +2291,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1406:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-clock-o'
 ,p_list_text_01=>'Display recent updates and interactions within an application.'
+,p_list_text_02=>'Report'
 ,p_list_text_03=>'TL'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2918,6 +2302,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1207:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-breadcrumb'
 ,p_list_text_01=>'Group breadcrumbs, page title, and primary page actions at the top of the page.'
+,p_list_text_02=>'Region'
 ,p_list_text_03=>'TB'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -2928,6 +2313,7 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1901:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-tree-org'
 ,p_list_text_01=>'Perform hierarchical navigation control based on a SQL query.'
+,p_list_text_02=>'Region'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -2937,26 +2323,19 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:1403:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-pause'
 ,p_list_text_01=>'Display attribute value / key value pairs with Row or Column based queries.'
+,p_list_text_02=>'Report'
 ,p_list_text_03=>'VA'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(1305096471259988925)
 ,p_list_item_display_sequence=>440
-,p_list_item_link_text=>'Wizard Container'
+,p_list_item_link_text=>'Wizard'
 ,p_list_item_link_target=>'f?p=&APP_ID.:1208:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-magic'
 ,p_list_text_01=>'Contain the Wizard Progress List and forms using this region template.'
+,p_list_text_02=>'Region, List, Page'
 ,p_list_text_03=>'WZ'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(3114172051973712885)
-,p_list_item_display_sequence=>450
-,p_list_item_link_text=>'Wizard Progress'
-,p_list_item_link_target=>'f?p=&APP_ID.:1208:&SESSION.:wizard_list:&DEBUG.::::'
-,p_list_item_icon=>'fa-wizard'
-,p_list_text_01=>'Display the total steps of a wizard along with a marker of the current step the user is on.'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
@@ -3117,24 +2496,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697827614639119909)
-,p_list_item_display_sequence=>700
-,p_list_item_link_text=>'Customization'
-,p_list_item_link_target=>'f?p=&APP_ID.:403:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(2697817208237119901)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697828078012119910)
-,p_list_item_display_sequence=>710
-,p_list_item_link_text=>'Data Entry'
-,p_list_item_link_target=>'f?p=&APP_ID.:404:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(2697817208237119901)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(2697828439752119910)
 ,p_list_item_display_sequence=>720
 ,p_list_item_link_text=>'Layout'
@@ -3161,79 +2522,11 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697830086903119911)
-,p_list_item_display_sequence=>760
-,p_list_item_link_text=>'Responsive Design'
-,p_list_item_link_target=>'f?p=&APP_ID.:701:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(2697828439752119910)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697828850684119910)
-,p_list_item_display_sequence=>730
-,p_list_item_link_text=>'Notifications and Messaging'
-,p_list_item_link_target=>'f?p=&APP_ID.:406:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(2697817208237119901)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(2697829223693119911)
 ,p_list_item_display_sequence=>740
 ,p_list_item_link_text=>'Navigation'
 ,p_list_item_link_target=>'f?p=&APP_ID.:407:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(2697817208237119901)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697829653889119911)
-,p_list_item_display_sequence=>750
-,p_list_item_link_text=>'UI Patterns'
-,p_list_item_link_target=>'f?p=&APP_ID.:5000:&SESSION.::&DEBUG.::::'
-,p_list_item_disp_cond_type=>'NEVER'
-,p_parent_list_item_id=>wwv_flow_api.id(2697817208237119901)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'5000'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697824887158119907)
-,p_list_item_display_sequence=>630
-,p_list_item_link_text=>'Login Page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5001:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(2697829653889119911)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697825215371119907)
-,p_list_item_display_sequence=>640
-,p_list_item_link_text=>'Home and Dashboard'
-,p_list_item_link_target=>'f?p=&APP_ID.:5002:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(2697829653889119911)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697825652304119908)
-,p_list_item_display_sequence=>650
-,p_list_item_link_text=>'Filter Page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5003:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(2697829653889119911)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697826048805119908)
-,p_list_item_display_sequence=>660
-,p_list_item_link_text=>'Marquee page'
-,p_list_item_link_target=>'f?p=&APP_ID.:5004:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(2697829653889119911)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697826474852119909)
-,p_list_item_display_sequence=>670
-,p_list_item_link_text=>'Modal Dialogs'
-,p_list_item_link_target=>'f?p=&APP_ID.:5005:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(2697829653889119911)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -3243,14 +2536,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:3000:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-shapes'
 ,p_list_text_06=>'u-color-15'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697831260107119912)
-,p_list_item_display_sequence=>1000
-,p_list_item_link_text=>'Activity Timeline'
-,p_list_item_link_target=>'f?p=&APP_ID.:1406:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(2697817601051119901)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
@@ -3406,14 +2691,6 @@ wwv_flow_api.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_api.create_list_item(
- p_id=>wwv_flow_api.id(2697840410102119920)
-,p_list_item_display_sequence=>1208
-,p_list_item_link_text=>'Map Chart'
-,p_list_item_link_target=>'f?p=&APP_ID.:1904:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_api.id(2697817601051119901)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(2697840882774119920)
 ,p_list_item_display_sequence=>1209
 ,p_list_item_link_text=>'Menu Bar'
@@ -3482,6 +2759,14 @@ wwv_flow_api.create_list_item(
 ,p_list_item_display_sequence=>1270
 ,p_list_item_link_text=>'Static Content'
 ,p_list_item_link_target=>'f?p=&APP_ID.:1905:&SESSION.::&DEBUG.::::'
+,p_parent_list_item_id=>wwv_flow_api.id(2697817601051119901)
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_api.create_list_item(
+ p_id=>wwv_flow_api.id(2697831260107119912)
+,p_list_item_display_sequence=>1275
+,p_list_item_link_text=>'Timeline'
+,p_list_item_link_target=>'f?p=&APP_ID.:1406:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_api.id(2697817601051119901)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -11963,7 +11248,6 @@ wwv_flow_api.create_menu_option(
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(1254579643443591903)
-,p_parent_id=>wwv_flow_api.id(1376721789413740740)
 ,p_short_name=>'Page Footer'
 ,p_link=>'f?p=&APP_ID.:1117:&SESSION.'
 ,p_page_id=>1117
@@ -12053,27 +11337,6 @@ wwv_flow_api.create_menu_option(
 ,p_page_id=>402
 );
 wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376706543064446475)
-,p_parent_id=>wwv_flow_api.id(1376701480568389332)
-,p_short_name=>'Customization'
-,p_link=>'f?p=&APP_ID.:403:&SESSION.'
-,p_page_id=>403
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376708266897450537)
-,p_parent_id=>wwv_flow_api.id(1376701480568389332)
-,p_short_name=>'Data Entry'
-,p_link=>'f?p=&APP_ID.:404:&SESSION.'
-,p_page_id=>404
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376709930985456318)
-,p_parent_id=>wwv_flow_api.id(1376701480568389332)
-,p_short_name=>'Notifications and Messaging'
-,p_link=>'f?p=&APP_ID.:406:&SESSION.'
-,p_page_id=>406
-);
-wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(1376712101896461315)
 ,p_parent_id=>wwv_flow_api.id(1376701480568389332)
 ,p_short_name=>'Navigation'
@@ -12081,60 +11344,11 @@ wwv_flow_api.create_menu_option(
 ,p_page_id=>407
 );
 wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376721408059738134)
-,p_parent_id=>wwv_flow_api.id(1376721789413740740)
-,p_short_name=>'Login Page'
-,p_link=>'f?p=&APP_ID.:5001:&SESSION.::&DEBUG.:::'
-,p_page_id=>5001
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376721789413740740)
-,p_parent_id=>wwv_flow_api.id(1376701480568389332)
-,p_short_name=>'UI Patterns'
-,p_link=>'f?p=&APP_ID.:5000:&SESSION.::&DEBUG.:::'
-,p_page_id=>5000
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376724099871752418)
-,p_parent_id=>wwv_flow_api.id(1376721789413740740)
-,p_short_name=>'Home and Dashboard'
-,p_link=>'f?p=&APP_ID.:5002:&SESSION.'
-,p_page_id=>5002
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376725213667756915)
-,p_parent_id=>wwv_flow_api.id(1376721789413740740)
-,p_short_name=>'Filter Page'
-,p_link=>'f?p=&APP_ID.:5003:&SESSION.::&DEBUG.:::'
-,p_page_id=>5003
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376726370962769622)
-,p_parent_id=>wwv_flow_api.id(1376721789413740740)
-,p_short_name=>'Marquee Page'
-,p_link=>'f?p=&APP_ID.:5004:&SESSION.'
-,p_page_id=>5004
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376727446250773603)
-,p_parent_id=>wwv_flow_api.id(1376721789413740740)
-,p_short_name=>'Modal Dialogs'
-,p_link=>'f?p=&APP_ID.:5005:&SESSION.'
-,p_page_id=>5005
-);
-wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(1376728563234782522)
 ,p_parent_id=>wwv_flow_api.id(1376701480568389332)
 ,p_short_name=>'Layout'
 ,p_link=>'f?p=&APP_ID.:700:&SESSION.::&DEBUG.:::'
 ,p_page_id=>700
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1376731763962804032)
-,p_parent_id=>wwv_flow_api.id(1376728563234782522)
-,p_short_name=>'Responsive Design'
-,p_link=>'f?p=&APP_ID.:701:&SESSION.'
-,p_page_id=>701
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(1376736469457982295)
@@ -12170,13 +11384,6 @@ wwv_flow_api.create_menu_option(
 ,p_short_name=>'Help Text'
 ,p_link=>'f?p=&APP_ID.:1903:&SESSION.'
 ,p_page_id=>1903
-);
-wwv_flow_api.create_menu_option(
- p_id=>wwv_flow_api.id(1379019547143129011)
-,p_parent_id=>wwv_flow_api.id(1056169212872018180)
-,p_short_name=>'Map Chart'
-,p_link=>'f?p=&APP_ID.:1904:&SESSION.'
-,p_page_id=>1904
 );
 wwv_flow_api.create_menu_option(
  p_id=>wwv_flow_api.id(1379023194532134939)
@@ -26265,8 +25472,7 @@ wwv_flow_api.create_page(
 ,p_step_template=>wwv_flow_api.id(3121228739815246741)
 ,p_page_template_options=>'#DEFAULT#'
 ,p_nav_list_template_options=>'#DEFAULT#'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20210901111633'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(247585693772112611)
@@ -26341,8 +25547,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'SHAKEEB'
-,p_last_upd_yyyymmddhh24miss=>'20211019175747'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284931842387300015)
@@ -27402,7 +26607,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3498869099346089964)
@@ -27436,8 +26641,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20210920131529'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1264063081628876768)
@@ -27551,8 +26755,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20210916201409'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1342056708496909855)
@@ -27692,76 +26895,6 @@ wwv_flow_api.create_page_plug(
 );
 end;
 /
-prompt --application/pages/page_00403
-begin
-wwv_flow_api.create_page(
- p_id=>403
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Customization'
-,p_alias=>'CUSTOMIZATION'
-,p_step_title=>'Customization - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(3021668625496969541)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
-prompt --application/pages/page_00404
-begin
-wwv_flow_api.create_page(
- p_id=>404
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Data Entry'
-,p_alias=>'DATA-ENTRY'
-,p_step_title=>'Data Entry - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(3900474055174025729)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
 prompt --application/pages/page_00405
 begin
 wwv_flow_api.create_page(
@@ -27779,8 +26912,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211012144525'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(250050360406404011)
@@ -28146,41 +27278,6 @@ wwv_flow_api.create_page_da_action(
 );
 end;
 /
-prompt --application/pages/page_00406
-begin
-wwv_flow_api.create_page(
- p_id=>406
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Notifications and Messaging'
-,p_alias=>'NOTIFICATIONS-AND-MESSAGING'
-,p_step_title=>'Notifications and Messaging - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(4779281252581087695)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
 prompt --application/pages/page_00407
 begin
 wwv_flow_api.create_page(
@@ -28198,8 +27295,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20211021131909'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1323176065228163057)
@@ -28506,7 +27602,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1104806004144032982)
@@ -28664,7 +27760,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1104806627318032988)
@@ -28843,8 +27939,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20211022101029'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1254597532641716267)
@@ -29045,7 +28140,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1288188199412800661)
@@ -29471,8 +28566,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20211022105156'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1288189881270800677)
@@ -29778,8 +28872,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'SHAKEEB'
-,p_last_upd_yyyymmddhh24miss=>'20211019131440'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(247587722969112632)
@@ -29858,7 +28951,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2142889391748264942)
@@ -29881,41 +28974,6 @@ wwv_flow_api.create_page_branch(
 ,p_branch_point=>'BEFORE_HEADER'
 ,p_branch_type=>'REDIRECT_URL'
 ,p_branch_sequence=>10
-);
-end;
-/
-prompt --application/pages/page_00701
-begin
-wwv_flow_api.create_page(
- p_id=>701
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Responsive Design'
-,p_alias=>'RESPONSIVE-DESIGN'
-,p_step_title=>'Responsive Design - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(3021718923516674625)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 );
 end;
 /
@@ -30078,7 +29136,20 @@ wwv_flow_api.create_page(
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
 ,p_page_comment=>'apex.theme42demo.noNavigate();'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(11788806964314029)
+,p_plug_name=>'Region Display Selector'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(3550313444782567988)
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'STANDARD'
+,p_attribute_02=>'Y'
+,p_attribute_03=>'Y'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1377626445750163842)
@@ -30087,7 +29158,6 @@ wwv_flow_api.create_page_plug(
 ,p_component_template_options=>'#DEFAULT#'
 ,p_plug_template=>wwv_flow_api.id(1580336106168319527)
 ,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_menu_id=>wwv_flow_api.id(2223835478964964853)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
@@ -30096,7 +29166,7 @@ wwv_flow_api.create_page_plug(
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1706078819058373542)
-,p_plug_name=>'Standard Page'
+,p_plug_name=>'Standard'
 ,p_region_name=>'standard'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
 ,p_plug_template=>wwv_flow_api.id(1370988447073029611)
@@ -30401,19 +29471,6 @@ wwv_flow_api.create_page_button(
 ,p_button_position=>'NEXT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:1112:&SESSION.::&DEBUG.:RP::'
 );
-wwv_flow_api.create_page_button(
- p_id=>wwv_flow_api.id(2415835718143849883)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_api.id(1377626445750163842)
-,p_button_name=>'TEMPLATE'
-,p_button_action=>'REDIRECT_PAGE'
-,p_button_template_options=>'#DEFAULT#:t-Button--noUI:t-Button--iconLeft'
-,p_button_template_id=>wwv_flow_api.id(1131702324492887059)
-,p_button_image_alt=>'Page Template'
-,p_button_position=>'NEXT'
-,p_button_redirect_url=>'f?p=&APP_ID.:6307:&SESSION.:page:&DEBUG.:RP::'
-,p_icon_css_classes=>'fa-file-o'
-);
 end;
 /
 prompt --application/pages/page_01101
@@ -30437,7 +29494,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2271877446560374829)
@@ -30518,7 +29575,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2383001146102445246)
@@ -30600,7 +29657,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2383002474350445259)
@@ -30702,7 +29759,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2383005475748445289)
@@ -30804,7 +29861,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2383005621406445291)
@@ -30906,7 +29963,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2388763812469566924)
@@ -31008,7 +30065,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2383002581586445260)
@@ -31135,7 +30192,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2389137577052791090)
@@ -31262,7 +30319,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2383004898103445284)
@@ -31376,7 +30433,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2395632226883415411)
@@ -31490,7 +30547,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2395690923648480351)
@@ -31564,7 +30621,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2396526877526056885)
@@ -31688,7 +30745,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2397137692581515052)
@@ -31769,7 +30826,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2397142084134519743)
@@ -31854,7 +30911,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#:t-NavTabs--inlineLabels-lg:t-NavTabs--displayLabels-sm'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3004830196526089064)
@@ -31936,7 +30993,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#:t-NavTabs--inlineLabels-lg:t-NavTabs--displayLabels-sm'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1104806578104032987)
@@ -32074,7 +31131,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1254579268146591902)
@@ -32236,7 +31293,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3223826213222192402)
@@ -32317,7 +31374,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#:t-NavTabs--inlineLabels-lg:t-NavTabs--displayLabels-sm'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4065118848844975754)
@@ -32398,7 +31455,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4065825135668994266)
@@ -32479,7 +31536,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#:js-navCollapsed--hidden:t-TreeNav--styleA'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4907826285077805099)
@@ -32560,7 +31617,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#:js-menu-callout'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105545'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4907831120306824115)
@@ -32642,7 +31699,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299235251084955736)
@@ -32904,7 +31961,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(247588474249112639)
@@ -33232,7 +32289,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(298183142830294529)
@@ -33381,7 +32438,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(903004902577081141)
@@ -33695,7 +32752,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(265669901709256733)
@@ -34025,7 +33082,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284932985401300026)
@@ -34370,7 +33427,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160608'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299232207052955706)
@@ -34618,8 +33675,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'TIM'
-,p_last_upd_yyyymmddhh24miss=>'20211027144703'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299236248811955746)
@@ -34817,8 +33873,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20211022102053'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(644907546285898458)
@@ -35085,7 +34140,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(265669326993256727)
@@ -35349,7 +34404,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(298183882833294536)
@@ -35760,7 +34815,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(298183356331294531)
@@ -35910,7 +34965,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(265669183370256725)
@@ -36034,6 +35089,7 @@ wwv_flow_api.create_page_plug(
 ,p_component_template_options=>'#DEFAULT#:u-colors:t-BadgeList--circular:t-BadgeList--cols t-BadgeList--3cols:t-BadgeList--large'
 ,p_plug_template=>wwv_flow_api.id(1370988447073029611)
 ,p_plug_display_sequence=>40
+,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
 ,p_list_id=>wwv_flow_api.id(1135509488763241652)
 ,p_plug_source_type=>'NATIVE_LIST'
@@ -36058,7 +35114,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(298184980217294547)
@@ -36210,7 +35266,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299232112695955705)
@@ -36398,7 +35454,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284933746407300034)
@@ -36543,8 +35599,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211005113210'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284933935769300036)
@@ -36705,7 +35760,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284934039613300037)
@@ -37072,7 +36127,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(914012550008965574)
@@ -37422,7 +36477,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284933061137300027)
@@ -37774,7 +36829,7 @@ wwv_flow_api.create_page(
 ,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
 ,p_name=>'Reports - Timeline'
 ,p_alias=>'TIMELINE-REPORTS'
-,p_step_title=>'Activity Timeline - &APP_TITLE.'
+,p_step_title=>'Timeline - &APP_TITLE.'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
@@ -37783,7 +36838,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(265667515276256709)
@@ -38141,7 +37196,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091607'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284933487488300031)
@@ -38426,8 +37481,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'nobody'
-,p_last_upd_yyyymmddhh24miss=>'20211022095331'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284934293721300039)
@@ -38932,7 +37986,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(265671331739256747)
@@ -39155,11 +38209,11 @@ wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(779605928202936087)
 ,p_plug_name=>'Buttons'
 ,p_parent_plug_id=>wwv_flow_api.id(1435273564003184896)
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
+,p_plug_template=>wwv_flow_api.id(1370988447073029611)
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
-,p_plug_grid_column_css_classes=>'col-sm-12 u-flex u-justify-content-center u-align-items-center'
+,p_plug_grid_column_css_classes=>'col-sm-12'
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_attribute_01=>'N'
@@ -39284,7 +38338,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(298180403269294502)
@@ -39779,8 +38833,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20211022104735'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1318992036089071034)
@@ -39932,7 +38985,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#:t-NavTabs--inlineLabels-lg:t-NavTabs--hiddenLabels-sm'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105543'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2009282888796716490)
@@ -40004,7 +39057,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284934416525300041)
@@ -40285,7 +39338,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#:t-NavTabs--inlineLabels-lg:t-NavTabs--hiddenLabels-sm'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105543'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1628305774377810392)
@@ -40682,8 +39735,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211005113740'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284934654104300043)
@@ -40982,7 +40034,7 @@ wwv_flow_api.create_page(
 ,p_nav_list_template_options=>'#DEFAULT#:t-NavTabs--inlineLabels-lg:t-NavTabs--hiddenLabels-sm'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105543'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1288190242177800681)
@@ -41425,7 +40477,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(265669599591256729)
@@ -41553,7 +40605,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299232445282955708)
@@ -41691,8 +40743,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211028064741'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2513506073531001465)
@@ -42096,7 +41147,7 @@ wwv_flow_api.create_page(
 '<li>Enter your Help text in the field provided.</li>',
 '<li>Click Apply Change.</li>',
 '</ol>'))
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2200349476083043883)
@@ -42153,92 +41204,6 @@ wwv_flow_api.create_page_plug(
 );
 end;
 /
-prompt --application/pages/page_01904
-begin
-wwv_flow_api.create_page(
- p_id=>1904
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Map Chart'
-,p_alias=>'MAP-CHART'
-,p_step_title=>'Map Chart - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(2523648863020931060)
-,p_plug_name=>'Demo'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
-,p_plug_template=>wwv_flow_api.id(1370988447073029611)
-,p_plug_display_sequence=>30
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_source=>'Please install the <strong>Sample Charts</strong> application from Packaged Apps > Sample Apps to see an example of the Map Chart.'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(4969670496195458002)
-,p_plug_name=>'Overview'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
-,p_plug_template=>wwv_flow_api.id(1370988447073029611)
-,p_plug_display_sequence=>20
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p><strong>Map Charts</strong> use the AnyChart Flash Map component and are useful for visualizing geographically related data.</p>',
-'<p class="dm-Hero-steps">Set <strong>Map Chart</strong> as the Region type.</p>'))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(4969671476439458172)
-,p_plug_name=>'Region Display Selector'
-,p_region_name=>'dialog_fixed'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'JUMP'
-,p_attribute_03=>'N'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(6546014701415123993)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-wwv_flow_api.create_page_button(
- p_id=>wwv_flow_api.id(2553901232070991232)
-,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_api.id(6546014701415123993)
-,p_button_name=>'REGION_TYPE'
-,p_button_action=>'REDIRECT_PAGE'
-,p_button_template_options=>'#DEFAULT#:t-Button--noUI:t-Button--iconLeft'
-,p_button_template_id=>wwv_flow_api.id(1131702324492887059)
-,p_button_image_alt=>'Region Type'
-,p_button_position=>'NEXT'
-,p_button_redirect_url=>'f?p=&APP_ID.:6308:&SESSION.::&DEBUG.:RP::'
-,p_icon_css_classes=>'fa-list'
-);
-end;
-/
 prompt --application/pages/page_01905
 begin
 wwv_flow_api.create_page(
@@ -42256,7 +41221,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299231739091955701)
@@ -42343,7 +41308,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2783323263058914565)
@@ -42618,8 +41583,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20211014131715'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299231978366955703)
@@ -42748,7 +41712,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2513504235480001447)
@@ -42882,8 +41846,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20211021134309'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4541634412938633446)
@@ -43159,7 +42122,7 @@ wwv_flow_api.create_page(
 ,p_group_id=>wwv_flow_api.id(902965876267414568)
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2513504447781001449)
@@ -43205,7 +42168,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_height=>'400'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4533017153045099922)
@@ -43236,7 +42199,7 @@ wwv_flow_api.create_page(
 ,p_group_id=>wwv_flow_api.id(902965876267414568)
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4798933889367586912)
@@ -43323,8 +42286,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20211022101722'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(889307165275382442)
@@ -43713,8 +42675,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20211022100459'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4753590623734799563)
@@ -43966,7 +42927,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2728320369974394516)
@@ -44084,7 +43045,7 @@ wwv_flow_api.create_page(
 ,p_step_template=>wwv_flow_api.id(710059369963581493)
 ,p_page_template_options=>'#DEFAULT#:js-dialog-class-t-Drawer--pullOutStart:js-dialog-class-t-Drawer--sm'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2728325574032354216)
@@ -44130,7 +43091,7 @@ wwv_flow_api.create_page(
 ,p_step_template=>wwv_flow_api.id(710059369963581493)
 ,p_page_template_options=>'#DEFAULT#:js-dialog-class-t-Drawer--pullOutEnd'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20211004194726'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2943148789013701346)
@@ -44162,7 +43123,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_height=>'400'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20210827105541'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2783352765344192243)
@@ -44264,7 +43225,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_height=>'400'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20210827105541'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2783357500529192262)
@@ -44387,7 +43348,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_height=>'400'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20210827105541'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2783363052890192267)
@@ -44512,8 +43473,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211005114207'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299234056681955724)
@@ -44665,8 +43625,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211005093647'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(299236467875955748)
@@ -45051,20 +44010,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'SHAKEEB'
-,p_last_upd_yyyymmddhh24miss=>'20211019133408'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(300686404418392104)
-,p_plug_name=>'Region Display Selector'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'JUMP'
-,p_attribute_03=>'N'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1056168875661018179)
@@ -45079,60 +44025,12 @@ wwv_flow_api.create_page_plug(
 ,p_attribute_02=>'HTML'
 );
 wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(2521419231776119567)
-,p_plug_name=>'Buttons'
-,p_region_name=>'buttons'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG:js-headingLevel-2'
-,p_component_template_options=>'#DEFAULT#:t-MediaList--iconsRounded'
-,p_plug_template=>wwv_flow_api.id(1370988447073029611)
-,p_plug_display_sequence=>70
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_grid_column_span=>8
-,p_plug_grid_column_css_classes=>'col-sm-12'
-,p_list_id=>wwv_flow_api.id(974485800259167220)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>wwv_flow_api.id(1116867651117668858)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(2521419374704119568)
-,p_plug_name=>'Form Fields'
-,p_region_name=>'forms'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG:js-headingLevel-2'
-,p_component_template_options=>'#DEFAULT#:t-MediaList--iconsRounded'
-,p_plug_template=>wwv_flow_api.id(1370988447073029611)
-,p_plug_display_sequence=>80
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_grid_column_span=>8
-,p_plug_grid_column_css_classes=>'col-sm-12'
-,p_list_id=>wwv_flow_api.id(974490162833188150)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>wwv_flow_api.id(1116867651117668858)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(4108517676855936975)
-,p_plug_name=>'Pages'
-,p_region_name=>'page'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG:js-headingLevel-2'
-,p_component_template_options=>'#DEFAULT#:t-MediaList--cols t-MediaList--2cols:t-MediaList--iconsRounded'
-,p_plug_template=>wwv_flow_api.id(1370988447073029611)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_grid_column_span=>8
-,p_plug_grid_column_css_classes=>'col-sm-12'
-,p_list_id=>wwv_flow_api.id(2415657869255697284)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>wwv_flow_api.id(1116867651117668858)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(4577326669529217769)
-,p_plug_name=>'Regions'
+,p_plug_name=>'Components'
 ,p_region_name=>'region-types'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG:js-headingLevel-2'
-,p_component_template_options=>'#DEFAULT#:t-MediaList--cols t-MediaList--2cols:t-MediaList--iconsRounded'
-,p_plug_template=>wwv_flow_api.id(1370988447073029611)
+,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#:t-MediaList--showBadges:t-MediaList--cols t-MediaList--2cols:t-MediaList--iconsRounded'
+,p_plug_template=>wwv_flow_api.id(3121231715860246749)
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -45160,7 +44058,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(2993552996924713109)
@@ -45552,7 +44450,7 @@ wwv_flow_api.create_page(
 ,p_inline_css=>'.te_padding {padding: 8px 0px 8px 8px;}'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(284932876982300025)
@@ -46224,7 +45122,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(265669295234256726)
@@ -46629,8 +45527,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20210922150416'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(847783790574654268)
@@ -47338,699 +46235,6 @@ wwv_flow_api.create_page_da_action(
 );
 end;
 /
-prompt --application/pages/page_05000
-begin
-wwv_flow_api.create_page(
- p_id=>5000
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Design Patterns'
-,p_alias=>'DESIGN-PATTERNS'
-,p_step_title=>'Design Patterns - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'/*',
-'.dm-Migration-region {',
-'  max-width: 80%;',
-'  margin: 0 auto;',
-'}',
-'.dm-Migration-region > h1 {',
-'  margin-top: 16vh;',
-'}',
-'.dm-Migration-region > h2 {',
-'  margin-top: 8vh;',
-'}',
-'.dm-Migration-region > h3 {',
-'  margin-top: 4vh;',
-'  font-size: 2.0rem;',
-'}',
-'.dm-Migration-region ul {',
-'  margin: 0;',
-'  padding: 0;',
-'  list-style-type: decimal;',
-'}',
-'.dm-Migration-region li {',
-'  margin-left: 24px;',
-'  margin-bottom: 4vh;',
-'}',
-'iframe {',
-'  border: 0px;',
-'  margin: auto;',
-'  display: block;',
-'  height: 180px;',
-'  width: 500px;',
-'}',
-'.t-Body img {',
-'  max-width: 75%;',
-'  clip: rect(0, 0, 100px, 0);',
-'  margin: auto;',
-'  display: block;',
-'  border-radius: 2px;',
-'}',
-'.two-images-one-row {',
-'  text-align: center;',
-'}',
-'.two-images-one-row img {',
-'  max-width: 49%;',
-'  display: inline-block;',
-'  vertical-align: bottom;',
-'}',
-'blockquote {',
-'  font-size: 1.8rem;',
-'  line-height: 1.8rem;',
-'}',
-'',
-'.bookmarklet-changelog {',
-'    text-align:right; ',
-'    font-size:.8em; ',
-'    font-style:italic; ',
-'    margin-top: -20px;',
-'    width: 200px;',
-'    margin: auto;',
-'}',
-'.bookmarklet-changelog b {',
-'    float:left;',
-'    display:inline-block;',
-'}',
-'*/'))
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1862759164384583578)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978908279976618692)
-,p_plug_name=>'More Info'
-,p_region_css_classes=>'dm-Migration-region'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>110
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h1>More information</h1>',
-'<p>If for whatever reason this guide fails in providing adequate assistance,  please reach out to us on the Oracle Technology Network (OTN) <a href="http://forums.oracle.com/forums/forum.jspa?forumID=137" target="_blank">discussion forum</a> or on Tw'
-||'itter (<a href="https://twitter.com/hashtag/orclapex" target="_blank">#orclapex</a>). Any specific problem you have is likely to be encountered by others. Notifying us will help to improve this guide with additional information and facts relating to '
-||'Universal Theme migration.</p>',
-''))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_display_condition_type=>'NEVER'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978913360074618699)
-,p_plug_name=>'Why Migrate?'
-,p_region_css_classes=>'dm-Migration-region'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>40
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_grid_column_span=>12
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h1>Why should I migrate to Universal Theme?</h1>',
-'<p>Universal Theme has a number of new features, improvements, and optimizations when compared to themes provided with previous releases of Application Express.  Additionally, Universal Theme utilizes several key UI features of Application Express 5 '
-||'and provides a number of new Templates and Template Options that greatly expand the customizability of your application''s UI.</p>',
-'',
-'<p>Universal Theme provides improvements in almost every facet of defining the User Interface of your applications, and there a number of reasons why it is important to migrate to it immediately.  However, you must first understand your users and see'
-||' whether a drastic change in User Interface is appropriate.</p>',
-'<p>',
-'Below is a quick fact-by-fact look at the many reasons for why you should migrate, and the few reasons why you may not want to migrate to Universal Theme.</p>',
-'',
-'<h2>Pros</h2>',
-'<h3>Improvements</h3>',
-'<ul>',
-'<li>Cleaner Templates',
-'<p><img src="#THEME_IMAGES#demo/img/Image_0.png" /></p>',
-'',
-'<p>Universal Theme has fewer, but more capable templates which can be customized with Template Options. It is quicker and easier to modify the presentation by changing Template Options, rather than by having to select a new template. Template Options'
-||' allow for additional visual flourishes and, in some cases, new functionality. </p></li>',
-'',
-'<li>Improved Grid Support and Responsive Behavior',
-'<p><img src="#THEME_IMAGES#demo/img/Image_1.png" />',
-'Theme 25 introduced Grid Layout support in APEX 4.2, but used a fixed grid which was not easily customizable. Universal Theme introduces a flexible, fluid grid system which can be nested many times over, and is based off the Bootstrap grid.</p></li>',
-'',
-'<li>Mobile Ready',
-'',
-'<p>Because of Universal Theme''s improved grid support, applications are responsive out-of-the-box. Therefore, they run well on any mobile device running a modern browser. For example, you will notice that tapping is significantly sped up (no delay in'
-||' clicking) in Universal Theme apps compared with legacy ones. </p></li>',
-'',
-'<li>Future-proofing',
-'',
-'<p>While legacy and older themes are supported in APEX 5, Universal Theme is the primary theme. With future releases of Application Express you will be be able to readily upgrade the Universal Theme to take advantages of the new functionality provide'
-||'d. Migrating to Universal Theme is a simple means of ensuring your apps provide the most modern and up-to-date user experience for your users.</p></li>',
-'</ul>',
-'<h3>New Features</h3>',
-'<ul>',
-'<li>Theme Roller',
-'',
-'<div class=''two-images-one-row''><img src="#THEME_IMAGES#demo/img/Image_2.png" /><img src="#THEME_IMAGES#demo/img/Image_3.png" /></div>',
-'',
-'',
-'<p>Older themes required you to to stick with one color and one set of styling. The only means of having your own styling was to override the defaults with CSS or switch to a new theme entirely. Universal Theme addresses this pain point by allowing y'
-||'ou to quickly generate a new style for your app, using a GUI. </p></li>',
-'',
-'<li>Navigation Lists',
-'<p><img src="#THEME_IMAGES#demo/img/Image_4.png" /></p>',
-'<p>In Universal theme, you now have the choice between using a top or side navigation menu. Older themes only supported tabs, which always consumed vertical screen real estate. Placing the menu on the side, and allowing it to be collapdsed, works bet'
-||'ter for most applications, especially when displayed on widescreen monitors.</p></li>',
-'',
-'<li>New UI Components',
-'',
-'<p><img src="#THEME_IMAGES#demo/img/Image_5.png" /></p>',
-'<p>Universal Theme has built-in templates for a variety of common UI components which are not available in other themes. For example, there are templates for easily creating carousels, tabs, menus, cards, and much more.</p></li>',
-'',
-'<li>Maximize/Restore',
-'',
-'',
-'<p><img src="#THEME_IMAGES#demo/img/Image_6.png" /></p>',
-'',
-'<p>Universal Theme enables Interactive Reports, Classic Reports, and Standard Regions to be "maximized". With the maximize button template option enabled, end users can now focus on a single region, and scroll through large amounts of data without se'
-||'eing other content on the page. This makes it far easier for end users to review these large regions which are often very wide and long. Older themes do not have support for this feature. </p></li>',
-'</ul>',
-'',
-'<h2>Cons</h2>',
-'',
-'<p>Because migrating to Universal Theme, from older themes, will take development effort and significant time reviewing migrated pages, you should consider the downsides of migrating before moving forward.</p>',
-'<ul>',
-'<li>Different UI.',
-'',
-'<p>While Universal Theme is designed to be fully accessible and aesthetically pleasing, users who are completely comfortable with the older theme''s UI, may not immediately like the new theme. Further, training material developed in-house will need to'
-||' be upgraded as the look of the pages will undoubtedly change significantly.</p>',
-'<p>This is not a technical issue, since Universal Theme is not a departure from the traditional APEX workflow, but an enhancement on top of your existing processes. Application content, such as pages, regions, buttons, and items, will not be changed '
-||'as a result of migrating, other than their appearance.</p></li>',
-'',
-'<li>Regressions',
-'',
-'<p>Some templates carried over from previous themes may not have strict <em>one-to-one</em> equivalents. Some of your custom CSS/JS modifications that were not directly supported in APEX may also no longer work as expected on your pages. These and ot'
-||'her issues are covered in <strong>Post-Migration Tasks</strong>, <strong>Best Practices</strong>, and <strong>Common Issues After Upgrading</strong> sections below.</p></li>',
-'',
-'<li>Custom Themes / Templates',
-'',
-'<p>If you have developed a completely custom theme, then migrating to Universal Theme may require significant effort. Similarly, if you defined custom templates then you may find difficulties finding a similar template in the Universal Theme. However'
-||', you may find using the new template options and theme roller will make many of your customizations redundant. If not, you will need to manually define custom templates and reapply your custom CSS and HTML post-migration.</p></li>',
-'',
-''))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_display_condition_type=>'NEVER'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978913773097618700)
-,p_plug_name=>'Steps to Migrate'
-,p_region_css_classes=>'dm-Migration-region'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>50
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_grid_column_css_classes=>'how-to'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h1>How do I migrate to Universal Theme?</h1>',
-'',
-'<p>Before beginning the migration process, it is <strong>strongly</strong> recommended to take an export of your application. This will enable you to easily revert back to the original application if necessary, before making any changes to your appli'
-||'cation and its metadata. Once you have migrated to the Universal Theme, you can not easily switch it back to the original legacy theme. Additionally, if you re-import the original application, under a different Application ID, you can refer to this a'
-||'pplication to review how the application looked previously, as opposed to how it looks using the Universal Theme.</p>',
-'',
-'<p>If you haven''t done so already, you should use the Application Utilities > Upgrade Application to update certain built-in widgets in your legacy applications to the latest provided by APEX 5, e.g. FlashChart to AnyChart . This will ensure that tho'
-||'se widgets take full advantage of the responsiveness of Universal Theme.</p>',
-''))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_display_condition_type=>'NEVER'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978914219781618702)
-,p_plug_name=>'Bookmarklet'
-,p_region_css_classes=>'dm-Migration-region'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>90
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_new_grid_row=>false
-,p_plug_new_grid_column=>false
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h1>Bookmarklet</h1>',
-'<p>There is not always an equivalent template in Universal Theme for all templates from previous themes. For this reason, the APEX Development Team has created a bookmarklet to assist you with mapping your older templates to your newer templates in t'
-||'he Verify Compatibility step of the Switch Theme wizard.</p>',
-'',
-'<p> The  Universal Theme Migration bookmarklet supports mappings from the 3 most popular legacy themes, Theme 24, 25, and 26. It also supports any themes that are based off these legacy themes, i.e.: if your theme was based on one of those themes. Wh'
-||'en utilized then the bookmarklet will do most of the mappings correctly to produce the best results from the migration.</p>',
-'',
-'<p>To install the bookmarklet, drag the bookmark into your bookmarks bar.</p>',
-'',
-'<iframe id="bookmarkletIframe" src="#APP_IMAGES#bookmarklet.html"></iframe> ',
-'',
-'<p>Then, on the Verify Compatibility page, where you perform the template mappings, click on the Universal Theme Migration bookmarklet to attempt to update the template mappings. If the theme you are migrating from is supported, then it will automati'
-||'cally match the templates of your older theme to the correct templates in Universal Theme.</p>',
-'<p><img src="#THEME_IMAGES#demo/img/Image_19.png" /></p>',
-'<p>If your theme is mapped properly, each of the select list values that were successfully altered will be highlighted in green. </p>',
-'<p><img src="#THEME_IMAGES#demo/img/Image_20.png" /></p>',
-'',
-'<p>Once the mapping process has completed, any errors you encounter will be displayed On an error page. You can try clicking on the <b>Map to a Different Theme</b> button, to try re-mapping with an alternate theme available within the book marklet. I'
-||'f the expected mapping can not be found in the select list for that template, then it  will be highlighted in orange.</p>',
-'<p>   <img src="#THEME_IMAGES#demo/img/Image_21.png" /></p>',
-'',
-'<p>Typically receiving any errors either means your custom templates did not strictly match the theme you chose, or that you have not set <b>Match Template Classes</b> to "<b>No</b>" in the previous step.</p>',
-''))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_display_condition_type=>'NEVER'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978914591047618703)
-,p_plug_name=>'FAQ'
-,p_region_css_classes=>'dm-Migration-region'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>100
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h1>Frequently Asked Questions</h1>',
-'<h2>When Upgrading</h2>',
-'<ul>',
-'  <li>',
-'    <strong>Problem</strong>',
-'    <p>Warning: You must have at least two themes installed to be able to switch. Please create a new theme and attempt this action again.</p>',
-'    <p><img src="#THEME_IMAGES#demo/img/Image_22.png" /></p>',
-'    <strong>Solution</strong>',
-'    <p>Create the Universal Theme in your application, as outlined above, before trying to switch your theme. Please <u>start the guide from step #1.</u></p>',
-'  </li>',
-'  <li>',
-'    <strong>Problem</strong> ',
-'    <p>This application cannot be converted to a theme using list-based navigation, as it uses two levels of tabs. Please update the application and set current tabs settings to use only one level of tabs prior to switching the theme. (Go to error)</'
-||'p>',
-'<p><img src="#THEME_IMAGES#demo/img/Image_23.png" /></p>',
-'<strong>Solution</strong>',
-'<p> Because two-level tabs are not supported in Universal Theme, you must re-design your existing apps to use only one level of tabs, and then switch. If doing so proves too complicated, try deleting the parent tabs, conducting the theme switch, and '
-||'then re-creating navigation using a navigation menu post. To delete the parent tabs, you must go to "Shared Components >  Tabs > Edit Tabs > Manage Parent Tabs " and click on each of the parent tabs to access the button to delete them.</p>',
-'</li>',
-'</ul>',
-'',
-'<h2>After Upgrading</h2>',
-'<ul>',
-'<li>',
-'<strong>Problem</strong>',
-'<p> When running my app on a certain page, I get the error message "Label column span grid setting for this page item is invalid."</p>',
-'<strong>Solution</strong>',
-'<p><img src="#THEME_IMAGES#demo/img/Image_24.png" /></p>',
-'<p> In this example, with a label column span of 3 plus each item''s column span of 1, all 4 together means that the content is 16 columns wide. This exceeds the 12 columns supported by the Universal Theme which results in this error being thrown befo'
-||'re the page is rendered in your browser. To Fix: navigate to the page item specified in the error message in page designer or component view, and reduce the number of label column spans that your elements consume. </p>',
-'</li>',
-'<li>',
-'<strong>Problem</strong> ',
-'<p>My content is no longer placed in multiple columns</p>',
-'<div class=''two-images-one-row''>',
-'<img src="#THEME_IMAGES#demo/img/Image_25.png" />',
-'<img src="#THEME_IMAGES#demo/img/Image_26.png" />',
-'</div>',
-'<strong>Solution</strong> ',
-'<p>If you reset all the grid positions that your app previously used, then your content will be placed in one column after upgrading. To recreate the columned layout you had before, just drag the regions into new columns with Page Designer.</p>',
-'<img src="#THEME_IMAGES#demo/img/Image_27.png" />',
-'<p>You can also "fine-tune" the grid and column spans using the right side bar to get a layout that resembles your original theme.</p>',
-'</li>',
-'<li>',
-'<strong>Problem</strong>',
-'<p> My navigation bar is not a list </strong> </p>',
-'<img src="#THEME_IMAGES#demo/img/Image_29.png" />',
-'<strong> Solution </strong>',
-'<p> In order to add menus and have fine grain control of your Navigation Bar, i.e., your upper right hand corner links, it will need to be converted from the "Classic" implementation to a "List" based one. To do so, you must first create a new list w'
-||'hich contains entries such as your user name (&APP_USER.), a sign out link, and any other app-wide links you would like to have.',
-'',
-'Once this list is created, navigate to "Shared Components -> User Interface Attributes -> Edit Desktop -> Navigation Bar" and change the Implementation from "Classic" to "List".  "Select the List you created earlier, and set List Template to Navigati'
-||'on Bar". Your app will now be using a list-based navigation bar.',
-'<img src="#THEME_IMAGES#demo/img/Image_30.png" />',
-'With a list-based Navigation Bar, you can then add sub-entries which will appear in a drop down menu.</p>',
-'',
-'',
-'',
-'',
-'',
-'</li>',
-'',
-'',
-'</ul>'))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_display_condition_type=>'NEVER'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978914994290618703)
-,p_plug_name=>'Creating UT in your App'
-,p_region_css_classes=>'dm-Migration-region'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>60
-,p_plug_new_grid_row=>false
-,p_plug_new_grid_column=>false
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h2>First: Create Universal Theme in your application</h2>',
-'<p>From Shared Components, click on Themes and follow the steps below:</p>',
-'<p><b>Note:</b> If you have already installed the Universal THeme into your application proceed to the second step, <em>Switch to Universal Theme</em>.</p>',
-'<ol>',
-'    <li><p>Click <b>Create Theme</b></p><p>You need to install the Universal Theme into your application to get started.</p>',
-'        <p><img src="#THEME_IMAGES#demo/img/Image_7.png" /></p></li>',
-'    <li><p>Select <b>From the Repository.</b></p>',
-'        <p><img src="#THEME_IMAGES#demo/img/Image_8.png" /></p></li>',
-'    <li><p>Select <b>Desktop</b> as the User Interface.</p>',
-'        <p><img src="#THEME_IMAGES#demo/img/Image_9.png" /></p></li>',
-'    <li><p>Choose <b>Standard Themes</b> as the Theme Type, and <b>Universal Theme (Theme 42)</b> as the Theme. </p>',
-'        <p> <img src="#THEME_IMAGES#demo/img/Image_10.png" /></p></li>',
-'    <li><p>Review your changes and click <b>Create</b>.</p>',
-'        <p><img src="#THEME_IMAGES#demo/img/Image_11.png" /></p></li>',
-'</ol>',
-''))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_display_condition_type=>'NEVER'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978915374029618704)
-,p_plug_name=>'Switching to UT'
-,p_region_css_classes=>'dm-Migration-region'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>70
-,p_plug_new_grid_row=>false
-,p_plug_new_grid_column=>false
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h2>Second: Switch to Universal Theme.</h2>',
-'<p><b>Note:</b> Not until you have completed Step 4 below will your application be irreversibly changed. Reverting back to a Tab-based application will be very difficult, which is why it is strongly recommended you have a backup of the application be'
-||'fore proceeding further.</p>',
-'<ol>',
-'  <li><p>Click <b>Switch Theme</b></p>',
-'    <p><img src="#THEME_IMAGES#demo/img/Image_12.png" /></p></li>',
-'  <li><p>Select the current desktop theme, and then select <b>42. Universal Theme</b>. ',
-'    <p>Depending on your application, you may choose to set the <b>Reset Grid</b> option to either <b>Reset fixed region positions</b> or <b>Reset all region and item grid positions</b>.</p>',
-'     <p>Reset fixed region positions will maintain your current region positions, where possible, during migration. <em>This is the recommended approach</em>.</p>',
-'     <p>Reset all region and item grid positions will ensure item and region positioning will be reset and will force regions and items to stack on top of each other.</p>',
-'     <p>Make sure that <b>Map Template Classes</b> is set to <b>No</b></p>',
-'     <p>Press <b>Next</b> to continue.</p>',
-'     <p><img src="#THEME_IMAGES#demo/img/Image_13.png" /></p></li>',
-'   <li><p>Verify that<b> </b>the mappings for your templates and Universal Theme templates are correct. Use the <b>Universal Theme Migration Bookmarklet</b> helper below, to automatically assign the right mapping, or check out the full mapping guide '
-||'located at the end of this guide.</p>',
-'     <p>Most of the inconsistencies will be from new templates that Universal theme provides. Try to choose the template that best matches your existing template. You may want to browse the components in the Universal Theme Sample Application to get '
-||'a sense of the new templates and their various configurations. </p>',
-'     <p><img src="#THEME_IMAGES#demo/img/Image_14.png" /></p></li>',
-'   <li><p>Click <b>Switch Theme</b>.</p>',
-'     <p> <img src="#THEME_IMAGES#demo/img/Image_15.png" /></p></li>',
-'</ol>',
-''))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_display_condition_type=>'NEVER'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978915805133618704)
-,p_plug_name=>'Post Migration'
-,p_region_css_classes=>'dm-Migration-region'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(3550313444782567988)
-,p_plug_display_sequence=>80
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_new_grid_row=>false
-,p_plug_new_grid_column=>false
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h1>Final steps: Post migration tasks</h1>',
-'<p>Unlike the previous steps, the following tasks do not have to be completed in any particular order. Instead, it is advised that you carry them out before making new enhancements to your application, to ensure that any issues relating to the migrat'
-||'ion are not complicated by changes in functionality.</p>',
-'<ul>',
-'    <li>',
-'    <p>While it is not necessary to remove your older theme for your freshly migrated app to work, your older theme no longer serves any functional purpose. If you haven''t created any custom templates in your older theme (which you''d want to copy ove'
-||'r), or if you don''t need to keep the older theme for reference, consider deleting the older theme.</p>',
-'  </li>',
-'  <li>',
-'    <p>Ensure that the list items for <b>Navigation Menu</b> are correct, and that the <em>Current For</em> attributes are properly set.</p>',
-'    <p>Your tabs will be converted into a list format. If the current for attributes are not set correctly, the navigation links will not be selected when you navigate to each of the pages. </p>',
-'    <p><img src="#THEME_IMAGES#demo/img/Image_16.png"/></p>',
-'  </li>',
-'  <li>',
-'    <p>Decide if you want to stick with <b>Side Navigation</b> or change to the <b>Top Menu </b>as the application''s primary means of navigation.</p>',
-'    <p>If you choose to stick with side navigation, it is recommended to select <em>Navigation Icons</em> for each menu entry, otherwise each page will have the same default page icon. By going to Shared Components > Navigation Menu > List Entry, you'
-||' can choose from a variety of pre-built icons, allowing you to choose the best match for each page type. Please note that these icons will only appear if you are using side navigagtion.</p>',
-'    <p>To change to <b>Top Menu</b> you will need to navigate to Shared Component > User Interface Attributes > Edit Universal Theme. Then change <b>Position</b> to <em>Top</em> and <b>List Template</b> to <em>Top Menu Navigation</em>, and then apply'
-||' changes.</p>',
-'    <p><img src="#THEME_IMAGES#demo/img/Image_17.png"/></p>',
-'  </li>',
-'  <li>',
-'    <p><img src="#THEME_IMAGES#demo/img/Image_18.png"/></p>',
-'  </li>',
-'</ul>',
-'',
-'<h2>Best Practices for managing post-migration issues</h2>',
-'<p>While most migrations will be relatively painless, there is no set path for how dealing with issues arise as a result of this change. Consider the following pointers for how to exhaustively find and resolve such problems in your new Universal Them'
-||'e Application.</p>',
-'<ol>',
-'  <li>Visually review the migrated application.<br/>',
-'    - Run each page of your application, or at least a good cross section of different pages to make sure that there are no obvious display issues.<br/>',
-'    - If you have installed your original application under a different Application Id, perform side-by-side comparisons on a wide selection of pages, to ensure different page elements, such as buttons, and the overall page layout are not too diverge'
-||'nt.',
-'  </li>',
-'  <li>Check non-standard components.<br/>',
-'    - Be sure to check any pages where you implemented your own JavaScript to ensure the page still operates correctly. Many of the default class names for elements were changed, and some of the inline scripts that you have augmented your pages with '
-||'may no longer be needed. <br/>',
-'    - Review any pages or templates where you have added any CSS libraries. If necessary, reapply the CSS libraries into the migrated application.<br/>',
-'    - Review all plug-ins used throughout your application to ensure they are still functioning correctly. Some plug-ins from third parties may not work correctly with Application Express 5. If so, you may need to remove the plug-in or search for an '
-||'APEX 5.0 compatible plug-in.',
-'  </li>',
-'  <li>Ask your users to test your app.<br/>',
-'    - After testing the application yourself, the next step is to ask your users to use the new migrated application to ensure they are comfortable with the new user interface, and can readily use the application.<br/>',
-'    - Determine from your end users if any end user training material or application documentation needs to be revised before releasing the new application into production.',
-'  </li>',
-'</ol>',
-'',
-'<h3>After Debugging</h3>',
-'<p>Once you have brought your application up to a "functional" state, you should consider a few more simple improvements you can readily make to your application, so that you can take full advantage of the new features in both Application Express 5 a'
-||'nd Universal Theme. For example, you may want to prototype some different layout options, with a select group of users, to see if existing pages can be readily improved by simply changing some Template Options.</p>',
-'',
-''))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_plug_display_condition_type=>'NEVER'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(1978916148293618705)
-,p_plug_name=>'Best Practices on Common UI Patterns'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
-,p_plug_template=>wwv_flow_api.id(1370988447073029611)
-,p_plug_display_sequence=>20
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_source=>'<p>We can increase usability by following design patterns when building applications. This page showcases some of the most common design patterns in for enterprise applications, and instructions on how to apply them for your own flows.</p>'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(2221421629107504575)
-,p_plug_name=>'Design Patterns List'
-,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader:t-Region--scrollBody'
-,p_component_template_options=>'t-MediaList--showIcons:u-colors:t-MediaList--cols t-MediaList--2cols'
-,p_plug_template=>wwv_flow_api.id(3121231715860246749)
-,p_plug_display_sequence=>30
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_list_id=>wwv_flow_api.id(1211321025744361569)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>wwv_flow_api.id(1116867651117668858)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
-prompt --application/pages/page_05001
-begin
-wwv_flow_api.create_page(
- p_id=>5001
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Login Page'
-,p_alias=>'LOGIN-PAGE'
-,p_step_title=>'Login Page - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(3021684151403261193)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
-prompt --application/pages/page_05002
-begin
-wwv_flow_api.create_page(
- p_id=>5002
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Home and Dashboard'
-,p_alias=>'HOME-AND-DASHBOARD'
-,p_step_title=>'Home and Dashboard - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(3900506226168619263)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
-prompt --application/pages/page_05003
-begin
-wwv_flow_api.create_page(
- p_id=>5003
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Filter Page'
-,p_alias=>'FILTER-PAGE'
-,p_step_title=>'Filter Page - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(4779329318138981829)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
-prompt --application/pages/page_05004
-begin
-wwv_flow_api.create_page(
- p_id=>5004
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Marquee Page'
-,p_alias=>'MARQUEE-PAGE'
-,p_step_title=>'Marquee Page - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(5658153531706357102)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
-prompt --application/pages/page_05005
-begin
-wwv_flow_api.create_page(
- p_id=>5005
-,p_user_interface_id=>wwv_flow_api.id(1319173717720724629)
-,p_name=>'Modal Dialogs'
-,p_alias=>'MODAL-DIALOGS'
-,p_step_title=>'Modal Dialogs - &APP_TITLE.'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_api.id(1056168381265014818)
-,p_step_template=>wwv_flow_api.id(3121228739815246741)
-,p_page_css_classes=>'dm-Page dm-Page--center'
-,p_page_template_options=>'#DEFAULT#'
-,p_page_is_public_y_n=>'Y'
-,p_help_text=>'No help is available for this page.'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
-);
-wwv_flow_api.create_page_plug(
- p_id=>wwv_flow_api.id(6536978775324736356)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_api.id(1580336106168319527)
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_api.id(2223835478964964853)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_api.id(3121236124904246762)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-);
-end;
-/
 prompt --application/pages/page_06000
 begin
 wwv_flow_api.create_page(
@@ -48046,8 +46250,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211005091710'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1890060314399300753)
@@ -48191,8 +46394,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'SHAKEEB'
-,p_last_upd_yyyymmddhh24miss=>'20211020095826'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1194101015751252162)
@@ -48727,8 +46929,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211028064630'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1194100416267252156)
@@ -48830,8 +47031,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211028064547'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(3370554498354609057)
@@ -48932,8 +47132,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'TIM'
-,p_last_upd_yyyymmddhh24miss=>'20211019081859'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_report_region(
  p_id=>wwv_flow_api.id(1277567623426281751)
@@ -49190,8 +47389,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211028064528'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1083478941181047101)
@@ -49788,8 +47986,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20210922150713'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(1083495694381067445)
@@ -50012,8 +48209,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20211013081154'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(11787942636314020)
@@ -50226,7 +48422,7 @@ wwv_flow_api.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
-,p_last_upd_yyyymmddhh24miss=>'20211005091608'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(300686654383392106)
@@ -50784,7 +48980,7 @@ wwv_flow_api.create_page(
 ,p_step_template=>wwv_flow_api.id(1150030732397538053)
 ,p_page_template_options=>'#DEFAULT#:t-LoginPage--split:t-LoginPage--bg3'
 ,p_page_is_public_y_n=>'Y'
-,p_last_upd_yyyymmddhh24miss=>'20210827105544'
+,p_last_upd_yyyymmddhh24miss=>'20220104160609'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(975190787311054109)
