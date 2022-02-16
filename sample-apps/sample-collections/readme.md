@@ -1,4 +1,4 @@
-Sample Collections enables you to store rows of data for use within a Oracle Application Express session. This database application illustrates how to use PL/SQL to create and manage collection-based session state.
+Sample Collections enables you to store rows of data for use within a Oracle APEX session. This database application illustrates how to use PL/SQL to create and manage collection-based session state.
 
 Installation Steps
 ------------------------------------

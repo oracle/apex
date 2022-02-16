@@ -72,7 +72,6 @@
               <div class="u-Grid-col m-PageHeader-content">
                 <h1 class="m-PageHeader-title">Apps and Plug-ins</h1>
                 <p class="m-PageHeader-text">The APEX GitHub repository contains starter apps, sample apps, sample code, and plug-ins that you can try, learn from, use, and experiment with in Oracle APEX!</p>
-                <p><b>Please note that these samples are intended for use with Oracle APEX 21.1 and above.</b></p>
               </div>
             </div>
           </div>
@@ -96,13 +95,13 @@
 
         <div class="m-Section  rw-palette-ocean-170  m-Section--compact" id="section_navigation">
           <div class="u-Grid-container">
-            <div class="m-SectionNav">
-              <ul class="m-SectionNav-list">
-                <li class="m-SectionNav-item"><a class="m-SectionNav-link" href="#section-apps">Sample Apps</a></li>
-                <li class="m-SectionNav-item"><a class="m-SectionNav-link" href="#section-plugins">Plug-ins</a></li>
-                <li class="m-SectionNav-item"><a class="m-SectionNav-link" href="#section-starter">Starter Apps</a></li>
-              </ul>
+
+            <div class="m-VersionSwitcher">
+              <label class="m-VersionSwitcher-label" for="apex_version">APEX Release:</label>
+              <select class="m-VersionSwitcher-select" id="apex_version"></select>
+              <small>Please note that these samples are intended for use with Oracle APEX <span class="m-VersionSwitcher-version"></span> and above.</small>
             </div>
+
           </div>
         </div>
 

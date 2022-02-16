@@ -1,4 +1,4 @@
-This application highlights the features and functionality of the Oracle Application Express Interactive Grid. The interactive grid sample pages highlight the following declarative features.
+This application highlights the features and functionality of the Oracle APEX Interactive Grid. The interactive grid sample pages highlight the following declarative features.
 
 Installation Steps
 ------------------------------------

@@ -1,6 +1,6 @@
 # Sample Reporting
 
-This application highlights the reporting capabilities of Oracle Application Express. Following are the reports you can create declaratively using SQL:
+This application highlights the reporting capabilities of Oracle APEX. Following are the reports you can create declaratively using SQL:
 
 Interactive Report
 Interactive Grid

@@ -1,4 +1,4 @@
-This application showcases how to access external REST services from Oracle Application Express pages. The pages work on the sample RESTful Service, oracle.example.hr. The examples in this application illustrate how to create a simple tabular report on REST service data, how to filter, and how to add pagination. REST data can also be downloaded and staged into a local table for further processing, analysis and usage in Oracle Application Express components.
+This application showcases how to access external REST services from Oracle APEX pages. The pages work on the sample RESTful Service, oracle.example.hr. The examples in this application illustrate how to create a simple tabular report on REST service data, how to filter, and how to add pagination. REST data can also be downloaded and staged into a local table for further processing, analysis and usage in Oracle APEX components.
 
 Installation Steps
 ------------------------------------

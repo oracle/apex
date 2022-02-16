@@ -1,4 +1,4 @@
-Learn how to create Oracle Application Express applications that include file upload and download. Upload files using dialogs as well as dedicated pages. See how to download files stored in Oracle database BLOB columns within database tables. Specifically see how to produce file download links from interactive reports, classic reports, forms, and dynamically created HTML content.
+Learn how to create Oracle APEX applications that include file upload and download. Upload files using dialogs as well as dedicated pages. See how to download files stored in Oracle database BLOB columns within database tables. Specifically see how to produce file download links from interactive reports, classic reports, forms, and dynamically created HTML content.
 
 Installation Steps
 ------------------------------------
