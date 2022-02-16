@@ -1,6 +1,6 @@
 # Universal Theme Sample application
 
-Universal Theme is an all-new user interface for your Application Express apps. This app introduces you to Universal Theme by providing an easy way to browse through the various templates, template options, and theme styles.
+Universal Theme is an all-new user interface for your APEX apps. This app introduces you to Universal Theme by providing an easy way to browse through the various templates, template options, and theme styles.
 
 Install this application to view all the component templates that can be incorporated into an application with the new theme. The examples demonstrate how you can easily control the layout of your pages, to create a great looking application.
 

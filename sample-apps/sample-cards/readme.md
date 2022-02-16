@@ -1,4 +1,4 @@
-This application highlights Cards regions in Oracle Application Express (APEX). Cards regions are a native region type. They provide developers with a powerful and flexible new way to display data in bite-sized blocks, ideal for use in faceted search, or presenting at-a-glance information. This application demonstrates how you can use Cards regions to enhance your applications and present data in new ways.
+This application highlights Cards regions in Oracle APEX. Cards regions are a native region type. They provide developers with a powerful and flexible new way to display data in bite-sized blocks, ideal for use in faceted search, or presenting at-a-glance information. This application demonstrates how you can use Cards regions to enhance your applications and present data in new ways.
 
 Installation Steps
 ------------------------------------
