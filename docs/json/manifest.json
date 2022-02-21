@@ -13,7 +13,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Calendar",
-                    "description": "This application highlights the native calendaring capabilities of Oracle Application Express. It features a monthly calendar with stylized daily tasks. The dates can be changed using drag and drop, which is all declarative and easily created using native Application Express wizards."
+                    "description": "This application highlights the native calendaring capabilities of Oracle APEX. It features a monthly calendar with stylized daily tasks. The dates can be changed using drag and drop, which is all declarative and easily created using native APEX wizards."
                 },
                 "de": {
                     "name": "",
@@ -66,7 +66,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Cards",
-                    "description": "This application highlights Cards regions in Oracle Application Express (APEX). Cards regions are a native region type. They provide developers with a powerful and flexible new way to display data in bite-sized blocks, ideal for use in faceted search, or presenting at-a-glance information."
+                    "description": "This application highlights Cards regions in Oracle APEX. Cards regions are a native region type. They provide developers with a powerful and flexible new way to display data in bite-sized blocks, ideal for use in faceted search, or presenting at-a-glance information."
                 },
                 "de": {
                     "name": "",
@@ -119,7 +119,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Charts",
-                    "description": "This application highlights the charting capabilities of Oracle Application Express (APEX). It demonstrates how you can enhance your applications to visually represent your data, using declarative and plug-in based charting solutions."
+                    "description": "This application highlights the charting capabilities of Oracle APEX. It demonstrates how you can enhance your applications to visually represent your data, using declarative and plug-in based charting solutions."
                 },
                 "de": {
                     "name": "",
@@ -172,7 +172,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Collections",
-                    "description": "Sample Collections enables you to store rows of data for use within an Oracle Application Express session. This database application illustrates how to use PL/SQL to create and manage collection-based session state."
+                    "description": "Sample Collections enables you to store rows of data for use within an Oracle APEX session. This database application illustrates how to use PL/SQL to create and manage collection-based session state."
                 },
                 "de": {
                     "name": "",
@@ -331,7 +331,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample File Upload and Download",
-                    "description": "Learn how to create Oracle Application Express applications that include file upload and download. Upload files using dialogs as well as dedicated pages. See how to download files stored in Oracle database BLOB columns within database tables. Specifically see how to produce file download links in interactive reports, classic reports, forms, and dynamically created HTML content."
+                    "description": "Learn how to create Oracle APEX applications that include file upload and download. Upload files using dialogs as well as dedicated pages. See how to download files stored in Oracle database BLOB columns within database tables. Specifically see how to produce file download links in interactive reports, classic reports, forms, and dynamically created HTML content."
                 },
                 "de": {
                     "name": "",
@@ -384,7 +384,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Interactive Grids",
-                    "description": "This application highlights the features and functionality of the Oracle Application Express Interactive Grid. The interactive grid sample pages highlight the following declarative features."
+                    "description": "This application highlights the features and functionality of the Oracle APEX Interactive Grid. The interactive grid sample pages highlight the following declarative features."
                 },
                 "de": {
                     "name": "",
@@ -490,7 +490,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Master Detail",
-                    "description": "This application highlights the native master detail capabilities of Oracle Application Express. The application contains four different master detail page layouts. The first two layouts display master detail in a single page using editable Interactive Grids. The last two layouts display master detail in two pages with mix of editable Interactive Grids, form items, classic reports and modal popups."
+                    "description": "This application highlights the native master detail capabilities of Oracle APEX. The application contains four different master detail page layouts. The first two layouts display master detail in a single page using editable Interactive Grids. The last two layouts display master detail in two pages with mix of editable Interactive Grids, form items, classic reports and modal popups."
                 },
                 "de": {
                     "name": "",
@@ -543,7 +543,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Reporting",
-                    "description": "This application highlights the reporting capabilities of Oracle Application Express. You can create Interactive Reports, Interactive Grids, Faceted Search Reports, Cards Reports, and Classic Reports declaratively using SQL."
+                    "description": "This application highlights the reporting capabilities of Oracle APEX. You can create Interactive Reports, Interactive Grids, Faceted Search Reports, Cards Reports, and Classic Reports declaratively using SQL."
                 },
                 "de": {
                     "name": "",
@@ -596,7 +596,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample REST Services",
-                    "description": "This application showcases how to access external REST services from Oracle Application Express. The app works on the sample RESTful Service, oracle.example.hr. The examples in this application illustrate how to create a simple tabular report on REST service data, how to filter, and how to add pagination."
+                    "description": "This application showcases how to access external REST services from Oracle APEX. The app works on the sample RESTful Service, oracle.example.hr. The examples in this application illustrate how to create a simple tabular report on REST service data, how to filter, and how to add pagination."
                 },
                 "de": {
                     "name": "",
@@ -649,7 +649,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Trees",
-                    "description": "Learn how to create a tree control using a SQL query. This application shows various methods of integrating tree controls into your Oracle Application Express application."
+                    "description": "Learn how to create a tree control using a SQL query. This application shows various methods of integrating tree controls into your Oracle APEX application."
                 },
                 "de": {
                     "name": "",
