@@ -695,13 +695,13 @@
             "version": "21.2",
             "iconClass": "sample-ut",
             "icon": "https://raw.githubusercontent.com/oracle/apex/21.2/docs/img/rw/apps/app-sample-universal-theme.svg",
-            "url": "https://github.com/oracle/apex/tree/21.2/sample-apps/universal-theme-sample-application",
-            "source": "https://raw.githubusercontent.com/oracle/apex/21.2/sample-apps/universal-theme-sample-application/universal-theme-sample-application.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/21.2/sample-apps/universal-theme-sample-application/universal-theme-sample-application.zip",
+            "url": "https://github.com/oracle/apex/tree/21.2/sample-apps/universal-theme-reference",
+            "source": "https://raw.githubusercontent.com/oracle/apex/21.2/sample-apps/universal-theme-reference/universal-theme-reference.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/21.2/sample-apps/universal-theme-reference/universal-theme-reference.zip",
             "license": "",
             "i18n": {
                 "en": {
-                    "name": "Universal Theme Sample App",
+                    "name": "Universal Theme Reference",
                     "description": "This app introduces you to Universal Theme by providing an easy way to browse through the various templates, template options, and theme styles. The examples demonstrate how you can easily control the layout of your pages, to create a great looking application."
                 },
                 "de": {

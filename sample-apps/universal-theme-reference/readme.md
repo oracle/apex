@@ -1,4 +1,4 @@
-# Universal Theme Sample application
+# Universal Theme Reference
 
 Universal Theme is an all-new user interface for your APEX apps. This app introduces you to Universal Theme by providing an easy way to browse through the various templates, template options, and theme styles.
 
