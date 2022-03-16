@@ -5,9 +5,10 @@ Oracle APEX is a low-code development platform that enables you to build scalabl
 This GitHub project contains starter apps, sample apps, sample code, and plug-ins that you can use with [Oracle APEX](https://apex.oracle.com/).
 
 ## Branches
+These branches contains starter apps, sample apps and so on for a specific version of Oracle APEX.
 
-- [APEX 21.2](../../tree/21.2)
-- [APEX 21.1](../../tree/21.1)
+- [Oracle APEX 21.2](../../tree/21.2)
+- [Oracle APEX 21.1](../../tree/21.1)
 
 ## Getting Started
 Get started with APEX and the code samples found in this project by requesting your own workspace on [apex.oracle.com](https://apex.oracle.com/en/learn/getting-started/).
