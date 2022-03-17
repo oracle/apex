@@ -60,7 +60,7 @@
 
                     newEntry.name = entry.name ? entry.name : entry.i18n[lang] ? entry.i18n[lang].name : "";
                     newEntry.description = entry.description ? entry.description : entry.i18n[lang] ? entry.i18n[lang].description : "";
-                    newEntry.slug = entry.slug ? entry.slug : entry.iconClass;
+                    newEntry.icon = entry.icon;
                     newEntry.url = entry.url;
                     newEntry.zip = entry.zip;
                     newEntry.source = entry.source;
@@ -79,7 +79,7 @@
                     .map(
                         ( entry ) => `<div class="u-Grid-row">
                                     <div class="m-App">
-                                        <div class="m-App-icon ${entry.slug}"></div>
+                                        <div class="m-App-icon" style="background-image: url(${entry.icon});"></div>
                                         <div class="m-App-details">
                                             <h3 class="m-App-title"><a class="m-App-link" target="_blank" rel="noopener" href="${entry.url}">${entry.name}</a></h3>
                                             <p class="m-App-category">${entry.description}</p>
