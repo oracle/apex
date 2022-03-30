@@ -16,11 +16,12 @@
 
     function loadAPEXVersions() {
         const apiURL = "https://api.github.com/repos/oracle/apex/branches",
-              versionURL = getURLParamValue( "version" );
+              versionURL = getURLParamValue( "version" ),
+              excludeBranches = ["main", "22.1"];
 
         const applyVersions = function ( pData ) {
             const data = pData || [],
-                  filteredData = data.filter( ( row ) => row.name !== "main" );
+                  filteredData = data.filter( ( row ) =>  !excludeBranches.includes( row.name ) );
             let option;
 
             // reverse loop, thus branches api is sorted by name, and we want the most current version to be first & default
