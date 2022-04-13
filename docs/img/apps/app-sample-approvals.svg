@@ -1,0 +1,6 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <path d="M0,0H64V64H0Z" fill="#4c4e50" fill-rule="evenodd"/>
+  <polygon points="47.275 17.201 26.178 38.297 16.725 28.945 12 33.67 26.128 47.799 52 21.926 47.275 17.201" opacity="0.1"/>
+  <rect x="18.407" y="28.159" width="36.589" height="6.683" transform="translate(-11.524 35.178) rotate(-45)" fill="#24cb7f"/>
+  <rect x="15.723" y="28.36" width="6.683" height="13.297" transform="translate(-19.172 23.735) rotate(-45.001)" fill="#4aa4ec"/>
+</svg>

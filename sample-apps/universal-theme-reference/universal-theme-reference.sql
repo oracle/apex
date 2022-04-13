@@ -20,7 +20,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2022.04.12'
-,p_release=>'22.1.0-15'
+,p_release=>'22.1.0-16'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>9042
 ,p_default_id_offset=>497901394252394341
@@ -34,14 +34,14 @@ prompt APPLICATION 9042 - Universal Theme 22.1 Reference
 -- Application Export:
 --   Application:     9042
 --   Name:            Universal Theme 22.1 Reference
---   Date and Time:   06:44 Thursday April 7, 2022
+--   Date and Time:   05:09 Wednesday April 13, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                    106
 --       Items:                   49
 --       Processes:                5
---       Regions:                797
+--       Regions:                800
 --       Buttons:                149
 --       Dynamic Actions:         45
 --     Shared Components:
@@ -75,7 +75,7 @@ prompt APPLICATION 9042 - Universal Theme 22.1 Reference
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          2
---   Version:         22.1.0-15
+--   Version:         22.1.0-16
 --   Instance ID:     697845941895809
 --
 
@@ -95,7 +95,7 @@ wwv_flow_imp.create_flow(
 ,p_application_group_name=>'Universal Theme'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'N'
-,p_checksum_salt_last_reset=>'20220407064200'
+,p_checksum_salt_last_reset=>'20220412160044'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_compatibility_mode=>'21.2'
@@ -128,8 +128,8 @@ wwv_flow_imp.create_flow(
 ,p_tokenize_row_search=>'N'
 ,p_substitution_string_01=>'APP_DATE_FMT'
 ,p_substitution_value_01=>'Day Month DD, YYYY'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20220407064200'
+,p_last_updated_by=>'PAIGE'
+,p_last_upd_yyyymmddhh24miss=>'20220412160044'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>246
 ,p_ui_type_name => null
@@ -25581,9 +25581,7 @@ wwv_flow_imp_shared.create_plugin(
 '    p_is_printer_friendly in boolean )',
 '    return apex_plugin.t_region_render_result',
 'is',
-'',
-'    c_component_static_id           constant varchar2(1000) := p_region.attribute_01;',
-'',
+'    c_component_static_id constant varchar2(1000) := p_region.attribute_01;',
 'begin',
 '',
 '    if apex_application.g_debug then',
@@ -25592,9 +25590,15 @@ wwv_flow_imp_shared.create_plugin(
 '            p_region => p_region );',
 '    end if;',
 '',
-'    for i in ( select * from apex_application_page_regions where workspace = c_workspace and application_id = :app_id and page_id = :app_page_id and static_id =  c_component_static_id ) loop',
+'    for i in ( select *',
+'                 from apex_application_page_regions',
+'                where workspace      = c_workspace',
+'                  and application_id = :app_id',
+'                  and page_id        = :app_page_id',
+'                  and static_id      = c_component_static_id )',
+'    loop',
 '        if i.region_source is not null then',
-'            sys.htp.p( ''<pre class="dm-Code lang-sql margin-none"><code>''||i.region_source||''</code></pre>'' );',
+'            sys.htp.p( ''<pre class="lang-sql" tabindex="-1" style="margin: 1rem;"><code>'' || i.region_source || ''</code></pre>'' );',
 '        end if;',
 '    end loop;',
 '',
@@ -48481,6 +48485,58 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
 ,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'.class,',
+'.class-value,',
+'.class-desc {',
+'    display: inline-block;',
+'    font-size: 12px;',
+'    font-family: ''Menlo'',''Consolas'',monospace;',
+'}',
+'.class {',
+'    color: #9C27B0;',
+'}',
+'.class.tag {',
+'    padding: 4px 8px;',
+'    background-color: #FFF;',
+'    border-radius: 2px;',
+'    box-shadow: inset rgba(225, 190, 231, .25) 0 0 0 1px;',
+'}',
+'.class-value {',
+'    color: #008676;',
+'    min-width: 40px;',
+'}',
+'.class-var {',
+'    font-weight: bold;',
+'    color: #008676;',
+'}',
+'.dm-Report--doc {',
+'    background: #FFF;',
+'    border: 1px solid rgba(0,0,0,.05);',
+'}',
+'.dm-Report--doc th, ',
+'.dm-Report--doc td {',
+'    padding: 8px;',
+'    min-height: 32px;',
+'    background-color: transparent;',
+'    border-width: 0 0 1px 0;',
+'    border-style: solid;',
+'    border-color: rgba(0,0,0,.05);',
+'}',
+'.dm-Report--doc td {',
+'    vertical-align: top;',
+'}',
+'.dm-Report--doc tr:last-child td {',
+'    border-bottom-width: 0;',
+'}',
+'.dm-Report--doc .class {',
+'    min-width: 40px;',
+'}',
+'.dm-Report--doc .class-desc {',
+'    width: 48px;',
+'    text-align: right;',
+'    color: rgba(0,0,0,.55);',
+'    border-radius: 2px;',
+'}',
 '.dm-Code {',
 '    border-radius: var(--ut-component-border-radius);',
 '    border: var(--ut-component-border-width) solid var(--ut-component-border-color);',
@@ -48490,7 +48546,8 @@ wwv_flow_imp_page.create_page(
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'11'
-,p_last_upd_yyyymmddhh24miss=>'20220225144709'
+,p_last_updated_by=>'PAIGE'
+,p_last_upd_yyyymmddhh24miss=>'20220412143650'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1083478941181047101)
@@ -49081,6 +49138,10 @@ wwv_flow_imp_page.create_page(
 '    text-align: right;',
 '    color: rgba(0,0,0,.55);',
 '    border-radius: 2px;',
+'}',
+'.dm-Code {',
+'    border-radius: var(--ut-component-border-radius);',
+'    border: var(--ut-component-border-width) solid var(--ut-component-border-color);',
 '}'))
 ,p_step_template=>wwv_flow_imp.id(3121228739815246741)
 ,p_page_css_classes=>'dm-Page dm-Page--center'
@@ -49088,14 +49149,83 @@ wwv_flow_imp_page.create_page(
 ,p_page_is_public_y_n=>'Y'
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'11'
-,p_last_upd_yyyymmddhh24miss=>'20220225144709'
+,p_last_updated_by=>'PAIGE'
+,p_last_upd_yyyymmddhh24miss=>'20220412160044'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(246582675459933132)
+,p_plug_name=>'Text Limit'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h1'
+,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
+,p_plug_display_sequence=>50
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_grid_column_span=>8
+,p_plug_grid_column_css_classes=>'col-sm-12'
+,p_plug_source=>'<p>Use these classes as simple modifiers to restrict a block of text control to a specified number of lines. If a block of text surpasses the specified number of lines then an ellipses (...) is added and the remaining text is hidden.</p>'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(246582972134933135)
+,p_plug_name=>'Options'
+,p_parent_plug_id=>wwv_flow_imp.id(246582675459933132)
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Use the following class name structure with the options listed below to limit your text to a specified number of lines.</p>',
+'<p><span class="class tag">u-lineclamp-<span class="class-var">number</span></span></p>',
+'',
+'<table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">',
+'  <thead>',
+'    <tr>',
+'      <th style="width: 30%" class="u-textStart">Variable</th>',
+'      <th class="u-textStart">Values</th>',
+'      <th class="u-textStart">Description</th>',
+'    </tr>',
+'  </thead>',
+'  <tbody>',
+'    <tr>',
+'        <td>Number</td>',
+'        <td>',
+'            <span class="class-value">1</span><br/>',
+'            <span class="class-value">2</span><br/>',
+'            <span class="class-value">3</span><br/>',
+'            <span class="class-value">4</span><br/>',
+'            <span class="class-value">5</span><br/>',
+'        </td>',
+'        <td>The number of lines the block of text should be limited to.</td>',
+'  </tbody>',
+'</table>'))
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(246583673821933142)
+,p_plug_name=>'Demo'
+,p_parent_plug_id=>wwv_flow_imp.id(246582675459933132)
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<pre class="dm-Code lang-html"><code>',
+'&lt;p class="u-lineclamp-1"&gt;This text will be limited to one line.&lt;/p&gt;',
+'&lt;p class="u-lineclamp-2"&gt;This text will be limited to two lines.&lt;/p&gt;',
+'</code></pre>'))
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1083495694381067445)
 ,p_plug_name=>'Accessibility'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
 ,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
 ,p_plug_grid_column_css_classes=>'col-sm-12'
@@ -49199,10 +49329,11 @@ wwv_flow_imp_page.create_page_plug(
 '    </tr>',
 '  </thead>',
 '  <tbody>',
-'    <tr><td><span class="class">u-bold</span></td><td class="u-bold">Bolds text</td></tr>',
+'    <tr><td><span class="class">u-bold</span></td><td class="u-bold">Bold text</td></tr>',
 '    <tr><td><span class="class">u-italics</span></td><td class="u-italics">Italicize text</td></tr>',
-'    <tr><td><span class="class">u-underline</span></td><td class="u-underline">Underlines text</td></tr>',
+'    <tr><td><span class="class">u-underline</span></td><td class="u-underline">Underline text</td></tr>',
 '    <tr><td><span class="class">u-fixedFont</span></td><td class="u-fixedFont">Use a fixed-letter-space font</td></tr>',
+'    <tr><td><span class="class">u-hidden</span></td><td>Hide text</td></tr>',
 '  </tbody>',
 '</table>'))
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
