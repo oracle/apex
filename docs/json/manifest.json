@@ -3,7 +3,7 @@
         {
             "internalName": "SAMPLE_APPROVALS",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.1.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.1/docs/img/apps/app-sample-approvals.svg",
             "url": "https://github.com/oracle/apex/blob/22.1/sample-apps/sample-approvals",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.1/sample-apps/sample-approvals/sample-approvals.sql",

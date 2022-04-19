@@ -19,7 +19,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2022.04.12'
-,p_release=>'22.1.0-16'
+,p_release=>'22.1.0-17'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7870
 ,p_default_id_offset=>315735426453268570
@@ -33,7 +33,7 @@ prompt APPLICATION 7870 - Sample Approvals
 -- Application Export:
 --   Application:     7870
 --   Name:            Sample Approvals
---   Date and Time:   05:01 Wednesday April 13, 2022
+--   Date and Time:   03:09 Tuesday April 19, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -76,7 +76,7 @@ prompt APPLICATION 7870 - Sample Approvals
 --         Templates:              1
 --     Supporting Objects:  Included
 --       Install scripts:          3
---   Version:         22.1.0-16
+--   Version:         22.1.0-17
 --   Instance ID:     697845941895809
 --
 
@@ -114,7 +114,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.1.0'
+,p_flow_version=>'22.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -128,7 +128,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample Approvals'
 ,p_last_updated_by=>'STEVE'
-,p_last_upd_yyyymmddhh24miss=>'20220412033634'
+,p_last_upd_yyyymmddhh24miss=>'20220414111216'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>131
 ,p_ui_type_name => null
@@ -178,8 +178,10 @@ wwv_flow_imp_shared.create_task_def_action(
 ,p_on_event=>'COMPLETE'
 ,p_action_type=>'NATIVE_PLSQL'
 ,p_action_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'insert into eba_demo_appr_sal_history(empno,old_sal,new_sal,task_id,approval_date) ',
+'select empno, sal, :P_NEW_SALARY, :APEX$TASK_ID, sysdate from eba_demo_appr_emp where empno = :APEX$TASK_PK;',
 'update eba_demo_appr_emp set sal = :P_NEW_SALARY where empno = :APEX$TASK_PK;',
-'insert into eba_demo_appr_sal_history(empno,new_sal,approval_date) values (:APEX$TASK_PK,:P_NEW_SALARY,SYSDATE);'))
+''))
 ,p_action_clob_language=>'PLSQL'
 ,p_location=>'LOCAL'
 ,p_success_message=>'Salary change approved'
@@ -22391,7 +22393,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'03'
 ,p_last_updated_by=>'STEVE'
-,p_last_upd_yyyymmddhh24miss=>'20220411080324'
+,p_last_upd_yyyymmddhh24miss=>'20220414005219'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(316961825194465517)
@@ -22423,20 +22425,9 @@ wwv_flow_imp_page.create_report_region(
 '            when t.state_code = ''ASSIGNED'' then ',
 '                t.state||'' to ''||t.actual_owner',
 '            when t.state_code = ''UNASSIGNED'' then ',
-'                t.state||'' (''||(select listagg(participant,'', '') ',
-'                                       within group (order by participant) ',
-'                                  from apex_task_participants ',
-'                                 where task_id = t.task_id ',
-'                                 and participant_type = ''POTENTIAL_OWNER''',
-'                                 and (t.initiator is null or t.initiator != participant)',
-'                                 )||'')''',
+'                t.state||'' (''||eba_demo_appr.approvers_for_task(t.task_id)||'')''',
 '        end status,',
-'        (select listagg(participant,'', '') ',
-'                                       within group (order by participant) ',
-'                                  from apex_task_participants ',
-'                                 where task_id = t.task_id ',
-'                                 and participant_type = ''BUSINESS_ADMIN''',
-'                                 ) as admins,',
+'        eba_demo_appr.admins_for_task(t.task_id) as admins,',
 '        t.due_on due_by,',
 '        eba_demo_appr.details_task_url(',
 '          p_url     => d.details_link_target,',
@@ -22884,7 +22875,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'23'
 ,p_last_updated_by=>'STEVE'
-,p_last_upd_yyyymmddhh24miss=>'20220406133922'
+,p_last_upd_yyyymmddhh24miss=>'20220414111216'
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(310377995190236840)
@@ -22899,11 +22890,17 @@ wwv_flow_imp_page.create_report_region(
 ,p_source_type=>'NATIVE_SQL_REPORT'
 ,p_query_type=>'SQL'
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select to_char(round((to_number(p.param_value) - e.sal) / e.sal, 3)*100,''S99999.9'')||',
-'       ''%'' percent_change',
+'select case',
+'         when t.state_code=''COMPLETED'' and s.old_sal is not null then',
+'             to_char(round((s.new_sal - s.old_sal) / s.old_sal, 3)*100,''S99999.9'')',
+'         else',
+'            to_char(round((to_number(p.param_value) - e.sal) / e.sal, 3)*100,''S99999.9'')',
+'       end',
+'       ||''%'' percent_change',
 'from apex_tasks t',
 'left join eba_demo_appr_emp e on e.empno = to_number(t.detail_pk)',
 'left join apex_task_parameters p on p.task_id = t.task_id and p.param_static_id = ''P_NEW_SALARY''',
+'left outer join eba_demo_appr_sal_history s on s.task_id = t.task_id ',
 'where t.task_id = :P15_TASK_ID'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
@@ -23814,6 +23811,9 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_execute_on_page_init=>'N'
 ,p_action=>'NATIVE_DIALOG_CANCEL'
 );
+end;
+/
+begin
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(533952616075308310)
 ,p_process_sequence=>10
@@ -23826,9 +23826,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_when_button_id=>wwv_flow_imp.id(533950672417308298)
 );
-end;
-/
-begin
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(533953083916308310)
 ,p_process_sequence=>20
@@ -24531,6 +24528,8 @@ wwv_flow_imp_shared.create_install_script(
 '	"EMPNO" NUMBER, ',
 '	"NEW_SAL" NUMBER, ',
 '	"APPROVAL_DATE" DATE, ',
+'	"OLD_SAL" NUMBER, ',
+'	"TASK_ID" NUMBER, ',
 '	 CONSTRAINT "EBA_DEMO_APPR_SAL_ID_PK" PRIMARY KEY ("ID")',
 '  USING INDEX  ENABLE',
 '   ) ;',
@@ -24570,6 +24569,8 @@ wwv_flow_imp_shared.create_install_script(
 '                                          p_admin out varchar2,',
 '                                          p_approver out varchar2);                                                                                          ',
 '    function details_task_url(p_app_id number, p_task_id number, p_url varchar2)  return varchar2;',
+'    function approvers_for_task(p_task_id number) return varchar2;',
+'    function admins_for_task(p_task_id number) return varchar2;    ',
 'end;',
 '/',
 '',
@@ -24728,6 +24729,38 @@ wwv_flow_imp_shared.create_install_script(
 '                                       l_job,',
 '                                       p_proposed_sal);',
 '    end;',
+'    --',
+'    /*',
+'     * Workaround for RDBMS 21c issue directly using listagg() against view w/ json_table()',
+'     */',
+'    function admins_for_task(p_task_id number) return varchar2 is',
+'        l_ret varchar2(2000);',
+'    begin',
+'        -- Return admins as CSV',
+'        select listagg(participant,'', '')',
+'               within group (order by participant)',
+'        into l_ret',
+'        from apex_task_participants',
+'        where task_id = p_task_id',
+'        and participant_type = ''BUSINESS_ADMIN'';',
+'        return l_ret; ',
+'    end;',
+'    --',
+'    function approvers_for_task(p_task_id number) return varchar2 is',
+'        l_ret varchar2(2000);',
+'    begin',
+'        -- Return approvers as CSV leaving out initiator',
+'        select listagg(participant,'', '')',
+'               within group (order by participant)',
+'        into l_ret',
+'        from apex_task_participants tp, apex_tasks t',
+'        where tp.task_id = p_task_id',
+'        and t.task_id = tp.task_id',
+'        and participant_type = ''POTENTIAL_OWNER''',
+'        and (t.initiator is null or t.initiator != tp.participant);',
+'        return l_ret; ',
+'    end;    ',
+'',
 'end;',
 '/',
 '',
