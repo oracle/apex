@@ -20,7 +20,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2022.04.12'
-,p_release=>'22.1.0-16'
+,p_release=>'22.1.0-17'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>9042
 ,p_default_id_offset=>497901394252394341
@@ -34,8 +34,8 @@ prompt APPLICATION 9042 - Universal Theme 22.1 Reference
 -- Application Export:
 --   Application:     9042
 --   Name:            Universal Theme 22.1 Reference
---   Date and Time:   05:09 Wednesday April 13, 2022
---   Exported By:     DANIEL
+--   Date and Time:   05:33 Wednesday May 4, 2022
+--   Exported By:     VMORNEAU
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                    106
@@ -75,7 +75,7 @@ prompt APPLICATION 9042 - Universal Theme 22.1 Reference
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          2
---   Version:         22.1.0-16
+--   Version:         22.1.0-17
 --   Instance ID:     697845941895809
 --
 
@@ -95,7 +95,7 @@ wwv_flow_imp.create_flow(
 ,p_application_group_name=>'Universal Theme'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'N'
-,p_checksum_salt_last_reset=>'20220412160044'
+,p_checksum_salt_last_reset=>'20220504052403'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_compatibility_mode=>'21.2'
@@ -128,8 +128,8 @@ wwv_flow_imp.create_flow(
 ,p_tokenize_row_search=>'N'
 ,p_substitution_string_01=>'APP_DATE_FMT'
 ,p_substitution_value_01=>'Day Month DD, YYYY'
-,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20220412160044'
+,p_last_updated_by=>'VMORNEAU'
+,p_last_upd_yyyymmddhh24miss=>'20220504052403'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>246
 ,p_ui_type_name => null
@@ -27702,7 +27702,8 @@ wwv_flow_imp_page.create_page(
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'23'
-,p_last_upd_yyyymmddhh24miss=>'20220104160639'
+,p_last_updated_by=>'VMORNEAU'
+,p_last_upd_yyyymmddhh24miss=>'20220504052403'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(250050360406404011)
@@ -27745,7 +27746,7 @@ wwv_flow_imp_page.create_page_plug(
 '   and s.application_id = :app_id',
 '   and t.ui_type_name   = ''DESKTOP''',
 '   and t.is_current     = ''Yes''',
-'   and s.theme_roller_output_file_url like ''%THEME_IMAGES%'' -- custom theme style',
+'   and s.theme_roller_output_file_url like ''%THEME_FILES%'' -- custom theme style',
 ' order by case when s.name like ''%Redwood%'' then 2 else 1 end, s.name'))
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
