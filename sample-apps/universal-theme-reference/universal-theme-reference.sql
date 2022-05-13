@@ -20,7 +20,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2022.04.12'
-,p_release=>'22.1.0-17'
+,p_release=>'22.1.0'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>9042
 ,p_default_id_offset=>497901394252394341
@@ -34,8 +34,8 @@ prompt APPLICATION 9042 - Universal Theme 22.1 Reference
 -- Application Export:
 --   Application:     9042
 --   Name:            Universal Theme 22.1 Reference
---   Date and Time:   05:33 Wednesday May 4, 2022
---   Exported By:     VMORNEAU
+--   Date and Time:   11:30 Friday May 13, 2022
+--   Exported By:     PAIGE
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                    106
@@ -73,9 +73,9 @@ prompt APPLICATION 9042 - Universal Theme 22.1 Reference
 --       Globalization:
 --       Reports:
 --       E-Mail:
---     Supporting Objects:  Included
+--     Supporting Objects:  Included (auto-install)
 --       Install scripts:          2
---   Version:         22.1.0-17
+--   Version:         22.1.0
 --   Instance ID:     697845941895809
 --
 
@@ -95,7 +95,7 @@ wwv_flow_imp.create_flow(
 ,p_application_group_name=>'Universal Theme'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'N'
-,p_checksum_salt_last_reset=>'20220504052403'
+,p_checksum_salt_last_reset=>'20220513112603'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_compatibility_mode=>'21.2'
@@ -113,7 +113,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'HTMLDB_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.1.0'
+,p_flow_version=>'22.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -128,8 +128,8 @@ wwv_flow_imp.create_flow(
 ,p_tokenize_row_search=>'N'
 ,p_substitution_string_01=>'APP_DATE_FMT'
 ,p_substitution_value_01=>'Day Month DD, YYYY'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20220504052403'
+,p_last_updated_by=>'PAIGE'
+,p_last_upd_yyyymmddhh24miss=>'20220513112603'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>246
 ,p_ui_type_name => null
@@ -48548,7 +48548,7 @@ wwv_flow_imp_page.create_page(
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'11'
 ,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20220412143650'
+,p_last_upd_yyyymmddhh24miss=>'20220513104648'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1083478941181047101)
@@ -48897,6 +48897,7 @@ wwv_flow_imp_page.create_page_plug(
 '    <tr><td><span class="class">u-align<span class="class-value">Middle</span></span></td><td>Vertically align to the middle</td></tr>',
 '    <tr><td><span class="class">u-align<span class="class-value">Baseline</span></span></td><td>Vertically align to the text baseline</td></tr>',
 '    <tr><td><span class="class">u-align<span class="class-value">Bottom</span></span></td><td>Vertically align to the bottom</td></tr>',
+'    <tr><td><span class="class">u-align<span class="class-value">-self-center</span></span></td><td>Vertically align to the center in a column</td></tr>',
 '  </tbody>',
 '</table>'))
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -49151,7 +49152,7 @@ wwv_flow_imp_page.create_page(
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'11'
 ,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20220412160044'
+,p_last_upd_yyyymmddhh24miss=>'20220512104042'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(246582675459933132)
@@ -49162,7 +49163,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
 ,p_plug_grid_column_css_classes=>'col-sm-12'
-,p_plug_source=>'<p>Use these classes as simple modifiers to restrict a block of text control to a specified number of lines. If a block of text surpasses the specified number of lines then an ellipses (...) is added and the remaining text is hidden.</p>'
+,p_plug_source=>'<p>Use these classes as simple modifiers to restrict a block of text control to a specified number of lines. If a block of text surpasses the specified number of lines then an ellipsis (...) is added and the remaining text is hidden.</p>'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
@@ -51244,7 +51245,7 @@ end;
 /
 prompt --application/end_environment
 begin
-wwv_flow_imp.import_end(p_auto_install_sup_obj => nvl(wwv_flow_application_install.get_auto_install_sup_obj, false));
+wwv_flow_imp.import_end(p_auto_install_sup_obj => nvl(wwv_flow_application_install.get_auto_install_sup_obj, true));
 commit;
 end;
 /
