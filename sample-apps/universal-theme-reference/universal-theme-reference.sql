@@ -20,7 +20,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2022.04.12'
-,p_release=>'22.1.0'
+,p_release=>'22.1.0-17'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>9042
 ,p_default_id_offset=>497901394252394341
@@ -34,14 +34,14 @@ prompt APPLICATION 9042 - Universal Theme 22.1 Reference
 -- Application Export:
 --   Application:     9042
 --   Name:            Universal Theme 22.1 Reference
---   Date and Time:   11:30 Friday May 13, 2022
+--   Date and Time:   19:26 Friday June 3, 2022
 --   Exported By:     PAIGE
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                    106
 --       Items:                   49
 --       Processes:                5
---       Regions:                800
+--       Regions:                803
 --       Buttons:                149
 --       Dynamic Actions:         45
 --     Shared Components:
@@ -75,7 +75,7 @@ prompt APPLICATION 9042 - Universal Theme 22.1 Reference
 --       E-Mail:
 --     Supporting Objects:  Included (auto-install)
 --       Install scripts:          2
---   Version:         22.1.0
+--   Version:         22.1.0-17
 --   Instance ID:     697845941895809
 --
 
@@ -95,7 +95,7 @@ wwv_flow_imp.create_flow(
 ,p_application_group_name=>'Universal Theme'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'N'
-,p_checksum_salt_last_reset=>'20220513112603'
+,p_checksum_salt_last_reset=>'20220603192501'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_compatibility_mode=>'21.2'
@@ -113,7 +113,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'HTMLDB_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.1.1'
+,p_flow_version=>'22.1.2'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -129,7 +129,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_01=>'APP_DATE_FMT'
 ,p_substitution_value_01=>'Day Month DD, YYYY'
 ,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20220513112603'
+,p_last_upd_yyyymmddhh24miss=>'20220603192501'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>246
 ,p_ui_type_name => null
@@ -27702,8 +27702,7 @@ wwv_flow_imp_page.create_page(
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'23'
-,p_last_updated_by=>'VMORNEAU'
-,p_last_upd_yyyymmddhh24miss=>'20220504052403'
+,p_last_upd_yyyymmddhh24miss=>'20220104160639'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(250050360406404011)
@@ -48548,7 +48547,213 @@ wwv_flow_imp_page.create_page(
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'11'
 ,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20220513104648'
+,p_last_upd_yyyymmddhh24miss=>'20220602215607'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(565521618640857303)
+,p_plug_name=>'Flex'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h1'
+,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
+,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_grid_column_span=>8
+,p_plug_grid_column_css_classes=>'col-sm-12'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>These utility classes can be added to help arrange items in rows, columns or more "flexible" layouts. They can ',
+'    also help with item alignment, content justification, content ordering, and content spacing.</p>'))
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(565521747868857304)
+,p_plug_name=>'Classes'
+,p_parent_plug_id=>wwv_flow_imp.id(565521618640857303)
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">',
+'    <thead>',
+'    <tr>',
+'      <th style="width: 20%" class="u-textStart">Class</th>',
+'      <th style="width: 20%" class="u-textStart">Values</th>',
+'      <th class="u-textStart">Description</th>',
+'    </tr>',
+'  </thead>',
+'    <tbody>',
+'        <!-- U-FLEX -->',
+'        <tr>',
+'            <td><span class="class">u-flex</span></td>',
+'            <td></td>',
+'            <td>Treat the element as a flex container and its children as flex items.</td>',
+'        </tr>',
+'        <!-- FLEX -->',
+'        <tr>',
+'            <td rowspan="4"><span class="class">u-flex-</span></td>',
+'            <td><span class="class-value">item</span></td>',
+'            <td>Size item according to its width and height properties, but grow to absorb any extra free space in the flex container and shrink to its minimum size to fit the container.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">direction-column</span></td>',
+'            <td>Direction in which lines of text are stacked. Aligns items in columns as opposed to rows.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">wrap</span></td>',
+'            <td>Break flex items into multiple lines.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">wrap-nowrap</span></td>',
+'            <td>Lay flex items out in a single line which may cause the flex container to overflow.</td>',
+'        </tr>',
+'        <!-- FLEX-BASIS -->',
+'        <tr>',
+'            <td rowspan="3"><span class="class">u-flex-basis-</span></td>',
+'            <td><span class="class-value">auto</span></td>',
+'            <td>Set the size of the element relative to the width and height of the content of the element.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">100</span></td>',
+'            <td>Set the size of the element(s) to 100% of the available space in the parent container.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">0</span></td>',
+'            <td>Prevent the element(s) from taking up the available space in the parent container.</td>',
+'        </tr>',
+'        <!-- FLEX-GROW -->',
+'        <tr>',
+'            <td rowspan="2"><span class="class">u-flex-grow-</span></td>',
+'            <td><span class="class-value">1</span></td>',
+'            <td>Allow the item to grow to fit available space.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">0</span></td>',
+'            <td>Do not allow the item to grow to fit available space.</td>',
+'        </tr>',
+'        <!-- FLEX-SHRINK -->',
+'        <tr>',
+'            <td rowspan="2"><span class="class">u-flex-shrink-</span></td>',
+'            <td><span class="class-value">1</span></td>',
+'            <td>Allow the item to shrink to fit available space.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">0</span></td>',
+'            <td>Prevent the item from shrinking to fit available space.</td>',
+'        </tr>',
+'        <!-- ORDER -->',
+'        <tr>',
+'            <td><span class="class">u-order-</span></td>',
+'            <td>',
+'                <span class="class-value">0</span> <br />',
+'                <span class="class-value">1</span> <br />',
+'                <span class="class-value">2</span> <br />',
+'                <span class="class-value">3</span> <br />',
+'                <span class="class-value">4</span> <br />',
+'                <span class="class-value">5</span>',
+'            </td>',
+'            <td>Set the order to lay out an item in a flex container. Items in a container are sorted by ascending order value and then by their source code order.</td>',
+'        </tr>',
+'        <!-- JUSTIFY-CONTENT -->',
+'        <tr>',
+'            <td rowspan="6"><span class="class">u-justify-content-</span></td>',
+'            <td><span class="class-value">flex-start</span></td>',
+'            <td>Horizontally align (justify) content to the start of the div.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">flex-end</span></td>',
+'            <td>Horizontally align (justify) content to the end of the div.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">center</span></td>',
+'            <td>Horizontally align (justify) content to the center of the div.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">space-between</span></td>',
+'            <td>Distribute content evenly with the first item flush with the start and the last item flush with the end.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">space-around</span></td>',
+'            <td>Distribute content evenly with a half-size space on either end of items.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">stretch</span></td>',
+unistr('            <td>Distribute content evenly by streching \2018auto\2019-sized items to fit the container.</td>'),
+'        </tr>',
+'        <!-- ALIGN-ITEMS -->',
+'        <tr>',
+'            <td rowspan="5"><span class="class">u-align-items-</span></td>',
+'            <td><span class="class-value">flex-start</span></td>',
+'            <td>Vertical alignment. The cross-start margin edges of the flex items are flushed with the cross-start edge of the line.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">flex-end</span></td>',
+'            <td>Vertical alignment. The cross-end margin edges of the flex items are flushed with the cross-end edge of the line.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">start</span></td>',
+'            <td>Vertical alignment. Pack items flush to each other toward the start edge of the alignment container in the appropriate axis.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">center</span></td>',
+'            <td>Vertically align all items to the center of the div.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">end</span></td>',
+'            <td>Vertical alignment. Pack items flush to each other toward the end edge of the alignment container in the appropriate axis.</td>',
+'        </tr>',
+'        <!-- ALIGN-SELF -->',
+'        <tr>',
+'            <td rowspan="6"><span class="class">u-align-self-</span></td>',
+'            <td><span class="class-value">flex-start</span></td>',
+'            <td>Vertical alignment of individual flex item. Flush the cross-start margin edges of the flex item with the cross-start edge of the line.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">flex-end</span></td>',
+'            <td>Vertical alignment of individual flex item. Flush the cross-end margin edges of the flex item with the cross-end edge of the line.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">start</span></td>',
+'            <td>Vertical alignment of individual flex item. Pack the item flush to the edge of the alignment container of the start side of the item, in the appropriate axis.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">center</span></td>',
+'            <td>Vertically align individual flex item to the center of the div.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">end</span></td>',
+'            <td>Vertical alignment of individual flex item. Pack the item flush to the edge of the alignment container of the end side of the item, in the appropriate axis.</td>',
+'        </tr>',
+'        <tr>',
+'            <td><span class="class-value">stretch</span></td>',
+'            <td>Vertical alignment of individual flex item. Stretch flex item such that the cross-size of the item margin box is the same as the line while respecting widget and height constraints.</td>',
+'        </tr>',
+'    </tbody>',
+'</table>'))
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(565521853934857305)
+,p_plug_name=>'Demo'
+,p_parent_plug_id=>wwv_flow_imp.id(565521618640857303)
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<pre class="dm-Code lang-html"><code>',
+'&lt;div class="u-flex u-align-items-center"&gt;',
+'    &lt;div class="u-order-3"&gt;This column will appear as the 3rd column and centered&lt;/div&gt;',
+'    &lt;div class="u-order-1 u-align-self-center"&gt;This column will be first and aligned at the start of the row&lt;/div&gt;',
+'    &lt;div class="u-order-2"&gt;This column will appear as the 2nd column&lt;/div&gt;',
+'&lt;/div&gt;',
+'</code>',
+'</pre>'))
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1083478941181047101)
@@ -48610,7 +48815,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Margin'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h1'
 ,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
-,p_plug_display_sequence=>30
+,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
 ,p_plug_grid_column_css_classes=>'col-sm-12'
@@ -48675,7 +48880,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1083479076477047102)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<pre class="dm-Code lang-html"><code>&lt;h1 class="margin-auto"&gt;Centered Heading Text&lt;/h1&gt;',
@@ -48719,7 +48924,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Width'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
 ,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
 ,p_plug_grid_column_css_classes=>'col-sm-12'
@@ -48800,7 +49005,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Height'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
 ,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
-,p_plug_display_sequence=>60
+,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
 ,p_plug_grid_column_css_classes=>'col-sm-12'
@@ -48897,7 +49102,6 @@ wwv_flow_imp_page.create_page_plug(
 '    <tr><td><span class="class">u-align<span class="class-value">Middle</span></span></td><td>Vertically align to the middle</td></tr>',
 '    <tr><td><span class="class">u-align<span class="class-value">Baseline</span></span></td><td>Vertically align to the text baseline</td></tr>',
 '    <tr><td><span class="class">u-align<span class="class-value">Bottom</span></span></td><td>Vertically align to the bottom</td></tr>',
-'    <tr><td><span class="class">u-align<span class="class-value">-self-center</span></span></td><td>Vertically align to the center in a column</td></tr>',
 '  </tbody>',
 '</table>'))
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -48930,7 +49134,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Padding'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h1'
 ,p_plug_template=>wwv_flow_imp.id(1370988447073029611)
-,p_plug_display_sequence=>40
+,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
 ,p_plug_grid_column_css_classes=>'col-sm-12'
@@ -49033,6 +49237,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
 );
+end;
+/
+begin
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1565761020038398362)
 ,p_plug_name=>'Introduction'
@@ -49152,7 +49359,7 @@ wwv_flow_imp_page.create_page(
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'11'
 ,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20220512104042'
+,p_last_upd_yyyymmddhh24miss=>'20220412160044'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(246582675459933132)
@@ -49163,7 +49370,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
 ,p_plug_grid_column_css_classes=>'col-sm-12'
-,p_plug_source=>'<p>Use these classes as simple modifiers to restrict a block of text control to a specified number of lines. If a block of text surpasses the specified number of lines then an ellipsis (...) is added and the remaining text is hidden.</p>'
+,p_plug_source=>'<p>Use these classes as simple modifiers to restrict a block of text control to a specified number of lines. If a block of text surpasses the specified number of lines then an ellipses (...) is added and the remaining text is hidden.</p>'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
