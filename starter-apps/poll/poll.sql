@@ -19,7 +19,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2022.04.12'
-,p_release=>'22.1.0-15'
+,p_release=>'22.1.0-17'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7040
 ,p_default_id_offset=>0
@@ -33,7 +33,7 @@ prompt APPLICATION 7040 - Poll
 -- Application Export:
 --   Application:     7040
 --   Name:            Poll
---   Date and Time:   03:05 Thursday April 7, 2022
+--   Date and Time:   12:15 Tuesday August 30, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -42,7 +42,7 @@ prompt APPLICATION 7040 - Poll
 --       Computations:            29
 --       Validations:             30
 --       Processes:              113
---       Regions:                303
+--       Regions:                302
 --       Buttons:                194
 --       Dynamic Actions:         97
 --     Shared Components:
@@ -77,13 +77,13 @@ prompt APPLICATION 7040 - Poll
 --         Shortcuts:              1
 --         Plug-ins:               3
 --       Globalization:
---         Messages:              80
+--         Messages:              79
 --       Reports:
 --       E-Mail:
 --         Templates:              5
 --     Supporting Objects:  Included
 --       Install scripts:         35
---   Version:         22.1.0-15
+--   Version:         22.1.0-17
 --   Instance ID:     697845941895809
 --
 
@@ -121,7 +121,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.1.0'
+,p_flow_version=>'22.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -140,7 +140,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_02=>'APP_NAME'
 ,p_substitution_value_02=>'Polls'
 ,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20220406073408'
+,p_last_upd_yyyymmddhh24miss=>'20220829163250'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>28
 ,p_ui_type_name => null
@@ -17557,17 +17557,6 @@ wwv_flow_imp_shared.create_message(
 '    </li>',
 '</ul>'))
 );
-wwv_flow_imp_shared.create_message(
- p_id=>wwv_flow_imp.id(14623732916943719298)
-,p_name=>'HELP_SUPPORT'
-,p_message_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<div class="textRegion">',
-'<a name="ADDITIONAL"></a>',
-'<h2>Additional Information</h2>',
-'<p>If you have questions, ask them on the <a href="%0" target="_blank">%1</a>.',
-'</p>',
-'</div>'))
-);
 end;
 /
 begin
@@ -30935,7 +30924,7 @@ wwv_flow_imp_page.create_page(
 ,p_help_text=>'Use this page to learn more about this application.'
 ,p_page_component_map=>'03'
 ,p_last_updated_by=>'PAIGE'
-,p_last_upd_yyyymmddhh24miss=>'20220406073303'
+,p_last_upd_yyyymmddhh24miss=>'20220829163154'
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(15041705802067315819)
@@ -31149,27 +31138,6 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_source_type=>'PLUGIN_COM.ORACLE.APEX.TRANSLATED_MESSAGE'
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_attribute_01=>'HELP_FEATURES'
-,p_attribute_12=>'N'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(14623734513133750214)
-,p_plug_name=>'Support'
-,p_parent_plug_id=>wwv_flow_imp.id(16415029619800959559)
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#'
-,p_escape_on_http_output=>'Y'
-,p_plug_template=>wwv_flow_imp.id(14588562352722420217)
-,p_plug_display_sequence=>110
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''https://forums.oracle.com/forums/forum.jspa?forumID=137'' support_link,',
-'    ''OTN Forum'' support_text',
-'from dual'))
-,p_plug_source_type=>'PLUGIN_COM.ORACLE.APEX.TRANSLATED_MESSAGE'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'HELP_SUPPORT'
-,p_attribute_02=>'SUPPORT_LINK'
-,p_attribute_03=>'SUPPORT_TEXT'
 ,p_attribute_12=>'N'
 );
 end;
