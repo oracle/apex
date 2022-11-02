@@ -17,7 +17,7 @@
     function loadAPEXVersions() {
         const apiURL = "https://api.github.com/repos/oracle/apex/branches",
               versionURL = getURLParamValue( "version" ),
-              excludeBranches = ["main", "22.2"];
+              excludeBranches = ["main"];
 
         const applyVersions = function ( pData ) {
             const data = pData || [],
