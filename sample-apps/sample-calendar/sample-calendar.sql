@@ -37,7 +37,7 @@ prompt APPLICATION 7820 - Sample Calendar
 -- Application Export:
 --   Application:     7820
 --   Name:            Sample Calendar
---   Date and Time:   14:00 Wednesday November 2, 2022
+--   Date and Time:   15:56 Wednesday November 2, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -47,7 +47,7 @@ prompt APPLICATION 7820 - Sample Calendar
 --       Processes:               20
 --       Regions:                139
 --       Buttons:                 35
---       Dynamic Actions:         63
+--       Dynamic Actions:         64
 --     Shared Components:
 --       Logic:
 --         Items:                  1
@@ -140,8 +140,8 @@ wwv_flow_imp.create_flow(
 ,p_substitution_value_01=>'Sample Calendar'
 ,p_substitution_string_02=>'GETTING_STARTED_URL'
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
-,p_last_updated_by=>'DANIEL'
-,p_last_upd_yyyymmddhh24miss=>'20221102133906'
+,p_last_updated_by=>'RONNY'
+,p_last_upd_yyyymmddhh24miss=>'20221102154107'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>10
 ,p_print_server_type=>'INSTANCE'
@@ -27116,8 +27116,8 @@ wwv_flow_imp_page.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'21'
-,p_last_updated_by=>'DANIEL'
-,p_last_upd_yyyymmddhh24miss=>'20221102133820'
+,p_last_updated_by=>'RONNY'
+,p_last_upd_yyyymmddhh24miss=>'20221102154107'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(638593749940917301)
@@ -27268,7 +27268,6 @@ wwv_flow_imp_page.create_region_column(
 ,p_filter_is_required=>false
 ,p_filter_date_ranges=>'ALL'
 ,p_filter_lov_type=>'DISTINCT'
-,p_static_id=>'IG_START_DATE'
 ,p_use_as_row_header=>false
 ,p_enable_sort_group=>true
 ,p_enable_control_break=>true
@@ -27547,7 +27546,6 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_name=>'Load US Holidays into Date Picker'
 ,p_event_sequence=>20
 ,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
 ,p_bind_event_type=>'ready'
 );
 wwv_flow_imp_page.create_page_da_action(
@@ -27568,8 +27566,11 @@ wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(684216485454871102)
 ,p_name=>'Load dayFormatters for IG'
 ,p_event_sequence=>30
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(684131162452782202)
 ,p_bind_type=>'bind'
-,p_bind_event_type=>'ready'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'NATIVE_IG|REGION TYPE|apexbeginrecordedit'
 );
 wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(687983097215267506)
@@ -27578,32 +27579,12 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>30
 ,p_execute_on_page_init=>'N'
 ,p_action=>'PLUGIN_COM.ORACLE.APEX.FORMAT_DATEPICKER_DAYS'
-,p_affected_elements_type=>'JQUERY_SELECTOR'
-,p_affected_elements=>'IG_START_DATE'
+,p_affected_elements_type=>'COLUMN'
+,p_affected_elements=>'START_DATE'
 ,p_attribute_01=>'ics'
 ,p_attribute_02=>'https://calendar.google.com/calendar/ical/en.usa%23holiday@group.v.calendar.google.com/public/basic.ics'
 ,p_attribute_10=>'u-hot-text'
 ,p_attribute_11=>'server'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(684216794527871105)
-,p_event_id=>wwv_flow_imp.id(684216485454871102)
-,p_event_result=>'TRUE'
-,p_action_sequence=>40
-,p_execute_on_page_init=>'N'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'apex.items.IG_END_DATE.dayFormatter = function (pDateISOString) {',
-'    return {',
-'        // disable when day is Monday and Tuesday',
-'        disabled: [1, 2].includes(new Date(pDateISOString).getDay()),',
-'        // set a predefined color to the cell from ut theme for Saturday and Sunday',
-'        class: [0, 6].includes(new Date(pDateISOString).getDay()) ? "u-color-12-text" : "",',
-'        // set a tooltip that is shown on hover',
-'        tooltip: "You can add tooltip to days"',
-'    };',
-'};',
-'apex.items.IG_END_DATE.refresh();'))
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(638568343979838820)
@@ -27654,6 +27635,35 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_OPEN_REGION'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(687982512277267501)
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(701929777051904302)
+,p_name=>'Load dayFormatter for IG'
+,p_event_sequence=>60
+,p_bind_type=>'bind'
+,p_bind_event_type=>'ready'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(684216794527871105)
+,p_event_id=>wwv_flow_imp.id(701929777051904302)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'// To work with Interactive Grid Columns in JavaScript you have to set a static id',
+'// on the column',
+'apex.items.IG_END_DATE.dayFormatter = function (pDateISOString) {',
+'    return {',
+'        // disable when day is Monday and Tuesday',
+'        disabled: [1, 2].includes(new Date(pDateISOString).getDay()),',
+'        // set a predefined color to the cell from ut theme for Saturday and Sunday',
+'        class: [0, 6].includes(new Date(pDateISOString).getDay()) ? "u-color-12-text" : "",',
+'        // set a tooltip that is shown on hover',
+'        tooltip: "You can add tooltip to days"',
+'    };',
+'};',
+'apex.items.IG_END_DATE.refresh();'))
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(684135247685782243)

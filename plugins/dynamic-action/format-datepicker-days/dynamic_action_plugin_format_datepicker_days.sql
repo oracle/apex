@@ -37,7 +37,7 @@ prompt APPLICATION 7820 - Sample Calendar
 -- Application Export:
 --   Application:     7820
 --   Name:            Sample Calendar
---   Date and Time:   14:21 Wednesday November 2, 2022
+--   Date and Time:   15:56 Wednesday November 2, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Component Export
