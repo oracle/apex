@@ -3,7 +3,7 @@
         {
             "internalName": "SAMPLE_APPROVALS",
             "author": "Oracle",
-            "version": "22.1.2",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-approvals.svg",
             "url": "https://github.com/oracle/apex/blob/22.2/sample-apps/sample-approvals",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-approvals/sample-approvals.sql",
@@ -55,7 +55,7 @@
         {
             "internalName": "SAMPLE_CALENDAR",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-calendar.svg",
             "url": "https://github.com/oracle/apex/blob/22.2/sample-apps/sample-calendar",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-calendar/sample-calendar.sql",
@@ -107,7 +107,7 @@
         {
             "internalName": "SAMPLE_CARDS",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-cards.svg",
             "url": "https://github.com/oracle/apex/blob/22.2/sample-apps/sample-cards",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-cards/sample-cards.sql",
@@ -159,7 +159,7 @@
         {
             "internalName": "SAMPLE_CHARTS",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-charts.svg",
             "url": "https://github.com/oracle/apex/blob/22.2/sample-apps/sample-charts",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-charts/sample-charts.sql",
@@ -211,7 +211,7 @@
         {
             "internalName": "SAMPLE_COLLECTIONS",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-collections.svg",
             "url": "https://github.com/oracle/apex/blob/22.2/sample-apps/sample-collections",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-collections/sample-collections.sql",
@@ -263,7 +263,7 @@
         {
             "internalName": "SAMPLE_DATA_LOADING",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-data-loading.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-data-loading",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-data-loading/sample-data-loading.sql",
@@ -315,7 +315,7 @@
         {
             "internalName": "SAMPLE_DYNAMIC_ACTIONS",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-dynamic-actions.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-dynamic-actions",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-dynamic-actions/sample-dynamic-actions.sql",
@@ -367,7 +367,7 @@
         {
             "internalName": "SAMPLE_FILE_UPLOAD_DOWNLOAD",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-file-upload-download.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-file-upload-download",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-file-upload-download/sample-file-upload-download.sql",
@@ -419,7 +419,7 @@
         {
             "internalName": "SAMPLE_INTERACTIVE_GRIDS",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-ig.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-interactive-grids",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-interactive-grids/sample-interactive-grids.sql",
@@ -471,7 +471,7 @@
         {
             "internalName": "SAMPLE_MAPS",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-maps.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-maps",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-maps/sample-maps.sql",
@@ -523,7 +523,7 @@
         {
             "internalName": "SAMPLE_MASTER_DETAIL",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-master-detail.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-master-detail",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-master-detail/sample-master-detail.sql",
@@ -575,7 +575,7 @@
         {
             "internalName": "SAMPLE_REPORTING",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-reporting.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-reporting",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-reporting/sample-reporting.sql",
@@ -627,7 +627,7 @@
         {
             "internalName": "SAMPLE_RESTFUL_SERVICES",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-restful-services.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-rest-services",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-rest-services/sample-rest-services.sql",
@@ -679,7 +679,7 @@
         {
             "internalName": "SAMPLE_TREES",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-trees.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/sample-trees",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-trees/sample-trees.sql",
@@ -731,7 +731,7 @@
         {
             "internalName": "SAMPLE_UNIVERSAL_THEME",
             "author": "Oracle",
-            "version": "22.1.3",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-universal-theme.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/universal-theme-reference",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/universal-theme-reference/universal-theme-reference.sql",
@@ -785,7 +785,7 @@
         {
             "internalName": "APP_CUSTOMERS",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-customer-tracker.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/starter-apps/customers",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/starter-apps/customers/customers.sql",
@@ -837,7 +837,7 @@
         {
             "internalName": "APP_OPPORTUNITIES",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-opportunity-tracker.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/starter-apps/opportunities",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/starter-apps/opportunities/opportunities.sql",
@@ -889,7 +889,7 @@
         {
             "internalName": "APP_POLL",
             "author": "Oracle",
-            "version": "22.1.1",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-live-poll.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/starter-apps/poll",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/starter-apps/poll/poll.sql",
@@ -941,7 +941,7 @@
         {
             "internalName": "APP_TEAM_CALENDAR",
             "author": "Oracle",
-            "version": "22.1.0",
+            "version": "22.2.0",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-group-calendar.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/starter-apps/team-calendar",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/starter-apps/team-calendar/team-calendar.sql",
@@ -1000,6 +1000,17 @@
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-restful-services.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/plugins/rest-source/fixed-page-size",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/plugins/rest-source/fixed-page-size/web_source_type_fixedpagesize.sql",
+            "zip": "",
+            "license": ""
+        },
+        {
+            "name": "Format Date Picker Days",
+            "author": "Oracle",
+            "version": "1.0.0",
+            "description": "This plug-in is for the new APEX date picker to format certain days within the date picker calendar by a SQL Query or a online available ICS calendar file.",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-calendar.svg",
+            "url": "https://github.com/oracle/apex/tree/22.2/plugins/dynamic-action/format-datepicker-days",
+            "source": "https://raw.githubusercontent.com/oracle/apex/22.2/plugins/dynamic-action/format-datepicker-days/dynamic_action_plugin_format_datepicker_days.sql",
             "zip": "",
             "license": ""
         }
