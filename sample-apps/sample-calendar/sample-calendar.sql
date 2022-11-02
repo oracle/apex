@@ -37,7 +37,7 @@ prompt APPLICATION 7820 - Sample Calendar
 -- Application Export:
 --   Application:     7820
 --   Name:            Sample Calendar
---   Date and Time:   15:56 Wednesday November 2, 2022
+--   Date and Time:   20:59 Wednesday November 2, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -141,7 +141,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_02=>'GETTING_STARTED_URL'
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
 ,p_last_updated_by=>'RONNY'
-,p_last_upd_yyyymmddhh24miss=>'20221102154107'
+,p_last_upd_yyyymmddhh24miss=>'20221102205520'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>10
 ,p_print_server_type=>'INSTANCE'
@@ -16787,7 +16787,7 @@ wwv_flow_imp_shared.create_plugin(
 '        p_end      in varchar2,',
 '        p_tooltip  in varchar2,',
 '        p_class    in varchar2,',
-'        p_disabled in varchar2 default null ) is',
+'        p_disabled in number default null ) is',
 '    begin',
 '        apex_json.open_object; -- open json object - { ',
 '        apex_json.write(''start'', p_start);',
@@ -16953,7 +16953,7 @@ wwv_flow_imp_shared.create_plugin(
 ,p_api_version=>2
 ,p_render_function=>'F_RENDER'
 ,p_ajax_function=>'F_AJAX'
-,p_standard_attributes=>'ITEM:JQUERY_SELECTOR:REQUIRED'
+,p_standard_attributes=>'ITEM:REQUIRED'
 ,p_substitute_attributes=>true
 ,p_subscribe_plugin_settings=>true
 ,p_help_text=>'This plug-in is for the new APEX date picker to format days in the date picker calendar by a SQL Query or a online available ICS file.'
@@ -27117,7 +27117,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'21'
 ,p_last_updated_by=>'RONNY'
-,p_last_upd_yyyymmddhh24miss=>'20221102154107'
+,p_last_upd_yyyymmddhh24miss=>'20221102205520'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(638593749940917301)

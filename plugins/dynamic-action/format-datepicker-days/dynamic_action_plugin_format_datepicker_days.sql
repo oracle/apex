@@ -37,7 +37,7 @@ prompt APPLICATION 7820 - Sample Calendar
 -- Application Export:
 --   Application:     7820
 --   Name:            Sample Calendar
---   Date and Time:   15:56 Wednesday November 2, 2022
+--   Date and Time:   20:58 Wednesday November 2, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Component Export
@@ -95,7 +95,7 @@ wwv_flow_imp_shared.create_plugin(
 '        p_end      in varchar2,',
 '        p_tooltip  in varchar2,',
 '        p_class    in varchar2,',
-'        p_disabled in varchar2 default null ) is',
+'        p_disabled in number default null ) is',
 '    begin',
 '        apex_json.open_object; -- open json object - { ',
 '        apex_json.write(''start'', p_start);',
@@ -261,7 +261,7 @@ wwv_flow_imp_shared.create_plugin(
 ,p_api_version=>2
 ,p_render_function=>'F_RENDER'
 ,p_ajax_function=>'F_AJAX'
-,p_standard_attributes=>'ITEM:JQUERY_SELECTOR:REQUIRED'
+,p_standard_attributes=>'ITEM:REQUIRED'
 ,p_substitute_attributes=>true
 ,p_subscribe_plugin_settings=>true
 ,p_help_text=>'This plug-in is for the new APEX date picker to format days in the date picker calendar by a SQL Query or a online available ICS file.'
