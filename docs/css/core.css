@@ -3782,3 +3782,8 @@ a.m-Notice-cta--secondary:active {
   border: 1px solid rgba(255, 255, 255, .5);
   margin-right: 12px;
 }
+
+.m-VersionSwitcher option {
+  background: var(--rw-palette-neutral-0) !important;
+  color: var(--rw-palette-neutral-200) !important;
+}
