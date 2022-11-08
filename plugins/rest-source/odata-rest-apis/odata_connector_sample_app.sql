@@ -34,7 +34,7 @@ prompt APPLICATION 773 - Sample ODATA-Connector
 -- Application Export:
 --   Application:     773
 --   Name:            Sample ODATA-Connector
---   Date and Time:   15:20 Tuesday November 8, 2022
+--   Date and Time:   15:46 Tuesday November 8, 2022
 --   Exported By:     CARSTEN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -123,7 +123,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample ODATA-Connector'
 ,p_last_updated_by=>'CARSTEN'
-,p_last_upd_yyyymmddhh24miss=>'20221108151809'
+,p_last_upd_yyyymmddhh24miss=>'20221108154441'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>5
 ,p_ui_type_name => null
@@ -1283,33 +1283,6 @@ wwv_flow_imp_shared.create_list_item(
 '  <li>Pagination (nextlink)</li>',
 '  <li>Client Pagination (top & skip)</li>',
 '  <li>Case sensitive</li>',
-'</ul>',
-'<strong>Additional Filters:</strong>',
-'<ul>',
-'  <li>contains</li>',
-'  <li>starts with</li>',
-'  <li>ends with</li>',
-'</ul>'))
-,p_list_text_05=>'target="_blank" rel="noreferrer"'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(1365648013483324674)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'DVD Rental'
-,p_list_item_link_target=>'http://oiyokan.herokuapp.com/odata4.svc/SklFilms'
-,p_list_text_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<strong>Used on Pages:</strong>',
-'<ul>',
-'  <li>Cards</li>',
-'</ul>'))
-,p_list_text_02=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<strong>Supports:</strong>',
-'<ul>',
-'  <li>OrderBy</li>',
-'  <li>Select</li>',
-'  <li>Client Pagination (top & skip)</li>',
-'  <li>Case Sensitive</li>',
 '</ul>',
 '<strong>Additional Filters:</strong>',
 '<ul>',
