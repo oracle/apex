@@ -1004,6 +1004,17 @@
             "license": ""
         },
         {
+            "name": "ODATA Connector",
+            "author": "Oracle",
+            "version": "1.0.0",
+            "description": "Plug-In to support OData APIs in REST Data Sources, including filtering, ordering and discovery. This download provides a complete sample application.",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-restful-services.svg",
+            "url": "https://github.com/oracle/apex/tree/22.2/plugins/rest-source/odata-rest-apis",
+            "source": "https://raw.githubusercontent.com/oracle/apex/22.2/plugins/rest-source/odata-rest-apis/odata_connector_sample_app.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/22.2/plugins/rest-source/odata-rest-apis/odata_connector_sample_app.zip",
+            "license": ""
+        },
+        {
             "name": "Format Date Picker Days",
             "author": "Oracle",
             "version": "1.0.0",
