@@ -34,14 +34,14 @@ prompt APPLICATION 773 - Sample ODATA-Connector
 -- Application Export:
 --   Application:     773
 --   Name:            Sample ODATA-Connector
---   Date and Time:   09:39 Monday November 7, 2022
+--   Date and Time:   15:20 Tuesday November 8, 2022
 --   Exported By:     CARSTEN
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     11
---       Items:                   10
+--     Pages:                     10
+--       Items:                    9
 --       Processes:                5
---       Regions:                 32
+--       Regions:                 24
 --       Buttons:                  3
 --       Dynamic Actions:          1
 --     Shared Components:
@@ -50,7 +50,7 @@ prompt APPLICATION 773 - Sample ODATA-Connector
 --       Navigation:
 --         Lists:                  4
 --         Breadcrumbs:            1
---           Entries:              9
+--           Entries:              8
 --       Security:
 --         Authentication:         1
 --         Authorization:          1
@@ -123,7 +123,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample ODATA-Connector'
 ,p_last_updated_by=>'CARSTEN'
-,p_last_upd_yyyymmddhh24miss=>'20221107093832'
+,p_last_upd_yyyymmddhh24miss=>'20221108151809'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>5
 ,p_ui_type_name => null
@@ -166,22 +166,6 @@ wwv_imp_workspace.create_remote_server(
 ,p_ords_timezone=>nvl(wwv_flow_application_install.get_remote_server_ords_tz('sapes5_sapdevcenter_com_sap_opu'),'')
 ,p_remote_sql_default_schema=>nvl(wwv_flow_application_install.get_remote_server_default_db('sapes5_sapdevcenter_com_sap_opu'),'')
 ,p_mysql_sql_modes=>nvl(wwv_flow_application_install.get_remote_server_sql_mode('sapes5_sapdevcenter_com_sap_opu'),'')
-,p_prompt_on_install=>false
-);
-end;
-/
-prompt --workspace/remote_servers/oiyokan_herokuapp_com
-begin
-wwv_imp_workspace.create_remote_server(
- p_id=>wwv_flow_imp.id(1333553614906578736)
-,p_name=>'oiyokan-herokuapp-com'
-,p_static_id=>'oiyokan_herokuapp_com'
-,p_base_url=>nvl(wwv_flow_application_install.get_remote_server_base_url('oiyokan_herokuapp_com'),'http://oiyokan.herokuapp.com/')
-,p_https_host=>nvl(wwv_flow_application_install.get_remote_server_https_host('oiyokan_herokuapp_com'),'')
-,p_server_type=>'WEB_SERVICE'
-,p_ords_timezone=>nvl(wwv_flow_application_install.get_remote_server_ords_tz('oiyokan_herokuapp_com'),'')
-,p_remote_sql_default_schema=>nvl(wwv_flow_application_install.get_remote_server_default_db('oiyokan_herokuapp_com'),'')
-,p_mysql_sql_modes=>nvl(wwv_flow_application_install.get_remote_server_sql_mode('oiyokan_herokuapp_com'),'')
 ,p_prompt_on_install=>false
 );
 end;
@@ -831,175 +815,6 @@ wwv_flow_imp_shared.create_data_profile_col(
 );
 end;
 /
-prompt --application/shared_components/data_profiles/films
-begin
-wwv_flow_imp_shared.create_data_profile(
- p_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'Films'
-,p_format=>'JSON'
-,p_row_selector=>'value'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356863026242899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'film_id'
-,p_sequence=>1
-,p_is_primary_key=>true
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'film_id'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356866312635899051)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'title'
-,p_sequence=>2
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_max_length=>255
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'title'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356862746211899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'description'
-,p_sequence=>3
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'description'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356864814660899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'release_year'
-,p_sequence=>4
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'release_year'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356863617164899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'language_id'
-,p_sequence=>5
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'language_id'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356865168995899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'rental_duration'
-,p_sequence=>6
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'rental_duration'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356865477548899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'rental_rate'
-,p_sequence=>7
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'rental_rate'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356864269041899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'length'
-,p_sequence=>8
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'length'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356865788012899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'replacement_cost'
-,p_sequence=>9
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'replacement_cost'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356864524383899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'rating'
-,p_sequence=>10
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_max_length=>10
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'rating'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356863985940899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'last_update'
-,p_sequence=>11
-,p_column_type=>'DATA'
-,p_data_type=>'TIMESTAMP WITH TIME ZONE'
-,p_has_time_zone=>true
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'last_update'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356866065459899051)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'special_features'
-,p_sequence=>12
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'special_features'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(1356863343127899050)
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_name=>'fulltext'
-,p_sequence=>13
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_has_time_zone=>false
-,p_is_filterable=>false
-,p_selector_type=>'NAME'
-,p_selector=>'fulltext'
-);
-end;
-/
 prompt --application/shared_components/data_profiles/sample_trippin_airports
 begin
 wwv_flow_imp_shared.create_data_profile(
@@ -1217,34 +1032,6 @@ wwv_flow_imp_shared.create_web_source_operation(
 );
 end;
 /
-prompt --application/shared_components/web_sources/films
-begin
-wwv_flow_imp_shared.create_web_source_module(
- p_id=>wwv_flow_imp.id(1356866613941899051)
-,p_name=>'Films'
-,p_static_id=>'Films'
-,p_web_source_type=>'PLUGIN_ODATA-CONNECTOR'
-,p_data_profile_id=>wwv_flow_imp.id(1356862595743899049)
-,p_remote_server_id=>wwv_flow_imp.id(1333553614906578736)
-,p_url_path_prefix=>'odata4.svc'
-,p_attribute_01=>'SklFilms'
-,p_attribute_03=>'option_orderby:option_select:option_client_driven_paging'
-,p_attribute_04=>'filter_lower'
-,p_attribute_05=>'N'
-,p_attribute_06=>'count_true_inline'
-,p_attribute_07=>'filter_startswith:filter_endswith:filter_contains'
-);
-wwv_flow_imp_shared.create_web_source_operation(
- p_id=>wwv_flow_imp.id(1356866868352899051)
-,p_web_src_module_id=>wwv_flow_imp.id(1356866613941899051)
-,p_operation=>'GET'
-,p_database_operation=>'FETCH_COLLECTION'
-,p_url_pattern=>'.'
-,p_force_error_for_http_404=>false
-,p_allow_fetch_all_rows=>false
-);
-end;
-/
 prompt --application/shared_components/web_sources/sample_trippin_airports
 begin
 wwv_flow_imp_shared.create_web_source_module(
@@ -1314,15 +1101,6 @@ wwv_flow_imp_shared.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_imp.id(1356831722440815226)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'6'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(1356904418509937626)
-,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Cards'
-,p_list_item_link_target=>'f?p=&APP_ID.:7:&SESSION.::&DEBUG.::::'
-,p_parent_list_item_id=>wwv_flow_imp.id(1356831722440815226)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'7'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(1356940609114373417)
@@ -1426,14 +1204,6 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_link_text=>'Faceted Search'
 ,p_list_item_link_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.::::'
 ,p_list_text_01=>'Report with facets to filter the result'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(1357299276323607482)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Cards'
-,p_list_item_link_target=>'f?p=&APP_ID.:7:&SESSION.::&DEBUG.::::'
-,p_list_text_01=>'Report displayed in cards'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
@@ -4554,12 +4324,6 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_short_name=>'Faceted Search'
 ,p_link=>'f?p=&APP_ID.:6:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>6
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(1356905349449937627)
-,p_short_name=>'Cards'
-,p_link=>'f?p=&APP_ID.:7:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>7
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(1356913875355059009)
@@ -19651,226 +19415,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_when_button_id=>wwv_flow_imp.id(1326940781500720214)
 ,p_process_success_message=>'Successfully synced data'
-);
-end;
-/
-prompt --application/pages/page_00007
-begin
-wwv_flow_imp_page.create_page(
- p_id=>7
-,p_user_interface_id=>wwv_flow_imp.id(1356824096755815208)
-,p_name=>'Cards'
-,p_alias=>'CARDS'
-,p_step_title=>'Cards'
-,p_autocomplete_on_off=>'OFF'
-,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'.star-shape {',
-'    width: 80px;',
-'    height: 80px;',
-'    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);',
-'}'))
-,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>'MUST_NOT_BE_PUBLIC_USER'
-,p_protection_level=>'C'
-,p_page_component_map=>'24'
-,p_last_updated_by=>'LGEHRKE'
-,p_last_upd_yyyymmddhh24miss=>'20221013101357'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1356904964680937627)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_imp.id(1356696378941815161)
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_imp.id(1356629053326815138)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>wwv_flow_imp.id(1356800669462815194)
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1356905601212937627)
-,p_plug_name=>'Cards'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_imp.id(1356681404801815158)
-,p_plug_display_sequence=>20
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_location=>'WEB_SOURCE'
-,p_web_src_module_id=>wwv_flow_imp.id(1356866613941899051)
-,p_lazy_loading=>false
-,p_plug_source_type=>'NATIVE_CARDS'
-,p_plug_query_num_rows_type=>'SCROLL'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_show_total_row_count=>false
-,p_pagination_display_position=>'BOTTOM_RIGHT'
-);
-wwv_flow_imp_page.create_card(
- p_id=>wwv_flow_imp.id(1356906003275937627)
-,p_region_id=>wwv_flow_imp.id(1356905601212937627)
-,p_layout_type=>'GRID'
-,p_title_adv_formatting=>false
-,p_title_column_name=>'title'
-,p_sub_title_adv_formatting=>false
-,p_body_adv_formatting=>false
-,p_body_column_name=>'description'
-,p_second_body_adv_formatting=>false
-,p_media_adv_formatting=>false
-,p_pk1_column_name=>'film_id'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1356972341257735513)
-,p_plug_name=>'DVD Rental'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>wwv_flow_imp.id(1356734677658815170)
-,p_plug_display_sequence=>40
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_source_type=>'NATIVE_SMART_FILTERS'
-,p_filtered_region_id=>wwv_flow_imp.id(1356905601212937627)
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_02=>'N'
-,p_attribute_03=>'10000'
-,p_attribute_04=>'N'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1358781026696219021)
-,p_plug_name=>'About this page'
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>wwv_flow_imp.id(1356701160800815162)
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>You can reference application static files as Cards images.  Please note Cards expects ampersand (&) substitution syntax. Usual way of referencing application static files cannot be used. i.e. <em>#APP_IMAGE#myAppImage.png</em>. Also, <strong>APP_'
-||'IMAGES</strong> substituion needs to be substituted from the server as it is not one of the built-in substitutions client-side supports to render the value.</p>',
-''))
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1358781119834219022)
-,p_plug_name=>'with Star Icons'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_imp.id(1356681404801815158)
-,p_plug_display_sequence=>50
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_location=>'WEB_SOURCE'
-,p_web_src_module_id=>wwv_flow_imp.id(1356866613941899051)
-,p_lazy_loading=>false
-,p_plug_source_type=>'NATIVE_CARDS'
-,p_plug_query_num_rows_type=>'SCROLL'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_show_total_row_count=>false
-);
-wwv_flow_imp_page.create_card(
- p_id=>wwv_flow_imp.id(1358781272240219023)
-,p_region_id=>wwv_flow_imp.id(1358781119834219022)
-,p_layout_type=>'GRID'
-,p_title_adv_formatting=>false
-,p_title_column_name=>'title'
-,p_sub_title_adv_formatting=>false
-,p_body_adv_formatting=>false
-,p_body_column_name=>'description'
-,p_second_body_adv_formatting=>false
-,p_icon_source_type=>'INITIALS'
-,p_icon_class_column_name=>'title'
-,p_icon_css_classes=>'star-shape'
-,p_icon_position=>'START'
-,p_media_adv_formatting=>false
-,p_pk1_column_name=>'film_id'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1358781335367219024)
-,p_plug_name=>'RDS'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_imp.id(1356733291979815170)
-,p_plug_display_sequence=>10
-,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_attribute_01=>'STANDARD'
-,p_attribute_02=>'N'
-,p_attribute_03=>'N'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1358781455689219025)
-,p_plug_name=>'Style (A,B,C)'
-,p_region_template_options=>'#DEFAULT#:t-CardsRegion--styleA'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_imp.id(1356681404801815158)
-,p_plug_display_sequence=>40
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_location=>'WEB_SOURCE'
-,p_web_src_module_id=>wwv_flow_imp.id(1356866613941899051)
-,p_lazy_loading=>false
-,p_plug_source_type=>'NATIVE_CARDS'
-,p_plug_query_num_rows_type=>'SCROLL'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_show_total_row_count=>false
-);
-wwv_flow_imp_page.create_card(
- p_id=>wwv_flow_imp.id(1358781513869219026)
-,p_region_id=>wwv_flow_imp.id(1358781455689219025)
-,p_layout_type=>'GRID'
-,p_title_adv_formatting=>false
-,p_title_column_name=>'title'
-,p_sub_title_adv_formatting=>false
-,p_body_adv_formatting=>false
-,p_body_column_name=>'description'
-,p_second_body_adv_formatting=>false
-,p_icon_source_type=>'STATIC_CLASS'
-,p_icon_css_classes=>'fa fa-film'
-,p_icon_position=>'START'
-,p_media_adv_formatting=>false
-,p_pk1_column_name=>'film_id'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1358781690470219027)
-,p_plug_name=>'Horizontal Layout'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>wwv_flow_imp.id(1356681404801815158)
-,p_plug_display_sequence=>60
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_location=>'WEB_SOURCE'
-,p_web_src_module_id=>wwv_flow_imp.id(1356866613941899051)
-,p_lazy_loading=>false
-,p_plug_source_type=>'NATIVE_CARDS'
-,p_plug_query_num_rows_type=>'SCROLL'
-,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_show_total_row_count=>false
-);
-wwv_flow_imp_page.create_card(
- p_id=>wwv_flow_imp.id(1358781742409219028)
-,p_region_id=>wwv_flow_imp.id(1358781690470219027)
-,p_layout_type=>'ROW'
-,p_title_adv_formatting=>false
-,p_title_column_name=>'title'
-,p_sub_title_adv_formatting=>false
-,p_body_adv_formatting=>false
-,p_body_column_name=>'description'
-,p_second_body_adv_formatting=>false
-,p_icon_source_type=>'STATIC_CLASS'
-,p_icon_css_classes=>'fa fa-apex'
-,p_icon_position=>'START'
-,p_media_adv_formatting=>false
-,p_media_source_type=>'STATIC_URL'
-,p_media_url=>'#APP_FILES#apex-mountain-range_light.png'
-,p_media_display_position=>'BACKGROUND'
-,p_media_sizing=>'COVER'
-,p_pk1_column_name=>'film_id'
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(1356972492830735514)
-,p_name=>'P7_SEARCH'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(1356972341257735513)
-,p_prompt=>'Search'
-,p_source_type=>'FACET_COLUMN'
-,p_display_as=>'NATIVE_SEARCH'
-,p_item_template_options=>'#DEFAULT#'
-,p_attribute_01=>'ROW'
-,p_attribute_04=>'N'
-,p_fc_show_chart=>false
 );
 end;
 /
