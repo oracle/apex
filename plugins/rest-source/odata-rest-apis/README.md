@@ -8,7 +8,7 @@ OData (Open Data Protocol) is an ISO/IEC approved, OASIS standard that defines a
 
 #### Quick Start
 
-- Import Sample App `odata_connector_sample_app.sql`
+- Import Sample App `odata_connector_sample_app.zip` or `odata_connector_sample_app.sql` 
 - Make sure to Install Supporting Objects, so that PL/SQL packages will be created or replaced: 
   - plg_odata_filters
   - plg_odata_order_bys
