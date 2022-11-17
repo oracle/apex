@@ -34,7 +34,7 @@ prompt APPLICATION 773 - Sample ODATA-Connector
 -- Application Export:
 --   Application:     773
 --   Name:            Sample ODATA-Connector
---   Date and Time:   15:46 Tuesday November 8, 2022
+--   Date and Time:   19:44 Thursday November 17, 2022
 --   Exported By:     CARSTEN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -123,7 +123,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample ODATA-Connector'
 ,p_last_updated_by=>'CARSTEN'
-,p_last_upd_yyyymmddhh24miss=>'20221108154441'
+,p_last_upd_yyyymmddhh24miss=>'20221117194408'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>5
 ,p_ui_type_name => null
@@ -966,7 +966,7 @@ wwv_flow_imp_shared.create_web_source_operation(
 ,p_url_pattern=>'.'
 ,p_legacy_ords_fixed_page_size=>200
 ,p_force_error_for_http_404=>false
-,p_allow_fetch_all_rows=>false
+,p_allow_fetch_all_rows=>true
 ,p_caching=>'ALL_USERS'
 );
 end;
@@ -988,7 +988,7 @@ wwv_flow_imp_shared.create_web_source_module(
 ,p_attribute_03=>'option_orderby:option_select:option_client_driven_paging'
 ,p_attribute_04=>'none'
 ,p_attribute_05=>'N'
-,p_attribute_06=>'count_not_inline'
+,p_attribute_06=>'count_none'
 ,p_attribute_07=>'filter_contains:filter_startswith:filter_endswith'
 );
 wwv_flow_imp_shared.create_web_source_operation(
@@ -18970,8 +18970,8 @@ wwv_flow_imp_page.create_page(
 ,p_required_role=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'22'
-,p_last_updated_by=>'ANTHONY'
-,p_last_upd_yyyymmddhh24miss=>'20221104160121'
+,p_last_updated_by=>'CARSTEN'
+,p_last_upd_yyyymmddhh24miss=>'20221117194345'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1326941141894720217)
@@ -19013,7 +19013,6 @@ wwv_flow_imp_page.create_report_region(
 ,p_location=>'WEB_SOURCE'
 ,p_web_src_module_id=>wwv_flow_imp.id(1356850606266893296)
 ,p_use_local_sync_table=>false
-,p_query_type=>'SQL'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
 ,p_query_row_template=>wwv_flow_imp.id(1356761497390815178)
