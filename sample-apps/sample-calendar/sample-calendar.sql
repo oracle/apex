@@ -37,7 +37,7 @@ prompt APPLICATION 7820 - Sample Calendar
 -- Application Export:
 --   Application:     7820
 --   Name:            Sample Calendar
---   Date and Time:   20:59 Wednesday November 2, 2022
+--   Date and Time:   10:09 Thursday November 24, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -123,7 +123,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.2.0'
+,p_flow_version=>'22.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -140,8 +140,8 @@ wwv_flow_imp.create_flow(
 ,p_substitution_value_01=>'Sample Calendar'
 ,p_substitution_string_02=>'GETTING_STARTED_URL'
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
-,p_last_updated_by=>'RONNY'
-,p_last_upd_yyyymmddhh24miss=>'20221102205520'
+,p_last_updated_by=>'DANIEL'
+,p_last_upd_yyyymmddhh24miss=>'20221124100917'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>10
 ,p_print_server_type=>'INSTANCE'
@@ -27117,7 +27117,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'21'
 ,p_last_updated_by=>'RONNY'
-,p_last_upd_yyyymmddhh24miss=>'20221102205520'
+,p_last_upd_yyyymmddhh24miss=>'20221121155048'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(638593749940917301)
@@ -27463,11 +27463,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<pre>',
 'apex.items.<i>{Item Name}</i>.dayFormatter = function (pDateISOString) {',
+'    const day = apex.date.parse(pDateISOString, "YYYY-MM-DD").getDay();',
 '    return {',
 '        // disable when day is selected',
-'        disabled: [1, 2].includes( new Date(pDateISOString).getDay() ),',
+'        disabled: [1, 2].includes(day),',
 '        // set a predefined color to the cell from ut theme for Saturday and Sunday',
-'        class: [0, 6].includes(new Date(pDateISOString).getDay()) ? "u-color-12-text" : "",',
+'        class: [0, 6].includes(day) ? "u-color-12-text" : "",',
 '        // set a tooltip that is shown on hover',
 '        tooltip: "You can add tooltip to days"',
 '    };',
@@ -27605,11 +27606,12 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'apex.items.P540_JAVASCRIPT.dayFormatter = function (pDateISOString) {',
+'    const day = apex.date.parse(pDateISOString, "YYYY-MM-DD").getDay();',
 '    return {',
 '        // disable when day is selected',
-'        disabled: $v("P540_DISABLED_DAYS").split(":").includes("" + new Date(pDateISOString).getDay()),',
+'        disabled: $v("P540_DISABLED_DAYS").split(":").includes("" + day),',
 '        // set a predefined color to the cell from ut theme for Saturday and Sunday',
-'        class: [0, 6].includes(new Date(pDateISOString).getDay()) ? "u-color-12-text" : "",',
+'        class: [0, 6].includes(day) ? "u-color-12-text" : "",',
 '        // set a tooltip that is shown on hover',
 '        tooltip: "You can add tooltip to days"',
 '    };',
@@ -27654,11 +27656,12 @@ wwv_flow_imp_page.create_page_da_action(
 '// To work with Interactive Grid Columns in JavaScript you have to set a static id',
 '// on the column',
 'apex.items.IG_END_DATE.dayFormatter = function (pDateISOString) {',
+'    const day = apex.date.parse(pDateISOString, "YYYY-MM-DD").getDay();',
 '    return {',
 '        // disable when day is Monday and Tuesday',
-'        disabled: [1, 2].includes(new Date(pDateISOString).getDay()),',
+'        disabled: [1, 2].includes(day),',
 '        // set a predefined color to the cell from ut theme for Saturday and Sunday',
-'        class: [0, 6].includes(new Date(pDateISOString).getDay()) ? "u-color-12-text" : "",',
+'        class: [0, 6].includes(day) ? "u-color-12-text" : "",',
 '        // set a tooltip that is shown on hover',
 '        tooltip: "You can add tooltip to days"',
 '    };',

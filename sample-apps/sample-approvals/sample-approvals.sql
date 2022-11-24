@@ -33,7 +33,7 @@ prompt APPLICATION 7870 - Sample Approvals
 -- Application Export:
 --   Application:     7870
 --   Name:            Sample Approvals
---   Date and Time:   13:59 Wednesday November 2, 2022
+--   Date and Time:   10:08 Thursday November 24, 2022
 --   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -115,7 +115,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.2.0'
+,p_flow_version=>'22.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -129,7 +129,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample Approvals'
 ,p_last_updated_by=>'STEVE'
-,p_last_upd_yyyymmddhh24miss=>'20221101131711'
+,p_last_upd_yyyymmddhh24miss=>'20221121155423'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>153
 ,p_print_server_type=>'NATIVE'
@@ -405,6 +405,21 @@ wwv_flow_imp_shared.create_task_def_action(
 ,p_condition_type=>'EXPRESSION'
 ,p_condition_expr1=>'apex_app_setting.get_value(''DEMO_NOTIFICATION_EMAIL'') is not null'
 ,p_condition_expr2=>'PLSQL'
+);
+wwv_flow_imp_shared.create_task_def_action(
+ p_id=>wwv_flow_imp.id(701927994786871390)
+,p_task_def_id=>wwv_flow_imp.id(669329542234114404)
+,p_name=>'Push Email Queue for Sample'
+,p_execution_sequence=>40
+,p_before_expire_interval=>'PT1M'
+,p_on_event=>'BEFORE_EXPIRE'
+,p_action_type=>'NATIVE_PLSQL'
+,p_action_clob=>'apex_mail.push_queue;'
+,p_action_clob_language=>'PLSQL'
+,p_location=>'LOCAL'
+,p_stop_execution_on_error=>true
+,p_condition_type=>'ITEM_IS_NOT_NULL'
+,p_condition_expr1=>'DEMO_NOTIFICATION_EMAIL'
 );
 wwv_flow_imp_shared.create_task_def_participant(
  p_id=>wwv_flow_imp.id(669329896518114408)
@@ -27114,9 +27129,10 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code_onload=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'apex.items.P16_NEED_BY.dayFormatter = function (pDateISOString) {',
+'  const day = apex.date.parse(pDateISOString, "YYYY-MM-DD").getDay();',
 '  return {',
 '      // disable when day is Saturday or Sunday',
-'      disabled: [0, 6].includes(new Date(pDateISOString).getDay()),',
+'      disabled: [0, 6].includes(day),',
 '      // set a styling css class like u-danger-text',
 '      class: null,',
 '      // set a tooltip that is shown on hover',
@@ -27129,7 +27145,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'02'
 ,p_last_updated_by=>'STEVE'
-,p_last_upd_yyyymmddhh24miss=>'20221031142821'
+,p_last_upd_yyyymmddhh24miss=>'20221121155423'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1286471838400124495)
