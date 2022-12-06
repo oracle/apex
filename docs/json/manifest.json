@@ -731,7 +731,7 @@
         {
             "internalName": "SAMPLE_UNIVERSAL_THEME",
             "author": "Oracle",
-            "version": "22.2.1",
+            "version": "22.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-universal-theme.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/universal-theme-reference",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/universal-theme-reference/universal-theme-reference.sql",
