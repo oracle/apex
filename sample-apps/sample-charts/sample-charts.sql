@@ -37,8 +37,8 @@ prompt APPLICATION 7830 - Sample Charts
 -- Application Export:
 --   Application:     7830
 --   Name:            Sample Charts
---   Date and Time:   14:03 Wednesday November 2, 2022
---   Exported By:     DANIEL
+--   Date and Time:   19:25 Wednesday December 14, 2022
+--   Exported By:     HILARY
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     49
@@ -79,7 +79,7 @@ prompt APPLICATION 7830 - Sample Charts
 --         Messages:               3
 --       Reports:
 --       E-Mail:
---     Supporting Objects:  Included
+--     Supporting Objects:  Included (auto-install)
 --       Install scripts:          4
 --   Version:         22.2.0-19
 --   Instance ID:     713418452231244
@@ -121,7 +121,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.2.0'
+,p_flow_version=>'22.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -146,8 +146,8 @@ wwv_flow_imp.create_flow(
 ,p_substitution_value_05=>'https://www.oracle.com/webfolder/technetwork/jet/index.html?_ojCoreRouter=getstarted'
 ,p_substitution_string_06=>'OJCHART_ITEM_API_URL'
 ,p_substitution_value_06=>'https://www.oracle.com/webfolder/technetwork/jet/jsdocs/oj.ojChartItem.html'
-,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20221011165424'
+,p_last_updated_by=>'HILARY'
+,p_last_upd_yyyymmddhh24miss=>'20221214191905'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>9
 ,p_print_server_type=>'INSTANCE'
@@ -20862,8 +20862,8 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'04'
-,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20221011155041'
+,p_last_updated_by=>'HILARY'
+,p_last_upd_yyyymmddhh24miss=>'20221214182726'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(206692932801160401)
@@ -21106,11 +21106,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 ''))
 ,p_ajax_items_to_submit=>'P3_START_DATE,P3_END_DATE'
 ,p_items_label_rendered=>true
-,p_items_label_display_as=>'PERCENT'
-,p_gantt_start_date_source=>'DB_COLUMN'
-,p_gantt_start_date_column=>'GANTT_START'
-,p_gantt_end_date_source=>'DB_COLUMN'
-,p_gantt_end_date_column=>'GANTT_END'
+,p_gantt_start_date_source=>'ITEM'
+,p_gantt_start_date_item=>'P3_START_DATE'
+,p_gantt_end_date_source=>'ITEM'
+,p_gantt_end_date_item=>'P3_END_DATE'
 ,p_gantt_row_id=>'PARENT_TASK_ID'
 ,p_gantt_row_name=>'TASK_NAME'
 ,p_gantt_task_id=>'TASK_ID'
@@ -21128,10 +21127,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_gantt_viewport_end_source=>'ITEM'
 ,p_gantt_viewport_end_item=>'P3_END_DATE'
 ,p_task_label_position=>'innerStart'
-,p_threshold_display=>'onIndicator'
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P3_START_DATE is not null and :P3_END_DATE is not null'
-,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
  p_id=>wwv_flow_imp.id(624177170390217771)
@@ -21439,6 +21434,8 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P3_END_DATE'
 ,p_item_sequence=>40
 ,p_item_plug_id=>wwv_flow_imp.id(1625402091323064554)
+,p_item_default=>'P3_END_DATE'
+,p_item_default_type=>'ITEM'
 ,p_prompt=>'End Date'
 ,p_display_as=>'NATIVE_DATE_PICKER'
 ,p_cSize=>64
@@ -21458,6 +21455,8 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P3_START_DATE'
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_imp.id(1625402091323064554)
+,p_item_default=>'P3_MIN_START_DATE'
+,p_item_default_type=>'ITEM'
 ,p_prompt=>'Start Date'
 ,p_display_as=>'NATIVE_DATE_PICKER'
 ,p_cSize=>64
@@ -21476,7 +21475,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P3_MIN_START_DATE'
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(1625402091323064554)
-,p_source=>'select SYSDATE-125 from dual'
+,p_source=>'select min(start_date)-12 from eba_demo_chart_tasks'
 ,p_source_type=>'QUERY'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_encrypt_session_state_yn=>'N'
@@ -21487,7 +21486,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P3_MAX_END_DATE'
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(1625402091323064554)
-,p_source=>'select SYSDATE+10 from dual'
+,p_source=>'select max(end_date)+12 from eba_demo_chart_tasks'
 ,p_source_type=>'QUERY'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_encrypt_session_state_yn=>'N'
@@ -41067,7 +41066,7 @@ end;
 /
 prompt --application/end_environment
 begin
-wwv_flow_imp.import_end(p_auto_install_sup_obj => nvl(wwv_flow_application_install.get_auto_install_sup_obj, false));
+wwv_flow_imp.import_end(p_auto_install_sup_obj => nvl(wwv_flow_application_install.get_auto_install_sup_obj, true));
 commit;
 end;
 /

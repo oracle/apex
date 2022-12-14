@@ -159,7 +159,7 @@
         {
             "internalName": "SAMPLE_CHARTS",
             "author": "Oracle",
-            "version": "22.2.0",
+            "version": "22.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-charts.svg",
             "url": "https://github.com/oracle/apex/blob/22.2/sample-apps/sample-charts",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-charts/sample-charts.sql",
