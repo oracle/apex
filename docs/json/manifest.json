@@ -779,6 +779,58 @@
                     "description": ""
                 }
             }
+        },
+        {
+            "internalName": "APEX_PWA_REFERENCE",
+            "author": "Oracle",
+            "version": "22.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-apex-pwa-reference.svg",
+            "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/apex-pwa-reference",
+            "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/apex-pwa-reference/apex-pwa-reference.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/apex-pwa-reference/apex-pwa-reference.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "APEX PWA Reference",
+                    "description": "Oracle APEX enables developers to build Progressive Web Apps (PWAs) that can be installed on any desktop or mobile device to deliver a more native app experience. This application serves as a reference for key PWA features in APEX and how you can use them in your own apps."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
         }
     ],
     "starterApps": [
