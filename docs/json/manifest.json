@@ -783,7 +783,7 @@
         {
             "internalName": "APEX_PWA_REFERENCE",
             "author": "Oracle",
-            "version": "22.2.0",
+            "version": "22.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-apex-pwa-reference.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/sample-apps/apex-pwa-reference",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/apex-pwa-reference/apex-pwa-reference.sql",
