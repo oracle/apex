@@ -55,7 +55,7 @@
         {
             "internalName": "SAMPLE_CALENDAR",
             "author": "Oracle",
-            "version": "22.2.1",
+            "version": "22.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-calendar.svg",
             "url": "https://github.com/oracle/apex/blob/22.2/sample-apps/sample-calendar",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-calendar/sample-calendar.sql",
@@ -1069,7 +1069,7 @@
         {
             "name": "Format Date Picker Days",
             "author": "Oracle",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "description": "This plug-in is for the new APEX date picker to format certain days within the date picker calendar by a SQL Query or a online available ICS calendar file.",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-calendar.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/plugins/dynamic-action/format-datepicker-days",
