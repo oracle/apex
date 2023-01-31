@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Customers
--- Copyright (c)2012, 2022 Oracle and/or its affiliates.
+-- Copyright (c)2012, 2023 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0 as shown 
 -- at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -33,8 +33,8 @@ prompt APPLICATION 7170 - Customers
 -- Application Export:
 --   Application:     7170
 --   Name:            Customers
---   Date and Time:   13:48 Wednesday November 2, 2022
---   Exported By:     DANIEL
+--   Date and Time:   19:17 Tuesday January 31, 2023
+--   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                    132
@@ -81,7 +81,7 @@ prompt APPLICATION 7170 - Customers
 --       Reports:
 --         Layouts:                1
 --       E-Mail:
---     Supporting Objects:  Included
+--     Supporting Objects:  Included (auto-install)
 --       Install scripts:        110
 --   Version:         22.2.0-19
 --   Instance ID:     713418452231244
@@ -135,7 +135,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.2.0'
+,p_flow_version=>'22.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -157,8 +157,8 @@ wwv_flow_imp.create_flow(
 ,p_substitution_value_03=>'DD-MON-YYYY HH24:MI'
 ,p_substitution_string_04=>'APP_NAME'
 ,p_substitution_value_04=>'Customers'
-,p_last_updated_by=>'DANIEL'
-,p_last_upd_yyyymmddhh24miss=>'20221102134131'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20230131191632'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>31
 ,p_print_server_type=>'INSTANCE'
@@ -65204,7 +65204,8 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'The "Timeline" page shows a history of application transactions. Use the filter controls on the left to change the results displayed on the right.'
 ,p_page_component_map=>'03'
-,p_last_upd_yyyymmddhh24miss=>'20220823161428'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20230131162632'
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(7226957050722039203)
@@ -65232,7 +65233,7 @@ wwv_flow_imp_page.create_report_region(
 '    ''is-new'' EVENT_STATUS,',
 '    ''Customer Added'' EVENT_TYPE,',
 '    c.customer_name EVENT_TITLE,',
-'    c.summary EVENT_DESC,',
+'    apex_escape.html(c.summary) EVENT_DESC,',
 '    apex_util.prepare_url(''f?p=''||:APP_ID||'':50:''||:APP_SESSION||'':::50:P50_ID:''||c.id) event_link',
 'from EBA_CUST_CUSTOMERS c',
 'where c.created > (current_timestamp - :P124_TIMEFRAME)',
@@ -65255,7 +65256,7 @@ wwv_flow_imp_page.create_report_region(
 '    ''is-new'' EVENT_STATUS,',
 '    ''Customer Added Note'' EVENT_TYPE,',
 '    (select customer_name from eba_cust_customers c where c.id = n.customer_id) EVENT_TITLE,',
-'    TO_CHAR(dbms_lob.substr(n.note, length(n.note), 1 )) EVENT_DESC,',
+'    apex_escape.html(TO_CHAR(dbms_lob.substr(n.note, length(n.note), 1 ))) EVENT_DESC,',
 '    apex_util.prepare_url(''f?p=''||:APP_ID||'':50:''||:APP_SESSION||'':::50:P50_ID:''||n.customer_id) event_link',
 'from EBA_CUST_NOTES n',
 'where n.created > (current_timestamp - :P124_TIMEFRAME)',
@@ -65278,7 +65279,7 @@ wwv_flow_imp_page.create_report_region(
 '    ''is-new'' EVENT_STATUS,',
 '    ''Customer Added Contact'' EVENT_TYPE,',
 '    (select customer_name from eba_cust_customers c where c.id = c.customer_id) EVENT_TITLE,',
-'    c.name EVENT_DESC,',
+'    apex_escape.html(c.name) EVENT_DESC,',
 '    apex_util.prepare_url(''f?p=''||:APP_ID||'':50:''||:APP_SESSION||'':::50:P50_ID:''||c.customer_id) event_link',
 'from EBA_CUST_CONTACTS c',
 'where c.created > (current_timestamp - :P124_TIMEFRAME)',
@@ -65300,7 +65301,7 @@ wwv_flow_imp_page.create_report_region(
 '    ''is-new'' EVENT_STATUS,',
 '    ''Customer Added Attachment'' EVENT_TYPE,',
 '    (select customer_name from eba_cust_customers c where c.id = f.customer_id) EVENT_TITLE,',
-'    substr(f.FILE_NAME,1,255) || '' '' || substr(f.FILE_COMMENTS,1,200) EVENT_DESC,',
+'    apex_escape.html(substr(f.FILE_NAME,1,255) || '' '' || substr(f.FILE_COMMENTS,1,200)) EVENT_DESC,',
 '    apex_util.prepare_url(''f?p=''||:APP_ID||'':50:''||:APP_SESSION||'':::50:P50_ID:''||f.customer_id) event_link',
 'from EBA_CUST_FILES f',
 'where f.created > (current_timestamp - :P124_TIMEFRAME)',
@@ -65322,7 +65323,7 @@ wwv_flow_imp_page.create_report_region(
 '    ''is-new'' EVENT_STATUS,',
 '    ''Customer Added Link'' EVENT_TYPE,',
 '    (select customer_name from eba_cust_customers c where c.id = l.customer_id) EVENT_TITLE,',
-'    substr(nvl(LINK_DESC,LINK),1,255) || '' ''||substr(link_comments,1,200) EVENT_DESC,',
+'    apex_escape.html(substr(nvl(LINK_DESC,LINK),1,255) || '' ''||substr(link_comments,1,200)) EVENT_DESC,',
 '    apex_util.prepare_url(''f?p=''||:APP_ID||'':50:''||:APP_SESSION||'':::50:P50_ID:''||l.customer_id) event_link',
 'from EBA_CUST_LINKS l',
 'where l.created > (current_timestamp - :P124_TIMEFRAME)',
@@ -88293,7 +88294,7 @@ end;
 /
 prompt --application/end_environment
 begin
-wwv_flow_imp.import_end(p_auto_install_sup_obj => nvl(wwv_flow_application_install.get_auto_install_sup_obj, false));
+wwv_flow_imp.import_end(p_auto_install_sup_obj => nvl(wwv_flow_application_install.get_auto_install_sup_obj, true));
 commit;
 end;
 /

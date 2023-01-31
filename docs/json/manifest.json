@@ -837,7 +837,7 @@
         {
             "internalName": "APP_CUSTOMERS",
             "author": "Oracle",
-            "version": "22.2.0",
+            "version": "22.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-customer-tracker.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/starter-apps/customers",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/starter-apps/customers/customers.sql",
