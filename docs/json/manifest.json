@@ -993,7 +993,7 @@
         {
             "internalName": "APP_TEAM_CALENDAR",
             "author": "Oracle",
-            "version": "22.2.0",
+            "version": "22.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-group-calendar.svg",
             "url": "https://github.com/oracle/apex/tree/22.2/starter-apps/team-calendar",
             "source": "https://raw.githubusercontent.com/oracle/apex/22.2/starter-apps/team-calendar/team-calendar.sql",

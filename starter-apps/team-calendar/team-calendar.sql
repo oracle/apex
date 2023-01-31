@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Team Calendar
--- Copyright (c)2012, 2022 Oracle and/or its affiliates.
+-- Copyright (c)2012, 2023 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0 as shown 
 -- at https://oss.oracle.com/licenses/upl/
 -- 
@@ -37,8 +37,8 @@ prompt APPLICATION 7090 - Team Calendar
 -- Application Export:
 --   Application:     7090
 --   Name:            Team Calendar
---   Date and Time:   13:52 Wednesday November 2, 2022
---   Exported By:     DANIEL
+--   Date and Time:   19:29 Tuesday January 31, 2023
+--   Exported By:     ALLAN
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     51
@@ -84,7 +84,7 @@ prompt APPLICATION 7090 - Team Calendar
 --         Messages:              36
 --       Reports:
 --       E-Mail:
---     Supporting Objects:  Included
+--     Supporting Objects:  Included (auto-install)
 --       Install scripts:         44
 --   Version:         22.2.0-19
 --   Instance ID:     713418452231244
@@ -136,7 +136,7 @@ wwv_flow_imp.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.2.0'
+,p_flow_version=>'22.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -160,8 +160,8 @@ wwv_flow_imp.create_flow(
 ,p_substitution_value_04=>'DD-Mon-RRRR HH:MIam'
 ,p_substitution_string_05=>'APP_NAME'
 ,p_substitution_value_05=>'Team Calendar'
-,p_last_updated_by=>'DANIEL'
-,p_last_upd_yyyymmddhh24miss=>'20221102134623'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20230131192852'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>9
 ,p_print_server_type=>'INSTANCE'
@@ -27228,7 +27228,8 @@ wwv_flow_imp_page.create_page(
 ||'n the email.',
 '</p>'))
 ,p_page_component_map=>'03'
-,p_last_upd_yyyymmddhh24miss=>'20220823161416'
+,p_last_updated_by=>'ALLAN'
+,p_last_upd_yyyymmddhh24miss=>'20230120214738'
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(7994085567251326827)
@@ -27329,9 +27330,7 @@ wwv_flow_imp_page.create_report_columns(
 ,p_column_heading=>'Name'
 ,p_use_as_row_header=>'N'
 ,p_heading_alignment=>'LEFT'
-,p_display_as=>'WITHOUT_MODIFICATION'
-,p_lov_show_nulls=>'NO'
-,p_lov_display_extra=>'YES'
+,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
 wwv_flow_imp_page.create_report_columns(
@@ -46138,7 +46137,7 @@ end;
 /
 prompt --application/end_environment
 begin
-wwv_flow_imp.import_end(p_auto_install_sup_obj => nvl(wwv_flow_application_install.get_auto_install_sup_obj, false));
+wwv_flow_imp.import_end(p_auto_install_sup_obj => nvl(wwv_flow_application_install.get_auto_install_sup_obj, true));
 commit;
 end;
 /
