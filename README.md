@@ -7,6 +7,7 @@ This GitHub project contains starter apps, sample apps, sample code, and plug-in
 ## Branches
 These branches contains starter apps, sample apps and so on for a specific version of Oracle APEX.
 
+- [Oracle APEX 22.2](../../tree/23.1)
 - [Oracle APEX 22.2](../../tree/22.2)
 - [Oracle APEX 22.1](../../tree/22.1)
 - [Oracle APEX 21.2](../../tree/21.2)
