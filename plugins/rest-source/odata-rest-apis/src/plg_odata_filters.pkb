@@ -1,8 +1,8 @@
 create or replace package body plg_odata_filters as
 
 -------------------------------------------------------------------------------
--- Name: plg_odata_filters.pks
--- Copyright (c) 2012, 2022 Oracle and/or its affiliates.
+-- Name: plg_odata_filters.pkb
+-- Copyright (c) 2012, 2023 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 -------------------------------------------------------------------------------
