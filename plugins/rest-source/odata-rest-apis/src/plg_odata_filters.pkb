@@ -2,7 +2,7 @@ create or replace package body plg_odata_filters as
 
 -------------------------------------------------------------------------------
 -- Name: plg_odata_filters.pkb
--- Copyright (c) 2012, 2022 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2023 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 -------------------------------------------------------------------------------
@@ -113,32 +113,34 @@ begin
                              p_str         => p_external_filters,
                              p_pattern     => '(\&)' || plg_odata_connector.c_regex_all_charnum || '*?(\.)' );
 
-    -- Loop to replace the &items. with the sanitized values and return the String
-    for i in 1 .. l_items_sanitized.count
-    loop
+    if l_items_sanitized is not null then
+        -- Loop to replace the &items. with the sanitized values and return the String
+        for i in 1 .. l_items_sanitized.count
+        loop
 
-        -- Replace &Items. with the real Values
-        l_items_sanitized( i ) := apex_plugin_util.replace_substitutions(
-                                      p_value  => l_items_sanitized( i ),
-                                      p_escape => false );
+            -- Replace &Items. with the real Values
+            l_items_sanitized( i ) := apex_plugin_util.replace_substitutions(
+                                          p_value  => l_items_sanitized( i ),
+                                          p_escape => false );
 
-        l_items_sanitized( i ) := ''''
-                                    || replace( trim( l_items_sanitized( i ) ), '''', '''''' )
-                                    || '''';
+            l_items_sanitized( i ) := ''''
+                                        || replace( trim( l_items_sanitized( i ) ), '''', '''''' )
+                                        || '''';
 
-        apex_debug.info(
-            p_message   => 'External Filter %s after Sanitation = %s',
-            p0          => i,
-            p1          => l_items_sanitized( i ) );
+            apex_debug.info(
+                p_message   => 'External Filter %s after Sanitation = %s',
+                p0          => i,
+                p1          => l_items_sanitized( i ) );
 
-        -- Replace the &Items. with the sanitized values for return string
-        l_return :=
-            replace(
-                l_return,
-                regexp_substr( p_external_filters, '(\&)' || plg_odata_connector.c_regex_all_charnum || '*?(\.)', 1, i ),
-                l_items_sanitized( i ) );
+            -- Replace the &Items. with the sanitized values for return string
+            l_return :=
+                replace(
+                    l_return,
+                    regexp_substr( p_external_filters, '(\&)' || plg_odata_connector.c_regex_all_charnum || '*?(\.)', 1, i ),
+                    l_items_sanitized( i ) );
 
-    end loop;
+        end loop;
+    end if;
 
     apex_debug.trace( p_message => 'Exit get_sanitized_external_filter. return=%s ', p0 => l_return );
 
