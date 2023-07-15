@@ -20,7 +20,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2022.04.12'
-,p_release=>'22.1.0-17'
+,p_release=>'22.1.0'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>773
 ,p_default_id_offset=>1336332408777362883
@@ -72,7 +72,7 @@ prompt APPLICATION 773 - Sample ODATA-Connector
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          9
---   Version:         22.1.0-17
+--   Version:         22.1.0
 --   Instance ID:     697845941895809
 --
 
