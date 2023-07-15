@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Sample ODATA-Connector
--- Copyright (c) 2012, 2022 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2023 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ prompt APPLICATION 773 - Sample ODATA-Connector
 -- Application Export:
 --   Application:     773
 --   Name:            Sample ODATA-Connector
---   Date and Time:   19:44 Thursday November 17, 2022
+--   Date and Time:   12:23 Saturday July 15, 2023
 --   Exported By:     CARSTEN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -123,7 +123,7 @@ wwv_flow_imp.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample ODATA-Connector'
 ,p_last_updated_by=>'CARSTEN'
-,p_last_upd_yyyymmddhh24miss=>'20221117194408'
+,p_last_upd_yyyymmddhh24miss=>'20230715122303'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>5
 ,p_ui_type_name => null
@@ -21958,32 +21958,34 @@ wwv_flow_imp_shared.create_install_script(
 '                             p_str         => p_external_filters,',
 '                             p_pattern     => ''(\&)'' || plg_odata_connector.c_regex_all_charnum || ''*?(\.)'' );',
 '',
-'    -- Loop to replace the &items. with the sanitized values and return the String',
-'    for i in 1 .. l_items_sanitized.count',
-'    loop',
+'    if l_items_sanitized is not null then',
+'        -- Loop to replace the &items. with the sanitized values and return the String',
+'        for i in 1 .. l_items_sanitized.count',
+'        loop',
 '',
-'        -- Replace &Items. with the real Values',
-'        l_items_sanitized( i ) := apex_plugin_util.replace_substitutions(',
-'                                      p_value  => l_items_sanitized( i ),',
-'                                      p_escape => false );',
+'            -- Replace &Items. with the real Values',
+'            l_items_sanitized( i ) := apex_plugin_util.replace_substitutions(',
+'                                          p_value  => l_items_sanitized( i ),',
+'                                          p_escape => false );',
 '',
-'        l_items_sanitized( i ) := ''''''''',
-'                                    || replace( trim( l_items_sanitized( i ) ), '''''''', '''''''''''' )',
-'                                    || '''''''';',
+'            l_items_sanitized( i ) := ''''''''',
+'                                        || replace( trim( l_items_sanitized( i ) ), '''''''', '''''''''''' )',
+'                                        || '''''''';',
 '',
-'        apex_debug.info(',
-'            p_message   => ''External Filter %s after Sanitation = %s'',',
-'            p0          => i,',
-'            p1          => l_items_sanitized( i ) );',
+'            apex_debug.info(',
+'                p_message   => ''External Filter %s after Sanitation = %s'',',
+'                p0          => i,',
+'                p1          => l_items_sanitized( i ) );',
 '',
-'        -- Replace the &Items. with the sanitized values for return string',
-'        l_return :=',
-'            replace(',
-'                l_return,',
-'                regexp_substr( p_external_filters, ''(\&)'' || plg_odata_connector.c_regex_all_charnum || ''*?(\.)'', 1, i ),',
-'                l_items_sanitized( i ) );',
+'            -- Replace the &Items. with the sanitized values for return string',
+'            l_return :=',
+'                replace(',
+'                    l_return,',
+'                    regexp_substr( p_external_filters, ''(\&)'' || plg_odata_connector.c_regex_all_charnum || ''*?(\.)'', 1, i ),',
+'                    l_items_sanitized( i ) );',
 '',
-'    end loop;',
+'        end loop;',
+'    end if;',
 '',
 '    apex_debug.trace( p_message => ''Exit get_sanitized_external_filter. return=%s '', p0 => l_return );',
 '',
@@ -22524,12 +22526,7 @@ wwv_flow_imp_shared.create_install_script(
 '                    p_filter_param                  => l_filter_param_1,',
 '                    p_filter_selector               => l_filter_selector,',
 '                    p_filter_search_value           => l_filter_search_vc,',
-'                    p_case_insensitive_transform    => l_case_insensitive_transform );',
-'',
-'        else',
-'',
-'            --',
-'            -- We need to lookup the columns in Filters "search_colu'))
+'                    p_case_insensitive_transform  '))
 );
 end;
 /
@@ -22537,7 +22534,12 @@ begin
 wwv_flow_imp_shared.append_to_install_script(
  p_id=>wwv_flow_imp.id(1365673851635121660)
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'mns"',
+'  => l_case_insensitive_transform );',
+'',
+'        else',
+'',
+'            --',
+'            -- We need to lookup the columns in Filters "search_columns"',
 '            --',
 '            <<process_search_columns_loop>>',
 '            for i in 1 .. l_filter_search_vc_arr.count',
