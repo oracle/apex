@@ -941,7 +941,7 @@
         {
             "internalName": "APP_POLL",
             "author": "Oracle",
-            "version": "23.1.0",
+            "version": "23.1.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/23.1/docs/img/apps/app-live-poll.svg",
             "url": "https://github.com/oracle/apex/tree/23.1/starter-apps/poll",
             "source": "https://raw.githubusercontent.com/oracle/apex/23.1/starter-apps/poll/poll.sql",
