@@ -38,7 +38,8 @@ prompt APPLICATION 7870 - Sample Approvals
 -- Application Export:
 --   Application:     7870
 --   Name:            Sample Approvals
---   Exported By:     ORACLE
+--   Date and Time:   08:37 Friday August 18, 2023
+--   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     22
@@ -119,7 +120,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'22.2.1'
+,p_flow_version=>'23.1.0'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -133,8 +134,8 @@ wwv_imp_workspace.create_flow(
 ,p_email_from=>'APEX Sample Approvals <oracle-application-express_ww@oracle.com>'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample Approvals'
-,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20230515165256'
+,p_last_updated_by=>'DANIEL'
+,p_last_upd_yyyymmddhh24miss=>'20230818083605'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>153
 ,p_print_server_type=>'NATIVE'

@@ -38,7 +38,8 @@ prompt APPLICATION 7040 - Poll
 -- Application Export:
 --   Application:     7040
 --   Name:            Poll
---   Exported By:     ORACLE
+--   Date and Time:   08:38 Friday August 18, 2023
+--   Exported By:     DANIEL
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     83
@@ -125,7 +126,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'23.1.0'
+,p_flow_version=>'23.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -143,7 +144,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Poll'
 ,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20230515151707'
+,p_last_upd_yyyymmddhh24miss=>'20230815194414'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>28
 ,p_print_server_type=>'INSTANCE'
@@ -37089,7 +37090,7 @@ wwv_flow_imp_page.create_page(
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'10'
 ,p_last_updated_by=>'ALLAN'
-,p_last_upd_yyyymmddhh24miss=>'20230511224527'
+,p_last_upd_yyyymmddhh24miss=>'20230815192636'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1229131081295590702)
@@ -37991,7 +37992,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>60
 ,p_item_plug_id=>wwv_flow_imp.id(13915152887902477306)
 ,p_display_as=>'NATIVE_HIDDEN'
-,p_protection_level=>'S'
+,p_protection_level=>'B'
 ,p_encrypt_session_state_yn=>'N'
 ,p_attribute_01=>'Y'
 );
