@@ -1,6 +1,58 @@
 {
     "sampleApps": [
         {
+            "internalName": "SAMPLE_APPLICATION_SEARCH",
+            "author": "Oracle",
+            "version": "22.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/22.2/docs/img/apps/app-sample-application-search.svg",
+            "url": "https://github.com/oracle/apex/blob/22.2/sample-apps/sample-application-search",
+            "source": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-application-search/sample-application-search.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/22.2/sample-apps/sample-application-search/sample-application-search.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Sample Application Search",
+                    "description": "This application showcases the Application Search feature, introduced with APEX 22.2. Search Configurations and Search Regions allow developers to add robust search engine functionality to their APEX applications."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_APPROVALS",
             "author": "Oracle",
             "version": "22.2.1",
