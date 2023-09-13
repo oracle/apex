@@ -1,10 +1,7 @@
-Copyright (c) 2023, Oracle and/or its affiliates. All rights reserved.
-
-
 # Sample Graph Visualizations
 
 This application demonstrates the use of the Graph Visualization plug-in. This plug-in supports visualization of property graph queries in the database as an interactive network graph.
-More information about the region plug-in and its usage can be found [here](plugins/region/graph-visualization).
+More information about the region plug-in and its usage can be found [here](/plugins/region/graph-visualization).
 
 Installation Steps
 ------------------------------------
