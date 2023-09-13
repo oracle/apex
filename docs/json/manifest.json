@@ -469,6 +469,58 @@
             }
         },
         {
+            "internalName": "SAMPLE_GRAPH_VISUALIZATIONS",
+            "author": "Oracle",
+            "version": "23.1.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/23.1/docs/img/apps/app-sample-graph-visualizations.svg",
+            "url": "https://github.com/oracle/apex/tree/23.1/sample-apps/sample-graph-visualizations",
+            "source": "https://raw.githubusercontent.com/oracle/apex/23.1/sample-apps/sample-graph-visualizations/sample-graph-visualizations.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/23.1/sample-apps/sample-graph-visualizations/sample-graph-visualizations.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Sample Graph Visualizations",
+                    "description": "This application demonstrates the use of the Graph Visualization plug-in. This plug-in supports visualization of property graph queries in the database as an interactive network graph."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_INTERACTIVE_GRIDS",
             "author": "Oracle",
             "version": "23.1.0",
@@ -1126,6 +1178,17 @@
             "icon": "https://raw.githubusercontent.com/oracle/apex/23.1/docs/img/apps/app-sample-calendar.svg",
             "url": "https://github.com/oracle/apex/tree/23.1/plugins/dynamic-action/format-datepicker-days",
             "source": "https://raw.githubusercontent.com/oracle/apex/23.1/plugins/dynamic-action/format-datepicker-days/dynamic_action_plugin_format_datepicker_days.sql",
+            "zip": "",
+            "license": ""
+        },
+        {
+            "name": "Graph Visualization (Preview)",
+            "author": "Oracle",
+            "version": "23.1.0",
+            "description": "This plug-in supports visualization of property graph queries in the database as an interactive network graph. The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 23c or later, or in PGQL (https://pgql-lang.org/) for Autonomous Database Serverless.",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/23.1/docs/img/apps/app-sample-graph-visualizations.svg",
+            "url": "https://github.com/oracle/apex/tree/23.1/plugins/region/graph-visualization",
+            "source": "https://raw.githubusercontent.com/oracle/apex/23.1/plugins/region/graph-visualization/region_type_plugin_graphviz.sql",
             "zip": "",
             "license": ""
         }
