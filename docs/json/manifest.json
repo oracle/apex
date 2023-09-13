@@ -783,58 +783,6 @@
     ],
     "starterApps": [
         {
-            "internalName": "APP_CUSTOMERS",
-            "author": "Oracle",
-            "version": "22.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/22.1/docs/img/apps/app-customer-tracker.svg",
-            "url": "https://github.com/oracle/apex/tree/22.1/starter-apps/customers",
-            "source": "https://raw.githubusercontent.com/oracle/apex/22.1/starter-apps/customers/customers.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/22.1/starter-apps/customers/customers.zip",
-            "license": "",
-            "i18n": {
-                "en": {
-                    "name": "Customers",
-                    "description": "Customers helps you improve your customer interactions by offering a centralized repository of information about your customers. Each customer can have multiple contacts and be associated with multiple products. Customers gives you the ability to define your own standards for attributes such as categories, statuses, customer types, activity types, and products, allowing you to create a customized version of Customers to meet your own needs."
-                },
-                "de": {
-                    "name": "",
-                    "description": ""
-                },
-                "es": {
-                    "name": "",
-                    "description": ""
-                },
-                "fr": {
-                    "name": "",
-                    "description": ""
-                },
-                "it": {
-                    "name": "",
-                    "description": ""
-                },
-                "ja": {
-                    "name": "",
-                    "description": ""
-                },
-                "ko": {
-                    "name": "",
-                    "description": ""
-                },
-                "pt-br": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-cn": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-tw": {
-                    "name": "",
-                    "description": ""
-                }
-            }
-        },
-        {
             "internalName": "APP_OPPORTUNITIES",
             "author": "Oracle",
             "version": "22.1.0",
@@ -899,58 +847,6 @@
                 "en": {
                     "name": "Poll",
                     "description": "This application allows you to conduct a simple poll or quiz. Results of the poll or quiz can be displayed in real time. You can use this app during meetings or presentations to get instant feedback and to facilitate discussions."
-                },
-                "de": {
-                    "name": "",
-                    "description": ""
-                },
-                "es": {
-                    "name": "",
-                    "description": ""
-                },
-                "fr": {
-                    "name": "",
-                    "description": ""
-                },
-                "it": {
-                    "name": "",
-                    "description": ""
-                },
-                "ja": {
-                    "name": "",
-                    "description": ""
-                },
-                "ko": {
-                    "name": "",
-                    "description": ""
-                },
-                "pt-br": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-cn": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-tw": {
-                    "name": "",
-                    "description": ""
-                }
-            }
-        },
-        {
-            "internalName": "APP_TEAM_CALENDAR",
-            "author": "Oracle",
-            "version": "22.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/22.1/docs/img/apps/app-group-calendar.svg",
-            "url": "https://github.com/oracle/apex/tree/22.1/starter-apps/team-calendar",
-            "source": "https://raw.githubusercontent.com/oracle/apex/22.1/starter-apps/team-calendar/team-calendar.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/22.1/starter-apps/team-calendar/team-calendar.zip",
-            "license": "https://raw.githubusercontent.com/oracle/apex/22.1/starter-apps/team-calendar/THIRD_PARTY_LICENSES.txt",
-            "i18n": {
-                "en": {
-                    "name": "Team Calendar",
-                    "description": "The Team Calendar application gives you a way to list all your events on an easy to use, Web-accessible calendar. The Home page for the Team Calendar displays events in a monthly, weekly or daily format, with embedded links to detailed information about each event. You can also create customized reports on events. Each event is classified by event type and automatically displayed in an associated color. You can create your own event types or modify existing event type attributes. You can send emails to individuals or groups with information about upcoming meetings, and you have the ability to create your own groups to match your needs."
                 },
                 "de": {
                     "name": "",
