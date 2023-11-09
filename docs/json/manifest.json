@@ -471,7 +471,7 @@
         {
             "internalName": "SAMPLE_GRAPH_VISUALIZATIONS",
             "author": "Oracle",
-            "version": "23.1.0",
+            "version": "23.1.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/23.1/docs/img/apps/app-sample-graph-visualizations.svg",
             "url": "https://github.com/oracle/apex/tree/23.1/sample-apps/sample-graph-visualizations",
             "source": "https://raw.githubusercontent.com/oracle/apex/23.1/sample-apps/sample-graph-visualizations/sample-graph-visualizations.sql",
@@ -1184,7 +1184,7 @@
         {
             "name": "Graph Visualization (Preview)",
             "author": "Oracle",
-            "version": "23.1.0",
+            "version": "23.1.1",
             "description": "This plug-in supports visualization of property graph queries in the database as an interactive network graph. The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 23c or later, or in PGQL (https://pgql-lang.org/) for Autonomous Database Serverless.",
             "icon": "https://raw.githubusercontent.com/oracle/apex/23.1/docs/img/apps/app-sample-graph-visualizations.svg",
             "url": "https://github.com/oracle/apex/tree/23.1/plugins/region/graph-visualization",
