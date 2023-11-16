@@ -100,7 +100,7 @@
             document.getElementById( "plug-ins" ).innerHTML = getTemplate( prepareListData( data.plugins ), "Download Plug-In" );
 
             // utility apps are optional, so show / hide whole section
-            if ( data.utilityApps && data.utilityApps > 0 ) {
+            if ( data.utilityApps && data.utilityApps.length > 0 ) {
                 document.getElementById( "section-utility" ).style.display = "";
             } else {
                 document.getElementById( "section-utility" ).style.display = "none";
