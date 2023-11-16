@@ -17,11 +17,11 @@
     function loadAPEXVersions() {
         const apiURL = "https://api.github.com/repos/oracle/apex/branches",
               versionURL = getURLParamValue( "version" ),
-              excludeBranches = ["main"];
+              allowedBranches = ["21.1", "21.2", "22.1", "22.2", "23.1", "23.2"];
 
         const applyVersions = function ( pData ) {
             const data = pData || [],
-                  filteredData = data.filter( ( row ) =>  !excludeBranches.includes( row.name ) );
+                  filteredData = data.filter( ( row ) =>  allowedBranches.includes( row.name ) );
             let option;
 
             // reverse loop, thus branches api is sorted by name, and we want the most current version to be first & default
@@ -96,6 +96,9 @@
 
             document.getElementById( "samples" ).innerHTML = getTemplate( prepareListData( data.sampleApps ) );
             document.getElementById( "apps" ).innerHTML = getTemplate( prepareListData( data.starterApps ) );
+            if ( data.utilityApps && data.utilityApps.length > 0 ) {
+                document.getElementById( "utility-apps" ).innerHTML = getTemplate( prepareListData( data.utilityApps ) );
+            }
             document.getElementById( "plug-ins" ).innerHTML = getTemplate( prepareListData( data.plugins ), "Download Plug-In" );
 
             document.dispatchEvent( new Event( "remoteContentLoaded" ) );
