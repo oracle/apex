@@ -92,7 +92,7 @@ wwv_imp_workspace.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ORACLE')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'Oracle Cloud Apps REST Data Source Explorer')
-,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'REST-DATA-SOURCE-EXPLORER')
+,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'CLOUD-APPS-REST-EXPLORER')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
 ,p_checksum_salt=>'191267E648626775AD12CBD628FE40F1B62D2AB1C285E14CE60ADCD799BA79D4'
@@ -125,7 +125,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Oracle Cloud Apps Data Source Explorer'
 ,p_last_updated_by=>'DANIEL'
-,p_last_upd_yyyymmddhh24miss=>'20231116093907'
+,p_last_upd_yyyymmddhh24miss=>'20231116100951'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>37
 ,p_print_server_type=>'NATIVE'
