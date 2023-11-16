@@ -1147,6 +1147,60 @@
             }
         }
     ],
+    "utilityApps": [
+        {
+            "internalName": "APP_CLOUD_APPS_REST_EXPLORER",
+            "author": "Oracle",
+            "version": "23.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-cloud-apps-rest-explorer.svg",
+            "url": "https://github.com/oracle/apex/tree/23.2/utility-apps/cloud-apps-rest-explorer",
+            "source": "https://raw.githubusercontent.com/oracle/apex/23.2/utility-apps/cloud-apps-rest-explorer/cloud-apps-rest-explorer.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/23.2/utility-apps/cloud-apps-rest-explorer/cloud-apps-rest-explorer.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Oracle Cloud Apps REST Data Source Explorer",
+                    "description": "This application shows all Oracle Cloud Applications REST Data Sources in the apps in your workspace and helps you retrieve useful, searchable reference info about them including business object attributes and child objects available. It also lets you discover what other REST endpoints are available for use. Easily copy REST endpoint URLs for List of Values, child objects, and other available services to the clipboard for use in the APEX Builder's Create REST Data Source wizard."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        }
+    ],
     "plugins": [
         {
             "name": "REST Source Pagination",
