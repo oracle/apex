@@ -96,10 +96,15 @@
 
             document.getElementById( "samples" ).innerHTML = getTemplate( prepareListData( data.sampleApps ) );
             document.getElementById( "apps" ).innerHTML = getTemplate( prepareListData( data.starterApps ) );
-            if ( data.utilityApps && data.utilityApps.length > 0 ) {
-                document.getElementById( "utility-apps" ).innerHTML = getTemplate( prepareListData( data.utilityApps ) );
-            }
+            document.getElementById( "utility-apps" ).innerHTML = getTemplate( prepareListData( data.utilityApps ) );
             document.getElementById( "plug-ins" ).innerHTML = getTemplate( prepareListData( data.plugins ), "Download Plug-In" );
+
+            // utility apps are optional, so show / hide whole section
+            if ( data.utilityApps && data.utilityApps > 0 ) {
+                document.getElementById( "section-utility" ).style.display = "";
+            } else {
+                document.getElementById( "section-utility" ).style.display = "none";
+            }
 
             document.dispatchEvent( new Event( "remoteContentLoaded" ) );
         };
