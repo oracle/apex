@@ -25,7 +25,7 @@ Oracle Critical Patch Update program. Additional
 information, including past advisories, is available on our [security alerts][4]
 page.
 
-## Security-related information
+## Security-related information 
 
 We will provide security related information such as a threat model, considerations
 for secure use, or any known security issues in our documentation. Please note
