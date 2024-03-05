@@ -376,7 +376,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Document Generator",
-                    "description": "This application showcases the integration with the Oracle Document Generator Pre-built Function on OCI. It features several examples of generating PDF documents from a combination of JSON data and MS Word templates."
+                    "description": "This application showcases the integration with the Oracle Document Generator Pre-built Function on OCI. It features examples of generating PDF documents from a combination of JSON data and MS Word templates."
                 },
                 "de": {
                     "name": "",
