@@ -365,6 +365,58 @@
             }
         },
         {
+            "internalName": "SAMPLE_DOCUMENT_GENERATOR",
+            "author": "Oracle",
+            "version": "23.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-sample-document-generator.svg",
+            "url": "https://github.com/oracle/apex/tree/23.2/sample-apps/sample-document-generator",
+            "source": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/sample-document-generator/sample-document-generator.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/sample-document-generator/sample-document-generator.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Sample Document Generator",
+                    "description": "This application showcases the integration with the Oracle Document Generator Pre-built Function on OCI. It features several examples of generating PDF documents from a combination of JSON data and MS Word templates."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_DYNAMIC_ACTIONS",
             "author": "Oracle",
             "version": "23.2.0",

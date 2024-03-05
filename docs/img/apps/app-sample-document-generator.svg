@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="a" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#113450" stroke-width="0"/>
+  <path d="m45.911,27.026c.109-.492.165-.994.166-1.497-.005-4.133-3.437-7.482-7.672-7.487-1.166-.001-2.317.259-3.363.762-1.235-4.813-6.234-7.738-11.167-6.533-4.932,1.205-7.93,6.084-6.695,10.897.104.404.236.8.395,1.185-4.902,1.316-7.783,6.262-6.434,11.046,1.097,3.89,4.716,6.59,8.851,6.601h26.085c4.237-.045,7.635-3.433,7.589-7.568-.046-4.135-3.518-7.451-7.755-7.406h0Z" fill="#4aa4ec" isolation="isolate" stroke-width="0"/>
+  <rect x="22" y="34" width="20" height="19" fill="#fff" stroke-width="0"/>
+  <rect x="26" y="47" width="12" height="2" fill="#d4cfcb" stroke-width="0"/>
+  <rect x="26" y="42" width="12" height="2" fill="#d4cfcb" stroke-width="0"/>
+  <rect x="26" y="37" width="12" height="2" fill="#d4cfcb" stroke-width="0"/>
+  <polygon points="35.293 25.293 33 27.586 33 22 31 22 31 27.586 28.707 25.293 27.293 26.707 32 31.414 36.707 26.707 35.293 25.293" fill="#fff" stroke-width="0"/>
+  <path d="m43.5,34h-1.5v3h1.5c.828,0,1.5-.672,1.5-1.5s-.672-1.5-1.5-1.5Z" fill="#22689f" stroke-width="0"/>
+  <path d="m20.5,34h1.5s0,3,0,3h-1.5c-.828,0-1.5-.672-1.5-1.5,0-.828.672-1.5,1.5-1.5Z" fill="#22689f" stroke-width="0"/>
+</svg>
