@@ -521,58 +521,6 @@
             }
         },
         {
-            "internalName": "SAMPLE_GRAPH_VISUALIZATIONS",
-            "author": "Oracle",
-            "version": "23.2.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-sample-graph-visualizations.svg",
-            "url": "https://github.com/oracle/apex/tree/23.2/sample-apps/sample-graph-visualizations",
-            "source": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/sample-graph-visualizations/sample-graph-visualizations.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/sample-graph-visualizations/sample-graph-visualizations.zip",
-            "license": "",
-            "i18n": {
-                "en": {
-                    "name": "Sample Graph Visualizations",
-                    "description": "This application demonstrates the use of the Graph Visualization plug-in. This plug-in supports visualization of property graph queries in the database as an interactive network graph."
-                },
-                "de": {
-                    "name": "",
-                    "description": ""
-                },
-                "es": {
-                    "name": "",
-                    "description": ""
-                },
-                "fr": {
-                    "name": "",
-                    "description": ""
-                },
-                "it": {
-                    "name": "",
-                    "description": ""
-                },
-                "ja": {
-                    "name": "",
-                    "description": ""
-                },
-                "ko": {
-                    "name": "",
-                    "description": ""
-                },
-                "pt-br": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-cn": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-tw": {
-                    "name": "",
-                    "description": ""
-                }
-            }
-        },
-        {
             "internalName": "SAMPLE_INTERACTIVE_GRIDS",
             "author": "Oracle",
             "version": "23.2.0",
