@@ -532,7 +532,7 @@
             "i18n": {
                 "en": {
                     "name": "Sample Interactive Grids",
-                    "description": "This application highlights the features and functionality of the Oracle APEX Interactive Grid. The interactive grid sample pages highlight the following declarative features."
+                    "description": "This application showcases the features and functionality of the Oracle APEX Interactive Grid. Through its interactive grid sample pages, users can explore its versatile capabilities, such as comprehensive reporting, seamless data editing or intuitive pagination."
                 },
                 "de": {
                     "name": "",
