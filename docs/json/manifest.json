@@ -469,6 +469,58 @@
             }
         },
         {
+            "internalName": "SAMPLE_EMAIL_AUTH",
+            "author": "Oracle",
+            "version": "23.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-sample-email-auth.svg",
+            "url": "https://github.com/oracle/apex/tree/23.2/sample-apps/sample-email-authentication",
+            "source": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/sample-email-authentication/sample-email-authentication.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/sample-email-authentication/sample-email-authentication.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Sample Email Authentication",
+                    "description": "This application illustrates the use of email authentication. Usernames must be email addresses and tokens are emailed to users at login time to verify their identities, instead of using passwords."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_FILE_UPLOAD_DOWNLOAD",
             "author": "Oracle",
             "version": "23.2.0",
@@ -935,6 +987,58 @@
                     "description": ""
                 }
             }
+        },
+        {
+            "internalName": "BROOKSTRUT_SAMPLE_APP",
+            "author": "Oracle",
+            "version": "23.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-sample-brookstrut.svg",
+            "url": "https://github.com/oracle/apex/tree/23.2/sample-apps/brookstrut-sample-app",
+            "source": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/brookstrut-sample-app/brookstrut-sample-app.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/brookstrut-sample-app/brookstrut-sample-app.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Brookstrut Sample App",
+                    "description": "The Brookstrut sample application analyzes a simplified stored data model and includes a feature to generate random data, accommodating everything from small to extra large data sets. It showcases Oracle APEX's capabilities in data reporting, navigation, and data presentation. This tool allows you to explore various Oracle APEX components, including faceted search, interactive reports, content row reports, and calendars."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
         }
     ],
     "starterApps": [
@@ -1055,6 +1159,110 @@
                 "en": {
                     "name": "Poll",
                     "description": "This application allows you to conduct a simple poll or quiz. Results of the poll or quiz can be displayed in real time. You can use this app during meetings or presentations to get instant feedback and to facilitate discussions."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
+            "internalName": "APP_QASK",
+            "author": "Oracle",
+            "version": "23.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-qask.svg",
+            "url": "https://github.com/oracle/apex/tree/23.2/starter-apps/qask",
+            "source": "https://raw.githubusercontent.com/oracle/apex/23.2/starter-apps/qask/qask.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/23.2/starter-apps/qask/qask.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "qAsk",
+                    "description": "qAsk is used to run a Q&A session. It can be used during a lecture or class to gauge understanding of material, interests of a crowd or solicit feedback. No account is needed for participation - a QR code is scanned to join a Session."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
+            "internalName": "APP_STRATEGIC_PLANNER",
+            "author": "Oracle",
+            "version": "23.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-strategic-planner.svg",
+            "url": "https://github.com/oracle/apex/tree/23.2/starter-apps/strategic-planner",
+            "source": "https://raw.githubusercontent.com/oracle/apex/23.2/starter-apps/strategic-planner/strategic-planner.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/23.2/starter-apps/strategic-planner/strategic-planner.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Strategic Planner",
+                    "description": "The Strategic Planner is designed to monitor projects, releases, contributors, reviews, and activities, making it particularly useful for managing teams of developers working on larger projects. This tool complements platforms like Jira and Confluence, or similar project tracking tools. Its user interface features faceted search, row-menus, interactive reporting, and other contemporary UX designs. You can use the tool as-is to help manage the application development projects or customize it to meet your specific requirements."
                 },
                 "de": {
                     "name": "",

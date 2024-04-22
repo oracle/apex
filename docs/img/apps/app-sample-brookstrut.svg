@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="a" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect y="0" width="64" height="64" fill="#fdbd3e" stroke-width="0"/>
+  <g id="b" data-name="icons">
+    <polygon points="40 27 24 21 12 27 12 53 24 47 40 53 52 47 52 21 40 27" isolation="isolate" opacity=".1" stroke-width="0"/>
+    <g>
+      <polygon points="40 52 52 46 52 20 40 26 40 52" fill="#fff" stroke-width="0"/>
+      <polygon points="12 52 24 46 24 20 12 26 12 52" fill="#fff" stroke-width="0"/>
+      <polygon points="40 52 24 46 24 20 40 26 40 52" fill="#e5e7e9" stroke-width="0"/>
+    </g>
+    <path d="m16.485,23.758c1.728,5.587,7.515,12.671,7.515,12.671,0,0,6.399-7.834,7.748-13.523l-7.748-2.906-7.515,3.758Z" isolation="isolate" opacity=".1" stroke-width="0"/>
+    <path d="m24,12c-5.302,0-8,4.213-8,8,0,5.639,8,15.429,8,15.429,0,0,8-9.79,8-15.429,0-3.787-2.698-8-8-8Zm0,11.736c-2.064,0-3.737-1.673-3.737-3.736s1.673-3.736,3.737-3.736,3.737,1.673,3.737,3.736-1.673,3.736-3.737,3.736Z" fill="#f9422a" stroke-width="0"/>
+  </g>
+</svg>

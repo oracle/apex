@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="a" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#124a35" stroke-width="0"/>
+  <rect x="12" y="40" width="40" height="12" rx="2" ry="2" fill="#169766" stroke-width="0"/>
+  <rect x="16" y="12" width="32" height="20" rx="2" ry="2" fill="#fff" stroke-width="0"/>
+  <circle cx="17.5" cy="46" r="1.5" fill="#fff" stroke-width="0"/>
+  <circle cx="23.5" cy="46" r="1.5" fill="#fff" stroke-width="0"/>
+  <circle cx="29.5" cy="46" r="1.5" fill="#fff" stroke-width="0"/>
+  <circle cx="35.5" cy="46" r="1.5" fill="#fff" stroke-width="0"/>
+  <path d="m47.05,45.1v-.8c0-1.406-1.144-2.55-2.55-2.55s-2.55,1.144-2.55,2.55v.8h-.95v4.8h7v-4.8h-.95Zm-3.6-.8c0-.579.471-1.05,1.05-1.05s1.05.471,1.05,1.05v.8h-2.1v-.8Z" fill="#fff" stroke-width="0"/>
+  <path d="m18,32h28c1.105,0,2-.895,2-2V14l-13.534,10.599c-1.449,1.134-3.484,1.134-4.933,0l-13.534-10.599v16c0,1.105.895,2,2,2Z" fill="#cfd6dc" fill-rule="evenodd" stroke-width="0"/>
+</svg>
