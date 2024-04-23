@@ -137,7 +137,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'qAsk'
 ,p_last_updated_by=>'DANIEL'
-,p_last_upd_yyyymmddhh24miss=>'20240422131903'
+,p_last_upd_yyyymmddhh24miss=>'20240423070207'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>24
 ,p_print_server_type=>'INSTANCE'
@@ -37046,6 +37046,12 @@ wwv_flow_imp_shared.create_install_script(
 'is',
 '    l_from_email  varchar2(255)  := get_setting(''from_email'');',
 'begin',
+'    if p_username is null or',
+'       p_app_id   is null',
+'    then',
+'        return;',
+'    end if;',
+'',
 '    if p_send_email_yn = ''Y'' and (p_app_url is null or l_from_email is null) then',
 '        add_log ( ',
 '            p_procedure_name => ''add_user'', ',
@@ -37709,13 +37715,7 @@ wwv_flow_imp_shared.create_install_script(
 '           and lower(session_name) = lower(p_session_name)',
 '    ) loop ',
 '      return ''N'';',
-'    end loop;',
-'    return ''Y'';',
-'end new_session_name_ok_yn;',
-'',
-'',
-'function create_session (',
-'    p_app_us'))
+'    e'))
 );
 end;
 /
@@ -37723,7 +37723,13 @@ begin
 wwv_flow_imp_shared.append_to_install_script(
  p_id=>wwv_flow_imp.id(59247988025332775227)
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'er                in varchar2,',
+'nd loop;',
+'    return ''Y'';',
+'end new_session_name_ok_yn;',
+'',
+'',
+'function create_session (',
+'    p_app_user                in varchar2,',
 '    p_session_name            in varchar2,',
 '    p_purpose                 in varchar2,',
 '    p_visibility              in varchar2 default ''PRIVATE'', -- NOT CURRENTLY USED',
@@ -38645,11 +38651,7 @@ wwv_flow_imp_shared.append_to_install_script(
 '            question_id,',
 '            answer_id,',
 '            answer_text,',
-'            comment_text )',
-'        values (',
-'            l_response_id,',
-'            p_question_id,',
-'            p_an'))
+'            comment'))
 );
 null;
 end;
@@ -38658,7 +38660,11 @@ begin
 wwv_flow_imp_shared.append_to_install_script(
  p_id=>wwv_flow_imp.id(59247988025332775227)
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'swer_id,',
+'_text )',
+'        values (',
+'            l_response_id,',
+'            p_question_id,',
+'            p_answer_id,',
 '            case when p_answer_id is not null then l_answer_text else p_answer_freeform end,',
 '            case when l_is_ask_for_comments_yn = ''Y'' then p_comment_text end );',
 '    end if;',
