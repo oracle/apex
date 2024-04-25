@@ -575,7 +575,7 @@
         {
             "internalName": "SAMPLE_INTERACTIVE_GRIDS",
             "author": "Oracle",
-            "version": "23.2.0",
+            "version": "23.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-sample-ig.svg",
             "url": "https://github.com/oracle/apex/tree/23.2/sample-apps/sample-interactive-grids",
             "source": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/sample-interactive-grids/sample-interactive-grids.sql",
