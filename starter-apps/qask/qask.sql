@@ -123,7 +123,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'23.2.0'
+,p_flow_version=>'23.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -137,7 +137,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'qAsk'
 ,p_last_updated_by=>'DANIEL'
-,p_last_upd_yyyymmddhh24miss=>'20240423072006'
+,p_last_upd_yyyymmddhh24miss=>'20240503085741'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>24
 ,p_print_server_type=>'INSTANCE'
@@ -39098,10 +39098,14 @@ wwv_flow_imp_shared.create_install_script(
 '    l_app_user  varchar2(255) := apex_custom_auth.get_username;',
 'begin',
 '    for u in (',
-'        select email',
+'        select case when email is null and regexp_like(l_app_user,''[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}'')',
+'                    then l_app_user',
+'                    else email',
+'                    end email',
 '          from apex_workspace_apex_users',
 '         where user_name = l_app_user',
 '    ) loop',
+'      if u.email is not null',
 '        for a in (',
 '            select application_id',
 '              from apex_applications',
@@ -39123,6 +39127,7 @@ wwv_flow_imp_shared.create_install_script(
 '            end loop;',
 '            exit;',
 '        end loop;',
+'      end if;',
 '    end loop;',
 'end;',
 '/'))

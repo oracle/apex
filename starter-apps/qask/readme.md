@@ -1,5 +1,7 @@
 qAsk is used to run a Q&A session. It can be used during a lecture or class to gauge understanding of material, interests of a crowd or solicit feedback. No account is needed for participation - a QR code is scanned to join a Session.
 
+The first Administrative user will be created during the installation process as the installing user's email address.  If that is not available, and the installing user's username is an email address, that will be used.  If neither is available, the first Administrative user will need to be added to the ACL by editing the application post-install.
+
 Installation Steps
 ------------------------------------
 1. Download the .zip file in this directory
