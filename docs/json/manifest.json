@@ -991,7 +991,7 @@
         {
             "internalName": "BROOKSTRUT_SAMPLE_APP",
             "author": "Oracle",
-            "version": "23.2.0",
+            "version": "23.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-sample-brookstrut.svg",
             "url": "https://github.com/oracle/apex/tree/23.2/sample-apps/brookstrut-sample-app",
             "source": "https://raw.githubusercontent.com/oracle/apex/23.2/sample-apps/brookstrut-sample-app/brookstrut-sample-app.sql",
@@ -1253,7 +1253,7 @@
         {
             "internalName": "APP_STRATEGIC_PLANNER",
             "author": "Oracle",
-            "version": "23.2.1",
+            "version": "23.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/23.2/docs/img/apps/app-strategic-planner.svg",
             "url": "https://github.com/oracle/apex/tree/23.2/starter-apps/strategic-planner",
             "source": "https://raw.githubusercontent.com/oracle/apex/23.2/starter-apps/strategic-planner/strategic-planner.sql",
