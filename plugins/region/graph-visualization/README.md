@@ -1,15 +1,15 @@
 # Graph Visualization Plug-In (Preview)
 
-This preview plugin supports visualization of property graph queries in the database as an interactive network graph. 
-The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 23c or later, or in 
+This preview plugin supports visualization of property graph queries in the database as an interactive network graph.
+The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 23c or later, or in
 [PGQL](https://pgql-lang.org/) for Autonomous Database Serverless.
 
 ## Installation Steps
 
 1. Download the `region_type_plugin_graphviz.sql` file in this directory
 2. Navigate to App Builder -> Import
-3. Drag and drop the plugin .sql file 
-4. Choose File Type -> Plug-in 
+3. Drag and drop the plugin .sql file
+4. Choose File Type -> Plug-in
 5. Click Next
 6. Continue through the remaining steps in the wizard to finish installing the application
 
