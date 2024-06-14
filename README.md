@@ -28,7 +28,7 @@ This project welcomes contributions from the community. Before submitting a pull
 Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process.
 
 ## Issues
-If you encounter any issues, please consider reporting them in the [Oracle Forums](https://forums.oracle.com/ords/apexds/domain/dev-community/category/apex) to help us improve our product.
+If you encounter any issues, please consider reporting them in the [Oracle Forums](https://apex.oracle.com/forum) to help us improve our product.
 
 ## License
 Copyright (c) 2021, 2024 Oracle and/or its affiliates.
