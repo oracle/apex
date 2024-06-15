@@ -16,8 +16,11 @@ This project welcomes contributions from the community. Before submitting a pull
 ## Security
 Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process.
 
+## Issues
+If you encounter any issues, please consider reporting them in the [Oracle Forums](https://forums.oracle.com/ords/apexds/domain/dev-community/category/apex) to help us improve our product.
+
 ## License
-Copyright (c) 2022 Oracle and/or its affiliates.
+Copyright (c) 2021, 2024 Oracle and/or its affiliates.
 
 Released under the Universal Permissive License v1.0 as shown at
 <https://oss.oracle.com/licenses/upl/>.
