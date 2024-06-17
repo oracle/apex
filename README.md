@@ -7,6 +7,7 @@ This GitHub project contains starter apps, sample apps, sample code, and plug-in
 ## Branches
 These branches contains starter apps, sample apps and so on for a specific version of Oracle APEX.
 
+- [Oracle APEX 24.1](../../tree/24.1)
 - [Oracle APEX 23.2](../../tree/23.2)
 - [Oracle APEX 23.1](../../tree/23.1)
 - [Oracle APEX 22.2](../../tree/22.2)
@@ -26,8 +27,11 @@ This project welcomes contributions from the community. Before submitting a pull
 ## Security
 Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process.
 
+## Issues
+If you encounter any issues, please consider reporting them in the [Oracle Forums](https://apex.oracle.com/forum) to help us improve our product.
+
 ## License
-Copyright (c) 2021, 2023 Oracle and/or its affiliates.
+Copyright (c) 2021, 2024 Oracle and/or its affiliates.
 
 Released under the Universal Permissive License v1.0 as shown at
 <https://oss.oracle.com/licenses/upl/>.
