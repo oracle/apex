@@ -1039,7 +1039,59 @@
                     "description": ""
                 }
             }
-        }
+        },
+        {
+            "internalName": "APEX_TO_GO",
+            "author": "Oracle",
+            "version": "24.1.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-apextogo.svg",
+            "url": "https://github.com/oracle/apex/blob/24.1/sample-apps/apextogo",
+            "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apextogo/apextogo.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apextogo/apextogo.zip",
+            "license": "",
+            "i18n": {
+              "en": {
+                "name": "APEXToGo",
+                "description": "This application showcases the features of a mobile web application built with Oracle APEX. It demonstrates mobile design capabilities and leverages Progressive Web Apps (PWAs) technologies to provide an enhanced user experience, offering a seamless and native-like experience."
+              },
+              "de": {
+                "name": "",
+                "description": ""
+              },
+              "es": {
+                "name": "",
+                "description": ""
+              },
+              "fr": {
+                "name": "",
+                "description": ""
+              },
+              "it": {
+                "name": "",
+                "description": ""
+              },
+              "ja": {
+                "name": "",
+                "description": ""
+              },
+              "ko": {
+                "name": "",
+                "description": ""
+              },
+              "pt-br": {
+                "name": "",
+                "description": ""
+              },
+              "zh-cn": {
+                "name": "",
+                "description": ""
+              },
+              "zh-tw": {
+                "name": "",
+                "description": ""
+              }
+            }
+          }
     ],
     "starterApps": [
         {
