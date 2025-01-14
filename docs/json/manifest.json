@@ -1,11 +1,167 @@
 {
     "sampleApps": [
         {
+            "internalName": "APEX_PWA_REFERENCE",
+            "author": "Oracle",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-apex-pwa-reference.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/apex-pwa-reference",
+            "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apex-pwa-reference/apex-pwa-reference.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apex-pwa-reference/apex-pwa-reference.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "APEX PWA Reference",
+                    "description": "Oracle APEX enables developers to build Progressive Web Apps (PWAs) that can be installed on any desktop or mobile device to deliver a more native app experience. This application serves as a reference for key PWA features in APEX and how you can use them in your own apps."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
+            "internalName": "APEX_TO_GO",
+            "author": "Oracle",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-apextogo.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/apextogo",
+            "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apextogo/apextogo.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apextogo/apextogo.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "APEXToGo",
+                    "description": "This application showcases the features of a mobile web application built with Oracle APEX. It demonstrates mobile design capabilities and leverages Progressive Web Apps (PWAs) technologies to provide an enhanced user experience, offering a seamless and native-like experience."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
+            "internalName": "BROOKSTRUT_SAMPLE_APP",
+            "author": "Oracle",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-brookstrut-sample-app.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/brookstrut-sample-app",
+            "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/brookstrut-sample-app/brookstrut-sample-app.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/brookstrut-sample-app/brookstrut-sample-app.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Brookstrut Sample App",
+                    "description": "The Brookstrut sample application analyzes a simplified stored data model and includes a feature to generate random data, accommodating everything from small to extra large data sets. It showcases Oracle APEX's capabilities in data reporting, navigation, and data presentation. This tool allows you to explore various Oracle APEX components, including faceted search, interactive reports, content row reports, and calendars."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_APPLICATION_SEARCH",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-application-search.svg",
-            "url": "https://github.com/oracle/apex/blob/24.1/sample-apps/sample-application-search",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-application-search.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-application-search",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-application-search/sample-application-search.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-application-search/sample-application-search.zip",
             "license": "",
@@ -55,9 +211,9 @@
         {
             "internalName": "SAMPLE_APPROVALS",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-approvals.svg",
-            "url": "https://github.com/oracle/apex/blob/24.1/sample-apps/sample-approvals",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-approvals.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-approvals",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-approvals/sample-approvals.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-approvals/sample-approvals.zip",
             "license": "",
@@ -107,12 +263,12 @@
         {
             "internalName": "SAMPLE_CALENDAR",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-calendar.svg",
-            "url": "https://github.com/oracle/apex/blob/24.1/sample-apps/sample-calendar",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-calendar.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-calendar",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-calendar/sample-calendar.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-calendar/sample-calendar.zip",
-            "license": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-calendar/THIRD_PARTY_LICENSES.txt",
+            "license": "",
             "i18n": {
                 "en": {
                     "name": "Sample Calendar",
@@ -159,9 +315,9 @@
         {
             "internalName": "SAMPLE_CARDS",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-cards.svg",
-            "url": "https://github.com/oracle/apex/blob/24.1/sample-apps/sample-cards",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-cards.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-cards",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-cards/sample-cards.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-cards/sample-cards.zip",
             "license": "",
@@ -211,12 +367,12 @@
         {
             "internalName": "SAMPLE_CHARTS",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-charts.svg",
-            "url": "https://github.com/oracle/apex/blob/24.1/sample-apps/sample-charts",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-charts.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-charts",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-charts/sample-charts.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-charts/sample-charts.zip",
-            "license": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-charts/THIRD_PARTY_LICENSES.txt",
+            "license": "",
             "i18n": {
                 "en": {
                     "name": "Sample Charts",
@@ -263,9 +419,9 @@
         {
             "internalName": "SAMPLE_COLLECTIONS",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-collections.svg",
-            "url": "https://github.com/oracle/apex/blob/24.1/sample-apps/sample-collections",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-collections.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-collections",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-collections/sample-collections.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-collections/sample-collections.zip",
             "license": "",
@@ -315,9 +471,9 @@
         {
             "internalName": "SAMPLE_DATA_LOADING",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-data-loading.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-data-loading",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-data-loading.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-data-loading",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-data-loading/sample-data-loading.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-data-loading/sample-data-loading.zip",
             "license": "",
@@ -367,9 +523,9 @@
         {
             "internalName": "SAMPLE_DOCUMENT_GENERATOR",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-document-generator.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-document-generator",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-document-generator.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-document-generator",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-document-generator/sample-document-generator.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-document-generator/sample-document-generator.zip",
             "license": "",
@@ -419,9 +575,9 @@
         {
             "internalName": "SAMPLE_DYNAMIC_ACTIONS",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-dynamic-actions.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-dynamic-actions",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-dynamic-actions.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-dynamic-actions",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-dynamic-actions/sample-dynamic-actions.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-dynamic-actions/sample-dynamic-actions.zip",
             "license": "",
@@ -471,9 +627,9 @@
         {
             "internalName": "SAMPLE_EMAIL_AUTH",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-email-auth.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-email-authentication",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-email-authentication.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-email-authentication",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-email-authentication/sample-email-authentication.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-email-authentication/sample-email-authentication.zip",
             "license": "",
@@ -523,9 +679,9 @@
         {
             "internalName": "SAMPLE_FILE_UPLOAD_DOWNLOAD",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-file-upload-download.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-file-upload-download",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-file-upload-download.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-file-upload-download",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-file-upload-download/sample-file-upload-download.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-file-upload-download/sample-file-upload-download.zip",
             "license": "",
@@ -575,9 +731,9 @@
         {
             "internalName": "SAMPLE_INTERACTIVE_GRIDS",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-ig.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-interactive-grids",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-interactive-grids.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-interactive-grids",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-interactive-grids/sample-interactive-grids.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-interactive-grids/sample-interactive-grids.zip",
             "license": "",
@@ -627,9 +783,9 @@
         {
             "internalName": "SAMPLE_MAPS",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-maps.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-maps",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-maps.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-maps",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-maps/sample-maps.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-maps/sample-maps.zip",
             "license": "",
@@ -679,9 +835,9 @@
         {
             "internalName": "SAMPLE_MASTER_DETAIL",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-master-detail.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-master-detail",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-master-detail.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-master-detail",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-master-detail/sample-master-detail.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-master-detail/sample-master-detail.zip",
             "license": "",
@@ -731,9 +887,9 @@
         {
             "internalName": "SAMPLE_REPORTING",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-reporting.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-reporting",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-reporting.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-reporting",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-reporting/sample-reporting.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-reporting/sample-reporting.zip",
             "license": "",
@@ -783,9 +939,9 @@
         {
             "internalName": "SAMPLE_RESTFUL_SERVICES",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-restful-services.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-rest-services",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-rest-services.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-rest-services",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-rest-services/sample-rest-services.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-rest-services/sample-rest-services.zip",
             "license": "",
@@ -835,9 +991,9 @@
         {
             "internalName": "SAMPLE_TREES",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-trees.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/sample-trees",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-trees.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-trees",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-trees/sample-trees.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/sample-trees/sample-trees.zip",
             "license": "",
@@ -887,9 +1043,9 @@
         {
             "internalName": "SAMPLE_UNIVERSAL_THEME",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-universal-theme.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/universal-theme-reference",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-universal-theme-reference.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/universal-theme-reference",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/universal-theme-reference/universal-theme-reference.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/universal-theme-reference/universal-theme-reference.zip",
             "license": "",
@@ -935,171 +1091,15 @@
                     "description": ""
                 }
             }
-        },
-        {
-            "internalName": "APEX_PWA_REFERENCE",
-            "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-apex-pwa-reference.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/apex-pwa-reference",
-            "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apex-pwa-reference/apex-pwa-reference.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apex-pwa-reference/apex-pwa-reference.zip",
-            "license": "",
-            "i18n": {
-                "en": {
-                    "name": "APEX PWA Reference",
-                    "description": "Oracle APEX enables developers to build Progressive Web Apps (PWAs) that can be installed on any desktop or mobile device to deliver a more native app experience. This application serves as a reference for key PWA features in APEX and how you can use them in your own apps."
-                },
-                "de": {
-                    "name": "",
-                    "description": ""
-                },
-                "es": {
-                    "name": "",
-                    "description": ""
-                },
-                "fr": {
-                    "name": "",
-                    "description": ""
-                },
-                "it": {
-                    "name": "",
-                    "description": ""
-                },
-                "ja": {
-                    "name": "",
-                    "description": ""
-                },
-                "ko": {
-                    "name": "",
-                    "description": ""
-                },
-                "pt-br": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-cn": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-tw": {
-                    "name": "",
-                    "description": ""
-                }
-            }
-        },
-        {
-            "internalName": "BROOKSTRUT_SAMPLE_APP",
-            "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-brookstrut.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/sample-apps/brookstrut-sample-app",
-            "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/brookstrut-sample-app/brookstrut-sample-app.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/brookstrut-sample-app/brookstrut-sample-app.zip",
-            "license": "",
-            "i18n": {
-                "en": {
-                    "name": "Brookstrut Sample App",
-                    "description": "The Brookstrut sample application analyzes a simplified stored data model and includes a feature to generate random data, accommodating everything from small to extra large data sets. It showcases Oracle APEX's capabilities in data reporting, navigation, and data presentation. This tool allows you to explore various Oracle APEX components, including faceted search, interactive reports, content row reports, and calendars."
-                },
-                "de": {
-                    "name": "",
-                    "description": ""
-                },
-                "es": {
-                    "name": "",
-                    "description": ""
-                },
-                "fr": {
-                    "name": "",
-                    "description": ""
-                },
-                "it": {
-                    "name": "",
-                    "description": ""
-                },
-                "ja": {
-                    "name": "",
-                    "description": ""
-                },
-                "ko": {
-                    "name": "",
-                    "description": ""
-                },
-                "pt-br": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-cn": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-tw": {
-                    "name": "",
-                    "description": ""
-                }
-            }
-        },
-        {
-            "internalName": "APEX_TO_GO",
-            "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-sample-apextogo.svg",
-            "url": "https://github.com/oracle/apex/blob/24.1/sample-apps/apextogo",
-            "source": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apextogo/apextogo.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/sample-apps/apextogo/apextogo.zip",
-            "license": "",
-            "i18n": {
-              "en": {
-                "name": "APEXToGo",
-                "description": "This application showcases the features of a mobile web application built with Oracle APEX. It demonstrates mobile design capabilities and leverages Progressive Web Apps (PWAs) technologies to provide an enhanced user experience, offering a seamless and native-like experience."
-              },
-              "de": {
-                "name": "",
-                "description": ""
-              },
-              "es": {
-                "name": "",
-                "description": ""
-              },
-              "fr": {
-                "name": "",
-                "description": ""
-              },
-              "it": {
-                "name": "",
-                "description": ""
-              },
-              "ja": {
-                "name": "",
-                "description": ""
-              },
-              "ko": {
-                "name": "",
-                "description": ""
-              },
-              "pt-br": {
-                "name": "",
-                "description": ""
-              },
-              "zh-cn": {
-                "name": "",
-                "description": ""
-              },
-              "zh-tw": {
-                "name": "",
-                "description": ""
-              }
-            }
-          }
+        }
     ],
     "starterApps": [
         {
             "internalName": "APP_CUSTOMERS",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-customer-tracker.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/starter-apps/customers",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-customers.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/customers",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/customers/customers.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/customers/customers.zip",
             "license": "",
@@ -1149,9 +1149,9 @@
         {
             "internalName": "APP_OPPORTUNITIES",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-opportunity-tracker.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/starter-apps/opportunities",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-opportunities.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/opportunities",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/opportunities/opportunities.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/opportunities/opportunities.zip",
             "license": "",
@@ -1201,9 +1201,9 @@
         {
             "internalName": "APP_POLL",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-live-poll.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/starter-apps/poll",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-poll.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/poll",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/poll/poll.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/poll/poll.zip",
             "license": "",
@@ -1253,9 +1253,9 @@
         {
             "internalName": "APP_QASK",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-qask.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/starter-apps/qask",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-qask.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/qask",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/qask/qask.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/qask/qask.zip",
             "license": "",
@@ -1305,9 +1305,9 @@
         {
             "internalName": "APP_STRATEGIC_PLANNER",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-strategic-planner.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/starter-apps/strategic-planner",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-strategic-planner.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/strategic-planner",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/strategic-planner/strategic-planner.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/strategic-planner/strategic-planner.zip",
             "license": "",
@@ -1357,12 +1357,12 @@
         {
             "internalName": "APP_TEAM_CALENDAR",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-group-calendar.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/starter-apps/team-calendar",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-team-calendar.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/team-calendar",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/team-calendar/team-calendar.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/team-calendar/team-calendar.zip",
-            "license": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/team-calendar/THIRD_PARTY_LICENSES.txt",
+            "license": "",
             "i18n": {
                 "en": {
                     "name": "Team Calendar",
@@ -1411,9 +1411,9 @@
         {
             "internalName": "APP_CLOUD_APPS_REST_EXPLORER",
             "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-cloud-apps-rest-explorer.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/utility-apps/cloud-apps-rest-explorer",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-cloud-apps-rest-explorer.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/utility-apps/cloud-apps-rest-explorer",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.1/utility-apps/cloud-apps-rest-explorer/cloud-apps-rest-explorer.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/utility-apps/cloud-apps-rest-explorer/cloud-apps-rest-explorer.zip",
             "license": "",
