@@ -1411,7 +1411,7 @@
         {
             "internalName": "APP_CLOUD_APPS_REST_EXPLORER",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-cloud-apps-rest-explorer.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/utility-apps/cloud-apps-rest-explorer",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/utility-apps/cloud-apps-rest-explorer/cloud-apps-rest-explorer.sql",
