@@ -17,7 +17,7 @@ The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for 
 
 Please refer to the following chapters of Oracle's product documentation depending on the database you are using:
 
-### Oracle Database 23c
+### Oracle Database 23ai
 
 [Visualizing SQL Graph Queries Using the APEX Graph Visualization Plug-in](https://docs.oracle.com/pls/topic/lookup?ctx=property-graph-latest&id=apex-plugin-on-premises)
 
