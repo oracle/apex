@@ -1,7 +1,7 @@
 # Graph Visualization Plug-In (Preview)
 
 This preview plugin supports visualization of property graph queries in the database as an interactive network graph. 
-The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 23c or later, or in 
+The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 23ai or later, or in 
 [PGQL](https://pgql-lang.org/) for Autonomous Database Serverless.
 
 ## Installation Steps
