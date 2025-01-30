@@ -125,7 +125,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Sample Vector Search'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>45
-,p_version_scn=>128125896
+,p_version_scn=>128137451
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -7347,7 +7347,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_sequence=>10
 ,p_location=>null
 ,p_plug_display_condition_type=>'EXPRESSION'
-,p_plug_display_when_condition=>'sys.dbms_db_version.version >= 24'
+,p_plug_display_when_condition=>'sys.dbms_db_version.version >= 23'
 ,p_plug_display_when_cond2=>'PLSQL'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -7489,7 +7489,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_source=>'<p>This app showcases Vector Search in <strong>Oracle Database 23ai</strong> and is not compatible with earlier versions of the database. <a href="https://www.oracle.com/database/ai-vector-search/" target="_blank">Learn more about Oracle AI Vector Se'
 ||'arch</a></p>'
 ,p_plug_display_condition_type=>'EXPRESSION'
-,p_plug_display_when_condition=>'sys.dbms_db_version.version < 24'
+,p_plug_display_when_condition=>'sys.dbms_db_version.version < 23'
 ,p_plug_display_when_cond2=>'PLSQL'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
