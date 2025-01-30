@@ -1512,5 +1512,40 @@
                 }
             }
         }
+    ],
+    "plugins": [
+        {
+            "name": "REST Source Pagination",
+            "author": "Oracle",
+            "version": "1.0.0",
+            "description": "This example plug-in demonstrates how to implement pagination support for a REST API which uses a fixed page size and URL parameter for the page number. The plug-in uses \"api.themoviedb.org\" as the example REST API.",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-restful-services.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/plugins/rest-source/fixed-page-size",
+            "source": "https://raw.githubusercontent.com/oracle/apex/24.2/plugins/rest-source/fixed-page-size/web_source_type_fixedpagesize.sql",
+            "zip": "",
+            "license": ""
+        },
+        {
+            "name": "Format Date Picker Days",
+            "author": "Oracle",
+            "version": "1.1.0",
+            "description": "This plug-in is for the new APEX date picker to format certain days within the date picker calendar by a SQL Query or a online available ICS calendar file.",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-calendar.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/plugins/dynamic-action/format-datepicker-days",
+            "source": "https://raw.githubusercontent.com/oracle/apex/24.2/plugins/dynamic-action/format-datepicker-days/dynamic_action_plugin_format_datepicker_days.sql",
+            "zip": "",
+            "license": ""
+        },
+        {
+            "name": "Graph Visualization (Preview)",
+            "author": "Oracle",
+            "version": "23.2.2",
+            "description": "This plug-in supports visualization of property graph queries in the database as an interactive network graph. The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 23c or later, or in PGQL (https://pgql-lang.org/) for Autonomous Database Serverless.",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-graph-visualizations.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/plugins/region/graph-visualization",
+            "source": "https://raw.githubusercontent.com/oracle/apex/24.2/plugins/region/graph-visualization/region_type_plugin_graphviz.sql",
+            "zip": "",
+            "license": ""
+        }
     ]
 }
