@@ -146,7 +146,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_07=>'Oracle APEX'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>9
-,p_version_scn=>185095340
+,p_version_scn=>185069863
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
