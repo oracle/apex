@@ -32,7 +32,7 @@ wwv_flow_imp.import_begin (
 );
 end;
 /
-
+ 
 prompt APPLICATION 7890 - Sample Vector Search
 --
 -- Application Export:
@@ -46,7 +46,7 @@ prompt APPLICATION 7890 - Sample Vector Search
 --       Computations:             2
 --       Validations:             15
 --       Processes:               27
---       Regions:                123
+--       Regions:                125
 --       Buttons:                 19
 --       Dynamic Actions:          8
 --     Shared Components:
@@ -125,7 +125,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Sample Vector Search'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>45
-,p_version_scn=>127496919
+,p_version_scn=>128125896
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -142,7 +142,7 @@ end;
 prompt --application/user_interfaces
 begin
 wwv_flow_imp_shared.create_user_interface(
- p_id=>wwv_flow_imp.id(15829759217663171)
+ p_id=>wwv_flow_imp.id(7890)
 ,p_theme_id=>42
 ,p_home_url=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
 ,p_login_url=>'f?p=&APP_ID.:LOGIN:&APP_SESSION.::&DEBUG.:::'
@@ -1894,7 +1894,7 @@ wwv_flow_imp_shared.create_app_setting(
 ,p_is_required=>'N'
 ,p_valid_values=>'OPENAI,OCI,NONE'
 ,p_on_upgrade_keep_value=>true
-,p_version_scn=>126100446
+,p_version_scn=>128125896
 );
 wwv_flow_imp_shared.create_app_setting(
  p_id=>wwv_flow_imp.id(32161735794884984)
@@ -7340,13 +7340,28 @@ wwv_flow_imp_page.create_page(
 ,p_page_component_map=>'16'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1959079330331701)
+,p_plug_name=>'Introduction Wizard Container'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>4072358936313175081
+,p_plug_display_sequence=>10
+,p_location=>null
+,p_plug_display_condition_type=>'EXPRESSION'
+,p_plug_display_when_condition=>'sys.dbms_db_version.version >= 24'
+,p_plug_display_when_cond2=>'PLSQL'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(14836719044424747)
 ,p_plug_name=>'Button OPENAI'
+,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
 ,p_plug_template=>2126429139436695430
-,p_plug_display_sequence=>80
-,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_sequence=>70
+,p_plug_display_point=>'SUB_REGIONS'
 ,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -7355,10 +7370,12 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21770302707887447)
 ,p_plug_name=>'Introduction Wizard'
+,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>10
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
 ,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -7383,11 +7400,13 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21770443850887449)
 ,p_plug_name=>'Select Provider'
 ,p_title=>'Select AI Provider'
+,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-1'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
 ,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source=>'<p>Select an AI provider you want to use for generating data and creating vector embeddings.</p>'
@@ -7399,11 +7418,13 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21770559592887450)
 ,p_plug_name=>'Enter OCI Web Credentials'
 ,p_title=>'Enter Web Credentials'
+,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-2'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
 ,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>30
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source=>'<p>Enter the OCI credentials you would like to use for this application.</p>'
@@ -7429,11 +7450,13 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21770654502887451)
 ,p_plug_name=>'Enter OpenAI Web Credentials'
 ,p_title=>'Enter Web Credentials'
+,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-2'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
 ,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>60
+,p_plug_display_sequence=>50
+,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source=>'<p>Enter the OpenAI API key you would like to use for this application.</p>'
@@ -7444,12 +7467,30 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21770716045887452)
 ,p_plug_name=>'Button OCI'
+,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
 ,p_plug_template=>2126429139436695430
-,p_plug_display_sequence=>70
-,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_sequence=>60
+,p_plug_display_point=>'SUB_REGIONS'
 ,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1959184970331702)
+,p_plug_name=>'Unsupported Database Version'
+,p_region_css_classes=>'u-tC'
+,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--warning'
+,p_plug_template=>2040683448887306517
+,p_plug_display_sequence=>20
+,p_location=>null
+,p_plug_source=>'<p>This app showcases Vector Search in <strong>Oracle Database 23ai</strong> and is not compatible with earlier versions of the database. <a href="https://www.oracle.com/database/ai-vector-search/" target="_blank">Learn more about Oracle AI Vector Se'
+||'arch</a></p>'
+,p_plug_display_condition_type=>'EXPRESSION'
+,p_plug_display_when_condition=>'sys.dbms_db_version.version < 24'
+,p_plug_display_when_cond2=>'PLSQL'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7581,7 +7622,6 @@ wwv_flow_imp_page.create_page_item(
 ||'">Oracle Cloud Infrastructure Documentation</a></p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
   'trim_spaces', 'BOTH')).to_clob
@@ -7622,7 +7662,6 @@ wwv_flow_imp_page.create_page_item(
 '<p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
   'trim_spaces', 'BOTH')).to_clob
@@ -7641,7 +7680,6 @@ wwv_flow_imp_page.create_page_item(
 ||'></p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
   'trim_spaces', 'BOTH')).to_clob
@@ -7677,7 +7715,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_help_text=>'The Oracle Cloud Infrastructure Region. The default is us-chicago-1'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
   'trim_spaces', 'BOTH')).to_clob
@@ -7706,7 +7743,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_help_text=>'The Oracle Cloud Infrastructure Compartment ID'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
   'trim_spaces', 'BOTH')).to_clob
