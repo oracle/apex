@@ -1091,58 +1091,6 @@
                     "description": ""
                 }
             }
-        },
-        {
-            "internalName": "SAMPLE_VECTOR_SEARCH",
-            "author": "Oracle",
-            "version": "24.2.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-vector-search.svg",
-            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-vector-search",
-            "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-vector-search/sample-vector-search.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-vector-search/sample-vector-search.zip",
-            "license": "",
-            "i18n": {
-                "en": {
-                    "name": "Sample Vector Search",
-                    "description": "This application shows how to leverage Vector Search in Oracle Database 23ai. Learn how to generate vector embeddings and how to do vector search, using APEX Search Configurations. The application also highlights the differences to traditional Oracle Text search, and showcases how to combine both methods."
-                },
-                "de": {
-                    "name": "",
-                    "description": ""
-                },
-                "es": {
-                    "name": "",
-                    "description": ""
-                },
-                "fr": {
-                    "name": "",
-                    "description": ""
-                },
-                "it": {
-                    "name": "",
-                    "description": ""
-                },
-                "ja": {
-                    "name": "",
-                    "description": ""
-                },
-                "ko": {
-                    "name": "",
-                    "description": ""
-                },
-                "pt-br": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-cn": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-tw": {
-                    "name": "",
-                    "description": ""
-                }
-            }
         }
     ],
     "starterApps": [
