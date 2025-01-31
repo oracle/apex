@@ -125,7 +125,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Sample Vector Search'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>45
-,p_version_scn=>128137451
+,p_version_scn=>128309536
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -7342,8 +7342,8 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1959079330331701)
 ,p_plug_name=>'Introduction Wizard Container'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3371237801798025892
 ,p_plug_display_sequence=>10
 ,p_location=>null
 ,p_plug_display_condition_type=>'EXPRESSION'
