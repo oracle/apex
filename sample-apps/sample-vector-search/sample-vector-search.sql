@@ -32,7 +32,7 @@ wwv_flow_imp.import_begin (
 );
 end;
 /
- 
+
 prompt APPLICATION 7890 - Sample Vector Search
 --
 -- Application Export:
@@ -202,9 +202,9 @@ wwv_imp_workspace.create_remote_server(
 ,p_prompt_on_install=>false
 ,p_ai_provider_type=>'OCI_GENAI'
 ,p_ai_is_builder_service=>false
-,p_ai_model_name=>nvl(wwv_flow_application_install.get_remote_server_ai_model('EBA_GENAI_OCI'),'cohere.command-r-16k')
+,p_ai_model_name=>nvl(wwv_flow_application_install.get_remote_server_ai_model('EBA_GENAI_OCI'),'cohere.command-r-08-2024')
 ,p_ai_http_headers=>nvl(wwv_flow_application_install.get_remote_server_ai_headers('EBA_GENAI_OCI'),'')
-,p_ai_attributes=>nvl(wwv_flow_application_install.get_remote_server_ai_attrs('EBA_GENAI_OCI'),'{"compartmentId":"ocid1.compartment.oc1","servingMode":{"modelId":"cohere.command-r-16k","servingType":"ON_DEMAND"}}')
+,p_ai_attributes=>nvl(wwv_flow_application_install.get_remote_server_ai_attrs('EBA_GENAI_OCI'),'{"compartmentId":"ocid1.compartment.oc1","servingMode":{"modelId":"cohere.command-r-08-2024","servingType":"ON_DEMAND"}}')
 );
 end;
 /
@@ -7158,8 +7158,8 @@ wwv_flow_imp_page.create_page_process(
 '    apex_application_admin.set_remote_server(',
 '        p_static_id              => ''EBA_GENAI_OCI'',',
 '        p_base_url               => ''https://inference.generativeai.'' || :P54_OCI_REGION || ''.oci.oraclecloud.com'', ',
-'        p_ai_model_name          => ''cohere.command-r-16k'',',
-'        p_ai_attributes          => ''{"compartmentId":"'' || apex_escape.json(:P54_OCI_COMPARTMENT_ID) || ''","servingMode":{"modelId":"cohere.command-r-16k","servingType":"ON_DEMAND"}}'' ',
+'        p_ai_model_name          => ''cohere.command-r-08-2024'',',
+'        p_ai_attributes          => ''{"compartmentId":"'' || apex_escape.json(:P54_OCI_COMPARTMENT_ID) || ''","servingMode":{"modelId":"cohere.command-r-08-2024","servingType":"ON_DEMAND"}}'' ',
 '    );',
 '    apex_application_admin.set_remote_server(',
 '        p_static_id              => ''EBA_VECTOR_OCI'',',
@@ -8008,8 +8008,8 @@ wwv_flow_imp_page.create_page_process(
 '    apex_application_admin.set_remote_server(',
 '        p_static_id              => ''EBA_GENAI_OCI'',',
 '        p_base_url               => ''https://inference.generativeai.'' || :P100_OCI_REGION || ''.oci.oraclecloud.com'', ',
-'        p_ai_model_name          => ''cohere.command-r-16k'',',
-'        p_ai_attributes          => ''{"compartmentId":"'' || apex_escape.json(:P100_OCI_COMPARTMENT_ID) || ''","servingMode":{"modelId":"cohere.command-r-16k","servingType":"ON_DEMAND"}}'' ',
+'        p_ai_model_name          => ''cohere.command-r-08-2024'',',
+'        p_ai_attributes          => ''{"compartmentId":"'' || apex_escape.json(:P100_OCI_COMPARTMENT_ID) || ''","servingMode":{"modelId":"cohere.command-r-08-2024","servingType":"ON_DEMAND"}}'' ',
 '    );',
 '    apex_application_admin.set_remote_server(',
 '        p_static_id              => ''EBA_VECTOR_OCI'',',
