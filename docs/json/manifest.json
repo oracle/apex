@@ -1539,7 +1539,7 @@
         {
             "name": "Graph Visualization (Preview)",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.2",
             "description": "This plug-in supports visualization of property graph queries in the database as an interactive network graph. The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 23c or later, or in PGQL (https://pgql-lang.org/) for Autonomous Database Serverless.",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-graph-visualizations.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/plugins/region/graph-visualization",
