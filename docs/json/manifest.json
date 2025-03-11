@@ -211,7 +211,7 @@
         {
             "internalName": "SAMPLE_APPROVALS",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-approvals.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-approvals",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-approvals/sample-approvals.sql",
