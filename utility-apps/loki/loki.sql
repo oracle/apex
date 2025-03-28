@@ -33,8 +33,7 @@ prompt APPLICATION 105 - Loki
 -- Application Export:
 --   Application:     105
 --   Name:            Loki
---   Date and Time:   21:43 Thursday March 27, 2025
---   Exported By:     DAN.MCGHAN@ORACLE.COM
+--   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     14
@@ -25135,7 +25134,7 @@ wwv_flow_imp_shared.create_install_script(
 '',
 '    -- The following check was added because there are ways to suppress the',
 '    -- SQL statement, such as when resetting a password, and if that''s done',
-'    -- then there''s really not much Loki can do for now. HCTOOLS-165',
+'    -- then there''s really not much Loki can do for now.',
 '    if l_sql_count is null then',
 '      return;',
 '    end if;',
@@ -25188,8 +25187,7 @@ wwv_flow_imp_shared.create_install_script(
 '    -- ABOVE THIS POINT IS DDL LOGGING/HISTORY LOGIC. BELOW THIS POINT IS',
 '    -- LOCKING LOGIC.',
 '',
-'    -- Only the following sysevents participate in Loki''s locking logic',
-'    -- See https://gbujira.us.oracle.com/browse/HCTOOLS-151 for future change.',
+'    -- Only the following sysevents participate in Loki''s locking logic.',
 '    if ora_sysevent not in ( ''CREATE'',',
 '                             ''ALTER'',',
 '                             ''DROP'',',
