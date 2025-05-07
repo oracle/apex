@@ -1303,58 +1303,6 @@
             }
         },
         {
-            "internalName": "APP_STRATEGIC_PLANNER",
-            "author": "Oracle",
-            "version": "24.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/24.1/docs/img/apps/app-strategic-planner.svg",
-            "url": "https://github.com/oracle/apex/tree/24.1/starter-apps/strategic-planner",
-            "source": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/strategic-planner/strategic-planner.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/24.1/starter-apps/strategic-planner/strategic-planner.zip",
-            "license": "",
-            "i18n": {
-                "en": {
-                    "name": "Strategic Planner",
-                    "description": "The Strategic Planner is designed to monitor projects, releases, contributors, reviews, and activities, making it particularly useful for managing teams of developers working on larger projects. This tool complements platforms like Jira and Confluence, or similar project tracking tools. Its user interface features faceted search, row-menus, interactive reporting, and other contemporary UX designs. You can use the tool as-is to help manage the application development projects or customize it to meet your specific requirements."
-                },
-                "de": {
-                    "name": "",
-                    "description": ""
-                },
-                "es": {
-                    "name": "",
-                    "description": ""
-                },
-                "fr": {
-                    "name": "",
-                    "description": ""
-                },
-                "it": {
-                    "name": "",
-                    "description": ""
-                },
-                "ja": {
-                    "name": "",
-                    "description": ""
-                },
-                "ko": {
-                    "name": "",
-                    "description": ""
-                },
-                "pt-br": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-cn": {
-                    "name": "",
-                    "description": ""
-                },
-                "zh-tw": {
-                    "name": "",
-                    "description": ""
-                }
-            }
-        },
-        {
             "internalName": "APP_TEAM_CALENDAR",
             "author": "Oracle",
             "version": "24.1.0",
