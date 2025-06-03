@@ -90,7 +90,7 @@ wwv_imp_workspace.create_flow(
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ORACLE')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'Brookstrut Sample App')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'BROOKSTRUT')
-,p_application_group=>wwv_flow_imp.id(4093052402544691420)
+,p_application_group=>wwv_flow_imp.id(4125433736958071892)
 ,p_application_group_name=>'Sample Applications'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
@@ -116,7 +116,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.0'
+,p_flow_version=>'24.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -136,7 +136,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Brookstrut Sample App'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>20
-,p_version_scn=>187906107
+,p_version_scn=>37169915235816
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -15024,6 +15024,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38758375220649172774)
 ,p_plug_name=>'Sales by Store by Day'
 ,p_region_template_options=>'#DEFAULT#'
+,p_escape_on_http_output=>'Y'
 ,p_plug_template=>3371237801798025892
 ,p_plug_display_sequence=>10
 ,p_query_type=>'SQL'
@@ -24095,12 +24096,7 @@ wwv_flow_imp_shared.create_install_script(
 '    values',
 '    (97, 12, 18, null, null, null, null);',
 '',
-'  '))
-);
-wwv_flow_imp_shared.append_to_install_script(
- p_id=>wwv_flow_imp.id(40210080327670064336)
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'  commit;',
+'    commit;',
 '',
 '  ',
 '    ',
@@ -24129,7 +24125,12 @@ wwv_flow_imp_shared.append_to_install_script(
 '    (56, 13, 8, null, null, null, null);',
 '    commit;',
 '',
-'    insert into oow_demo_store_products',
+'    insert into oow_demo_store_'))
+);
+wwv_flow_imp_shared.append_to_install_script(
+ p_id=>wwv_flow_imp.id(40210080327670064336)
+,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'products',
 '    (id, store_id, item_id, item_price, discount_pct, sale_start_date, sale_end_date)',
 '    values',
 '    (98, 13, 17, null, null, null, null);',
