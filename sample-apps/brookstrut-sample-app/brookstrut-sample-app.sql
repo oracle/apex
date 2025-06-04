@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Brookstrut Sample App
--- Copyright (c) 2012, 2024 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2025 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -38,7 +38,8 @@ prompt APPLICATION 7210 - Brookstrut Sample App
 -- Application Export:
 --   Application:     7210
 --   Name:            Brookstrut Sample App
---   Exported By:     ORACLE
+--   Date and Time:   01:17 Wednesday June 4, 2025
+--   Exported By:     NEIL.FERNANDEZ@ORACLE.COM
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     49
@@ -125,7 +126,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.1.0'
+,p_flow_version=>'24.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -32023,6 +32024,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38743914684644779802)
 ,p_plug_name=>'Sales by Store by Day'
 ,p_region_template_options=>'#DEFAULT#'
+,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_imp.id(36225861459438977605)
 ,p_plug_display_sequence=>10
 ,p_query_type=>'SQL'
