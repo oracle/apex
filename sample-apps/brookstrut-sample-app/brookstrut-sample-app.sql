@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Brookstrut Sample App
--- Copyright (c) 2012, 2024 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2025 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'23.2.1'
+,p_flow_version=>'23.2.2'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -142,8 +142,8 @@ wwv_imp_workspace.create_flow(
 ,p_tokenize_row_search=>'N'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Brookstrut Sample App'
-,p_last_updated_by=>'DANIEL'
-,p_last_upd_yyyymmddhh24miss=>'20240503183917'
+,p_last_updated_by=>'NEIFERNA'
+,p_last_upd_yyyymmddhh24miss=>'20250604012842'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>20
 ,p_print_server_type=>'INSTANCE'
@@ -31780,8 +31780,8 @@ wwv_flow_imp_page.create_page(
 ,p_group_id=>wwv_flow_imp.id(39704463219442532479)
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_component_map=>'08'
-,p_last_updated_by=>'MIKE'
-,p_last_upd_yyyymmddhh24miss=>'20240310211944'
+,p_last_updated_by=>'NEIFERNA'
+,p_last_upd_yyyymmddhh24miss=>'20250604012829'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38739642161237935357)
@@ -31799,6 +31799,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38739643762531993902)
 ,p_plug_name=>'Sales by Store by Day'
 ,p_region_template_options=>'#DEFAULT#'
+,p_escape_on_http_output=>'Y'
 ,p_plug_template=>wwv_flow_imp.id(36221590537326191705)
 ,p_plug_display_sequence=>10
 ,p_query_type=>'SQL'
