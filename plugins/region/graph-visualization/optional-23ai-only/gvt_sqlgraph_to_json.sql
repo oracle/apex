@@ -9,7 +9,7 @@ CREATE OR REPLACE PACKAGE DBMS_GVT
  -----------------------------------------------------------------------------
  -- VERTEX_LATERAL_STRING - prepare vertex query string in LATERAL()
  -----------------------------------------------------------------------------
-  FUNCTION PROPERTIES_LATERAL_STRING (
+  FUNCTION PROPERTIES_LATERAL_STRING_AS_CLOB (
     DB_TABLE_NAME_LIST SYS.ODCIVARCHAR2LIST,
     DB_OBJECT_OWNER_LIST SYS.ODCIVARCHAR2LIST,
     GRAPH_VIZ_TABLE_NAME IN VARCHAR2,
@@ -17,20 +17,21 @@ CREATE OR REPLACE PACKAGE DBMS_GVT
     GRAPHNAME IN VARCHAR2,
     GRAPHOWNER IN VARCHAR2,
     ELEMENT_TYPE IN VARCHAR2
-  ) RETURN VARCHAR2;
+  ) RETURN CLOB;
 
   FUNCTION GET_VERSION RETURN VARCHAR2;
 
  ----------------------------------------------------------------------------- 
  -- BUILD_JSON - prepare JSON result from vertex_id and edge_id tables
  ----------------------------------------------------------------------------- 
-  FUNCTION BUILD_JSON(
-      VERTEX_TABLE SYS.ODCIRIDLIST,
-      EDGE_TABLE SYS.ODCIRIDLIST,
-      COUNTER NUMBER,
-      GRAPHNAME VARCHAR2,
-      GRAPHOWNER VARCHAR2
-  ) RETURN CLOB;
+  FUNCTION BUILD_JSON_USING_JSON_ARRAY(
+    VERTEX_TABLE JSON_ARRAY_T,
+    EDGE_TABLE JSON_ARRAY_T,
+    COUNTER NUMBER,
+    GRAPHNAME VARCHAR2,
+    GRAPHOWNER VARCHAR2
+) RETURN CLOB
+  ACCESSIBLE BY (FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY);
   
 END DBMS_GVT;
 /
@@ -41,17 +42,16 @@ END DBMS_GVT;
 -------------------------------------------------------------------------------
 CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
   M_VCSIZ_4K  CONSTANT PLS_INTEGER := 4000;
-  M_VCSIZ_32K CONSTANT PLS_INTEGER := 32672;
  -----------------------------------------------------------------------------
  -- VERTEX_LATERAL_STRING - prepare vertex query string in LATERAL()
  -----------------------------------------------------------------------------
 
   FUNCTION GET_VERSION RETURN VARCHAR2 IS
   BEGIN
-    RETURN '25.1.3 (2025-02-27T01:28:57.814320088Z, build: adb95fb4)';
+    RETURN '25.2.2 (2025-05-14T00:10:44.360633799Z, build: feb6eeb5)';
   END GET_VERSION;
 
-  FUNCTION PROPERTIES_LATERAL_STRING (
+  FUNCTION PROPERTIES_LATERAL_STRING_AS_CLOB (
     DB_TABLE_NAME_LIST SYS.ODCIVARCHAR2LIST,
     DB_OBJECT_OWNER_LIST SYS.ODCIVARCHAR2LIST,
     GRAPH_VIZ_TABLE_NAME IN VARCHAR2,
@@ -59,7 +59,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     GRAPHNAME IN VARCHAR2,
     GRAPHOWNER IN VARCHAR2,
     ELEMENT_TYPE IN VARCHAR2
-  ) RETURN VARCHAR2 IS
+  ) RETURN CLOB IS
     LATERAL_QUERY_STRING               CLOB := '';
     COLUMN_NAMES                       SYS.ODCIVARCHAR2LIST;
     OBJECT_NAMES                       SYS.ODCIVARCHAR2LIST;
@@ -70,19 +70,17 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
       TABLE OF STRING_LIST_TYPE INDEX BY VARCHAR2(M_VCSIZ_4K);
     TYPE STRING_INDEX_BY_STRING IS
       TABLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY VARCHAR(M_VCSIZ_4K);
-    TYPE STRING_TO_MAP_TYPE IS
-      TABLE OF STRING_INDEX_BY_STRING INDEX BY VARCHAR(M_VCSIZ_4K);
     ELEMENT_TABLE_COLUMN_NAME          VARCHARLIST_TABLE; --map structure
     ELEMENT_TABLE_PROPERTY_NAME        VARCHARLIST_TABLE; --map structure
     ELEMENT_TO_KEY_LIST_TABLE          VARCHARLIST_TABLE; --map structure
-    SELECTED_COL_STRING                VARCHAR2(M_VCSIZ_4K);
+    SELECTED_COL_STRING                CLOB;
     COLUMN_EXPRESSION                  VARCHAR2(M_VCSIZ_4K);
     COLUMN_NAME                        VARCHAR2(M_VCSIZ_4K);
     PROPERTY_NAME                      VARCHAR2(M_VCSIZ_4K);
     ELEMENTNAMES                       SYS.ODCIVARCHAR2LIST;
     ELEMENTNAME                        VARCHAR2(M_VCSIZ_4K);
     KEY_LIST                           SYS.ODCIVARCHAR2LIST;
-    JSON_CONDITION_STRING              VARCHAR2(M_VCSIZ_4K);
+    JSON_CONDITION_STRING              CLOB;
     ALL_QUERY_STRING                   CLOB := '';
     COLUMN_EXPRESSIONS                 SYS.ODCIVARCHAR2LIST;
     COLUMN_EXPRESSION_LIST             VARCHARLIST_TABLE;
@@ -99,7 +97,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     LABELS                             SYS.ODCIVARCHAR2LIST;
     LABELS_FOR_EACH_ELEMENT            STRING_LIST_TYPE;
     ELEMENT_TO_LABELS                  VARCHARLIST_TABLE;
-    LABELS_STRING                      VARCHAR2(M_VCSIZ_32K);
+    LABELS_STRING                      CLOB;
     EDGE_KEYS                          SYS.ODCIVARCHAR2LIST;
     VERTEX_TAB_NAMES                   SYS.ODCIVARCHAR2LIST;
     VERTEX_ELEMENT_NAMES               SYS.ODCIVARCHAR2LIST;
@@ -107,14 +105,12 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     VERTEX_OBJECT_NAMES                SYS.ODCIVARCHAR2LIST;
     VERTEX_OBJECT_OWNERS               SYS.ODCIVARCHAR2LIST;
     EDGE_TAB_NAMES                     SYS.ODCIVARCHAR2LIST;
-    TYPE VARCHAR_TABLE IS
-      TABLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY VARCHAR2(M_VCSIZ_4K);
-    SRC_VERTEX_TAB_NAME_TABLE          VARCHAR_TABLE;
-    SRC_VERTEX_OBJECT_NAME_TABLE       VARCHAR_TABLE;
-    SRC_VERTEX_OBJECT_OWNER_TABLE      VARCHAR_TABLE;
-    DEST_VERTEX_TAB_NAME_TABLE         VARCHAR_TABLE;
-    DEST_VERTEX_OBJECT_NAME_TABLE      VARCHAR_TABLE;
-    DEST_VERTEX_OBJECT_OWNER_TABLE     VARCHAR_TABLE;
+    SRC_VERTEX_TAB_NAME_TABLE          STRING_INDEX_BY_STRING;
+    SRC_VERTEX_OBJECT_NAME_TABLE       STRING_INDEX_BY_STRING;
+    SRC_VERTEX_OBJECT_OWNER_TABLE      STRING_INDEX_BY_STRING;
+    DEST_VERTEX_TAB_NAME_TABLE         STRING_INDEX_BY_STRING;
+    DEST_VERTEX_OBJECT_NAME_TABLE      STRING_INDEX_BY_STRING;
+    DEST_VERTEX_OBJECT_OWNER_TABLE     STRING_INDEX_BY_STRING;
     EDGE_COL_NAME                      SYS.ODCIVARCHAR2LIST;
     VERTEX_COL_NAME                    SYS.ODCIVARCHAR2LIST;
     EDGE_END_LIST                      SYS.ODCIVARCHAR2LIST;
@@ -125,8 +121,8 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     DEST_VERTEX_COL_NAME_TABLE         VARCHARLIST_TABLE;
     EDGE_TO_KEYS_TABLE                 VARCHARLIST_TABLE;
     VERTEX_KEYS_TABLE                  VARCHARLIST_TABLE;
-    SRC_JSON_STRING                    VARCHAR2(M_VCSIZ_4K);
-    DEST_JSON_STRING                   VARCHAR2(M_VCSIZ_4K);
+    SRC_JSON_STRING                    CLOB;
+    DEST_JSON_STRING                   CLOB;
     SRC_EDGE_COL_NAME_FOR_EACH_EDGE    STRING_LIST_TYPE;
     SRC_VERTEX_COL_NAME_FOR_EACH_EDGE  STRING_LIST_TYPE;
     DEST_EDGE_COL_NAME_FOR_EACH_EDGE   STRING_LIST_TYPE;
@@ -156,7 +152,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
         RELATIONSHIPS.GRAPH_NAME = GRAPHNAME
         AND ELEMENTS.OWNER = GRAPHOWNER;
  
-      FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP
+     FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP
         IF EDGE_END_LIST(IDX1) = 'SOURCE' THEN
           SRC_VERTEX_TAB_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_TAB_NAMES(IDX1);
           SRC_VERTEX_OBJECT_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJECT_NAMES(IDX1);
@@ -236,7 +232,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
         AND EDGE_END = 'DESTINATION'
       ORDER BY
         EDGE_TAB_NAME;
- 
+
       FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP
         IF IDX1 = 1 THEN
           P1 := 1;
@@ -359,7 +355,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
         END IF;
       END LOOP;
     END IF;
-  
+ 
     SELECT
       OBJECT_NAME,
       ELEMENTS.ELEMENT_NAME, 
@@ -537,9 +533,9 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
 
               IF COLUMN_EXPRESSION IS NULL THEN
                 SELECTED_COL_STRING := SELECTED_COL_STRING
-                                      || ''''
+                                      || 'q''['
                                       || ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)
-                                      || ''''
+                                      || ']'''
                                       || ' VALUE '
                                       || 'x."'
                                       || COLUMN_NAME
@@ -553,9 +549,9 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
                 END IF;
               ELSE
                 SELECTED_COL_STRING := SELECTED_COL_STRING
-                                      || ''''
+                                      || 'q''['
                                       || ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)
-                                      || ''''
+                                      || ']'''
                                       || ' VALUE '
                                       || COLUMN_EXPRESSION
                                       || '';
@@ -574,9 +570,9 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
         LABELS_STRING := '';
         FOR IDX4 IN 1..ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT LOOP
           LABELS_STRING := LABELS_STRING
-                          || ''''
+                          || 'q''['
                           || ELEMENT_TO_LABELS(ELEMENT_NAME)(IDX4)
-                          ||'''';
+                          || ']''';
           IF (IDX4 != ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT) THEN
             LABELS_STRING := LABELS_STRING
                             || ', ';
@@ -591,17 +587,18 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
         IF ELEMENT_TYPE = 'EDGE' THEN
 
           SELECTED_COL_STRING := SELECTED_COL_STRING
-                                || ', '''
+                                || ', q''['
                                 || SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)
-                                || ''' || json_object(';
+                                || ']'' || json_object(';
           SRC_JSON_STRING := '';
           DEST_JSON_STRING := '';
           FOR IDX2 IN 1..VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP
             SRC_JSON_STRING := SRC_JSON_STRING
-                              || ''''
+                              || 'q''['
                               || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)
-                              || ''' is src_table.'
-                              || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2);
+                              || ']'' value src_table."'
+                              || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)
+                              || '"';
             IF (IDX2 = VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN
               SRC_JSON_STRING := SRC_JSON_STRING
                                 || ' ';
@@ -614,15 +611,16 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
           SELECTED_COL_STRING := SELECTED_COL_STRING
                                 || SRC_JSON_STRING;
           SELECTED_COL_STRING := SELECTED_COL_STRING
-                                || ') as source, '''
+                                || ') as source, q''['
                                 || DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)
-                                || ''' || json_object(';
+                                || ']'' || json_object(';
           FOR IDX3 IN 1..VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP
             DEST_JSON_STRING := DEST_JSON_STRING
-                                || ''''
+                                || 'q''['
                                 || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)
-                                || ''' is dst_table.'
-                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3);
+                                || ']'' value dst_table."'
+                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)
+                                || '"';
             IF (IDX3 = VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN
               DEST_JSON_STRING := DEST_JSON_STRING
                                   || ' ';
@@ -648,19 +646,20 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
 
         IF ELEMENT_TYPE = 'EDGE' THEN
           LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                  || ' JOIN '
+                                  || ' JOIN "'
                                   || SRC_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)
-                                  || '.'
+                                  || '"."'
                                   ||SRC_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)
-                                  || ' src_table ON (';
+                                  || '" src_table ON (';
           SRC_JSON_STRING := '';
 
           FOR IDX4 IN 1..SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP
             SRC_JSON_STRING := SRC_JSON_STRING
-                              || 'x.'
+                              || 'x."'
                               || SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
-                              || ' = src_table.'
-                              || SRC_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4);
+                              || '" = src_table."'
+                              || SRC_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
+                              || '"';
             IF IDX4 = SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT THEN
               SRC_JSON_STRING := SRC_JSON_STRING
                                 || ' ';
@@ -674,19 +673,20 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
                                   || SRC_JSON_STRING
                                   || ')';
           LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                  || ' JOIN '
+                                  || ' JOIN "'
                                   || DEST_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)
-                                  || '.'
+                                  || '"."'
                                   || DEST_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)
-                                  || ' dst_table ON (';
+                                  || '" dst_table ON (';
 
           DEST_JSON_STRING := '';
           FOR IDX4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP
             DEST_JSON_STRING := DEST_JSON_STRING
-                                || 'x.'
+                                || 'x."'
                                 || DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
-                                || ' = dst_table.'
-                                || DEST_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4);
+                                || '" = dst_table."'
+                                || DEST_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
+                                || '"';
             IF (IDX4 = DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT) THEN
               DEST_JSON_STRING := DEST_JSON_STRING
                                   || ' ';
@@ -701,20 +701,17 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
                                   || ')';
         END IF;
   
-
         JSON_CONDITION_STRING := '';
         FOR IDX5 IN 1..ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT LOOP
           JSON_CONDITION_STRING := JSON_CONDITION_STRING
-                                  || ' JSON_QUERY(JSON_OBJECT (''K'' VALUE '
-                                  || 'X.'
+                                  || 'X."'
                                   || ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5)
-                                  || ' ), ''$.K'' RETURNING JSON )'
-                                  || '= JSON_QUERY('
+                                  || '"= JSON_QUERY('
                                   || GRAPH_VIZ_TABLE_NAME
                                   || '.'
                                   || VERTEX_ID_COL_NAME
                                   || ', ''$.KEY_VALUE."'
-                                  || ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5)
+                                  || REPLACE(REPLACE(ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5), '''', ''''''), '\', '\\')
                                   || '"'' RETURNING JSON)';
           IF (IDX5 = ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT) THEN
             JSON_CONDITION_STRING := JSON_CONDITION_STRING
@@ -724,14 +721,15 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
                                     || ' AND ';
           END IF;
         END LOOP;
+
         LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                ||'WHERE JSON_VALUE('
+                                ||'WHERE JSON_VALUE("'
                                 || GRAPH_VIZ_TABLE_NAME
-                                || '.'
+                                || '"."'
                                 || VERTEX_ID_COL_NAME
-                                || ', ''$.ELEM_TABLE'') = '''
+                                || '", ''$.ELEM_TABLE'') = q''['
                                 || ELEMENT_NAME
-                                || ''' AND '
+                                || ']'' AND '
                                 || JSON_CONDITION_STRING;
         ALL_QUERY_STRING := ALL_QUERY_STRING
                             || LATERAL_QUERY_STRING
@@ -747,30 +745,32 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     END LOOP;
 
     RETURN ALL_QUERY_STRING;
-  END PROPERTIES_LATERAL_STRING;
+  END PROPERTIES_LATERAL_STRING_AS_CLOB;
  -----------------------------------------------------------------------------
  -- BUILD_JSON - prepare JSON result from vertex_id and edge_id tables
  -----------------------------------------------------------------------------
- FUNCTION BUILD_JSON(
-    VERTEX_TABLE SYS.ODCIRIDLIST,
-    EDGE_TABLE SYS.ODCIRIDLIST,
+ FUNCTION BUILD_JSON_USING_JSON_ARRAY(
+    VERTEX_TABLE JSON_ARRAY_T,
+    EDGE_TABLE JSON_ARRAY_T,
     COUNTER NUMBER,
     GRAPHNAME VARCHAR2,
     GRAPHOWNER VARCHAR2
   ) RETURN CLOB 
+    ACCESSIBLE BY (FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY)
     IS
     VERTEX_UNDERLYING_DB_NAME_LIST          SYS.ODCIVARCHAR2LIST;
     VERTEX_DB_TABLE_OBJECT_OWNER            SYS.ODCIVARCHAR2LIST;
     EDGE_UNDERLYING_DB_NAME_LIST            SYS.ODCIVARCHAR2LIST;
     EDGE_DB_TABLE_OBJECT_OWNER              SYS.ODCIVARCHAR2LIST;
-    QUERY_STRING                            VARCHAR2(M_VCSIZ_32K);
-    LATERALSTRING                           VARCHAR2(M_VCSIZ_32K);
-    SUB_QUERY_STRING                        VARCHAR2(M_VCSIZ_32K);
+    QUERY_STRING                            CLOB;
+    LATERALSTRING                           CLOB;
+    SUB_QUERY_STRING                        CLOB;
     VERTEX                                  JSON;
     EDGE                                    JSON;
     JSON_FILE                               CLOB;
-    DISTINCT_VERTEX_TABLE                   SYS.ODCIVARCHAR2LIST;
-    DISTINCT_EDGE_TABLE                     SYS.ODCIVARCHAR2LIST;
+    DISTINCT_VERTEX_TABLE                   JSON;
+    DISTINCT_EDGE_TABLE                     JSON;
+    TEMP_JSON                               JSON;
   BEGIN 
     SELECT
       DISTINCT ELEMENTS.OBJECT_NAME,
@@ -796,28 +796,36 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
       AND ELEMENTS.GRAPH_NAME = GRAPHNAME
       AND ELEMENTS.OWNER = GRAPHOWNER;
  
-    IF (VERTEX_TABLE.COUNT != 0) THEN
+    IF (VERTEX_TABLE.get_Size != 0) THEN
+      TEMP_JSON := VERTEX_TABLE.TO_JSON();
       SELECT
-        DISTINCT COLUMN_VALUE BULK COLLECT INTO DISTINCT_VERTEX_TABLE
+        JSON_ARRAYAGG(V_ID RETURNING JSON)
+      INTO
+        DISTINCT_VERTEX_TABLE
       FROM
-        TABLE(VERTEX_TABLE);
+        (
+          SELECT DISTINCT
+            V_ID
+          FROM
+            JSON_TABLE ( TEMP_JSON, '$[*]'
+              COLUMNS (
+                  V_ID JSON PATH '$'
+              )
+            )
+        );
+        
       QUERY_STRING := 'WITH VERTICES AS (';
 
-      LATERALSTRING := DBMS_GVT.PROPERTIES_LATERAL_STRING(VERTEX_UNDERLYING_DB_NAME_LIST, VERTEX_DB_TABLE_OBJECT_OWNER, 'VT', 'COLUMN_VALUE', GRAPHNAME, GRAPHOWNER, 'VERTEX');
+      LATERALSTRING := DBMS_GVT.PROPERTIES_LATERAL_STRING_AS_CLOB(VERTEX_UNDERLYING_DB_NAME_LIST, VERTEX_DB_TABLE_OBJECT_OWNER, 'VT', 'V_ID', GRAPHNAME, GRAPHOWNER, 'VERTEX');
       SUB_QUERY_STRING := '
           SELECT
-            JSON_OBJECT (''id'' VALUE JSON_VALUE(VT.COLUMN_VALUE,
-            ''$.ELEM_TABLE'') || JSON_QUERY(VT.COLUMN_VALUE,
+            JSON_OBJECT (''id'' VALUE JSON_VALUE(VT.V_ID,
+            ''$.ELEM_TABLE'') || JSON_QUERY(VT.V_ID,
             ''$.KEY_VALUE''),
             ''properties'' VALUE PROPERTIES_TABLE.PROPERTIES,
             ''labels'' VALUE PROPERTIES_TABLE.LABELS ABSENT ON NULL RETURNING JSON) AS VERTEX
           FROM
-            (
-              SELECT
-                DISTINCT COLUMN_VALUE
-              FROM
-                TABLE(:1)
-            ) VT,
+            JSON_TABLE(:1  , ''$[*]'' COLUMNS(V_ID json path ''$'')) AS VT,
             LATERAL('
                           || LATERALSTRING
                           || ') PROPERTIES_TABLE ';
@@ -827,7 +835,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
                       || '
         )
         SELECT
-          JSON_ARRAYAGG(VERTEX RETURNING CLOB)
+          JSON_ARRAYAGG(VERTEX RETURNING JSON)
         FROM
           VERTICES';
       EXECUTE IMMEDIATE QUERY_STRING INTO VERTEX USING DISTINCT_VERTEX_TABLE;
@@ -838,7 +846,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     END IF;
 
     SELECT
-      ELEMENTS.OBJECT_NAME,
+      DISTINCT ELEMENTS.OBJECT_NAME,
       ELEMENTS.OBJECT_OWNER BULK COLLECT INTO EDGE_UNDERLYING_DB_NAME_LIST,
       EDGE_DB_TABLE_OBJECT_OWNER
     FROM
@@ -852,34 +860,41 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
       AND ELEMENTS.GRAPH_NAME = GRAPHNAME
       AND ELEMENTS.OWNER = GRAPHOWNER;
  
-    IF (EDGE_TABLE.COUNT != 0) THEN
+    IF (EDGE_TABLE.get_Size != 0) THEN
+      TEMP_JSON := EDGE_TABLE.TO_JSON();
       SELECT
-        DISTINCT COLUMN_VALUE BULK COLLECT INTO DISTINCT_EDGE_TABLE
+        JSON_ARRAYAGG(E_ID RETURNING JSON)
+      INTO
+        DISTINCT_EDGE_TABLE
       FROM
-        TABLE(EDGE_TABLE);
+        (
+          SELECT DISTINCT
+            E_ID
+          FROM
+            JSON_TABLE ( TEMP_JSON, '$[*]'
+              COLUMNS (
+                  E_ID JSON PATH '$'
+              )
+            )
+        );
       QUERY_STRING := 'WITH EDGES AS (
             SELECT
-              JSON_OBJECT(''id'' VALUE JSON_VALUE(ET.COLUMN_VALUE,
-              ''$.ELEM_TABLE'') || JSON_QUERY(ET.COLUMN_VALUE,
+              JSON_OBJECT(''id'' VALUE JSON_VALUE(ET.E_ID,
+              ''$.ELEM_TABLE'') || JSON_QUERY(ET.E_ID,
               ''$.KEY_VALUE''),
-              ''source'' IS PROPERTIES_TABLE.SOURCE,
-              ''target'' IS PROPERTIES_TABLE.TARGET,
+              ''source'' value PROPERTIES_TABLE.SOURCE,
+              ''target'' value PROPERTIES_TABLE.TARGET,
               ''properties'' VALUE PROPERTIES_TABLE.PROPERTIES,
               ''labels'' VALUE PROPERTIES_TABLE.LABELS ABSENT ON NULL RETURNING JSON ) AS EDGE
             FROM
-              (
-                SELECT
-                  DISTINCT COLUMN_VALUE
-                FROM
-                  TABLE(:1)
-              ) ET,
+              JSON_TABLE(:1  , ''$[*]'' COLUMNS(E_ID json path ''$'')) AS ET,
               LATERAL(';
  
-      LATERALSTRING := DBMS_GVT.PROPERTIES_LATERAL_STRING(EDGE_UNDERLYING_DB_NAME_LIST, EDGE_DB_TABLE_OBJECT_OWNER, 'ET', 'COLUMN_VALUE', GRAPHNAME, GRAPHOWNER, 'EDGE');
+      LATERALSTRING := DBMS_GVT.PROPERTIES_LATERAL_STRING_AS_CLOB(EDGE_UNDERLYING_DB_NAME_LIST, EDGE_DB_TABLE_OBJECT_OWNER, 'ET', 'E_ID', GRAPHNAME, GRAPHOWNER, 'EDGE');
       QUERY_STRING := QUERY_STRING
                       || LATERALSTRING;
       QUERY_STRING := QUERY_STRING
-                      || ') PROPERTIES_TABLE) SELECT JSON_ARRAYAGG(EDGE RETURNING CLOB) FROM EDGES';
+                      || ') PROPERTIES_TABLE) SELECT JSON_ARRAYAGG(EDGE RETURNING JSON) FROM EDGES';
       EXECUTE IMMEDIATE QUERY_STRING INTO EDGE USING DISTINCT_EDGE_TABLE;
     ELSE
       SELECT
@@ -889,13 +904,26 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     SELECT
       JSON_OBJECT('vertices' VALUE VERTEX,
       'edges' VALUE EDGE,
-      'numResults' VALUE COUNTER RETURNING CLOB) INTO JSON_FILE
+      'numResults' VALUE COUNTER,
+      'graphOwner' VALUE GRAPHOWNER,
+      'graphName' VALUE GRAPHNAME RETURNING CLOB) INTO JSON_FILE
     FROM
       SYS.DUAL;
     RETURN JSON_FILE;
-  END BUILD_JSON;
+  END BUILD_JSON_USING_JSON_ARRAY;
 END DBMS_GVT;
 /
+CREATE OR REPLACE FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY(
+   VERTEX_TABLE JSON_ARRAY_T,
+   EDGE_TABLE JSON_ARRAY_T,
+   COUNTER NUMBER,
+   GRAPHNAME VARCHAR2,
+   GRAPHOWNER VARCHAR2
+ ) RETURN CLOB IS
+ BEGIN
+   RETURN DBMS_GVT.BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, COUNTER, GRAPHNAME, GRAPHOWNER);
+ END ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY;
+ /
 /*
 APEX can render JSON in the format {"vertices" : [...], "edges":[...]}
 In this function, we build two query strings, one for vertex and one for edge.
@@ -909,7 +937,6 @@ CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON (
 ) RETURN CLOB
   AUTHID CURRENT_USER IS
   M_VCSIZ_4K                              CONSTANT PLS_INTEGER := 4000;
-  M_VCSIZ_32K                             CONSTANT PLS_INTEGER := 32672;
   JSON_FILE                               CLOB; --the returned result
   GRAPHNAME                               VARCHAR2(M_VCSIZ_4K);
   ELEMENT_NAME                            VARCHAR2(M_VCSIZ_4K);
@@ -918,18 +945,17 @@ CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON (
   TAB_REC                                 SYS.DBMS_SQL.DESC_TAB;
   CUR                                     SYS_REFCURSOR;
   L_FLAG                                  NUMBER;
-  L_JSON                                  VARCHAR2(M_VCSIZ_4K);
+  L_JSON                                  JSON;
   VERTEX_ID_COLUMN_LIST                   SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
   EDGE_ID_COLUMN_LIST                     SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
   P1                                      NUMBER := 1;
   V1                                      NUMBER := 1;
   E1                                      NUMBER := 1;
-  VERTEX_TABLE                            SYS.ODCIRIDLIST := SYS.ODCIRIDLIST();
-  EDGE_TABLE                              SYS.ODCIRIDLIST := SYS.ODCIRIDLIST();
-  V2                                      NUMBER := 1;
-  E2                                      NUMBER := 1;
+  VERTEX_TABLE                            JSON_ARRAY_T := JSON_ARRAY_T();
+  EDGE_TABLE                              JSON_ARRAY_T := JSON_ARRAY_T();
   L_HAVING_ELEMENT_ID                     BOOLEAN := FALSE;
   COUNTER                                 NUMBER := 0;
+
 BEGIN
   SYS.DBMS_SQL.DESCRIBE_COLUMNS(
     C => CURS_ID,
@@ -940,7 +966,7 @@ BEGIN
   FOR POS IN 1 .. L_COLS LOOP
     CASE TAB_REC (POS).COL_TYPE
       WHEN 119 THEN
-        SYS.DBMS_SQL.DEFINE_COLUMN (CURS_ID, POS, L_JSON, 2000);
+        SYS.DBMS_SQL.DEFINE_COLUMN (CURS_ID, POS, L_JSON);
       ELSE
         NULL;
     END CASE;
@@ -966,9 +992,14 @@ BEGIN
 
             IF JSON_EXISTS(L_JSON, '$.ELEM_TABLE') AND JSON_EXISTS(L_JSON, '$.GRAPH_OWNER') AND JSON_EXISTS(L_JSON, '$.GRAPH_NAME') AND JSON_EXISTS(L_JSON, '$.KEY_VALUE') THEN
               L_HAVING_ELEMENT_ID := TRUE;
+
               IF GRAPHNAME IS NULL AND GRAPHOWNER IS NULL THEN
                 GRAPHNAME := JSON_VALUE(L_JSON, '$.GRAPH_NAME');
                 GRAPHOWNER := JSON_VALUE(L_JSON, '$.GRAPH_OWNER');
+              ELSE 
+                IF GRAPHNAME != JSON_VALUE(L_JSON, '$.GRAPH_NAME') OR GRAPHOWNER != JSON_VALUE(L_JSON, '$.GRAPH_OWNER') THEN
+                  RAISE_APPLICATION_ERROR(-20000, 'ora_sqlgraph_to_json only supports queries from a single graph. Please adjust the query accordingly.');
+                END IF;
               END IF;
 
               SELECT
@@ -983,39 +1014,29 @@ BEGIN
                 VERTEX_ID_COLUMN_LIST.EXTEND;
                 VERTEX_ID_COLUMN_LIST(V1) := POS;
                 V1 := V1 + 1;
-                VERTEX_TABLE.EXTEND();
-                VERTEX_TABLE(V2) := L_JSON;
-                V2 := V2 + 1;
+                VERTEX_TABLE.APPEND(L_JSON);
               ELSE
                 EDGE_ID_COLUMN_LIST.EXTEND;
                 EDGE_ID_COLUMN_LIST(E1) := POS;
                 E1 := E1 + 1;
-                EDGE_TABLE.EXTEND();
-                EDGE_TABLE(E2) := L_JSON;
-                E2 := E2 + 1;
+                EDGE_TABLE.APPEND(L_JSON);
               END IF;
             END IF;
           END IF;
         END LOOP;
       ELSE
+        IF GRAPHNAME != JSON_VALUE(L_JSON, '$.GRAPH_NAME') OR GRAPHOWNER != JSON_VALUE(L_JSON, '$.GRAPH_OWNER') THEN
+          RAISE_APPLICATION_ERROR(-20000, 'ora_sqlgraph_to_json only supports queries from a single graph. Please adjust the query accordingly.');
+        END IF;
+        
         FOR I IN 1..VERTEX_ID_COLUMN_LIST.COUNT LOOP
-          IF V2 = 32768 THEN
-            RAISE_APPLICATION_ERROR(-20000,'The number of vertices in the result set exceeds the limit of 32767. Add FETCH/OFFSET clauses to your query or set the page size parameters of the ORA_SQLGRAPH_TO_JSON function to reduce the result size.');
-          END IF;
           SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, VERTEX_ID_COLUMN_LIST(I), L_JSON);
-          VERTEX_TABLE.EXTEND();
-          VERTEX_TABLE(V2) := L_JSON;
-          V2 := V2 + 1;
+          VERTEX_TABLE.APPEND(L_JSON);
         END LOOP;
 
         FOR I IN 1..EDGE_ID_COLUMN_LIST.COUNT LOOP
-          IF E2 = 32768 THEN
-            RAISE_APPLICATION_ERROR(-20000,'The number of edges in the result set exceeds the limit of 32767. Add FETCH/OFFSET clauses to your query or set the page size parameters of the ORA_SQLGRAPH_TO_JSON function to reduce the result size.');
-          END IF;
           SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, EDGE_ID_COLUMN_LIST(I), L_JSON);
-          EDGE_TABLE.EXTEND();
-          EDGE_TABLE(E2) := L_JSON;
-          E2 := E2 + 1;
+          EDGE_TABLE.APPEND(L_JSON);
         END LOOP;
       END IF;
 
@@ -1026,7 +1047,7 @@ BEGIN
   IF NOT L_HAVING_ELEMENT_ID AND COUNTER != 0 THEN
     RAISE_APPLICATION_ERROR(-20000, 'Please add vertex_id/edge_id in both the COLUMNS and SELECT clause');
   END IF;
-    JSON_FILE := DBMS_GVT.BUILD_JSON(VERTEX_TABLE, EDGE_TABLE, COUNTER, GRAPHNAME, GRAPHOWNER);
+    JSON_FILE := ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, COUNTER, GRAPHNAME, GRAPHOWNER);
   RETURN JSON_FILE;
 END ORA_SQLGRAPH_TO_JSON;
 /
