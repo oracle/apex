@@ -538,11 +538,11 @@
 
 
 
--%% This notice is provided with respect to 'DOMPurify' version '3.1.6'.
+-%% This notice is provided with respect to 'DOMPurify' version '3.2.4'.
 
 ╔═══START═OF═LICENSE═══════════════════════════════════════════════════════════════════════════════════════════════════╗
 ║ DOMPurify                                                                                                            ║
-║ Copyright 2024 Dr.-Ing. Mario Heiderich, Cure53                                                                      ║
+║ Copyright 2025 Dr.-Ing. Mario Heiderich, Cure53                                                                      ║
 ║                                                                                                                      ║
 ║ DOMPurify is free software; you can redistribute it and/or modify it under the                                       ║
 ║ terms of either:                                                                                                     ║
@@ -1108,6 +1108,7 @@
 ║       This Source Code Form is “Incompatible                                                                         ║
 ║       With Secondary Licenses”, as defined by                                                                        ║
 ║       the Mozilla Public License, v. 2.0.                                                                            ║
+║                                                                                                                      ║
 ╚═══END═OF═LICENSE═════════════════════════════════════════════════════════════════════════════════════════════════════╝
 
 
