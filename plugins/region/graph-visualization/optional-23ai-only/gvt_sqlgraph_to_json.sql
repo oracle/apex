@@ -48,7 +48,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
 
   FUNCTION GET_VERSION RETURN VARCHAR2 IS
   BEGIN
-    RETURN '25.2.2 (2025-05-14T00:10:44.360633799Z, build: feb6eeb5)';
+    RETURN '25.3.5 (2025-08-06T17:26:05.763300497Z, build: b678c2fad)';
   END GET_VERSION;
 
   FUNCTION PROPERTIES_LATERAL_STRING_AS_CLOB (
@@ -739,7 +739,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
                               || ' ';
         ELSE
           ALL_QUERY_STRING := ALL_QUERY_STRING
-                              || 'UNION ';
+                              || 'UNION ALL ';
         END IF;
       END LOOP;
     END LOOP;
@@ -932,7 +932,7 @@ put the result in required json format.
 */
 CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON (
   CURS_ID INTEGER,
-  PAGE_START NUMBER DEFAULT NULL,
+  PAGE_START NUMBER DEFAULT 0,
   PAGE_SIZE NUMBER DEFAULT NULL
 ) RETURN CLOB
   AUTHID CURRENT_USER IS
@@ -941,6 +941,13 @@ CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON (
   GRAPHNAME                               VARCHAR2(M_VCSIZ_4K);
   ELEMENT_NAME                            VARCHAR2(M_VCSIZ_4K);
   GRAPHOWNER                              VARCHAR2(M_VCSIZ_4K);
+  -- Define a type for caching element information
+  TYPE ELEMENT_REC IS RECORD (
+    ELEMENT_NAME VARCHAR2(M_VCSIZ_4K),
+    ELEMENT_KIND VARCHAR2(M_VCSIZ_4K)
+  );
+  TYPE ELEMENT_TAB IS TABLE OF ELEMENT_REC;
+  ELEMENT_CACHE                           ELEMENT_TAB := ELEMENT_TAB();
   L_COLS                                  INTEGER;
   TAB_REC                                 SYS.DBMS_SQL.DESC_TAB;
   CUR                                     SYS_REFCURSOR;
@@ -948,13 +955,17 @@ CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON (
   L_JSON                                  JSON;
   VERTEX_ID_COLUMN_LIST                   SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
   EDGE_ID_COLUMN_LIST                     SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
-  P1                                      NUMBER := 1;
+  P1                                      NUMBER := 0; -- rows rendered
   V1                                      NUMBER := 1;
   E1                                      NUMBER := 1;
   VERTEX_TABLE                            JSON_ARRAY_T := JSON_ARRAY_T();
   EDGE_TABLE                              JSON_ARRAY_T := JSON_ARRAY_T();
   L_HAVING_ELEMENT_ID                     BOOLEAN := FALSE;
-  COUNTER                                 NUMBER := 0;
+  COUNTER                                 NUMBER := 0; -- rows fetched
+  L_JSON_OBJ                              JSON_OBJECT_T;
+  isLastResultSet                         BOOLEAN := FALSE;
+  FETCH_ROWS_INTEGER                      INTEGER;
+  MULTI_GRAPH_ERROR_MESSAGE               CONSTANT VARCHAR2(M_VCSIZ_4K) := 'ora_sqlgraph_to_json only supports queries from a single graph. Please adjust the query accordingly.';
 
 BEGIN
   SYS.DBMS_SQL.DESCRIBE_COLUMNS(
@@ -972,82 +983,124 @@ BEGIN
     END CASE;
   END LOOP;
 
-  WHILE SYS.DBMS_SQL.FETCH_ROWS (CURS_ID) != 0 LOOP
-    COUNTER := COUNTER + 1;
-    IF ((PAGE_START < 0
-    OR PAGE_SIZE <= 0)
-    AND (PAGE_START IS NOT NULL
-    AND PAGE_SIZE IS NOT NULL)) THEN
-      RAISE_APPLICATION_ERROR(-20000, 'Please provide valid values for page_start and page_size parameter. page_start should be an integer equal to or greater than 0. page_size should be an integer greater than 0');
-    END IF;
+  LOOP
+    FETCH_ROWS_INTEGER := SYS.DBMS_SQL.FETCH_ROWS(CURS_ID);
+    IF FETCH_ROWS_INTEGER > 0 THEN
+      COUNTER := COUNTER + 1;
 
-    IF ((COUNTER > PAGE_START
-    AND COUNTER <= PAGE_START + PAGE_SIZE)
-    OR (PAGE_START IS NULL
-    AND PAGE_START IS NULL) ) THEN
-      IF P1 = 1 THEN
-        FOR POS IN 1 .. L_COLS LOOP
-          IF TAB_REC(POS).COL_TYPE = 119 THEN
-            SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, POS, L_JSON);
-
-            IF JSON_EXISTS(L_JSON, '$.ELEM_TABLE') AND JSON_EXISTS(L_JSON, '$.GRAPH_OWNER') AND JSON_EXISTS(L_JSON, '$.GRAPH_NAME') AND JSON_EXISTS(L_JSON, '$.KEY_VALUE') THEN
-              L_HAVING_ELEMENT_ID := TRUE;
-
-              IF GRAPHNAME IS NULL AND GRAPHOWNER IS NULL THEN
-                GRAPHNAME := JSON_VALUE(L_JSON, '$.GRAPH_NAME');
-                GRAPHOWNER := JSON_VALUE(L_JSON, '$.GRAPH_OWNER');
-              ELSE 
-                IF GRAPHNAME != JSON_VALUE(L_JSON, '$.GRAPH_NAME') OR GRAPHOWNER != JSON_VALUE(L_JSON, '$.GRAPH_OWNER') THEN
-                  RAISE_APPLICATION_ERROR(-20000, 'ora_sqlgraph_to_json only supports queries from a single graph. Please adjust the query accordingly.');
-                END IF;
-              END IF;
-
-              SELECT
-                ELEMENT_KIND INTO ELEMENT_NAME
-              FROM
-                SYS.ALL_PG_ELEMENTS
-              WHERE
-                ELEMENT_NAME = JSON_VALUE(L_JSON, '$.ELEM_TABLE')
-                AND GRAPH_NAME = GRAPHNAME
-                AND OWNER = GRAPHOWNER;
-              IF ELEMENT_NAME = 'VERTEX' THEN
-                VERTEX_ID_COLUMN_LIST.EXTEND;
-                VERTEX_ID_COLUMN_LIST(V1) := POS;
-                V1 := V1 + 1;
-                VERTEX_TABLE.APPEND(L_JSON);
-              ELSE
-                EDGE_ID_COLUMN_LIST.EXTEND;
-                EDGE_ID_COLUMN_LIST(E1) := POS;
-                E1 := E1 + 1;
-                EDGE_TABLE.APPEND(L_JSON);
-              END IF;
-            END IF;
-          END IF;
-        END LOOP;
-      ELSE
-        IF GRAPHNAME != JSON_VALUE(L_JSON, '$.GRAPH_NAME') OR GRAPHOWNER != JSON_VALUE(L_JSON, '$.GRAPH_OWNER') THEN
-          RAISE_APPLICATION_ERROR(-20000, 'ora_sqlgraph_to_json only supports queries from a single graph. Please adjust the query accordingly.');
-        END IF;
-        
-        FOR I IN 1..VERTEX_ID_COLUMN_LIST.COUNT LOOP
-          SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, VERTEX_ID_COLUMN_LIST(I), L_JSON);
-          VERTEX_TABLE.APPEND(L_JSON);
-        END LOOP;
-
-        FOR I IN 1..EDGE_ID_COLUMN_LIST.COUNT LOOP
-          SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, EDGE_ID_COLUMN_LIST(I), L_JSON);
-          EDGE_TABLE.APPEND(L_JSON);
-        END LOOP;
+      IF (PAGE_START < 0
+      OR PAGE_SIZE <= 0) THEN
+        RAISE_APPLICATION_ERROR(-20000, 'Please provide valid values for page_start and page_size parameter. page_start should be an integer equal to or greater than 0. page_size should be an integer greater than 0.');
       END IF;
 
-      P1 := P1 + 1;
+      IF ((COUNTER > PAGE_START
+      AND COUNTER <= PAGE_START + PAGE_SIZE)
+      OR (PAGE_SIZE IS NULL) ) THEN
+        IF P1 = 0 THEN
+          FOR POS IN 1 .. L_COLS LOOP
+            IF TAB_REC(POS).COL_TYPE = 119 THEN
+              SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, POS, L_JSON);
+
+              IF JSON_EXISTS(L_JSON, '$.ELEM_TABLE') AND JSON_EXISTS(L_JSON, '$.GRAPH_OWNER') AND JSON_EXISTS(L_JSON, '$.GRAPH_NAME') AND JSON_EXISTS(L_JSON, '$.KEY_VALUE') THEN
+                L_HAVING_ELEMENT_ID := TRUE;
+
+                IF GRAPHNAME IS NULL AND GRAPHOWNER IS NULL THEN
+                  GRAPHNAME := JSON_VALUE(L_JSON, '$.GRAPH_NAME');
+                  GRAPHOWNER := JSON_VALUE(L_JSON, '$.GRAPH_OWNER');
+                  -- Populate the cache with all elements for this graph and owner
+                  SELECT
+                    ELEMENT_NAME,
+                    ELEMENT_KIND
+                  BULK COLLECT INTO ELEMENT_CACHE
+                  FROM
+                    SYS.ALL_PG_ELEMENTS
+                  WHERE
+                    GRAPH_NAME = GRAPHNAME
+                    AND OWNER = GRAPHOWNER;
+                ELSE 
+                  IF GRAPHNAME != JSON_VALUE(L_JSON, '$.GRAPH_NAME') OR GRAPHOWNER != JSON_VALUE(L_JSON, '$.GRAPH_OWNER') THEN
+                    RAISE_APPLICATION_ERROR(-20000, MULTI_GRAPH_ERROR_MESSAGE);
+                  END IF;
+                END IF;
+
+                -- Check if the element is in our stored list
+                ELEMENT_NAME := NULL;
+                FOR i IN 1 .. ELEMENT_CACHE.COUNT LOOP
+                  IF ELEMENT_CACHE(i).ELEMENT_NAME = JSON_VALUE(L_JSON, '$.ELEM_TABLE') THEN
+                    ELEMENT_NAME := ELEMENT_CACHE(i).ELEMENT_KIND;
+                    EXIT;
+                  END IF;
+                END LOOP;
+
+                IF ELEMENT_NAME IS NULL THEN
+                  -- If not found in cache, raise an error or handle accordingly
+                  RAISE_APPLICATION_ERROR(-20000, 'Element ' || JSON_VALUE(L_JSON, '$.ELEM_TABLE') || ' not found in graph ' || GRAPHNAME);
+                END IF;
+                
+                IF ELEMENT_NAME = 'VERTEX' THEN
+                  VERTEX_ID_COLUMN_LIST.EXTEND;
+                  VERTEX_ID_COLUMN_LIST(V1) := POS;
+                  V1 := V1 + 1;
+                  VERTEX_TABLE.APPEND(L_JSON);
+                ELSE
+                  EDGE_ID_COLUMN_LIST.EXTEND;
+                  EDGE_ID_COLUMN_LIST(E1) := POS;
+                  E1 := E1 + 1;
+                  EDGE_TABLE.APPEND(L_JSON);
+                END IF;
+              END IF;
+            END IF;
+          END LOOP;
+        ELSE
+          IF GRAPHNAME != JSON_VALUE(L_JSON, '$.GRAPH_NAME') OR GRAPHOWNER != JSON_VALUE(L_JSON, '$.GRAPH_OWNER') THEN
+                    RAISE_APPLICATION_ERROR(-20000, MULTI_GRAPH_ERROR_MESSAGE);
+          END IF;
+          
+          FOR I IN 1..VERTEX_ID_COLUMN_LIST.COUNT LOOP
+            SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, VERTEX_ID_COLUMN_LIST(I), L_JSON);
+            VERTEX_TABLE.APPEND(L_JSON);
+          END LOOP;
+
+          FOR I IN 1..EDGE_ID_COLUMN_LIST.COUNT LOOP
+            SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, EDGE_ID_COLUMN_LIST(I), L_JSON);
+            EDGE_TABLE.APPEND(L_JSON);
+          END LOOP;
+        END IF;
+
+        P1 := P1 + 1;
+
+        IF (
+          PAGE_SIZE IS NOT NULL
+          AND P1 = PAGE_SIZE
+        ) THEN
+          EXIT;
+        END IF;
+      END IF;
+    ELSIF FETCH_ROWS_INTEGER = 0 THEN
+      isLastResultSet := TRUE;
+      EXIT;
     END IF;
   END LOOP;
 
   IF NOT L_HAVING_ELEMENT_ID AND COUNTER != 0 THEN
-    RAISE_APPLICATION_ERROR(-20000, 'Please add vertex_id/edge_id in both the COLUMNS and SELECT clause');
+    IF COUNTER < PAGE_START THEN
+      RAISE_APPLICATION_ERROR(-20000, 'page_start index exceeds the total number of rows returned. Please reset page_start to a valid value within the range of available results.');
+    ELSIF COUNTER > PAGE_START THEN
+      RAISE_APPLICATION_ERROR(-20000, 'Please add vertex_id/edge_id to the COLUMNS clause and project the corresponding column name in the SELECT clause.');
+    END IF;
   END IF;
-    JSON_FILE := ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, COUNTER, GRAPHNAME, GRAPHOWNER);
-  RETURN JSON_FILE;
+    JSON_FILE := ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, P1, GRAPHNAME, GRAPHOWNER);
+    L_JSON_OBJ := JSON_OBJECT_T(JSON_FILE);
+    IF isLastResultSet OR PAGE_SIZE IS NULL THEN
+      L_JSON_OBJ.PUT('isLastResultSet', TRUE);
+    ELSE
+      IF P1 < PAGE_SIZE THEN
+        L_JSON_OBJ.PUT('isLastResultSet', TRUE);
+      ELSE
+        L_JSON_OBJ.PUT('isLastResultSet', FALSE);
+      END IF;
+    END IF;
+
+  RETURN L_JSON_OBJ.TO_CLOB();
 END ORA_SQLGRAPH_TO_JSON;
 /
