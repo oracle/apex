@@ -107,7 +107,7 @@
         {
             "internalName": "BROOKSTRUT_SAMPLE_APP",
             "author": "Oracle",
-            "version": "24.2.1",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-brookstrut-sample-app.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/brookstrut-sample-app",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/brookstrut-sample-app/brookstrut-sample-app.sql",
