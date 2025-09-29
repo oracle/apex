@@ -1,6 +1,8 @@
 # [Oracle APEX on GitHub](https://oracle.github.io/apex/)
 
-Oracle APEX is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.  
+**Note:** This branch only contains Fusion Apps REST Source Catalogs.
+
+Oracle APEX is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.
 
 This GitHub project contains starter apps, sample apps, sample code, and plug-ins that you can use with [Oracle APEX](https://apex.oracle.com/).
 
@@ -36,4 +38,3 @@ Copyright (c) 2021, 2025 Oracle and/or its affiliates.
 
 Released under the Universal Permissive License v1.0 as shown at
 <https://oss.oracle.com/licenses/upl/>.
-
