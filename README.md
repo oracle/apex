@@ -16,6 +16,11 @@ These branches contains starter apps, sample apps and so on for a specific versi
 - [Oracle APEX 21.2](../../tree/21.2)
 - [Oracle APEX 21.1](../../tree/21.1)
 
+## REST Source Catalogs
+This branch contains Fusion Apps REST Source Catalogs.
+
+- [rest-source-catalogs](../../tree/rest-source-catalogs)
+
 ## Getting Started
 Get started with APEX and the code samples found in this project by requesting your own workspace on [apex.oracle.com](https://apex.oracle.com/en/learn/getting-started/).
 
@@ -36,4 +41,3 @@ Copyright (c) 2021, 2025 Oracle and/or its affiliates.
 
 Released under the Universal Permissive License v1.0 as shown at
 <https://oss.oracle.com/licenses/upl/>.
-
