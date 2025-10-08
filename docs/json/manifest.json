@@ -887,7 +887,7 @@
         {
             "internalName": "SAMPLE_REPORTING",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-reporting.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-reporting",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-reporting/sample-reporting.sql",
