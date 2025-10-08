@@ -1409,7 +1409,7 @@
         {
             "internalName": "APP_TEAM_CALENDAR",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-team-calendar.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/team-calendar",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/starter-apps/team-calendar/team-calendar.sql",
