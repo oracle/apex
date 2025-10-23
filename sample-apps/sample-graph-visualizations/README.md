@@ -6,7 +6,8 @@ its usage can be found [here](/plugins/region/graph-visualization).
 
 ## Installation Steps
 
-1. Download the .sql file that corresponds to your usecase (23ai or 19c Autonomous Database only)
+1. Download the .sql file that corresponds to your usecase (Oracle AI Database 26ai or Oracle Autonomous AI Database
+   19c)
 2. Navigate to App Builder -> Import
 3. Drag and drop the application .sql file and click Next
 4. Leave the defaults as they are, then continue through the remaining steps in the wizard to finish installing the
