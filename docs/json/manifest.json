@@ -157,6 +157,58 @@
             }
         },
         {
+            "internalName": "IMAGE_SUPPORT_RTE",
+            "author": "Oracle",
+            "version": "24.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-image-support-rte.svg",
+            "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/image-support-rte",
+            "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/image-support-rte/image-support-rte.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/image-support-rte/image-support-rte.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Image Support for Rich Text Editor",
+                    "description": "This application illustrates how to augment Rich Text Editor content items to allow for inline images."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_APPLICATION_SEARCH",
             "author": "Oracle",
             "version": "24.2.0",
