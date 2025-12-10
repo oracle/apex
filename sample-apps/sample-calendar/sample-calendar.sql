@@ -28,10 +28,10 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.0'
+,p_release=>'24.2.11'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7820
-,p_default_id_offset=>9797958909058847
+,p_default_id_offset=>4421054519883540
 ,p_default_owner=>'ORACLE'
 );
 end;
@@ -51,10 +51,9 @@ prompt APPLICATION 7820 - Sample Calendar
 --       Processes:               19
 --       Regions:                126
 --       Buttons:                 31
---       Dynamic Actions:         56
+--       Dynamic Actions:         55
 --     Shared Components:
 --       Logic:
---         Processes:              1
 --       Navigation:
 --         Parent Tabs:            1
 --         Lists:                  9
@@ -77,8 +76,8 @@ prompt APPLICATION 7820 - Sample Calendar
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          3
---   Version:         24.2.0
---   Instance ID:     743312968839308
+--   Version:         24.2.11
+--   Instance ID:     743326324518343
 --
 
 prompt --application/delete_application
@@ -93,7 +92,7 @@ wwv_imp_workspace.create_flow(
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ORACLE')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'Sample Calendar')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'SAMPLE-CALENDAR')
-,p_application_group=>wwv_flow_imp.id(4851185638549144)
+,p_application_group=>wwv_flow_imp.id(6685475922136084)
 ,p_application_group_name=>'Sample Apps'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
@@ -111,13 +110,13 @@ wwv_imp_workspace.create_flow(
 '1.0.7 -> 1.0.8: Added "SQL Source" show/hide region to "Monthly Calendar" and "Date Reporting" pages.',
 '1.0.8 -> 1.0.9: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie'))
 ,p_authentication_id=>wwv_flow_imp.id(8203234350151693323)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Calendar'
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.0'
+,p_flow_version=>'24.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -137,7 +136,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>10
-,p_version_scn=>186626975
+,p_version_scn=>150927022
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -156,7 +155,7 @@ end;
 prompt --application/user_interfaces
 begin
 wwv_flow_imp_shared.create_user_interface(
- p_id=>wwv_flow_imp.id(7820)
+ p_id=>wwv_flow_imp.id(4421054519875720)
 ,p_theme_id=>42
 ,p_home_url=>'f?p=&APP_ID.:1:&SESSION.'
 ,p_theme_style_by_user_pref=>true
@@ -1095,36 +1094,6 @@ wwv_flow_imp_shared.create_icon_bar_item(
 ,p_nav_entry_is_feedback_yn=>'N'
 ,p_begins_on_new_line=>'NO'
 ,p_cell_colspan=>1
-);
-end;
-/
-prompt --application/shared_components/logic/application_processes/trim_all_page_items
-begin
-wwv_flow_imp_shared.create_flow_process(
- p_id=>wwv_flow_imp.id(1565229633605682387)
-,p_process_sequence=>1
-,p_process_point=>'ON_SUBMIT_BEFORE_COMPUTATION'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Trim All Page Items'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'begin',
-'    for c1 in (select item_name',
-'               from apex_application_page_items',
-'               where application_id = :APP_ID',
-'                   and page_id = :APP_PAGE_ID',
-'                   and display_as_code in (''NATIVE_TEXT_FIELD'',',
-'                                           ''NATIVE_TEXTAREA'',',
-'                                           ''NATIVE_NUMBER_FIELD'') ) loop',
-'        apex_util.set_session_state( c1.item_name,',
-'            regexp_replace(apex_util.get_session_state( c1.item_name ),',
-'                ''^[[:space:]]*(.*?)[[:space:]]*$'', ''\1''',
-'            )',
-'        );',
-'    end loop;',
-'end;'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_version_scn=>37166093867983
 );
 end;
 /
@@ -4501,7 +4470,7 @@ wwv_flow_imp_page.create_page_item(
   'disabled', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
-  'trim_spaces', 'NONE')).to_clob
+  'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(2580180534466657228)
@@ -5312,7 +5281,6 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_group_id=>wwv_flow_imp.id(663568232044195189)
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -5956,7 +5924,7 @@ wwv_flow_imp_page.create_page_item(
   'disabled', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
-  'trim_spaces', 'NONE')).to_clob
+  'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(2660646937996216494)
@@ -5978,7 +5946,7 @@ wwv_flow_imp_page.create_page_item(
   'disabled', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
-  'trim_spaces', 'NONE')).to_clob
+  'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(2660647123342216495)
@@ -6070,7 +6038,7 @@ wwv_flow_imp_page.create_page_item(
   'disabled', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
-  'trim_spaces', 'NONE')).to_clob
+  'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(2660647938872216495)
@@ -6903,6 +6871,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'06'
@@ -9834,25 +9803,6 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'N'
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(788270724401060874)
-,p_name=>'Calendar: Next Month'
-,p_event_sequence=>20
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(778370387311231737)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'click'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(788271223156060875)
-,p_event_id=>wwv_flow_imp.id(788270724401060874)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attribute_01=>'apex.region("project_tasks").widget().data("fullCalendar").next()'
-);
-wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(788244883614878004)
 ,p_name=>'Get Calendar Status'
 ,p_event_sequence=>30
@@ -12124,7 +12074,7 @@ wwv_flow_imp_page.create_page_item(
   'disabled', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
-  'trim_spaces', 'NONE')).to_clob
+  'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(785455813057380889)
@@ -12166,7 +12116,7 @@ wwv_flow_imp_page.create_page_item(
   'disabled', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
-  'trim_spaces', 'NONE')).to_clob
+  'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(785456540167380890)
