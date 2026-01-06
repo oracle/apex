@@ -1305,7 +1305,7 @@
         {
             "internalName": "APP_POLL",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-poll.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/poll",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/starter-apps/poll/poll.sql",
