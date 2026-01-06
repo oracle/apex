@@ -24,10 +24,10 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.0'
+,p_release=>'24.2.11'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7040
-,p_default_id_offset=>17112839606727645
+,p_default_id_offset=>1475844552414530
 ,p_default_owner=>'ORACLE'
 );
 end;
@@ -48,7 +48,7 @@ prompt APPLICATION 7040 - Poll
 --       Processes:              113
 --       Regions:                302
 --       Buttons:                194
---       Dynamic Actions:         97
+--       Dynamic Actions:         96
 --     Shared Components:
 --       Logic:
 --         Items:                 12
@@ -69,7 +69,7 @@ prompt APPLICATION 7040 - Poll
 --         Themes:                 1
 --         Templates:
 --           Report:               1
---         LOVs:                  41
+--         LOVs:                  40
 --         Shortcuts:              1
 --         Plug-ins:               3
 --       PWA:
@@ -80,8 +80,8 @@ prompt APPLICATION 7040 - Poll
 --         Templates:              5
 --     Supporting Objects:  Included
 --       Install scripts:         35
---   Version:         24.2.0
---   Instance ID:     743312968839308
+--   Version:         24.2.11
+--   Instance ID:     743326324518343
 --
 
 prompt --application/delete_application
@@ -111,13 +111,13 @@ wwv_imp_workspace.create_flow(
 ,p_flow_image_prefix => nvl(wwv_flow_application_install.get_image_prefix,'')
 ,p_documentation_banner=>'1.0.2 -> 1.0.3: Error handling procedure updated to resolve bug 17516350'
 ,p_authentication_id=>wwv_flow_imp.id(8064998874002143348)
-,p_application_tab_set=>1
+,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'&APPLICATION_TITLE.'
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.0'
+,p_flow_version=>'24.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -136,7 +136,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Poll'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>28
-,p_version_scn=>187965107
+,p_version_scn=>151399021
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -151,7 +151,7 @@ end;
 prompt --application/user_interfaces
 begin
 wwv_flow_imp_shared.create_user_interface(
- p_id=>wwv_flow_imp.id(7040)
+ p_id=>wwv_flow_imp.id(1475844552407490)
 ,p_theme_id=>42
 ,p_home_url=>'f?p=&APP_ID.:1:&SESSION.'
 ,p_theme_style_by_user_pref=>false
@@ -2496,21 +2496,6 @@ wwv_flow_imp_shared.create_list_of_values(
 );
 end;
 /
-prompt --application/shared_components/user_interface/lovs/email_styles
-begin
-wwv_flow_imp_shared.create_list_of_values(
- p_id=>wwv_flow_imp.id(13919963419244468465)
-,p_lov_name=>'EMAIL STYLES'
-,p_lov_query=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select style_name d, id r',
-'from eba_qpoll_email_styles',
-'order by upper(style_name)'))
-,p_source_type=>'LEGACY_SQL'
-,p_location=>'LOCAL'
-,p_version_scn=>1089050995
-);
-end;
-/
 prompt --application/shared_components/user_interface/lovs/email_sent
 begin
 wwv_flow_imp_shared.create_list_of_values(
@@ -3715,7 +3700,7 @@ wwv_flow_imp_shared.create_theme(
 ,p_nav_bar_type=>'LIST'
 ,p_reference_id=>4072363937200175119
 ,p_is_locked=>false
-,p_current_theme_style_id=>2721322117358710262
+,p_current_theme_style_id=>2597873239612181258
 ,p_default_page_template=>4072355960268175073
 ,p_default_dialog_template=>2100407606326202693
 ,p_error_template=>2101157952850466385
@@ -5963,7 +5948,7 @@ wwv_flow_imp_page.create_report_region(
 '      case when take_status in (''CAN_TAKE_IT'',''HAS_ERRORS'',''CAN_UPDATE'') and questions > 0',
 '           then ''<a class="t-Button t-Button--small t-Button--simple t-Button--stretch" href="''',
 '               ||apex_util.prepare_url(''f?p=''||:APP_ID||'':50:''||:APP_SESSION||'':::50:LPOLL_ID:''||poll_id)',
-'               ||''">''||apex_lang.message(take_status)||''</a>''',
+'               ||''">''||apex_escape.html(apex_lang.message(take_status))||''</a>''',
 '           else '''' end item_misc',
 'from',
 '(SELECT id poll_id,',
@@ -6239,7 +6224,7 @@ wwv_flow_imp_page.create_report_region(
 '       case when intro_text is not null',
 '            then apex_escape.html(intro_text) ||''<br/>'' ',
 '            end || case when poll_or_quiz = ''Q''',
-'                        then ''<span class="tag-badge-yellow">''||apex_lang.message(''QUIZ_INITCAP'')||''</span> ''',
+'                        then ''<span class="tag-badge-yellow">''||apex_escape.html(apex_lang.message(''QUIZ_INITCAP''))||''</span> ''',
 '                        end ||',
 '            ''published ''|| apex_util.get_since(start_time) || ',
 '               case when status_id = 3 then '', still accepting responses''',
@@ -10274,6 +10259,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cMaxlength=>255
 ,p_field_template=>2526760615038828570
 ,p_item_template_options=>'#DEFAULT#'
+,p_protection_level=>'S'
 ,p_help_text=>'Please enter the email address we will use to send the results of your account request to. This field is limited to 255 characters.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
@@ -11149,7 +11135,6 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_type=>'STRING'
 ,p_display_text_as=>'WITHOUT_MODIFICATION'
 ,p_heading_alignment=>'LEFT'
-,p_tz_dependent=>'N'
 ,p_rpt_named_lov=>wwv_flow_imp.id(14001117924000933581)
 ,p_rpt_show_filter_lov=>'2'
 ,p_use_as_row_header=>'N'
@@ -27376,6 +27361,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_field_template=>2526760615038828570
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
+,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'page_action_on_selection', 'NONE')).to_clob
 );
@@ -27390,6 +27376,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cMaxlength=>4000
 ,p_field_template=>2526760615038828570
 ,p_item_template_options=>'#DEFAULT#'
+,p_protection_level=>'S'
 ,p_restricted_characters=>'WEB_SAFE'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
@@ -27437,6 +27424,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_field_template=>2526760615038828570
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
+,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'page_action_on_selection', 'NONE')).to_clob
 );
@@ -27459,6 +27447,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_field_template=>2526760615038828570
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
+,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'page_action_on_selection', 'NONE')).to_clob
 );
@@ -38368,7 +38357,7 @@ wwv_flow_imp_page.create_page_plug(
 '      case when take_status in (''CAN_TAKE_IT'',''HAS_ERRORS'',''CAN_UPDATE'') and questions > 0',
 '           then ''<a class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch" href="''',
 '               ||apex_util.prepare_url(''f?p=''||:APP_ID||'':50:''||:APP_SESSION||'':::50:LPOLL_ID:''||poll_id)',
-'               ||''">''||apex_lang.message(take_status)||''</a>''',
+'               ||''">''||apex_escape.html(apex_lang.message(take_status))||''</a>''',
 '           else '''' end action_URL',
 'from',
 '(SELECT id poll_id, ',
@@ -38529,7 +38518,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_allow_pivot=>'N'
 ,p_column_type=>'DATE'
 ,p_format_mask=>'SINCE'
-,p_tz_dependent=>'Y'
+,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
@@ -38551,7 +38540,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_allow_pivot=>'N'
 ,p_column_type=>'DATE'
 ,p_format_mask=>'SINCE'
-,p_tz_dependent=>'Y'
+,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
@@ -38632,7 +38621,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_allow_pivot=>'N'
 ,p_column_type=>'DATE'
 ,p_format_mask=>'SINCE'
-,p_tz_dependent=>'Y'
+,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
@@ -38644,7 +38633,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_allow_pivot=>'N'
 ,p_column_type=>'DATE'
 ,p_format_mask=>'SINCE'
-,p_tz_dependent=>'Y'
+,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
@@ -38685,7 +38674,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_allow_pivot=>'N'
 ,p_column_type=>'DATE'
 ,p_format_mask=>'SINCE'
-,p_tz_dependent=>'Y'
+,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
@@ -39471,27 +39460,6 @@ wwv_flow_imp_page.create_page_validation(
 ,p_validation_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_associated_item=>wwv_flow_imp.id(8058834697320599461)
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(8076096538233262327)
-,p_name=>'Refresh Users Region on Modal Close'
-,p_event_sequence=>10
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(7828054909869654979)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'apexafterclosedialog'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(8076097067634262332)
-,p_event_id=>wwv_flow_imp.id(8076096538233262327)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_action=>'NATIVE_REFRESH'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(10048451299946709430)
-,p_attribute_01=>'N'
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(8076097451923262332)
@@ -40941,6 +40909,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_field_template=>1609122147107268652
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
+,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'number_of_columns', '1',
   'page_action_on_selection', 'NONE')).to_clob
@@ -40959,6 +40928,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cHeight=>5
 ,p_field_template=>1609122147107268652
 ,p_item_template_options=>'#DEFAULT#'
+,p_protection_level=>'S'
 ,p_inline_help_text=>'Enter usernames separated by commas, semicolons, or whitespace. Existing or duplicate usernames will automatically be ignored.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'auto_height', 'N',
