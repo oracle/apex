@@ -48,7 +48,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
 
   FUNCTION GET_VERSION RETURN VARCHAR2 IS
   BEGIN
-    RETURN '25.4.2 (2025-10-14T18:36:58.167867501Z, build: d3ace4172)';
+    RETURN '26.1.2 (2026-01-08T19:53:11.179945002Z, build: 4fb72601)';
   END GET_VERSION;
 
   FUNCTION PROPERTIES_LATERAL_STRING_AS_CLOB (
@@ -266,25 +266,30 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
  
       SELECT
         KEYS.ELEMENT_NAME,
-        KEYS.COLUMN_NAME BULK COLLECT INTO VERTEX_ELEMENT_NAMES,
+        KEYS.COLUMN_NAME
+      BULK COLLECT INTO
+        VERTEX_ELEMENT_NAMES,
         VERTEX_KEYS
       FROM
-        SYS.ALL_PG_KEYS     KEYS
+        SYS.ALL_PG_KEYS KEYS
         INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS
-        ON (ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME
-        AND KEYS.OWNER = ELEMENTS.OWNER
-        AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME)
-        INNER JOIN SYS.ALL_TAB_COLUMNS COLUMNS
-        ON (COLUMNS.OWNER = ELEMENTS.OBJECT_OWNER
-        AND COLUMNS.TABLE_NAME = ELEMENTS.OBJECT_NAME
-        AND COLUMNS.COLUMN_NAME = KEYS.COLUMN_NAME)
+          ON ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME
+         AND KEYS.OWNER = ELEMENTS.OWNER
+         AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME
+        LEFT JOIN SYS.ALL_SYNONYMS s
+          ON s.SYNONYM_NAME = ELEMENTS.OBJECT_NAME
+         AND s.OWNER = ELEMENTS.OBJECT_OWNER
+        INNER JOIN SYS.ALL_TAB_COLUMNS c
+          ON c.OWNER = COALESCE(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)
+         AND c.TABLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)
+         AND c.COLUMN_NAME = KEYS.COLUMN_NAME
       WHERE
         KEYS.GRAPH_NAME = GRAPHNAME
-        AND KEYS.OWNER = GRAPHOWNER
-        AND ELEMENTS.ELEMENT_KIND = 'VERTEX'
-      ORDER BY
-        KEYS.ELEMENT_NAME,
-        COLUMNS.COLUMN_ID;
+          AND KEYS.OWNER = GRAPHOWNER                                                                                                                                                                             
+          AND ELEMENTS.ELEMENT_KIND = 'VERTEX'                                                                                                                                                                    
+      ORDER BY                                                                                                                                                                                                    
+          KEYS.ELEMENT_NAME,                                                                                                                                                                                      
+          c.COLUMN_ID; 
  
       FOR IDX1 IN 1..VERTEX_ELEMENT_NAMES.COUNT LOOP
         IF IDX1 = 1 THEN
@@ -310,26 +315,37 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
         END IF;
       END LOOP;
  
-      SELECT
-        KEYS.COLUMN_NAME,
-        KEYS.ELEMENT_NAME BULK COLLECT INTO EDGE_KEYS,
-        EDGE_ELEMENT_NAMES
-      FROM
-        SYS.ALL_PG_KEYS     KEYS
-        INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS
-        ON (ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME
-        AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME
-        AND KEYS.OWNER = ELEMENTS.OWNER)
-        INNER JOIN SYS.ALL_TAB_COLUMNS COLUMNS
-        ON (COLUMNS.OWNER = ELEMENTS.OBJECT_OWNER
-        AND COLUMNS.TABLE_NAME = ELEMENTS.OBJECT_NAME
-        AND COLUMNS.COLUMN_NAME = KEYS.COLUMN_NAME)
-      WHERE
-        ELEMENT_KIND = 'EDGE'
-        AND KEYS.GRAPH_NAME = GRAPHNAME
-        AND ELEMENTS.OWNER = GRAPHOWNER
-      ORDER BY
-        OBJECT_NAME;
+      SELECT                                                                                                                                                                                                      
+          KEYS.ELEMENT_NAME,                                                                                                                                                                                      
+          KEYS.COLUMN_NAME                                                                                                                                                                                        
+      BULK COLLECT INTO                                                                                                                                                                                           
+          EDGE_ELEMENT_NAMES,                                                                                                                                                                                     
+          EDGE_KEYS                                                                                                                                                                                               
+      FROM                                                                                                                                                                                                        
+          SYS.ALL_PG_KEYS KEYS                                                                                                                                                                                    
+      INNER JOIN                                                                                                                                                                                                  
+          SYS.ALL_PG_ELEMENTS ELEMENTS                                                                                                                                                                            
+      ON                                                                                                                                                                                                          
+          (ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME                                                                                                                                                              
+          AND KEYS.OWNER = ELEMENTS.OWNER                                                                                                                                                                         
+          AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME)                                                                                                                                                              
+      LEFT JOIN                                                                                                                                                                                                   
+          SYS.ALL_SYNONYMS s                                                                                                                                                                                      
+      ON                                                                                                                                                                                                          
+          s.SYNONYM_NAME = ELEMENTS.OBJECT_NAME                                                                                                                                                                   
+      INNER JOIN                                                                                                                                                                                                  
+          SYS.ALL_TAB_COLUMNS c                                                                                                                                                                                   
+      ON                                                                                                                                                                                                          
+          c.OWNER = COALESCE(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)                                                                                                                                                
+          AND c.TABLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)                                                                                                                                         
+          AND c.COLUMN_NAME = KEYS.COLUMN_NAME                                                                                                                                                                    
+      WHERE                                                                                                                                                                                                       
+          KEYS.GRAPH_NAME = GRAPHNAME                                                                                                                                                                             
+          AND KEYS.OWNER = GRAPHOWNER                                                                                                                                                                             
+          AND ELEMENTS.ELEMENT_KIND = 'EDGE'                                                                                                                                                                      
+      ORDER BY                                                                                                                                                                                                    
+          KEYS.ELEMENT_NAME,                                                                                                                                                                                      
+          c.COLUMN_ID; 
  
       FOR IDX1 IN 1..EDGE_ELEMENT_NAMES.COUNT LOOP
         IF IDX1 = 1 THEN
@@ -949,7 +965,7 @@ CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON (
   TYPE ELEMENT_TAB IS TABLE OF ELEMENT_REC;
   ELEMENT_CACHE                           ELEMENT_TAB := ELEMENT_TAB();
   L_COLS                                  INTEGER;
-  TAB_REC                                 SYS.DBMS_SQL.DESC_TAB;
+  TAB_REC                                 SYS.DBMS_SQL.DESC_TAB2;
   CUR                                     SYS_REFCURSOR;
   L_FLAG                                  NUMBER;
   L_JSON                                  JSON;
@@ -960,6 +976,8 @@ CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON (
   E1                                      NUMBER := 1;
   VERTEX_TABLE                            JSON_ARRAY_T := JSON_ARRAY_T();
   EDGE_TABLE                              JSON_ARRAY_T := JSON_ARRAY_T();
+  VERTEX_COL_NAMES                        JSON_ARRAY_T := JSON_ARRAY_T();
+  EDGE_COL_NAMES                          JSON_ARRAY_T := JSON_ARRAY_T();
   L_HAVING_ELEMENT_ID                     BOOLEAN := FALSE;
   COUNTER                                 NUMBER := 0; -- rows fetched
   L_JSON_OBJ                              JSON_OBJECT_T;
@@ -968,7 +986,7 @@ CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON (
   MULTI_GRAPH_ERROR_MESSAGE               CONSTANT VARCHAR2(M_VCSIZ_4K) := 'ora_sqlgraph_to_json only supports queries from a single graph. Please adjust the query accordingly.';
 
 BEGIN
-  SYS.DBMS_SQL.DESCRIBE_COLUMNS(
+  SYS.DBMS_SQL.DESCRIBE_COLUMNS2(
     C => CURS_ID,
     COL_CNT => L_COLS,
     DESC_T => TAB_REC
@@ -1042,11 +1060,13 @@ BEGIN
                   VERTEX_ID_COLUMN_LIST(V1) := POS;
                   V1 := V1 + 1;
                   VERTEX_TABLE.APPEND(L_JSON);
+                  VERTEX_COL_NAMES.APPEND(TAB_REC(POS).COL_NAME);
                 ELSE
                   EDGE_ID_COLUMN_LIST.EXTEND;
                   EDGE_ID_COLUMN_LIST(E1) := POS;
                   E1 := E1 + 1;
                   EDGE_TABLE.APPEND(L_JSON);
+                  EDGE_COL_NAMES.APPEND(TAB_REC(POS).COL_NAME);
                 END IF;
               END IF;
             END IF;
@@ -1091,6 +1111,8 @@ BEGIN
   END IF;
     JSON_FILE := ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, P1, GRAPHNAME, GRAPHOWNER);
     L_JSON_OBJ := JSON_OBJECT_T(JSON_FILE);
+    L_JSON_OBJ.PUT('vertexIdColumnNames', VERTEX_COL_NAMES);
+    L_JSON_OBJ.PUT('edgeIdColumnNames', EDGE_COL_NAMES);
     IF isLastResultSet OR PAGE_SIZE IS NULL THEN
       L_JSON_OBJ.PUT('isLastResultSet', TRUE);
     ELSE
