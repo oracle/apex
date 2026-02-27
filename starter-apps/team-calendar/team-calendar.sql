@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Team Calendar
--- Copyright (c)2012, 2025 Oracle and/or its affiliates.
+-- Copyright (c)2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0 as shown 
 -- at https://oss.oracle.com/licenses/upl/
 -- 
@@ -28,7 +28,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.9'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7090
 ,p_default_id_offset=>1550216302176697
@@ -81,8 +81,8 @@ prompt APPLICATION 7090 - Team Calendar
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:         44
---   Version:         24.2.9
---   Instance ID:     743368460119802
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -97,7 +97,7 @@ wwv_imp_workspace.create_flow(
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ORACLE')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'Team Calendar')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'TEAM-CALENDAR')
-,p_application_group=>wwv_flow_imp.id(179679605298284015)
+,p_application_group=>wwv_flow_imp.id(178129388996107318)
 ,p_application_group_name=>'Starter Apps'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
@@ -2285,11 +2285,6 @@ wwv_flow_imp_page.create_page_group(
 );
 end;
 /
-prompt --application/comments
-begin
-null;
-end;
-/
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
 wwv_flow_imp_shared.create_menu(
@@ -3158,11 +3153,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;
@@ -24020,7 +24010,7 @@ wwv_flow_imp_page.create_worksheet(
 ,p_show_calendar=>'N'
 ,p_download_formats=>'CSV:HTML'
 ,p_enable_mail_download=>'Y'
-,p_detail_link_text=>'<img src="#IMAGE_PREFIX#ws/small_page.gif" alt="">'
+,p_detail_link_text=>'<span role="img" aria-label="View" class="fa fa-file-o" title="View"></span>'
 ,p_allow_exclude_null_values=>'N'
 ,p_allow_hide_extra_columns=>'N'
 ,p_icon_view_columns_per_row=>1

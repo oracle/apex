@@ -315,7 +315,7 @@
         {
             "internalName": "SAMPLE_CALENDAR",
             "author": "Oracle",
-            "version": "24.2.1",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-calendar.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-calendar",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-calendar/sample-calendar.sql",
@@ -419,7 +419,7 @@
         {
             "internalName": "SAMPLE_CHARTS",
             "author": "Oracle",
-            "version": "24.2.1",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-charts.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-charts",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-charts/sample-charts.sql",
@@ -783,7 +783,7 @@
         {
             "internalName": "SAMPLE_INTERACTIVE_GRIDS",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-interactive-grids.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-interactive-grids",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-interactive-grids/sample-interactive-grids.sql",
@@ -1095,7 +1095,7 @@
         {
             "internalName": "SAMPLE_UNIVERSAL_THEME",
             "author": "Oracle",
-            "version": "24.2.1",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-universal-theme-reference.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/universal-theme-reference",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/universal-theme-reference/universal-theme-reference.sql",
@@ -1201,7 +1201,7 @@
         {
             "internalName": "APP_CUSTOMERS",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-customers.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/customers",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/starter-apps/customers/customers.sql",
@@ -1409,7 +1409,7 @@
         {
             "internalName": "APP_STRATEGIC_PLANNER",
             "author": "Oracle",
-            "version": "24.2.7",
+            "version": "24.2.9",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-strategic-planner.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/strategic-planner",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/starter-apps/strategic-planner/strategic-planner.sql",
@@ -1515,7 +1515,7 @@
         {
             "internalName": "APP_CLOUD_APPS_REST_EXPLORER",
             "author": "Oracle",
-            "version": "24.2.1",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-cloud-apps-rest-explorer.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/utility-apps/cloud-apps-rest-explorer",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/utility-apps/cloud-apps-rest-explorer/cloud-apps-rest-explorer.sql",

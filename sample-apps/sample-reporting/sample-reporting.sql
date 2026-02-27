@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Sample Reporting
--- Copyright (c) 2012, 2025 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.9'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7810
 ,p_default_id_offset=>1566231327207194
@@ -72,8 +72,8 @@ prompt APPLICATION 7810 - Sample Reporting
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:         11
---   Version:         24.2.9
---   Instance ID:     743368460119802
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -88,7 +88,7 @@ wwv_imp_workspace.create_flow(
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ORACLE')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'Sample Reporting')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'SAMPLE-REPORTING')
-,p_application_group=>wwv_flow_imp.id(6417416965756338)
+,p_application_group=>wwv_flow_imp.id(4851185638549144)
 ,p_application_group_name=>'Sample Apps'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
@@ -2631,11 +2631,6 @@ begin
 null;
 end;
 /
-prompt --application/comments
-begin
-null;
-end;
-/
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
 wwv_flow_imp_shared.create_menu(
@@ -3738,11 +3733,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;
