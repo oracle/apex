@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Oracle Cloud Apps REST Data Source Explorer
--- Copyright (c)2012, 2025 Oracle and/or its affiliates.
+-- Copyright (c)2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0 as shown 
 -- at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.0'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>6000
 ,p_default_id_offset=>21004945808237727
@@ -41,13 +41,13 @@ prompt APPLICATION 6000 - Oracle Cloud Apps REST Data Source Explorer
 --   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                      4
---       Items:                   10
---       Computations:             1
---       Processes:               10
---       Regions:                 13
---       Buttons:                 10
---       Dynamic Actions:         10
+--     Pages:                      5
+--       Items:                   19
+--       Computations:             3
+--       Processes:               18
+--       Regions:                 22
+--       Buttons:                  9
+--       Dynamic Actions:         16
 --     Shared Components:
 --       Logic:
 --         Build Options:          1
@@ -61,14 +61,15 @@ prompt APPLICATION 6000 - Oracle Cloud Apps REST Data Source Explorer
 --       User Interface:
 --         Themes:                 1
 --         Templates:
+--         LOVs:                   1
 --       PWA:
 --       Globalization:
 --       Reports:
 --       E-Mail:
 --     Supporting Objects:  Included
---       Install scripts:          3
---   Version:         24.2.0
---   Instance ID:     743312968839308
+--       Install scripts:          4
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -106,7 +107,7 @@ wwv_imp_workspace.create_flow(
 ,p_logo_text=>'Oracle Cloud Apps Data Source Explorer'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.1'
+,p_flow_version=>'24.2.2'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -119,7 +120,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Oracle Cloud Apps Data Source Explorer'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>37
-,p_version_scn=>18743221
+,p_version_scn=>209322543
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -144,6 +145,7 @@ wwv_flow_imp_shared.create_user_interface(
 ,p_home_url=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
 ,p_login_url=>'f?p=&APP_ID.:LOGIN:&APP_SESSION.::&DEBUG.:::'
 ,p_theme_style_by_user_pref=>true
+,p_auto_dismiss_success_msg=>true
 ,p_global_page_id=>0
 ,p_navigation_list_position=>'TOP'
 ,p_navigation_list_template_id=>2526754704087354841
@@ -154,6 +156,98 @@ wwv_flow_imp_shared.create_user_interface(
 ,p_nav_bar_list_id=>wwv_flow_imp.id(1044088039391324975)
 ,p_nav_bar_list_template_id=>2847543055748234966
 ,p_nav_bar_template_options=>'#DEFAULT#'
+);
+end;
+/
+prompt --application/shared_components/data_profiles/available_catalogs
+begin
+wwv_flow_imp_shared.create_data_profile(
+ p_id=>wwv_flow_imp.id(3366168094899458)
+,p_name=>'Available Catalogs'
+,p_format=>'JSON'
+,p_has_header_row=>false
+,p_row_selector=>'.'
+,p_use_raw_json_selectors=>false
+,p_is_single_row=>true
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(3367054054899470)
+,p_data_profile_id=>wwv_flow_imp.id(3366168094899458)
+,p_name=>'MANIFEST_JSON'
+,p_sequence=>0
+,p_column_type=>'TABLE'
+,p_data_type=>'DOCUMENT_FRAGMENT'
+,p_has_time_zone=>false
+,p_is_common=>false
+,p_selector=>'MANIFEST_JSON'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(3367354751899470)
+,p_data_profile_id=>wwv_flow_imp.id(3366168094899458)
+,p_name=>'RELEASES'
+,p_sequence=>1
+,p_column_type=>'DATA'
+,p_parent_column_id=>wwv_flow_imp.id(3367054054899470)
+,p_data_type=>'ARRAY'
+,p_has_time_zone=>false
+,p_is_common=>false
+,p_selector=>'releases'
+,p_remote_data_type=>'array'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(3366775211899469)
+,p_data_profile_id=>wwv_flow_imp.id(3366168094899458)
+,p_name=>'NAME'
+,p_sequence=>2
+,p_is_primary_key=>true
+,p_column_type=>'DATA'
+,p_parent_column_id=>wwv_flow_imp.id(3367354751899470)
+,p_data_type=>'VARCHAR2'
+,p_max_length=>4000
+,p_has_time_zone=>false
+,p_selector=>'name'
+,p_remote_data_type=>'string'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(3367979528899470)
+,p_data_profile_id=>wwv_flow_imp.id(3366168094899458)
+,p_name=>'PILLARS'
+,p_sequence=>2
+,p_column_type=>'DATA'
+,p_parent_column_id=>wwv_flow_imp.id(3367354751899470)
+,p_data_type=>'ARRAY'
+,p_has_time_zone=>false
+,p_is_common=>false
+,p_selector=>'pillars'
+,p_remote_data_type=>'array'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(3366424989899469)
+,p_data_profile_id=>wwv_flow_imp.id(3366168094899458)
+,p_name=>'PILLAR_NAME'
+,p_sequence=>3
+,p_is_primary_key=>true
+,p_column_type=>'DATA'
+,p_parent_column_id=>wwv_flow_imp.id(3367979528899470)
+,p_data_type=>'VARCHAR2'
+,p_max_length=>4000
+,p_has_time_zone=>false
+,p_selector=>'.'
+,p_remote_data_type=>'string'
+);
+end;
+/
+prompt --application/shared_components/json_source/available_catalogs_by_release
+begin
+wwv_flow_imp_shared.create_document_source(
+ p_id=>wwv_flow_imp.id(3366049961899458)
+,p_name=>'Available Catalogs by Release'
+,p_static_id=>'available_catalogs_by_release'
+,p_document_source_type=>'JSON_TABLE'
+,p_location=>'LOCAL'
+,p_object_name=>'EBA_UTIL_FACAT_MANIFEST'
+,p_data_profile_id=>wwv_flow_imp.id(3366168094899458)
+,p_version_scn=>83390063
 );
 end;
 /
@@ -1111,17 +1205,28 @@ begin
 null;
 end;
 /
+prompt --application/shared_components/user_interface/lovs/lov_manifest_releases
+begin
+wwv_flow_imp_shared.create_list_of_values(
+ p_id=>wwv_flow_imp.id(3389174268180448)
+,p_lov_name=>'LOV_MANIFEST_RELEASES'
+,p_location=>'JSON_COLLECTION'
+,p_array_column_id=>wwv_flow_imp.id(3367354751899470)
+,p_document_source_id=>wwv_flow_imp.id(3366049961899458)
+,p_return_column_name=>'NAME'
+,p_display_column_name=>'NAME'
+,p_default_sort_column_name=>'NAME'
+,p_default_sort_direction=>'ASC'
+,p_version_scn=>83424757
+);
+end;
+/
 prompt --application/pages/page_groups
 begin
 wwv_flow_imp_page.create_page_group(
  p_id=>wwv_flow_imp.id(1044091883467324986)
 ,p_group_name=>'Administration'
 );
-end;
-/
-prompt --application/comments
-begin
-null;
 end;
 /
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
@@ -3848,11 +3953,6 @@ begin
 null;
 end;
 /
-prompt --application/shared_components/globalization/translations
-begin
-null;
-end;
-/
 prompt --application/shared_components/logic/build_options
 begin
 wwv_flow_imp_shared.create_build_option(
@@ -3937,7 +4037,10 @@ wwv_flow_imp_page.create_page(
 '  width:50px;',
 '  text-align: center !important;',
 '}',
-''))
+'',
+'.hidden {',
+'   display : none;',
+'}'))
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_protection_level=>'C'
@@ -3948,7 +4051,8 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Help'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-size480x320'
 ,p_plug_template=>2672673746673652531
-,p_plug_display_sequence=>100
+,p_plug_display_sequence=>80
+,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<span class="info">',
 '    <p>All the <em>Oracle Cloud Application (SaaS) REST Service </em> data sources in your workspace appear on the <em>Endpoints In Use</em> tab.</p>',
@@ -3978,9 +4082,561 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#:js-useLocalStorage:t-TabsRegion-mod--simple'
 ,p_plug_template=>3223171818405608528
 ,p_plug_display_sequence=>50
+,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6882918368574508)
+,p_plug_name=>'All Endpoints'
+,p_parent_plug_id=>wwv_flow_imp.id(1526529964808325433)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4501440665235496320
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6885708357574536)
+,p_plug_name=>'Business Object Details Container'
+,p_parent_plug_id=>wwv_flow_imp.id(6882918368574508)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4501440665235496320
+,p_plug_display_sequence=>30
+,p_plug_new_grid_row=>false
+,p_plug_display_point=>'SUB_REGIONS'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6883460869574513)
+,p_plug_name=>'Business Object Attributes'
+,p_region_name=>'all-endpoints-tab'
+,p_parent_plug_id=>wwv_flow_imp.id(6885708357574536)
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>4501440665235496320
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_query_type=>'TABLE'
+,p_query_table=>'EBA_UTIL_FACAT_ENDPOINT_ATTRS'
+,p_query_where=>'BO_ENDPOINT_ID = :P1_SELECTED_BO_ID'
+,p_include_rowid_column=>false
+,p_plug_source_type=>'NATIVE_IR'
+,p_ajax_items_to_submit=>'P1_SELECTED_BO_ID'
+,p_prn_content_disposition=>'ATTACHMENT'
+,p_prn_units=>'INCHES'
+,p_prn_paper_size=>'LETTER'
+,p_prn_width=>11
+,p_prn_height=>8.5
+,p_prn_orientation=>'HORIZONTAL'
+,p_prn_page_header_font_color=>'#000000'
+,p_prn_page_header_font_family=>'Helvetica'
+,p_prn_page_header_font_weight=>'normal'
+,p_prn_page_header_font_size=>'12'
+,p_prn_page_footer_font_color=>'#000000'
+,p_prn_page_footer_font_family=>'Helvetica'
+,p_prn_page_footer_font_weight=>'normal'
+,p_prn_page_footer_font_size=>'12'
+,p_prn_header_bg_color=>'#EEEEEE'
+,p_prn_header_font_color=>'#000000'
+,p_prn_header_font_family=>'Helvetica'
+,p_prn_header_font_weight=>'bold'
+,p_prn_header_font_size=>'10'
+,p_prn_body_bg_color=>'#FFFFFF'
+,p_prn_body_font_color=>'#000000'
+,p_prn_body_font_family=>'Helvetica'
+,p_prn_body_font_weight=>'normal'
+,p_prn_body_font_size=>'10'
+,p_prn_border_width=>.5
+,p_prn_page_header_alignment=>'CENTER'
+,p_prn_page_footer_alignment=>'CENTER'
+,p_prn_border_color=>'#666666'
+);
+wwv_flow_imp_page.create_worksheet(
+ p_id=>wwv_flow_imp.id(6883534377574514)
+,p_max_row_count=>'1000000'
+,p_pagination_type=>'ROWS_X_TO_Y_OF_Z'
+,p_pagination_display_pos=>'TOP_RIGHT'
+,p_report_list_mode=>'TABS'
+,p_lazy_loading=>false
+,p_show_detail_link=>'N'
+,p_show_notify=>'Y'
+,p_download_formats=>'CSV:HTML:XLSX:PDF'
+,p_enable_mail_download=>'Y'
+,p_owner=>'SMUENCH'
+,p_internal_uid=>6883534377574514
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6883693339574515)
+,p_db_column_name=>'ID'
+,p_display_order=>10
+,p_is_primary_key=>'Y'
+,p_column_identifier=>'A'
+,p_column_label=>'Id'
+,p_column_type=>'NUMBER'
+,p_display_text_as=>'HIDDEN_ESCAPE_SC'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6883776390574516)
+,p_db_column_name=>'BO_ENDPOINT_ID'
+,p_display_order=>20
+,p_column_identifier=>'B'
+,p_column_label=>'Bo Endpoint Id'
+,p_column_type=>'NUMBER'
+,p_display_text_as=>'HIDDEN_ESCAPE_SC'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(8659833849613903)
+,p_db_column_name=>'DATA_PROFILE_COLUMN_NAME'
+,p_display_order=>30
+,p_column_identifier=>'S'
+,p_column_label=>'Data Profile Column Name'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6883891760574517)
+,p_db_column_name=>'ATTR_NAME'
+,p_display_order=>40
+,p_column_identifier=>'C'
+,p_column_label=>'Name'
+,p_column_html_expression=>'<tt>#ATTR_NAME#</tt>'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6883966123574518)
+,p_db_column_name=>'ATTR_TYPE'
+,p_display_order=>50
+,p_column_identifier=>'D'
+,p_column_label=>'Type'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6884008782574519)
+,p_db_column_name=>'ATTR_LEN'
+,p_display_order=>60
+,p_column_identifier=>'E'
+,p_column_label=>'Length'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6884178272574520)
+,p_db_column_name=>'ATTR_TITLE'
+,p_display_order=>70
+,p_column_identifier=>'F'
+,p_column_label=>'Label'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6884285043574521)
+,p_db_column_name=>'ATTR_DESCRIPTION'
+,p_display_order=>80
+,p_column_identifier=>'G'
+,p_column_label=>'Description'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6884668015574525)
+,p_db_column_name=>'ATTR_IS_QUERYABLE'
+,p_display_order=>120
+,p_column_identifier=>'K'
+,p_column_label=>'Queryable?'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6884709833574526)
+,p_db_column_name=>'ATTR_IS_REQUIRED'
+,p_display_order=>130
+,p_column_identifier=>'L'
+,p_column_label=>'Required?'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6884989970574528)
+,p_db_column_name=>'ATTR_ALLOW_CHANGES'
+,p_display_order=>150
+,p_column_identifier=>'N'
+,p_column_label=>'Editable'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(6885386673574532)
+,p_db_column_name=>'POSITION'
+,p_display_order=>190
+,p_column_identifier=>'R'
+,p_column_label=>'Position'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_rpt(
+ p_id=>wwv_flow_imp.id(8641600654305263)
+,p_application_user=>'APXWS_DEFAULT'
+,p_report_seq=>10
+,p_report_alias=>'86417'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_display_rows=>10
+,p_report_columns=>'ATTR_NAME:ATTR_TYPE:ATTR_LEN:ATTR_TITLE:ATTR_DESCRIPTION:ATTR_IS_QUERYABLE:ATTR_IS_REQUIRED:ATTR_ALLOW_CHANGES'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6885827049574537)
+,p_plug_name=>'Business Object Details'
+,p_parent_plug_id=>wwv_flow_imp.id(6885708357574536)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3371237801798025892
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_query_type=>'TABLE'
+,p_query_table=>'EBA_UTIL_FACAT_ENDPOINTS'
+,p_query_where=>'ID = :P1_SELECTED_BO_ID'
+,p_include_rowid_column=>false
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_ajax_items_to_submit=>'P1_SELECTED_BO_ID'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_plug_query_no_data_found=>'Select a Business Object in the List or Tree'
+,p_no_data_found_icon_classes=>'fa-building-o'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'Y',
+  'DESCRIPTION', '&DESCRIPTION.',
+  'DISPLAY_AVATAR', 'N',
+  'DISPLAY_BADGE', 'N',
+  'HIDE_BORDERS', 'N',
+  'OVERLINE', '&PATH.',
+  'REMOVE_PADDING', 'N',
+  'TITLE', '&NAME.')).to_clob
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8661210494613917)
+,p_name=>'ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ID'
+,p_data_type=>'NUMBER'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>10
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>true
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8661339166613918)
+,p_name=>'CATALOG_ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'CATALOG_ID'
+,p_data_type=>'NUMBER'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8661460105613919)
+,p_name=>'PARENT_BO_ENDPOINT_ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'PARENT_BO_ENDPOINT_ID'
+,p_data_type=>'NUMBER'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8661515112613920)
+,p_name=>'NAME'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'NAME'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8661603489613921)
+,p_name=>'DESCRIPTION'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DESCRIPTION'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8661717249613922)
+,p_name=>'PATH'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'PATH'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6886331738574542)
+,p_plug_name=>'Business Objects Tab'
+,p_parent_plug_id=>wwv_flow_imp.id(6882918368574508)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4501440665235496320
+,p_plug_display_sequence=>10
+,p_plug_grid_column_span=>4
+,p_plug_display_point=>'SUB_REGIONS'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6886561958574544)
+,p_plug_name=>'Business Object Search'
+,p_parent_plug_id=>wwv_flow_imp.id(6886331738574542)
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2126429139436695430
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_SMART_FILTERS'
+,p_filtered_region_id=>wwv_flow_imp.id(6886771551574546)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'compact_numbers_threshold', '10000',
+  'more_filters_suggestion_chip', 'N',
+  'show_total_row_count', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(8660363708613908)
+,p_plug_name=>'Business Objects Results'
+,p_parent_plug_id=>wwv_flow_imp.id(6886331738574542)
+,p_region_template_options=>'#DEFAULT#:t-TabsRegion-mod--simple'
+,p_plug_template=>3223171818405608528
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6883046042574509)
+,p_plug_name=>'Business Objects Tree'
+,p_region_name=>'bo-tree'
+,p_parent_plug_id=>wwv_flow_imp.id(8660363708613908)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4501440665235496320
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
+,p_query_type=>'FUNC_BODY_RETURNING_SQL'
+,p_function_body_language=>'PLSQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'return apex_string.format(q''~',
+'with x as (select e.id, nvl(e.parent_bo_endpoint_id, -1 * p.id) as parent_id, e.path',
+'            from eba_util_facat_endpoints e',
+'            join eba_util_facat_catalogs c on c.id = e.catalog_id',
+'            join eba_util_facat_pillars  p on p.id = c.pillar_id',
+'            where c.release_id = :P1_RELEASE_ID',
+'            union all',
+'            select -1 * id, null, name',
+'            from eba_util_facat_pillars',
+'            where name in (select distinct p.name',
+'                            from eba_util_facat_endpoints e',
+'                            join eba_util_facat_catalogs c on c.id = e.catalog_id',
+'                            join eba_util_facat_pillars  p on p.id = c.pillar_id',
+'                            where c.release_id = :P1_RELEASE_ID)',
+')',
+'select  distinct id, ',
+'        parent_id,',
+'        case ',
+'                when path like ''/''||chr(37)',
+'                then rtrim(regexp_substr(regexp_replace(path,''/\{[^}]+\}/child''), ''/[^/]+/?$''),''/'')',
+'                else path',
+'        end',
+'        as business_object,',
+'        upper(',
+'            case ',
+'                    when path like ''/''||chr(37)',
+'                    then rtrim(regexp_substr(regexp_replace(path,''/\{[^}]+\}/child''), ''/[^/]+/?$''),''/'')',
+'                    else path',
+'            end) as upper_business_object',
+'from x',
+'connect by prior parent_id = id',
+'start with ( ',
+'         parent_id is not null',
+'    and  (',
+'            :P1_SEARCH is null',
+'            or (%s)',
+'    )       ',
+')',
+'~'',',
+'eba_util_farest_explorer.tokenized_row_search_predicate(',
+'    p_search_facet_value => :P1_SEARCH,',
+'    p_search_column_name => ''PATH'',',
+'    p_search_facet_name  => ''P1_SEARCH''));'))
+,p_lazy_loading=>false
+,p_plug_source_type=>'NATIVE_JSTREE'
+,p_ajax_items_to_submit=>'P1_SEARCH,P1_RELEASE_ID'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'activate_node_link_with', 'S',
+  'default_icon_css_class', 'icon-tree-folder',
+  'icon_type_css_class', 'a-Icon',
+  'node_id_column', 'ID',
+  'node_label_column', 'BUSINESS_OBJECT',
+  'node_value_column', 'ID',
+  'order_siblings_by', 'UPPER_BUSINESS_OBJECT',
+  'parent_key_column', 'PARENT_ID',
+  'selected_node_page_item', 'P1_SELECTED_BO_ID',
+  'start_tree_with', 'NULL',
+  'tree_hierarchy', 'SQL',
+  'tree_tooltip', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6886771551574546)
+,p_plug_name=>'Business Objects List'
+,p_parent_plug_id=>wwv_flow_imp.id(8660363708613908)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3371237801798025892
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select e.id,',
+'       e.catalog_id,',
+'       e.parent_bo_endpoint_id,',
+'       e.name,',
+'       e.description,',
+'       e.path',
+'  from eba_util_facat_endpoints e',
+'  join eba_util_facat_catalogs c on e.catalog_id = c.id',
+' where c.release_id = :P1_RELEASE_ID'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'NAME'
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_ajax_items_to_submit=>'P1_RELEASE_ID'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_plug_query_no_data_found=>'No business objects match your search'
+,p_no_data_found_icon_classes=>'fa-building-o'
+,p_show_total_row_count=>false
+,p_landmark_type=>'region'
+,p_row_selection_type=>'SINGLE'
+,p_current_selection_page_item=>'P1_SELECTED_BO_ID'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'Y',
+  'DESCRIPTION', '&DESCRIPTION.',
+  'DISPLAY_AVATAR', 'N',
+  'DISPLAY_BADGE', 'N',
+  'HIDE_BORDERS', 'N',
+  'REMOVE_PADDING', 'N',
+  'TITLE', '&NAME.')).to_clob
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8660440213613909)
+,p_name=>'ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ID'
+,p_data_type=>'NUMBER'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>10
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>true
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8660522139613910)
+,p_name=>'CATALOG_ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'CATALOG_ID'
+,p_data_type=>'NUMBER'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8660607751613911)
+,p_name=>'PARENT_BO_ENDPOINT_ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'PARENT_BO_ENDPOINT_ID'
+,p_data_type=>'NUMBER'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8660702665613912)
+,p_name=>'NAME'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'NAME'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8660847957613913)
+,p_name=>'DESCRIPTION'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DESCRIPTION'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8660907266613914)
+,p_name=>'PATH'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'PATH'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1022785648555589932)
@@ -4223,158 +4879,14 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_break_enabled_on=>'APPLICATION_NAME:0:0:0:0:0'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1526530113271325434)
-,p_plug_name=>'All Endpoints'
-,p_region_name=>'all-endpoints-tab'
-,p_parent_plug_id=>wwv_flow_imp.id(1526529964808325433)
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2100526641005906379
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select c.ID,',
-'       c.TITLE,',
-'       c.ENDPOINT_URL,',
-'       b.ENDPOINT_URL BASE_URL,',
-'       c.RESOURCE_NAME',
-'  from eba_util_farest_catalog c',
-'  left outer join eba_util_farest_cat_baseurl b on b.id = c.baseurl_id'))
-,p_plug_source_type=>'NATIVE_IR'
-,p_prn_content_disposition=>'ATTACHMENT'
-,p_prn_units=>'INCHES'
-,p_prn_paper_size=>'LETTER'
-,p_prn_width=>11
-,p_prn_height=>8.5
-,p_prn_orientation=>'HORIZONTAL'
-,p_prn_page_header=>'All Endpoints'
-,p_prn_page_header_font_color=>'#000000'
-,p_prn_page_header_font_family=>'Helvetica'
-,p_prn_page_header_font_weight=>'normal'
-,p_prn_page_header_font_size=>'12'
-,p_prn_page_footer_font_color=>'#000000'
-,p_prn_page_footer_font_family=>'Helvetica'
-,p_prn_page_footer_font_weight=>'normal'
-,p_prn_page_footer_font_size=>'12'
-,p_prn_header_bg_color=>'#EEEEEE'
-,p_prn_header_font_color=>'#000000'
-,p_prn_header_font_family=>'Helvetica'
-,p_prn_header_font_weight=>'bold'
-,p_prn_header_font_size=>'10'
-,p_prn_body_bg_color=>'#FFFFFF'
-,p_prn_body_font_color=>'#000000'
-,p_prn_body_font_family=>'Helvetica'
-,p_prn_body_font_weight=>'normal'
-,p_prn_body_font_size=>'10'
-,p_prn_border_width=>.5
-,p_prn_page_header_alignment=>'CENTER'
-,p_prn_page_footer_alignment=>'CENTER'
-,p_prn_border_color=>'#666666'
-);
-wwv_flow_imp_page.create_worksheet(
- p_id=>wwv_flow_imp.id(1526530202916325435)
-,p_max_row_count=>'1000000'
-,p_pagination_type=>'ROWS_X_TO_Y'
-,p_pagination_display_pos=>'BOTTOM_RIGHT'
-,p_report_list_mode=>'TABS'
-,p_lazy_loading=>false
-,p_show_detail_link=>'N'
-,p_show_notify=>'Y'
-,p_download_formats=>'CSV:HTML:XLSX:PDF'
-,p_enable_mail_download=>'Y'
-,p_owner=>'SMUENCH'
-,p_internal_uid=>659743281263019509
-);
-wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(1526530294455325436)
-,p_db_column_name=>'ID'
-,p_display_order=>10
-,p_is_primary_key=>'Y'
-,p_column_identifier=>'A'
-,p_column_label=>'Id'
-,p_column_type=>'NUMBER'
-,p_display_text_as=>'HIDDEN_ESCAPE_SC'
-,p_use_as_row_header=>'N'
-);
-wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(1526530490681325438)
-,p_db_column_name=>'ENDPOINT_URL'
-,p_display_order=>20
-,p_column_identifier=>'C'
-,p_column_label=>'Endpoint&nbsp;URL'
-,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<button type="button" title="Copy #RESOURCE_NAME# endpoint URL to clipboard" aria-label="Copy #RESOURCE_NAME# endpoint URL to clipboard" data-text="#ENDPOINT_URL#"',
-'class="t-Button t-Button--noLabel t-Button--icon">',
-'    <span aria-hidden="true" class="t-Icon fa fa-clone"></span>',
-'</button>'))
-,p_column_type=>'STRING'
-,p_column_alignment=>'CENTER'
-,p_static_id=>'all-endpoint-url'
-,p_use_as_row_header=>'N'
-);
-wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(1526530668233325440)
-,p_db_column_name=>'RESOURCE_NAME'
-,p_display_order=>30
-,p_column_identifier=>'E'
-,p_column_label=>'Resource Name'
-,p_column_type=>'STRING'
-,p_heading_alignment=>'LEFT'
-,p_use_as_row_header=>'N'
-);
-wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(1526530370356325437)
-,p_db_column_name=>'TITLE'
-,p_display_order=>40
-,p_column_identifier=>'B'
-,p_column_label=>'Title'
-,p_column_type=>'STRING'
-,p_heading_alignment=>'LEFT'
-,p_use_as_row_header=>'N'
-);
-wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(1526532523171325459)
-,p_db_column_name=>'BASE_URL'
-,p_display_order=>50
-,p_column_identifier=>'F'
-,p_column_label=>'Base Url'
-,p_column_type=>'STRING'
-,p_heading_alignment=>'LEFT'
-,p_use_as_row_header=>'N'
-);
-wwv_flow_imp_page.create_worksheet_rpt(
- p_id=>wwv_flow_imp.id(1534191135662121613)
-,p_application_user=>'APXWS_DEFAULT'
-,p_report_seq=>10
-,p_report_alias=>'6674043'
-,p_status=>'PUBLIC'
-,p_is_default=>'Y'
-,p_display_rows=>100000
-,p_report_columns=>'ENDPOINT_URL:RESOURCE_NAME:TITLE:BASE_URL:'
-,p_sort_column_1=>'RESOURCE_NAME'
-,p_sort_direction_1=>'ASC'
-,p_sort_column_2=>'0'
-,p_sort_direction_2=>'ASC'
-,p_sort_column_3=>'0'
-,p_sort_direction_3=>'ASC'
-,p_sort_column_4=>'0'
-,p_sort_direction_4=>'ASC'
-,p_sort_column_5=>'0'
-,p_sort_direction_5=>'ASC'
-,p_sort_column_6=>'0'
-,p_sort_direction_6=>'ASC'
-,p_break_on=>'BASE_URL:0:0:0:0:0'
-,p_break_enabled_on=>'BASE_URL:0:0:0:0:0'
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1526531920231325452)
 ,p_plug_name=>'Background Progress'
 ,p_parent_plug_id=>wwv_flow_imp.id(1526529964808325433)
 ,p_region_template_options=>'#DEFAULT#'
 ,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>70
+,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4393,10 +4905,14 @@ wwv_flow_imp_page.create_report_region(
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select',
 '        case bgp.process_name',
-'             when ''On Refresh Catalog''   ',
-'             then ''All catalog endpoints''',
 '             when ''On Download Services'' ',
 '             then ''Remaining in-use service descriptions''',
+'             when ''Install Catalog in Background''',
+'             then ''Installing catalog for release ''',
+'                  ||regexp_substr(bgp.context_value,''^[^:]+'')',
+'                  ||'' ''',
+'                  ||regexp_substr(bgp.context_value,''[^:]+$'',1,1)',
+'                  ||'' pillar''',
 '        end as refresh_task,',
 '        bgp.status_message,  ',
 '        case when bgp.sofar is not null and bgp.totalwork is not null',
@@ -4404,17 +4920,16 @@ wwv_flow_imp_page.create_report_region(
 '        end progress,',
 '        round(bgp.sofar/bgp.totalwork*100) progress_bar',
 'from apex_appl_page_bg_proc_status bgp',
-'left join apex_application_page_proc pp on bgp.process_id = pp.process_id',
-'where      pp.process_name   in (''On Download Services'',''On Refresh Catalog'')',
-'       and bgp.status_code   in ( ''ENQUEUED'',''SCHEDULED'', ''EXECUTING'')',
-'       and pp.application_id = :APP_ID',
-'       and pp.page_id        = 1'))
+'where bgp.process_name in (''Install Catalog in Background'', ''On Download Services'')',
+'and bgp.status_code   in ( ''ENQUEUED'',''SCHEDULED'', ''EXECUTING'', ''FAILED'')',
+'and bgp.application_id = :APP_ID',
+'and bgp.page_id in (1,2)'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
 ,p_query_row_template=>2538654340625403440
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_query_no_data_found=>'No background service description retrieval happening at the moment'
+,p_query_no_data_found=>'No background activity happening at the moment'
 ,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
 ,p_query_row_count_max=>500
 ,p_pagination_display_position=>'BOTTOM_RIGHT'
@@ -4432,7 +4947,7 @@ wwv_flow_imp_page.create_report_columns(
 ,p_column_heading=>'Download Task'
 ,p_heading_alignment=>'LEFT'
 ,p_disable_sort_column=>'N'
-,p_report_column_width=>150
+,p_report_column_width=>400
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
@@ -4469,15 +4984,26 @@ wwv_flow_imp_page.create_report_columns(
 ,p_include_in_export=>'Y'
 );
 wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(7237229516587805)
+,p_button_sequence=>20
+,p_button_name=>'MANAGE_CATALOGS'
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
+,p_button_template_id=>2082829544945815391
+,p_button_image_alt=>'Manage Catalogs'
+,p_button_position=>'BEFORE_NAVIGATION_BAR'
+,p_button_redirect_url=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:::'
+,p_icon_css_classes=>'fa-file-cabinet'
+);
+wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(1684004276766035639)
-,p_button_sequence=>70
+,p_button_sequence=>40
 ,p_button_name=>'Help'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--primary'
 ,p_button_template_id=>2349107722467437027
 ,p_button_image_alt=>'Help'
 ,p_button_position=>'BEFORE_NAVIGATION_BAR'
-,p_button_alignment=>'RIGHT'
 ,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-info-circle-o'
 );
@@ -4524,33 +5050,6 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-refresh'
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(1684003232041035629)
-,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_imp.id(1526530113271325434)
-,p_button_name=>'Refresh_Catalog_Endpoints'
-,p_button_action=>'DEFINED_BY_DA'
-,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2082829544945815391
-,p_button_image_alt=>'Refresh List'
-,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
-,p_button_alignment=>'RIGHT'
-,p_warn_on_unsaved_changes=>null
-,p_icon_css_classes=>'fa-refresh'
-);
-wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(1526530786169325441)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_imp.id(1526530113271325434)
-,p_button_name=>'Refresh_Catalog_in_Background'
-,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2082829544945815391
-,p_button_image_alt=>'Refresh Catalog In Background'
-,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
-,p_button_alignment=>'RIGHT'
-,p_icon_css_classes=>'fa-repeat'
-);
-wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(1526534248404325476)
 ,p_button_sequence=>20
 ,p_button_plug_id=>wwv_flow_imp.id(1022785648555589932)
@@ -4574,9 +5073,58 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-cloud-download'
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(6883129737574510)
+,p_name=>'P1_SELECTED_BO_ID'
+,p_item_sequence=>70
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(6886681558574545)
+,p_name=>'P1_SEARCH'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(6886561958574544)
+,p_prompt=>'Search'
+,p_source_type=>'FACET_COLUMN'
+,p_display_as=>'NATIVE_SEARCH'
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'collapsed_search_field', 'N',
+  'search_type', 'ROW')).to_clob
+,p_fc_show_chart=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(8662050168613925)
+,p_name=>'P1_RELEASE_ID'
+,p_item_sequence=>10
+,p_item_display_point=>'BEFORE_NAVIGATION_BAR'
+,p_prompt=>'Release Id'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ''Release ''||name as name, id',
+'from eba_util_facat_releases',
+'union all',
+'select ''< No Catalog >'', -1',
+'from dual',
+'where not exists (',
+'    select null',
+'      from eba_util_facat_endpoints',
+'      fetch first row only)',
+'order by name'))
+,p_cHeight=>1
+,p_field_template=>2040785906935475274
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'U'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'page_action_on_selection', 'NONE')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(1017838727401581051)
 ,p_name=>'P1_INGEST_APPLICATION_ID'
-,p_item_sequence=>30
+,p_item_sequence=>20
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -4598,6 +5146,28 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'value_protected', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_computation(
+ p_id=>wwv_flow_imp.id(8662190799613926)
+,p_computation_sequence=>10
+,p_computation_item=>'P1_RELEASE_ID'
+,p_computation_point=>'BEFORE_HEADER'
+,p_computation_type=>'QUERY'
+,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select id',
+'from (',
+'    select id, name',
+'    from eba_util_facat_releases',
+'    union all',
+'    select -1, null',
+'    from dual',
+'    where not exists (',
+'        select null',
+'          from eba_util_facat_endpoints',
+'          fetch first row only)',
+')',
+'order by name',
+'fetch first row only'))
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(1526532126853325455)
@@ -4679,27 +5249,6 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'N'
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(1684003330276035630)
-,p_name=>'When Refresh Catalog Endpoints Clicked'
-,p_event_sequence=>40
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(1684003232041035629)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'click'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(1684003435278035631)
-,p_event_id=>wwv_flow_imp.id(1684003330276035630)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_action=>'NATIVE_REFRESH'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(1526530113271325434)
-,p_attribute_01=>'N'
-);
-wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(1684004418166035640)
 ,p_name=>'When Help Clicked'
 ,p_event_sequence=>50
@@ -4739,6 +5288,168 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(1021048483245254020)
 );
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(6883249839574511)
+,p_name=>'On Tree Selection Changed'
+,p_event_sequence=>70
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(6883046042574509)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'NATIVE_JSTREE|REGION TYPE|treeviewselectionchange'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(6883316448574512)
+,p_event_id=>wwv_flow_imp.id(6883249839574511)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_name=>'Assign Selected BO ID'
+,p_action=>'NATIVE_SET_VALUE'
+,p_affected_elements_type=>'ITEM'
+,p_affected_elements=>'P1_SELECTED_BO_ID'
+,p_attribute_01=>'JAVASCRIPT_EXPRESSION'
+,p_attribute_05=>'apex.region("bo-tree").call("getSelectedNodes")[0]?.id'
+,p_attribute_09=>'N'
+,p_stop_execution_on_error=>'N'
+,p_wait_for_result=>'N'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(8661903722613924)
+,p_event_id=>wwv_flow_imp.id(6883249839574511)
+,p_event_result=>'TRUE'
+,p_action_sequence=>40
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Business Object Details'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(6885827049574537)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(6885410208574533)
+,p_event_id=>wwv_flow_imp.id(6883249839574511)
+,p_event_result=>'TRUE'
+,p_action_sequence=>50
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Business Object Attributes'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(6883460869574513)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(8659929214613904)
+,p_name=>'When Manage Catalogs Dialog Closed'
+,p_event_sequence=>80
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(7237229516587805)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'apexafterclosecanceldialog'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(8660082976613905)
+,p_event_id=>wwv_flow_imp.id(8659929214613904)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Hidden Classic Report'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(6883046042574509)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(8660183853613906)
+,p_name=>'When Results Refreshed'
+,p_event_sequence=>90
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(6886561958574544)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'NATIVE_FACETED_SEARCH|REGION TYPE|facetschange'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(8660206767613907)
+,p_event_id=>wwv_flow_imp.id(8660183853613906)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Tree'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(6883046042574509)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(8661044592613915)
+,p_name=>'When List Selection Changed'
+,p_event_sequence=>100
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(6886771551574546)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'apexselectionchange'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(8661896942613923)
+,p_event_id=>wwv_flow_imp.id(8661044592613915)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Business Object Details'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(6885827049574537)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(8661102197613916)
+,p_event_id=>wwv_flow_imp.id(8661044592613915)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Business Object Attributes'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(6883460869574513)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(8662267130613927)
+,p_name=>'When Release Changed'
+,p_event_sequence=>110
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P1_RELEASE_ID'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(8662358374613928)
+,p_event_id=>wwv_flow_imp.id(8662267130613927)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh List'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(6886771551574546)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(8662416678613929)
+,p_event_id=>wwv_flow_imp.id(8662267130613927)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Tree'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(6883046042574509)
+,p_attribute_01=>'N'
+);
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(1526531148306325445)
 ,p_process_sequence=>10
@@ -4751,7 +5462,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_attribute_06=>'1'
 ,p_attribute_09=>'N'
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_imp.id(1526530786169325441)
 ,p_internal_uid=>659744226653019519
 );
 wwv_flow_imp_page.create_page_process(
@@ -4836,6 +5546,510 @@ wwv_flow_imp_page.create_page_process(
 ,p_attribute_03=>'EBA_UTIL_FAREST_EXPLORER'
 ,p_attribute_04=>'INGEST_JSON_FOR_DATA_SOURCES'
 ,p_internal_uid=>659744811830019525
+);
+end;
+/
+prompt --application/pages/page_00002
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>2
+,p_name=>'Manage Catalogs'
+,p_alias=>'MANAGE-CATALOGS'
+,p_page_mode=>'MODAL'
+,p_step_title=>'Manage Catalogs'
+,p_autocomplete_on_off=>'OFF'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'$(function () {',
+'    apex.actions.add([',
+'    {',
+'        name: "catalog-install",',
+'        label: "Install",',
+'        iconType: "fa",',
+'        icon: "fa-file-cabinet",',
+'        action: function( event, element, args)',
+'        {',
+'            apex.items.P2_SELECTED_RELEASE.value = args.release;',
+'            apex.items.P2_SELECTED_PILLAR.value  = args.pillar;',
+'            apex.items.P2_SELECTED_ACTION.value  = ''INSTALL'';',
+'            $("body").trigger("manage-catalog-event");',
+'        }',
+'    },',
+'    {',
+'        name: "catalog-uninstall",',
+'        label: "Uninstall",',
+'        iconType: "fa",',
+'        icon: "fa-file-cabinet",',
+'        action: function( event, element, args)',
+'        {',
+'            apex.items.P2_SELECTED_RELEASE.value = args.release;',
+'            apex.items.P2_SELECTED_PILLAR.value  = args.pillar;',
+'            apex.items.P2_SELECTED_ACTION.value  = ''UNINSTALL'';',
+'            $("body").trigger("manage-catalog-event");',
+'        }',
+'    }',
+'    ]);',
+'});'))
+,p_page_template_options=>'#DEFAULT#'
+,p_dialog_resizable=>'Y'
+,p_protection_level=>'C'
+,p_page_component_map=>'27'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(7236888496587801)
+,p_plug_name=>'Pillars'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4501440665235496320
+,p_plug_display_sequence=>20
+,p_location=>'JSON_COLLECTION'
+,p_array_column_id=>wwv_flow_imp.id(3367979528899470)
+,p_document_source_id=>wwv_flow_imp.id(3366049961899458)
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select d.NAME,',
+'       d.PILLAR_NAME,',
+'       case',
+'            when c.id             is not null then ''INSTALLED''',
+'            when bgp.execution_id is not null then ''INSTALLING''',
+'            else                                   ''AVAILABLE''',
+'       end as status',
+'  from #APEX$SOURCE_DATA# d',
+'  left join eba_util_facat_releases r  on r.name = d.name',
+'  left join eba_util_facat_pillars  p  on p.name = d.pillar_name',
+'  left join apex_appl_page_bg_proc_status bgp on bgp.process_name = ''Install Catalog in Background''',
+'                                              and regexp_substr(bgp.context_value,''^[^:]+'') = d.name',
+'                                              and regexp_substr(bgp.context_value,''[^:]+$'',1,1) = d.pillar_name',
+'                                              and bgp.status_code   in ( ''ENQUEUED'',''SCHEDULED'', ''EXECUTING'')',
+'                                              and bgp.application_id = :APP_ID',
+'                                              and bgp.page_id        = 2',
+'  left join eba_util_facat_catalogs c  on r.id   = c.release_id',
+'                                      and p.id   = c.pillar_id',
+'where d.name = :P2_RELEASE'))
+,p_source_post_processing=>'SQL'
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_ajax_items_to_submit=>'P2_RELEASE'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'Y',
+  'BADGE_COL_WIDTH', 't-ContentRow-badge--md',
+  'BADGE_LABEL', 'Status',
+  'BADGE_LABEL_DISPLAY', 'N',
+  'BADGE_VALUE', 'STATUS',
+  'DISPLAY_AVATAR', 'N',
+  'DISPLAY_BADGE', 'Y',
+  'HIDE_BORDERS', 'N',
+  'REMOVE_PADDING', 'N',
+  'TITLE', '&PILLAR_NAME.')).to_clob
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(3184812306459122)
+,p_name=>'NAME'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'NAME'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>10
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>true
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(3184903601459123)
+,p_name=>'PILLAR_NAME'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'PILLAR_NAME'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>true
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(3185014612459124)
+,p_name=>'STATUS'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'STATUS'
+,p_data_type=>'VARCHAR2'
+,p_session_state_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(7237370233587806)
+,p_name=>'P2_RELEASE'
+,p_item_sequence=>10
+,p_prompt=>'Release'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_named_lov=>'LOV_MANIFEST_RELEASES'
+,p_cHeight=>1
+,p_field_template=>1609121967514267634
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'page_action_on_selection', 'NONE')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(7238494628587817)
+,p_name=>'P2_SELECTED_RELEASE'
+,p_item_sequence=>30
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(7238594074587818)
+,p_name=>'P2_SELECTED_PILLAR'
+,p_item_sequence=>50
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(7238643166587819)
+,p_name=>'P2_SELECTED_ACTION'
+,p_item_sequence=>60
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(7239073974587823)
+,p_name=>'P2_ERROR_MESSAGE'
+,p_item_sequence=>70
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(9704890650832724)
+,p_name=>'P2_BACKGROUND_CONTEXT'
+,p_item_sequence=>80
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_computation(
+ p_id=>wwv_flow_imp.id(3184614758459120)
+,p_computation_sequence=>10
+,p_computation_item=>'P2_RELEASE'
+,p_computation_point=>'BEFORE_BOX_BODY'
+,p_computation_type=>'FUNCTION_BODY'
+,p_computation_language=>'PLSQL'
+,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_context   apex_exec.t_context;',
+'    l_columns   apex_exec.t_columns;',
+'    l_order_bys apex_exec.t_order_bys;',
+'begin',
+'    apex_exec.add_column(p_columns     => l_columns,',
+'                         p_column_name => ''NAME'');',
+'    apex_exec.add_order_by(p_order_bys => l_order_bys,',
+'                           p_column_name => ''NAME'');',
+'    l_context := apex_exec.open_query_context(',
+'                    p_location              => apex_exec.c_location_json_source,',
+'                    p_json_source_static_id => ''available_catalogs_by_release'',',
+'                    p_array_column_name     => ''RELEASES'',',
+'                    p_columns               => l_columns,',
+'                    p_order_bys             => l_order_bys);',
+'    while apex_exec.next_row(l_context) loop',
+'        return apex_exec.get_varchar2(l_context,''NAME'');',
+'    end loop;',
+'end;'))
+,p_compute_when=>'P2_RELEASE'
+,p_compute_when_type=>'ITEM_IS_NULL'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(7237447973587807)
+,p_name=>'On Change Release'
+,p_event_sequence=>10
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P2_RELEASE'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(7237566136587808)
+,p_event_id=>wwv_flow_imp.id(7237447973587807)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(7236888496587801)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(7238732164587820)
+,p_name=>'On Catalog Action'
+,p_event_sequence=>20
+,p_triggering_element_type=>'JQUERY_SELECTOR'
+,p_triggering_element=>'body'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'custom'
+,p_bind_event_type_custom=>'manage-catalog-event'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(7239140699587824)
+,p_event_id=>wwv_flow_imp.id(7238732164587820)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Prepare for Catalog Action'
+,p_action=>'NATIVE_CLEAR'
+,p_affected_elements_type=>'ITEM'
+,p_affected_elements=>'P2_ERROR_MESSAGE'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(7238874960587821)
+,p_event_id=>wwv_flow_imp.id(7238732164587820)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_name=>'Perform Catalog Action'
+,p_action=>'NATIVE_SUBMIT_PAGE'
+,p_attribute_01=>'CATALOG_ACTION'
+,p_attribute_02=>'Y'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(9703357218832709)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_EXECUTION_CHAIN'
+,p_process_name=>'Handle Catalog Action'
+,p_attribute_01=>'N'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when=>'CATALOG_ACTION'
+,p_process_when_type=>'REQUEST_EQUALS_CONDITION'
+,p_internal_uid=>9703357218832709
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(3185170980459125)
+,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_INVOKE_API'
+,p_process_name=>'Ensure Available Catalogs'
+,p_attribute_01=>'PLSQL_PACKAGE'
+,p_attribute_03=>'EBA_UTIL_FAREST_EXPLORER'
+,p_attribute_04=>'ENSURE_AVAILABLE_CATALOGS'
+,p_internal_uid=>3185170980459125
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(9703491380832710)
+,p_process_sequence=>10
+,p_parent_process_id=>wwv_flow_imp.id(9703357218832709)
+,p_process_type=>'NATIVE_EXECUTION_CHAIN'
+,p_process_name=>'If Installing...'
+,p_attribute_01=>'N'
+,p_process_when=>'P2_SELECTED_ACTION'
+,p_process_when_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_process_when2=>'INSTALL'
+,p_internal_uid=>9703491380832710
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(9704902409832725)
+,p_process_sequence=>10
+,p_parent_process_id=>wwv_flow_imp.id(9703491380832710)
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Compute Background Context'
+,p_process_sql_clob=>':P2_BACKGROUND_CONTEXT := :P2_SELECTED_RELEASE||'':''||:P2_SELECTED_PILLAR;'
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>9704902409832725
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(9703579444832711)
+,p_process_sequence=>20
+,p_parent_process_id=>wwv_flow_imp.id(9703357218832709)
+,p_process_type=>'NATIVE_EXECUTION_CHAIN'
+,p_process_name=>'Else If Uninstalling...'
+,p_attribute_01=>'N'
+,p_process_when=>'P2_SELECTED_ACTION'
+,p_process_when_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_process_when2=>'UNINSTALL'
+,p_internal_uid=>9703579444832711
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(9703636835832712)
+,p_process_sequence=>20
+,p_parent_process_id=>wwv_flow_imp.id(9703491380832710)
+,p_process_type=>'NATIVE_EXECUTION_CHAIN'
+,p_process_name=>'Install Catalog in Background'
+,p_attribute_01=>'Y'
+,p_attribute_02=>'Y'
+,p_attribute_04=>'IGNORE'
+,p_attribute_07=>'P2_BACKGROUND_CONTEXT'
+,p_attribute_08=>'ERROR'
+,p_attribute_09=>'N'
+,p_process_success_message=>'Release &P2_SELECTED_RELEASE. &P2_SELECTED_PILLAR. pillar installing in background'
+,p_internal_uid=>9703636835832712
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(9703735388832713)
+,p_process_sequence=>20
+,p_parent_process_id=>wwv_flow_imp.id(9703636835832712)
+,p_process_type=>'NATIVE_INVOKE_API'
+,p_process_name=>'Install Using Manage Catalogs'
+,p_attribute_01=>'PLSQL_PACKAGE'
+,p_attribute_03=>'EBA_UTIL_FAREST_EXPLORER'
+,p_attribute_04=>'MANAGE_CATALOGS'
+,p_internal_uid=>9703735388832713
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(9703973456832715)
+,p_page_process_id=>wwv_flow_imp.id(9703735388832713)
+,p_page_id=>2
+,p_direction=>'OUT'
+,p_data_type=>'VARCHAR2'
+,p_ignore_output=>false
+,p_display_sequence=>10
+,p_value_type=>'ITEM'
+,p_value=>'P2_ERROR_MESSAGE'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(9704029696832716)
+,p_page_process_id=>wwv_flow_imp.id(9703735388832713)
+,p_page_id=>2
+,p_name=>'p_release'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>20
+,p_value_type=>'ITEM'
+,p_value=>'P2_SELECTED_RELEASE'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(9704113633832717)
+,p_page_process_id=>wwv_flow_imp.id(9703735388832713)
+,p_page_id=>2
+,p_name=>'p_pillar'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>30
+,p_value_type=>'ITEM'
+,p_value=>'P2_SELECTED_PILLAR'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(9704286763832718)
+,p_page_process_id=>wwv_flow_imp.id(9703735388832713)
+,p_page_id=>2
+,p_name=>'p_operation'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>40
+,p_value_type=>'ITEM'
+,p_value=>'P2_SELECTED_ACTION'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(9704365339832719)
+,p_process_sequence=>20
+,p_parent_process_id=>wwv_flow_imp.id(9703579444832711)
+,p_process_type=>'NATIVE_INVOKE_API'
+,p_process_name=>'Uninstall Using Manage Catalogs'
+,p_attribute_01=>'PLSQL_PACKAGE'
+,p_attribute_03=>'EBA_UTIL_FAREST_EXPLORER'
+,p_attribute_04=>'MANAGE_CATALOGS'
+,p_process_error_message=>'&P2_ERROR_MESSAGE.'
+,p_process_success_message=>'Release &P2_SELECTED_RELEASE. &P2_SELECTED_PILLAR. pillar uninstalled'
+,p_internal_uid=>9704365339832719
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(9704477578832720)
+,p_page_process_id=>wwv_flow_imp.id(9704365339832719)
+,p_page_id=>2
+,p_direction=>'OUT'
+,p_data_type=>'VARCHAR2'
+,p_ignore_output=>false
+,p_display_sequence=>10
+,p_value_type=>'ITEM'
+,p_value=>'P2_ERROR_MESSAGE'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(9704560880832721)
+,p_page_process_id=>wwv_flow_imp.id(9704365339832719)
+,p_page_id=>2
+,p_name=>'p_release'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>20
+,p_value_type=>'ITEM'
+,p_value=>'P2_SELECTED_RELEASE'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(9704687150832722)
+,p_page_process_id=>wwv_flow_imp.id(9704365339832719)
+,p_page_id=>2
+,p_name=>'p_pillar'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>30
+,p_value_type=>'ITEM'
+,p_value=>'P2_SELECTED_PILLAR'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(9704746115832723)
+,p_page_process_id=>wwv_flow_imp.id(9704365339832719)
+,p_page_id=>2
+,p_name=>'p_operation'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>40
+,p_value_type=>'ITEM'
+,p_value=>'P2_SELECTED_ACTION'
+);
+wwv_flow_imp_page.create_component_action(
+ p_id=>wwv_flow_imp.id(7238183861587814)
+,p_region_id=>wwv_flow_imp.id(7236888496587801)
+,p_position_id=>362316004162771045
+,p_display_sequence=>10
+,p_template_id=>362317865359806322
+,p_label=>unistr('\22EE')
+,p_button_display_type=>'TEXT'
+,p_is_hot=>false
+,p_show_as_disabled=>false
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(7238243431587815)
+,p_component_action_id=>wwv_flow_imp.id(7238183861587814)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Install'
+,p_display_sequence=>10
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#action$catalog-install?release=&NAME.&pillar=&PILLAR_NAME.'
+,p_icon_css_classes=>'fa-file-cabinet'
+,p_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_condition_expr1=>'STATUS'
+,p_condition_expr2=>'AVAILABLE'
+,p_exec_cond_for_each_row=>true
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(7238349927587816)
+,p_component_action_id=>wwv_flow_imp.id(7238183861587814)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Uninstall'
+,p_display_sequence=>20
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#action$catalog-uninstall?release=&NAME.&pillar=&PILLAR_NAME.'
+,p_icon_css_classes=>'fa-file-cabinet'
+,p_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_condition_expr1=>'STATUS'
+,p_condition_expr2=>'INSTALLED'
+,p_exec_cond_for_each_row=>true
 );
 end;
 /
@@ -5919,7 +7133,13 @@ wwv_flow_imp_shared.create_install(
 'drop table eba_util_farest_cat_baseurl cascade constraints;',
 'drop table eba_util_farest_endpoint_attrs cascade constraints;',
 'drop table eba_util_farest_endpoint_chobj cascade constraints;',
-'drop table eba_util_farest_endpoints cascade constraints;'))
+'drop table eba_util_farest_endpoints cascade constraints;',
+'drop table eba_util_facat_pillars cascade constraints;',
+'drop table eba_util_facat_releases cascade constraints;',
+'drop table eba_util_facat_catalogs cascade constraints;',
+'drop table eba_util_facat_endpoints cascade constraints;',
+'drop table eba_util_facat_endpoint_attrs cascade constraints;',
+'drop table eba_util_facat_server_prefixes cascade constraints;'))
 );
 end;
 /
@@ -5937,7 +7157,13 @@ wwv_flow_imp_shared.create_install_script(
 '                                                ''eba_util_farest_cat_baseurl'',',
 '                                                ''eba_util_farest_endpoint_attrs'',',
 '                                                ''eba_util_farest_endpoint_chobj'',',
-'                                                ''eba_util_farest_endpoints'');',
+'                                                ''eba_util_farest_endpoints'',',
+'                                                ''eba_util_facat_pillars'',',
+'                                                ''eba_util_facat_releases'',',
+'                                                ''eba_util_facat_catalogs'',',
+'                                                ''eba_util_facat_endpoints'',',
+'                                                ''eba_util_facat_endpoint_attrs'',',
+'                                                ''eba_util_facat_server_prefixes'');',
 'begin',
 '    --',
 '    -- Quietly drop all tables in the list',
@@ -5966,6 +7192,64 @@ wwv_flow_imp_shared.create_install_script(
 ,p_sequence=>20
 ,p_script_type=>'INSTALL'
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'',
+'  CREATE TABLE "EBA_UTIL_FACAT_CATALOGS" ',
+'   (	"ID" NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  NOT NULL ENABLE, ',
+'	"PILLAR_ID" NUMBER, ',
+'	"RELEASE_ID" NUMBER, ',
+'	 CONSTRAINT "EBA_UTIL_FACAT_CATALOGS_ID_PK" PRIMARY KEY ("ID")',
+'  USING INDEX  ENABLE',
+'   ) ;',
+'',
+'  CREATE TABLE "EBA_UTIL_FACAT_ENDPOINTS" ',
+'   (	"ID" NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  NOT NULL ENABLE, ',
+'	"CATALOG_ID" NUMBER, ',
+'	"PARENT_BO_ENDPOINT_ID" NUMBER, ',
+'	"NAME" VARCHAR2(1000 CHAR), ',
+'	"DESCRIPTION" VARCHAR2(4000 CHAR), ',
+'	"PATH" VARCHAR2(1000 CHAR), ',
+'	"SERVER_PREFIX_ID" NUMBER, ',
+'	 CONSTRAINT "EBA_UTIL_FACAT_ENDPOINTS_ID_PK" PRIMARY KEY ("ID")',
+'  USING INDEX  ENABLE',
+'   ) ;',
+'',
+'  CREATE TABLE "EBA_UTIL_FACAT_ENDPOINT_ATTRS" ',
+'   (	"ID" NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  NOT NULL ENABLE, ',
+'	"BO_ENDPOINT_ID" NUMBER, ',
+'	"ATTR_NAME" VARCHAR2(255 CHAR), ',
+'	"ATTR_TYPE" VARCHAR2(255 CHAR), ',
+'	"ATTR_LEN" NUMBER, ',
+'	"ATTR_TITLE" VARCHAR2(255 CHAR), ',
+'	"ATTR_DESCRIPTION" VARCHAR2(4000 CHAR), ',
+'	"ATTR_IS_QUERYABLE" VARCHAR2(1 CHAR), ',
+'	"ATTR_IS_REQUIRED" VARCHAR2(1 CHAR), ',
+'	"ATTR_ALLOW_CHANGES" VARCHAR2(10 CHAR), ',
+'	"POSITION" NUMBER, ',
+'	"DATA_PROFILE_COLUMN_NAME" VARCHAR2(255), ',
+'	 CONSTRAINT "EBA_UTIL_FACAT_ENDPOINT_ATTRS_ID_PK" PRIMARY KEY ("ID")',
+'  USING INDEX  ENABLE',
+'   ) ;',
+'',
+'  CREATE TABLE "EBA_UTIL_FACAT_PILLARS" ',
+'   (	"ID" NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  NOT NULL ENABLE, ',
+'	"NAME" VARCHAR2(255 CHAR), ',
+'	 CONSTRAINT "EBA_UTIL_FACAT_PILLARS_ID_PK" PRIMARY KEY ("ID")',
+'  USING INDEX  ENABLE',
+'   ) ;',
+'',
+'  CREATE TABLE "EBA_UTIL_FACAT_RELEASES" ',
+'   (	"ID" NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  NOT NULL ENABLE, ',
+'	"NAME" VARCHAR2(255 CHAR), ',
+'	 CONSTRAINT "EBA_UTIL_FACAT_RELEASES_ID_PK" PRIMARY KEY ("ID")',
+'  USING INDEX  ENABLE',
+'   ) ;',
+'',
+'  CREATE TABLE "EBA_UTIL_FACAT_SERVER_PREFIXES" ',
+'   (	"ID" NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  NOT NULL ENABLE, ',
+'	"SERVER_URL_PREFIX" VARCHAR2(4000 CHAR), ',
+'	 CONSTRAINT "EBA_UTIL_FACAT_SERVER_PREFIXES_ID_PK" PRIMARY KEY ("ID")',
+'  USING INDEX  ENABLE',
+'   ) ;',
 '',
 '  CREATE TABLE "EBA_UTIL_FAREST_CATALOG" ',
 '   (	"ID" NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  NOT NULL ENABLE, ',
@@ -6036,7 +7320,85 @@ wwv_flow_imp_shared.create_install_script(
 '	  REFERENCES "EBA_UTIL_FAREST_ENDPOINTS" ("ID") ON DELETE CASCADE ENABLE;',
 '',
 '  ALTER TABLE "EBA_UTIL_FAREST_ENDPOINT_CHOBJ" ADD CONSTRAINT "EBA_UTIL_FAREST_ENDPOINT_FK2" FOREIGN KEY ("ENDPOINT_ID")',
-'	  REFERENCES "EBA_UTIL_FAREST_ENDPOINTS" ("ID") ON DELETE CASCADE ENABLE;'))
+'	  REFERENCES "EBA_UTIL_FAREST_ENDPOINTS" ("ID") ON DELETE CASCADE ENABLE;',
+'',
+'  ALTER TABLE "EBA_UTIL_FACAT_CATALOGS" ADD CONSTRAINT "EBA_UTIL_FACAT_CATALOGS_PILLAR_ID_FK" FOREIGN KEY ("PILLAR_ID")',
+'	  REFERENCES "EBA_UTIL_FACAT_PILLARS" ("ID") ON DELETE CASCADE ENABLE;',
+'  ALTER TABLE "EBA_UTIL_FACAT_CATALOGS" ADD CONSTRAINT "EBA_UTIL_FACAT_CATALOGS_RELEASE_ID_FK" FOREIGN KEY ("RELEASE_ID")',
+'	  REFERENCES "EBA_UTIL_FACAT_RELEASES" ("ID") ON DELETE CASCADE ENABLE;',
+'',
+'  CREATE INDEX "EBA_UTIL_FACAT_CATALOGS_I1" ON "EBA_UTIL_FACAT_CATALOGS" ("PILLAR_ID") ',
+'  ;',
+'',
+'  CREATE INDEX "EBA_UTIL_FACAT_CATALOGS_I2" ON "EBA_UTIL_FACAT_CATALOGS" ("RELEASE_ID") ',
+'  ;',
+'',
+'  ALTER TABLE "EBA_UTIL_FACAT_ENDPOINTS" ADD CONSTRAINT "EBA_UTIL_FACAT_ENDPOINTS_SERVER_PREFIX_ID_FK" FOREIGN KEY ("SERVER_PREFIX_ID")',
+'	  REFERENCES "EBA_UTIL_FACAT_SERVER_PREFIXES" ("ID") ENABLE;',
+'  ALTER TABLE "EBA_UTIL_FACAT_ENDPOINTS" ADD CONSTRAINT "EBA_UTIL_FACAT_ENDPOINTS_CATALOG_ID_FK" FOREIGN KEY ("CATALOG_ID")',
+'	  REFERENCES "EBA_UTIL_FACAT_CATALOGS" ("ID") ON DELETE CASCADE ENABLE;',
+'  ALTER TABLE "EBA_UTIL_FACAT_ENDPOINTS" ADD CONSTRAINT "EBA_UTIL_FACAT_ENDPOINTS_PARENT_BO_ENDPOINT_ID_FK" FOREIGN KEY ("PARENT_BO_ENDPOINT_ID")',
+'	  REFERENCES "EBA_UTIL_FACAT_ENDPOINTS" ("ID") ENABLE;',
+'',
+'  CREATE INDEX "EBA_UTIL_FACAT_ENDPOINTS_I2" ON "EBA_UTIL_FACAT_ENDPOINTS" ("PARENT_BO_ENDPOINT_ID") ',
+'  ;',
+'',
+'  CREATE INDEX "EBA_UTIL_FACAT_ENDPOINT_PATH_I" ON "EBA_UTIL_FACAT_ENDPOINTS" ("CATALOG_ID", "SERVER_PREFIX_ID", "PATH") ',
+'  ;',
+'',
+'  CREATE INDEX "EBA_UTIL_FACAT_ENDPOINTS_I3" ON "EBA_UTIL_FACAT_ENDPOINTS" ("SERVER_PREFIX_ID") ',
+'  ;',
+'',
+'  CREATE INDEX "EBA_UTIL_FACAT_ENDPOINTS_I1" ON "EBA_UTIL_FACAT_ENDPOINTS" ("CATALOG_ID") ',
+'  ;',
+'',
+'  ALTER TABLE "EBA_UTIL_FACAT_ENDPOINT_ATTRS" ADD CONSTRAINT "EBA_UTIL_FACAT_ENDPOINT_ATTRS_BO_ENDPOINT_ID_FK" FOREIGN KEY ("BO_ENDPOINT_ID")',
+'	  REFERENCES "EBA_UTIL_FACAT_ENDPOINTS" ("ID") ON DELETE CASCADE ENABLE;',
+'',
+'  CREATE INDEX "EBA_UTIL_FACAT_ENDPOINT_ATTRS_I1" ON "EBA_UTIL_FACAT_ENDPOINT_ATTRS" ("BO_ENDPOINT_ID") ',
+'  ;'))
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(7261168486707158)
+,p_script_id=>wwv_flow_imp.id(1006754883475170094)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'EBA_UTIL_FACAT_CATALOGS'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(6876663373107052)
+,p_script_id=>wwv_flow_imp.id(1006754883475170094)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'EBA_UTIL_FACAT_ENDPOINTS'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(6876852572107052)
+,p_script_id=>wwv_flow_imp.id(1006754883475170094)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'EBA_UTIL_FACAT_ENDPOINT_ATTRS'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(6876496329107052)
+,p_script_id=>wwv_flow_imp.id(1006754883475170094)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'EBA_UTIL_FACAT_PILLARS'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(6876241324107052)
+,p_script_id=>wwv_flow_imp.id(1006754883475170094)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'EBA_UTIL_FACAT_RELEASES'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(3196653983522867)
+,p_script_id=>wwv_flow_imp.id(1006754883475170094)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'EBA_UTIL_FACAT_SERVER_PREFIXES'
 );
 wwv_flow_imp_shared.create_install_object(
  p_id=>wwv_flow_imp.id(1006755147228170096)
@@ -6086,16 +7448,32 @@ wwv_flow_imp_shared.create_install_script(
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'create or replace package eba_util_farest_explorer as  ',
 '    procedure ingest_json_describe(  ',
-'        p_application_id in number,  ',
+'        p_application_id   in number,  ',
 '        p_module_static_id in varchar2  ',
 '    );  ',
 '    procedure ingest_json_for_data_sources;  ',
-'    procedure refresh_catalog; ',
+'    procedure refresh_catalog;',
+'    function manage_catalogs(',
+'        p_release           in varchar2,',
+'        p_pillar            in varchar2,',
+'        p_operation         in varchar2)',
+'        return                 varchar2;',
+'    function tokenized_row_search_predicate(',
+'        p_search_facet_value in varchar2,',
+'        p_search_column_name in varchar2,',
+'        p_search_facet_name  in varchar2)',
+'    return varchar2;',
+'    procedure ensure_available_catalogs;',
 'end eba_util_farest_explorer;',
 '/',
 'create or replace package body eba_util_farest_explorer as',
-'    c_native_adfbc constant varchar2(12) := ''NATIVE_ADFBC'';',
-'    c_web_src_type constant varchar2(15)  := ''WEB SOURCE TYPE'';',
+'    c_catalog_baseurl     constant varchar2(255) := ''http://phoenix225302.dev3sub3phx.databasede3phx.oraclevcn.com:9988'';',
+'    c_catalog_filename    constant varchar2(255) := ''fa_catalog_manifest.json'';',
+'    c_native_adfbc        constant varchar2(12)  := ''NATIVE_ADFBC'';',
+'    c_web_src_type        constant varchar2(15)  := ''WEB SOURCE TYPE'';',
+'    c_manifest_collection constant varchar2(23)  := ''EBA_UTIL_FACAT_MANIFEST'';',
+'    c_manifest_url        constant varchar2(255) := c_catalog_baseurl||''/''||c_catalog_filename;',
+'    g_server_prefixes  apex_application.num_assoc_arr;',
 '    --',
 '    function replace_url_params(',
 '        p_url            in varchar2,',
@@ -6216,7 +7594,7 @@ wwv_flow_imp_shared.create_install_script(
 '            attr_lov,',
 '            lov_href,',
 '            attr_control_type,',
-'            attr_is_queryable,',
+'            attr_is_queryable, ',
 '            attr_is_required,',
 '            attr_has_def_expr,',
 '            attr_allow_changes,',
@@ -6458,6 +7836,333 @@ wwv_flow_imp_shared.create_install_script(
 '            end;',
 '         end loop;',
 '    end refresh_catalog;',
+'',
+'    function install_catalog_zip(',
+'        p_release           in varchar2,',
+'        p_pillar            in varchar2)',
+'        return       varchar2',
+'    is',
+'        c_file_name constant varchar2(1000) := p_release',
+'                                               ||''_''',
+'                                               ||p_pillar',
+'                                               ||''.zip'';',
+'        l_catalog_zip         blob;',
+'        l_files               apex_zip.t_files;',
+'        l_ret                 varchar2(255);',
+'        l_details_json        blob;',
+'        l_pillar_id           number;',
+'        l_release_id          number;',
+'        l_catalog_id          number;',
+'',
+'        -------------------------------------------------------------------------------',
+'        procedure get_pillar_id',
+'        is',
+'        begin',
+'            select id',
+'              into l_pillar_id',
+'              from eba_util_facat_pillars',
+'             where name = p_pillar;',
+'        exception',
+'            when no_data_found then',
+'                insert into eba_util_facat_pillars(name)',
+'                values (p_pillar)',
+'                returning id into l_pillar_id;',
+'        end get_pillar_id;',
+'        -------------------------------------------------------------------------------',
+'        procedure get_release_id',
+'        is',
+'        begin',
+'            select id',
+'              into l_release_id',
+'              from eba_util_facat_releases',
+'             where name = p_release;',
+'        exception',
+'            when no_data_found then',
+'                insert into eba_util_facat_releases(name)',
+'                values (p_release)',
+'                returning id into l_release_id;',
+'        end get_release_id;',
+'',
+'        -------------------------------------------------------------------------------',
+'        procedure install_catalog_service(',
+'            p_details_json in blob)',
+'        is',
+'            l_service_id eba_util_facat_endpoints.id%type;',
+'            cursor c is select l_catalog_id,',
+'                               name,',
+'                               description,',
+'                               path,',
+'                               server_prefix',
+'                          from json_table(p_details_json, ''$."data_profile"'' columns (',
+'                            name          varchar2(4000)  path ''$."name"'',',
+'                            path          varchar2(4000)  path ''$."path"'',',
+'                            server_prefix varchar2(4000)  path ''$."server_prefix"'',',
+'                            description   varchar2(4000) path ''$."description"''',
+'                          ));',
+'            l_service_info c%rowtype;',
+'            l_server_prefix_id number;',
+'',
+'            procedure get_server_prefix_id(',
+'                p_server_url_prefix in varchar2)',
+'            is',
+'            begin',
+'                if g_server_prefixes.exists(p_server_url_prefix) then',
+'                    l_server_prefix_id := g_server_prefixes(p_server_url_prefix);',
+'                else',
+'                    begin',
+'                        select id',
+'                          into l_server_prefix_id',
+'                          from eba_util_facat_server_prefixes',
+'                         where server_url_prefix = p_server_url_prefix;',
+'                    exception',
+'                        when no_data_found then',
+'                            insert into eba_util_facat_server_prefixes(server_url_prefix)',
+'                            values (p_server_url_prefix)',
+'                            returning id into l_server_prefix_id;',
+'                    end;',
+'                    -- Cache server prefix id lookup',
+'                    g_server_prefixes(p_server_url_prefix) := l_server_prefix_id;',
+'                end if;',
+'            end get_server_prefix_id;',
+'        begin',
+'            open c;',
+'            fetch c into l_service_info;',
+'            close c;',
+'            get_server_prefix_id(l_service_info.server_prefix);',
+'            insert into eba_util_facat_endpoints(',
+'                catalog_id,',
+'                name,',
+'                description,',
+'                path,',
+'                server_prefix_id',
+'            )',
+'            values (',
+'                l_catalog_id,',
+'                l_service_info.name,',
+'                l_service_info.description,',
+'                l_service_info.path,',
+'                l_server_prefix_id',
+'            )',
+'            returning id into l_service_id;',
+'            insert into eba_util_facat_endpoint_attrs(',
+'                bo_endpoint_id,',
+'                data_profile_column_name,',
+'                attr_name,',
+'                attr_type,',
+'                attr_len,',
+'                attr_title,',
+'                attr_description,',
+'                attr_is_queryable,',
+'                attr_is_required,',
+'                attr_allow_changes,',
+'                position',
+'            )',
+'            select l_service_id,',
+'                   col_name,',
+'                   coalesce(remote_attr_name,selector),',
+'                   attr_type,',
+'                   attr_len,',
+'                   attr_title,',
+'                   attr_description,',
+'                   attr_filterable,',
+'                   case ',
+'                        when '',''||additional_info||'','' like ''%,Required,%''',
+'                        then ''Y''',
+'                        else ''N''',
+'                   end,',
+'                   case ',
+'                        when '',''||additional_info||'','' like ''%,ReadOnly,%''',
+'                        then ''N''',
+'                        when '',''||additional_info||'','' like ''%,CreateOnly,%''',
+'                        then ''On Create''',
+'                        else ''Y''',
+'                   end,',
+'                   seq',
+'              from json_table(p_details_json, ''$."data_profile"."columns"[*]'' columns (',
+'                   col_name         varchar2(4000) path ''$."name"'',',
+'                   selector         varchar2(4000) path ''$."selector"'',',
+'                   remote_attr_name varchar2(4000) path ''$."remote_attribute_name"'',',
+'                   attr_type        varchar2(4000) path ''$."data_type"'',',
+'                   attr_len         number         path ''$."max_length"'',',
+'                   attr_title       varchar2(4000) path ''$."label"'',',
+'                   attr_description varchar2(4000) path ''$."description"'',',
+'                   attr_filterable  varchar2(4000) path ''$."is_filterable"'',',
+'                   seq              number         path ''$."sequence"'',',
+'                   additional_info  varchar2(4000) path ''$."additional_info"''',
+'              ));',
+'        end install_catalog_service;',
+'    begin',
+'        -- Clear server prefix url cache',
+'        g_server_prefixes.delete;',
+'        l_catalog_zip := apex_web_service.make_rest_request_b(',
+'                            p_http_method => ''GET'',',
+'                            p_url         => rtrim(c_catalog_baseurl,''/'')',
+'                                             ||''/''',
+'                                             ||c_file_name);',
+'        if apex_web_service.g_status_code != 200 then',
+'            l_ret := apex_string.format(',
+'                                ''Error downloading %s pillar catalog for %s release'',',
+'                                p_pillar,',
+'                                p_release);',
+'        end if;',
+'        get_pillar_id;',
+'        get_release_id;',
+'        -- delete existing catalog for this (release,pillar) combination',
+'        delete from eba_util_facat_catalogs',
+'        where pillar_id = l_pillar_id',
+'          and release_id = l_release_id;',
+'        -- insert new catalog entry to prepare for installing',
+'        -- all the services in the downloaded release/pillar catalog zip',
+'        insert into eba_util_facat_catalogs(release_id,pillar_id)',
+'        values (l_release_id,l_pillar_id)',
+'        returning id into l_catalog_id;',
+'        --',
+'        -- Get list of files from the zip',
+'        --',
+'        l_files := apex_zip.get_files(l_catalog_zip);',
+'',
+'        --',
+'        -- Set initial background progress',
+'        --',
+'        apex_background_process.set_progress(p_totalwork=>l_files.count,p_sofar=>0);',
+'        --',
+'        -- Process the individual files inside the zip',
+'        --',
+'        for j in 1..l_files.count loop',
+'            l_details_json := apex_zip.get_file_content(l_catalog_zip,l_files(j));',
+'            apex_background_process.set_progress(p_totalwork=>l_files.count,p_sofar=>j);',
+'            install_catalog_service(',
+'                p_details_json => l_details_json);',
+'        end loop;',
+'        -- Wire up the path parentage for hiearchy',
+'        update eba_util_facat_endpoints e',
+'        set e.parent_bo_endpoint_id =',
+'           (select p.id',
+'              from eba_util_facat_endpoints p',
+'             where p.catalog_id = e.catalog_id',
+'               and p.server_prefix_id = e.server_prefix_id',
+'               and p.path = case',
+'                                regexp_count(e.path,''/\{[^}]+\}/child/[^/]+$'')',
+'                                when 1',
+'                                then regexp_replace(e.path,''/\{[^}]+\}/child/[^/]+$'')',
+'                            end);        ',
+'        return l_ret;',
+'    end;',
+'',
+'    function uninstall_catalog_zip(',
+'        p_release in varchar2,',
+'        p_pillar  in varchar2)',
+'        return       varchar2',
+'    is',
+'        l_ret varchar2(255);',
+'    begin',
+'        delete',
+'        from eba_util_facat_catalogs c',
+'        where c.release_id = (select id',
+'                                from eba_util_facat_releases',
+'                               where name = p_release)',
+'          and c.pillar_id = (select id',
+'                               from eba_util_facat_pillars',
+'                              where name = p_pillar);',
+'        return l_ret;',
+'    end;',
+'    function manage_catalogs(',
+'        p_release           in varchar2,',
+'        p_pillar            in varchar2,',
+'        p_operation         in varchar2)',
+'        return         varchar2',
+'    is',
+'        l_ret varchar2(255);',
+'    begin',
+'        apex_debug.enter(''manage_catalogs'',',
+'            ''p_release'',p_release,',
+'            ''p_pillar'',p_pillar,',
+'            ''p_operation'',p_operation);',
+'        case upper(p_operation)',
+'            when ''INSTALL'' then',
+'                l_ret := install_catalog_zip(',
+'                            p_release           => p_release,',
+'                            p_pillar            => p_pillar);',
+'            when ''UNINSTALL'' then',
+'                l_ret := uninstall_catalog_zip(',
+'                            p_release => p_release,',
+'                            p_pillar  => p_pillar);',
+'            else',
+'                l_ret := ''Unrecognized operation ''||upper(p_operation);',
+'        end case;',
+'        return l_ret;',
+'    end manage_catalogs;',
+'',
+'    function tokenized_row_search_predicate(',
+'        p_search_facet_value in varchar2,',
+'        p_search_column_name in varchar2,',
+'        p_search_facet_name  in varchar2)',
+'        return                  varchar2',
+'    is',
+'        c_row_search_predicate constant varchar2(255) :=',
+'            q''~upper(%s) like chr(37)||upper(trim(regexp_substr(:%s,''[^''||chr(13)||chr(10)||'']+'',1,%s)))||chr(37)~'';',
+'        l_predicates apex_t_varchar2;',
+'    begin',
+'        --',
+'        -- Return a valid predicate so that the Function Returning SQL will be legal',
+'        -- SQL even at design time when p_search_facet_value is null',
+'        --',
+'        if p_search_facet_value is null then',
+'            return ''1=1'';',
+'        else',
+'            for j in 1..regexp_count(p'))
+);
+wwv_flow_imp_shared.append_to_install_script(
+ p_id=>wwv_flow_imp.id(1006762956826253066)
+,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'_search_facet_value,''[^''||chr(13)||chr(10)||'']+'') loop',
+'                -- chr(37) is the percent sign',
+'                apex_string.push(l_predicates,',
+'                                 apex_string.format(',
+'                                    c_row_search_predicate,',
+'                                    p_search_column_name,',
+'                                    p_search_facet_name,',
+'                                    j));',
+'            end loop;',
+'            return apex_string.join(l_predicates,'' and '');',
+'        end if;',
+'    end tokenized_row_search_predicate;',
+'',
+'    procedure ensure_available_catalogs',
+'    is',
+'        l_manifest_clob   clob;',
+'        l_manifest_json   json_object_t;',
+'        json_syntax_error exception;',
+'        json_invalid      exception;',
+'        pragma            exception_init(json_syntax_error,-40441);',
+'        pragma            exception_init(json_invalid,-40834);        ',
+'    begin',
+'        for j in (select null',
+'                    from apex_collections',
+'                   where collection_name = c_manifest_collection',
+'                     and clob001 is not null',
+'                     and sys.dbms_lob.getlength(clob001) > 0) ',
+'        loop',
+'            -- Manifest is already cached.',
+'            return;',
+'        end loop;',
+'        apex_collection.create_or_truncate_collection(c_manifest_collection);',
+'        l_manifest_clob := apex_web_service.make_rest_request(',
+'                                p_http_method => ''GET'',',
+'                                p_url         => c_manifest_url);',
+'        -- Make sure it''s valid JSON before caching it                        ',
+'        l_manifest_json := json_object_t(l_manifest_clob);',
+'        apex_collection.add_member(',
+'            p_collection_name => c_manifest_collection,',
+'            p_clob001         => l_manifest_clob);',
+'    exception',
+'        -- if some temporary issue causes the return to be invalid JSON',
+'        -- then don''t cache anything and we''ll try again next time',
+'        when json_syntax_error then',
+'            null;',
+'        when json_invalid THEN',
+'            null;        ',
+'    end ensure_available_catalogs;',
 'end eba_util_farest_explorer;',
 '/'))
 );
@@ -6467,6 +8172,32 @@ wwv_flow_imp_shared.create_install_object(
 ,p_object_owner=>'#OWNER#'
 ,p_object_type=>'PACKAGE'
 ,p_object_name=>'EBA_UTIL_FAREST_EXPLORER'
+);
+end;
+/
+prompt --application/deployment/install/install_views
+begin
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3374910208936683)
+,p_install_id=>wwv_flow_imp.id(1044102358267325500)
+,p_name=>'Views'
+,p_sequence=>40
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'',
+'  CREATE OR REPLACE FORCE EDITIONABLE VIEW "EBA_UTIL_FACAT_MANIFEST" ("MANIFEST_JSON") AS ',
+'  select nvl(c.clob001,''{"releases":[]}'') as manifest_json',
+'from dual',
+'left join apex_collections c ',
+'       on c.collection_name = ''EBA_UTIL_FACAT_MANIFEST''',
+'fetch first row only;'))
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(3375013424936685)
+,p_script_id=>wwv_flow_imp.id(3374910208936683)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'VIEW'
+,p_object_name=>'EBA_UTIL_FACAT_MANIFEST'
 );
 end;
 /

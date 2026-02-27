@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Brookstrut Sample App
--- Copyright (c) 2012, 2025 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.0'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7210
 ,p_default_id_offset=>43061406402105851
@@ -73,8 +73,8 @@ prompt APPLICATION 7210 - Brookstrut Sample App
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:         25
---   Version:         24.2.0
---   Instance ID:     743327026234597
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -94,7 +94,7 @@ wwv_imp_workspace.create_flow(
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
 ,p_checksum_salt=>'37FEB2C9022D01DA387D1F55A9135263A65396CA4B2902FDAAF18B0E3E2C24DD'
-,p_checksum_salt_last_reset=>'20150102074546'
+,p_checksum_salt_last_reset=>'19990804000000'
 ,p_bookmark_checksum_function=>'SH1'
 ,p_accept_old_checksums=>false
 ,p_compatibility_mode=>'24.2'
@@ -2979,11 +2979,6 @@ wwv_flow_imp_page.create_page_group(
 );
 end;
 /
-prompt --application/comments
-begin
-null;
-end;
-/
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
 wwv_flow_imp_shared.create_menu(
@@ -3852,11 +3847,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;

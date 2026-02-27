@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Sample Document Generator
--- Copyright (c) 2012, 2025 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.0'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>9110
 ,p_default_id_offset=>14093677360354599
@@ -70,8 +70,8 @@ prompt APPLICATION 9110 - Sample Document Generator
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          2
---   Version:         24.2.0
---   Instance ID:     743312968839308
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -7805,11 +7805,6 @@ wwv_flow_imp_page.create_page_group(
 );
 end;
 /
-prompt --application/comments
-begin
-null;
-end;
-/
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
 wwv_flow_imp_shared.create_menu(
@@ -7980,11 +7975,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;

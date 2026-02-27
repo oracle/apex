@@ -19,7 +19,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.9'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>9200
 ,p_default_id_offset=>6233788281304841
@@ -63,8 +63,8 @@ prompt APPLICATION 9200 - Image Support for Rich Text Editor
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          4
---   Version:         24.2.9
---   Instance ID:     743368460119802
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -1028,11 +1028,6 @@ wwv_flow_imp_page.create_page_group(
 );
 end;
 /
-prompt --application/comments
-begin
-null;
-end;
-/
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
 wwv_flow_imp_shared.create_menu(
@@ -1144,11 +1139,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;

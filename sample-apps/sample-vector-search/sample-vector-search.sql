@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Sample Vector Search
--- Copyright (c) 2012, 2025 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.0'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7890
 ,p_default_id_offset=>0
@@ -32,7 +32,7 @@ wwv_flow_imp.import_begin (
 );
 end;
 /
-
+ 
 prompt APPLICATION 7890 - Sample Vector Search
 --
 -- Application Export:
@@ -75,8 +75,8 @@ prompt APPLICATION 7890 - Sample Vector Search
 --     Supporting Objects:  Included
 --       Install scripts:          2
 --       Validations:              2
---   Version:         24.2.0
---   Instance ID:     743344145736746
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -1925,11 +1925,6 @@ wwv_flow_imp_page.create_page_group(
 );
 end;
 /
-prompt --application/comments
-begin
-null;
-end;
-/
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
 wwv_flow_imp_shared.create_menu(
@@ -2142,11 +2137,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;

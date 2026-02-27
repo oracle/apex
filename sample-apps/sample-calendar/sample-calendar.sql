@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Sample Calendar
--- Copyright (c) 2012, 2025 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0 as shown
 -- at https://oss.oracle.com/licenses/upl/
 -- 
@@ -28,7 +28,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.11'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7820
 ,p_default_id_offset=>4421054519883540
@@ -55,7 +55,6 @@ prompt APPLICATION 7820 - Sample Calendar
 --     Shared Components:
 --       Logic:
 --       Navigation:
---         Parent Tabs:            1
 --         Lists:                  9
 --         Breadcrumbs:            1
 --           Entries:             35
@@ -76,8 +75,8 @@ prompt APPLICATION 7820 - Sample Calendar
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          3
---   Version:         24.2.11
---   Instance ID:     743326324518343
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -92,7 +91,7 @@ wwv_imp_workspace.create_flow(
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ORACLE')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'Sample Calendar')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'SAMPLE-CALENDAR')
-,p_application_group=>wwv_flow_imp.id(6685475922136084)
+,p_application_group=>wwv_flow_imp.id(4851185638549144)
 ,p_application_group_name=>'Sample Apps'
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
@@ -116,7 +115,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.1'
+,p_flow_version=>'24.2.2'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -136,7 +135,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>10
-,p_version_scn=>150927022
+,p_version_scn=>118851403
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -155,7 +154,7 @@ end;
 prompt --application/user_interfaces
 begin
 wwv_flow_imp_shared.create_user_interface(
- p_id=>wwv_flow_imp.id(4421054519875720)
+ p_id=>wwv_flow_imp.id(7820)
 ,p_theme_id=>42
 ,p_home_url=>'f?p=&APP_ID.:1:&SESSION.'
 ,p_theme_style_by_user_pref=>true
@@ -1109,15 +1108,7 @@ end;
 /
 prompt --application/shared_components/navigation/tabs/parent
 begin
-wwv_flow_imp_shared.create_toplevel_tab(
- p_id=>wwv_flow_imp.id(3175280707478778726)
-,p_tab_set=>'TS1'
-,p_tab_sequence=>10
-,p_tab_name=>'T_ADMINISTRATION'
-,p_tab_text=>'TS1'
-,p_tab_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.:::'
-,p_current_on_tabset=>'TS1'
-);
+null;
 end;
 /
 prompt --application/shared_components/user_interface/lovs/distinct_projects
@@ -1236,11 +1227,6 @@ wwv_flow_imp_shared.create_static_lov_data(
 end;
 /
 prompt --application/pages/page_groups
-begin
-null;
-end;
-/
-prompt --application/comments
 begin
 null;
 end;
@@ -2214,11 +2200,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;
@@ -5126,7 +5107,7 @@ wwv_flow_imp_page.create_worksheet(
 ,p_show_calendar=>'N'
 ,p_download_formats=>'CSV:HTML'
 ,p_enable_mail_download=>'Y'
-,p_detail_link_text=>'<img src="#IMAGE_PREFIX#ws/small_page.gif" alt="">'
+,p_detail_link_text=>'<span role="img" aria-label="View" class="fa fa-file-o" title="View"></span>'
 ,p_owner=>'MIKE'
 ,p_internal_uid=>1942696500298079223
 );

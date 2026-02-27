@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Name: Poll
--- Copyright (c) 2012, 2025 Oracle and/or its affiliates.
+-- Copyright (c) 2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0
 -- as shown at https://oss.oracle.com/licenses/upl/
 --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.11'
+,p_release=>'24.2.14'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7040
 ,p_default_id_offset=>1475844552414530
@@ -80,8 +80,8 @@ prompt APPLICATION 7040 - Poll
 --         Templates:              5
 --     Supporting Objects:  Included
 --       Install scripts:         35
---   Version:         24.2.11
---   Instance ID:     743326324518343
+--   Version:         24.2.14
+--   Instance ID:     743382015964629
 --
 
 prompt --application/delete_application
@@ -151,7 +151,7 @@ end;
 prompt --application/user_interfaces
 begin
 wwv_flow_imp_shared.create_user_interface(
- p_id=>wwv_flow_imp.id(1475844552407490)
+ p_id=>wwv_flow_imp.id(7040)
 ,p_theme_id=>42
 ,p_home_url=>'f?p=&APP_ID.:1:&SESSION.'
 ,p_theme_style_by_user_pref=>false
@@ -3265,11 +3265,6 @@ wwv_flow_imp_page.create_page_group(
 );
 end;
 /
-prompt --application/comments
-begin
-null;
-end;
-/
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
 wwv_flow_imp_shared.create_menu(
@@ -3836,11 +3831,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;
