@@ -419,7 +419,7 @@
         {
             "internalName": "SAMPLE_CHARTS",
             "author": "Oracle",
-            "version": "24.2.2",
+            "version": "24.2.4",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-charts.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-charts",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-charts/sample-charts.sql",
@@ -887,7 +887,7 @@
         {
             "internalName": "SAMPLE_MASTER_DETAIL",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-sample-master-detail.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/sample-apps/sample-master-detail",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/sample-apps/sample-master-detail/sample-master-detail.sql",
@@ -1253,7 +1253,7 @@
         {
             "internalName": "APP_OPPORTUNITIES",
             "author": "Oracle",
-            "version": "24.2.0",
+            "version": "24.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-opportunities.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/opportunities",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/starter-apps/opportunities/opportunities.sql",
@@ -1305,7 +1305,7 @@
         {
             "internalName": "APP_POLL",
             "author": "Oracle",
-            "version": "24.2.1",
+            "version": "24.2.2",
             "icon": "https://raw.githubusercontent.com/oracle/apex/24.2/docs/img/apps/app-poll.svg",
             "url": "https://github.com/oracle/apex/tree/24.2/starter-apps/poll",
             "source": "https://raw.githubusercontent.com/oracle/apex/24.2/starter-apps/poll/poll.sql",
