@@ -115,7 +115,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.2'
+,p_flow_version=>'24.2.4'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -145,7 +145,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_07=>'Oracle APEX'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>9
-,p_version_scn=>136001921
+,p_version_scn=>67639557
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -4983,28 +4983,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
- p_id=>wwv_flow_imp.id(241700284009739586)
-,p_chart_id=>wwv_flow_imp.id(241699681353739580)
-,p_axis=>'y'
-,p_is_rendered=>'on'
-,p_title=>'Y-Axis Title'
-,p_format_scaling=>'auto'
-,p_scaling=>'linear'
-,p_baseline_scaling=>'zero'
-,p_position=>'auto'
-,p_major_tick_rendered=>'on'
-,p_minor_tick_rendered=>'off'
-,p_tick_label_rendered=>'on'
-,p_zoom_order_seconds=>false
-,p_zoom_order_minutes=>false
-,p_zoom_order_hours=>false
-,p_zoom_order_days=>false
-,p_zoom_order_weeks=>false
-,p_zoom_order_months=>false
-,p_zoom_order_quarters=>false
-,p_zoom_order_years=>false
-);
-wwv_flow_imp_page.create_jet_chart_axis(
  p_id=>wwv_flow_imp.id(241700149078739585)
 ,p_chart_id=>wwv_flow_imp.id(241699681353739580)
 ,p_axis=>'x'
@@ -5018,6 +4996,28 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_tick_label_rendered=>'on'
 ,p_tick_label_rotation=>'auto'
 ,p_tick_label_position=>'outside'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>false
+,p_zoom_order_days=>false
+,p_zoom_order_weeks=>false
+,p_zoom_order_months=>false
+,p_zoom_order_quarters=>false
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(241700284009739586)
+,p_chart_id=>wwv_flow_imp.id(241699681353739580)
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_title=>'Y-Axis Title'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
 ,p_zoom_order_seconds=>false
 ,p_zoom_order_minutes=>false
 ,p_zoom_order_hours=>false
@@ -14238,46 +14238,6 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_break_on=>'PROJECT'
 ,p_break_enabled_on=>'PROJECT'
 ,p_sum_columns_on_break=>'COST:BUDGET'
-);
-wwv_flow_imp_page.create_worksheet_rpt(
- p_id=>wwv_flow_imp.id(1310932267463984003)
-,p_application_user=>'APXWS_ALTERNATIVE'
-,p_name=>'Highlighted Over Budget'
-,p_report_seq=>10
-,p_report_type=>'REPORT'
-,p_report_alias=>'6550324'
-,p_status=>'PUBLIC'
-,p_is_default=>'Y'
-,p_display_rows=>15
-,p_report_columns=>'PROJECT:TASK_NAME:START_DATE:END_DATE:STATUS:ASSIGNED_TO:COST:BUDGET'
-,p_sort_column_1=>'START_DATE'
-,p_sort_direction_1=>'ASC'
-,p_sort_column_2=>'END_DATE'
-,p_sort_direction_2=>'ASC'
-,p_sort_column_3=>'PROJECT'
-,p_sort_direction_3=>'ASC'
-,p_sort_column_4=>'0'
-,p_sort_direction_4=>'ASC'
-,p_sort_column_5=>'0'
-,p_sort_direction_5=>'ASC'
-,p_sort_column_6=>'0'
-,p_sort_direction_6=>'ASC'
-,p_sum_columns_on_break=>'COST:BUDGET'
-);
-wwv_flow_imp_page.create_worksheet_condition(
- p_id=>wwv_flow_imp.id(1310932455417984003)
-,p_report_id=>wwv_flow_imp.id(1310932267463984003)
-,p_name=>'Over Budget'
-,p_condition_type=>'HIGHLIGHT'
-,p_allow_delete=>'Y'
-,p_column_name=>'AVAILABLE_BUDGET'
-,p_operator=>'<'
-,p_expr=>'0'
-,p_condition_sql=>' (case when ("AVAILABLE_BUDGET" < to_number(#APXWS_EXPR#)) then #APXWS_HL_ID# end) '
-,p_condition_display=>'#APXWS_COL_NAME# < #APXWS_EXPR_NUMBER#  '
-,p_enabled=>'Y'
-,p_highlight_sequence=>10
-,p_row_bg_color=>'#FFFF99'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1310933358985984006)

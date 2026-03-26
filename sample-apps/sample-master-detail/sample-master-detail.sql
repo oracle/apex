@@ -110,7 +110,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.0'
+,p_flow_version=>'24.2.2'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -128,7 +128,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Sample Master Detail'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>4
-,p_version_scn=>187793428
+,p_version_scn=>199454492
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -3398,6 +3398,11 @@ wwv_flow_imp_page.create_ig_report(
 ,p_settings_area_expanded=>true
 );
 wwv_flow_imp_page.create_ig_report_view(
+ p_id=>wwv_flow_imp.id(65809000004)
+,p_report_id=>wwv_flow_imp.id(4916511318069078261)
+,p_view_type=>'ICON'
+);
+wwv_flow_imp_page.create_ig_report_view(
  p_id=>wwv_flow_imp.id(4916511399446078261)
 ,p_report_id=>wwv_flow_imp.id(4916511318069078261)
 ,p_view_type=>'GRID'
@@ -3510,7 +3515,7 @@ wwv_flow_imp_page.create_ig_report_column(
 wwv_flow_imp_page.create_ig_report_column(
  p_id=>wwv_flow_imp.id(3928079940034300545)
 ,p_view_id=>wwv_flow_imp.id(4916511399446078261)
-,p_display_seq=>13
+,p_display_seq=>12
 ,p_column_id=>wwv_flow_imp.id(3823084047096324707)
 ,p_is_visible=>true
 ,p_is_frozen=>false
@@ -3518,7 +3523,7 @@ wwv_flow_imp_page.create_ig_report_column(
 wwv_flow_imp_page.create_ig_report_column(
  p_id=>wwv_flow_imp.id(3928080490450300549)
 ,p_view_id=>wwv_flow_imp.id(4916511399446078261)
-,p_display_seq=>14
+,p_display_seq=>13
 ,p_column_id=>wwv_flow_imp.id(3823084193108324708)
 ,p_is_visible=>true
 ,p_is_frozen=>false
@@ -3526,7 +3531,7 @@ wwv_flow_imp_page.create_ig_report_column(
 wwv_flow_imp_page.create_ig_report_column(
  p_id=>wwv_flow_imp.id(3928081023514300551)
 ,p_view_id=>wwv_flow_imp.id(4916511399446078261)
-,p_display_seq=>15
+,p_display_seq=>14
 ,p_column_id=>wwv_flow_imp.id(3823084279335324709)
 ,p_is_visible=>true
 ,p_is_frozen=>false
@@ -14531,11 +14536,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_lazy_loading=>true
 ,p_plug_source_type=>'NATIVE_CSS_CALENDAR'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'additional_calendar_views', 'month:list:navigation',
+  'additional_calendar_views', 'list:navigation',
   'display_column', 'PAGE_EVENTS',
-  'drag_and_drop', 'N',
+  'event_sorting', 'AUTOMATIC',
+  'maximum_events_day', '10',
   'multiple_line_event', 'Y',
-  'show_time', 'date',
+  'show_time', 'N',
   'show_tooltip', 'N',
   'show_weekend', 'Y',
   'start_date_column', 'THE_DAY')).to_clob
