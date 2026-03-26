@@ -3580,6 +3580,7 @@ a.m-Notice-cta--secondary:active {
 .m-App {
   display: -ms-flexbox;
   display: flex;
+  flex-grow: 1;
   margin-bottom: 32px;
   font-size: 13px;
   color: rgba(22, 21, 19, .7);
