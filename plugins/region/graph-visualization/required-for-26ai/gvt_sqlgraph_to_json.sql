@@ -48,7 +48,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
 
   FUNCTION GET_VERSION RETURN VARCHAR2 IS
   BEGIN
-    RETURN '26.1.2 (2026-01-08T19:53:11.179945002Z, build: 4fb72601)';
+    RETURN '26.2.0 (2026-03-19T02:46:53.399328293Z, build: 28317f9c3)';
   END GET_VERSION;
 
   FUNCTION PROPERTIES_LATERAL_STRING_AS_CLOB (
@@ -70,15 +70,12 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
       TABLE OF STRING_LIST_TYPE INDEX BY VARCHAR2(M_VCSIZ_4K);
     TYPE STRING_INDEX_BY_STRING IS
       TABLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY VARCHAR(M_VCSIZ_4K);
-    ELEMENT_TABLE_COLUMN_NAME          VARCHARLIST_TABLE; --map structure
-    ELEMENT_TABLE_PROPERTY_NAME        VARCHARLIST_TABLE; --map structure
-    ELEMENT_TO_KEY_LIST_TABLE          VARCHARLIST_TABLE; --map structure
-    SELECTED_COL_STRING                CLOB;
+    ELEMENT_TABLE_COLUMN_NAME          VARCHARLIST_TABLE; 
+    ELEMENT_TABLE_PROPERTY_NAME        VARCHARLIST_TABLE; 
+    ELEMENT_TO_KEY_LIST_TABLE          VARCHARLIST_TABLE; 
     COLUMN_EXPRESSION                  VARCHAR2(M_VCSIZ_4K);
     COLUMN_NAME                        VARCHAR2(M_VCSIZ_4K);
-    PROPERTY_NAME                      VARCHAR2(M_VCSIZ_4K);
     ELEMENTNAMES                       SYS.ODCIVARCHAR2LIST;
-    ELEMENTNAME                        VARCHAR2(M_VCSIZ_4K);
     KEY_LIST                           SYS.ODCIVARCHAR2LIST;
     JSON_CONDITION_STRING              CLOB;
     ALL_QUERY_STRING                   CLOB := '';
@@ -92,7 +89,7 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING    STRING_INDEX_BY_STRING;
     COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT STRING_LIST_TYPE;
     KEY_LIST_FOR_EACH_ELEMENT           STRING_LIST_TYPE;
-    OBJECT_TO_ELEMENTS                 VARCHARLIST_TABLE; --map structure
+    OBJECT_TO_ELEMENTS                 VARCHARLIST_TABLE; 
     ELEMENTS_FOR_EACH_OBJECT           STRING_LIST_TYPE;
     LABELS                             SYS.ODCIVARCHAR2LIST;
     LABELS_FOR_EACH_ELEMENT            STRING_LIST_TYPE;
@@ -130,6 +127,14 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     EDGE_KEYS_FOR_EACH_EDGE            STRING_LIST_TYPE;
     VERTEX_KEYS_FOR_EACH_VERTEX        STRING_LIST_TYPE;
     ELEMENT_NAME                       VARCHAR2(M_VCSIZ_4K);
+    INNER_PROPS_LABELS_STRING          CLOB;
+    EDGE_INNER_PROJECTION_STRING       CLOB;
+    INNER_QUERY_STRING                 CLOB;
+    OUTER_SELECT_STRING                CLOB;
+    SRC_OUTER_JOIN_STRING              CLOB;
+    DEST_OUTER_JOIN_STRING             CLOB;
+    SRC_PROJECTED_COL_ALIAS            VARCHAR2(M_VCSIZ_4K);
+    DEST_PROJECTED_COL_ALIAS           VARCHAR2(M_VCSIZ_4K);
   BEGIN
     IF ELEMENT_TYPE = 'EDGE' THEN
       SELECT
@@ -263,28 +268,33 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
           DEST_VERTEX_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := DEST_VERTEX_COL_NAME_FOR_EACH_EDGE;
         END IF;
       END LOOP;
- 
-      SELECT
-        KEYS.ELEMENT_NAME,
-        KEYS.COLUMN_NAME
-      BULK COLLECT INTO
-        VERTEX_ELEMENT_NAMES,
-        VERTEX_KEYS
-      FROM
-        SYS.ALL_PG_KEYS KEYS
-        INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS
-          ON ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME
-         AND KEYS.OWNER = ELEMENTS.OWNER
-         AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME
-        LEFT JOIN SYS.ALL_SYNONYMS s
-          ON s.SYNONYM_NAME = ELEMENTS.OBJECT_NAME
-         AND s.OWNER = ELEMENTS.OBJECT_OWNER
-        INNER JOIN SYS.ALL_TAB_COLUMNS c
-          ON c.OWNER = COALESCE(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)
-         AND c.TABLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)
-         AND c.COLUMN_NAME = KEYS.COLUMN_NAME
-      WHERE
-        KEYS.GRAPH_NAME = GRAPHNAME
+      
+      SELECT                                                                                                                                                                                                      
+          KEYS.ELEMENT_NAME,                                                                                                                                                                                      
+          KEYS.COLUMN_NAME                                                                                                                                                                                        
+      BULK COLLECT INTO                                                                                                                                                                                           
+          VERTEX_ELEMENT_NAMES,                                                                                                                                                                                   
+          VERTEX_KEYS                                                                                                                                                                                             
+      FROM                                                                                                                                                                                                        
+          SYS.ALL_PG_KEYS KEYS                                                                                                                                                                                    
+      INNER JOIN                                                                                                                                                                                                  
+          SYS.ALL_PG_ELEMENTS ELEMENTS                                                                                                                                                                            
+      ON                                                                                                                                                                                                          
+          (ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME                                                                                                                                                              
+          AND KEYS.OWNER = ELEMENTS.OWNER                                                                                                                                                                         
+          AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME)                                                                                                                                                              
+      LEFT JOIN                                                                                                                                                                                                   
+          SYS.ALL_SYNONYMS s                                                                                                                                                                                      
+      ON                                                                                                                                                                                                          
+          s.SYNONYM_NAME = ELEMENTS.OBJECT_NAME                                                                                                                                                                   
+      INNER JOIN                                                                                                                                                                                                  
+          SYS.ALL_TAB_COLUMNS c                                                                                                                                                                                   
+      ON                                                                                                                                                                                                          
+          c.OWNER = COALESCE(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)                                                                                                                                 
+          AND c.TABLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)                                                                                                                                         
+          AND c.COLUMN_NAME = KEYS.COLUMN_NAME                                                                                                                                                                    
+      WHERE                                                                                                                                                                                                       
+          KEYS.GRAPH_NAME = GRAPHNAME                                                                                                                                                                             
           AND KEYS.OWNER = GRAPHOWNER                                                                                                                                                                             
           AND ELEMENTS.ELEMENT_KIND = 'VERTEX'                                                                                                                                                                    
       ORDER BY                                                                                                                                                                                                    
@@ -536,210 +546,124 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
     FOR IDX1 IN 1..DB_TABLE_NAME_LIST.COUNT LOOP
       FOR IDX6 IN 1..OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIST(IDX1)).COUNT LOOP
         ELEMENT_NAME := OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIST(IDX1))(IDX6);
-        LATERAL_QUERY_STRING := 'SELECT JSON_OBJECT(';
-  
-        SELECTED_COL_STRING := '';
-
+        INNER_PROPS_LABELS_STRING := 'JSON_OBJECT(';        
         FOR IDX2 IN 1..DB_TABLE_NAME_LIST.COUNT LOOP
           IF IDX1 = IDX2 THEN
-
             FOR IDX4 IN 1..ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT LOOP
               COLUMN_NAME := ELEMENT_TABLE_COLUMN_NAME(ELEMENT_NAME)(IDX4);
               COLUMN_EXPRESSION := COLUMN_EXPRESSION_LIST(ELEMENT_NAME)(IDX4);
 
               IF COLUMN_EXPRESSION IS NULL THEN
-                SELECTED_COL_STRING := SELECTED_COL_STRING
-                                      || 'q''['
-                                      || ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)
-                                      || ']'''
-                                      || ' VALUE '
-                                      || 'x."'
-                                      || COLUMN_NAME
-                                      || '"';
-                IF ( IDX4 = ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT) THEN
-                  SELECTED_COL_STRING := SELECTED_COL_STRING
-                                        || ' ';
+                INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING
+                                             || 'q''['
+                                             || ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)
+                                             || ']'''
+                                             || ' VALUE '
+                                             || 'x."'
+                                             || COLUMN_NAME
+                                             || '"';
+                IF (IDX4 = ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT) THEN
+                  INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING
+                                               || ' ';
                 ELSE
-                  SELECTED_COL_STRING := SELECTED_COL_STRING
-                                        || ', ';
+                  INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING
+                                               || ', ';
                 END IF;
               ELSE
-                SELECTED_COL_STRING := SELECTED_COL_STRING
-                                      || 'q''['
-                                      || ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)
-                                      || ']'''
-                                      || ' VALUE '
-                                      || COLUMN_EXPRESSION
-                                      || '';
-                IF ( IDX4 != ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT) THEN
-                  SELECTED_COL_STRING := SELECTED_COL_STRING
-                                        || ', ';
+                INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING
+                                             || 'q''['
+                                             || ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)
+                                             || ']'''
+                                             || ' VALUE '
+                                             || COLUMN_EXPRESSION
+                                             || '';
+                IF (IDX4 != ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT) THEN
+                  INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING
+                                               || ', ';
                 END IF;
               END IF;
             END LOOP;
           END IF;
         END LOOP;
-
-        SELECTED_COL_STRING := SELECTED_COL_STRING
-                              || ' NULL ON NULL RETURNING JSON) AS properties ';
-
+        
+        INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING
+                                     || ' NULL ON NULL RETURNING JSON) AS properties ';
+        
         LABELS_STRING := '';
         FOR IDX4 IN 1..ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT LOOP
           LABELS_STRING := LABELS_STRING
-                          || 'q''['
-                          || ELEMENT_TO_LABELS(ELEMENT_NAME)(IDX4)
-                          || ']''';
+                           || 'q''['
+                           || ELEMENT_TO_LABELS(ELEMENT_NAME)(IDX4)
+                           || ']''';
           IF (IDX4 != ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT) THEN
             LABELS_STRING := LABELS_STRING
-                            || ', ';
+                             || ', ';
           END IF;
         END LOOP;
-
-        SELECTED_COL_STRING := SELECTED_COL_STRING
-                              || ', JSON_ARRAY('
-                              || LABELS_STRING
-                              ||' returning JSON) AS labels';
-
+        
+        INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING
+                                     || ', JSON_ARRAY('
+                                     || LABELS_STRING
+                                     || ' returning JSON) AS labels';
+     
+        JSON_CONDITION_STRING := '';
+        FOR IDX5 IN 1..ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT LOOP
+          
+          
+          JSON_CONDITION_STRING := JSON_CONDITION_STRING
+                                   || 'X."'
+                                   || ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5)
+                                   || '"= JSON_QUERY('
+                                   || GRAPH_VIZ_TABLE_NAME
+                                   || '.'
+                                   || VERTEX_ID_COL_NAME
+                                   || ', ''$.KEY_VALUE."'
+                                   || REPLACE(REPLACE(ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5), '''', ''''''), '\', '\\')
+                                   || '"'' RETURNING JSON)';
+          IF (IDX5 != ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT) THEN
+            JSON_CONDITION_STRING := JSON_CONDITION_STRING
+                                     || ' AND ';
+          END IF;
+        END LOOP;
+        
         IF ELEMENT_TYPE = 'EDGE' THEN
-
-          SELECTED_COL_STRING := SELECTED_COL_STRING
-                                || ', q''['
-                                || SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)
-                                || ']'' || json_object(';
-          SRC_JSON_STRING := '';
-          DEST_JSON_STRING := '';
-          FOR IDX2 IN 1..VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP
-            SRC_JSON_STRING := SRC_JSON_STRING
-                              || 'q''['
-                              || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)
-                              || ']'' value src_table."'
-                              || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)
-                              || '"';
-            IF (IDX2 = VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN
-              SRC_JSON_STRING := SRC_JSON_STRING
-                                || ' ';
+          EDGE_INNER_PROJECTION_STRING := '';
+          FOR IDX4 IN 1..SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP
+            IF SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT = 1 THEN
+              SRC_PROJECTED_COL_ALIAS := '__SRC_COL';
             ELSE
-              SRC_JSON_STRING := SRC_JSON_STRING
-                                || ', ';
+              SRC_PROJECTED_COL_ALIAS := '__SRC_COL_' || IDX4;
             END IF;
+            EDGE_INNER_PROJECTION_STRING := EDGE_INNER_PROJECTION_STRING
+                                            || ', X."'
+                                            || SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
+                                            || '" AS "'
+                                            || SRC_PROJECTED_COL_ALIAS
+                                            || '"';
           END LOOP;
-
-          SELECTED_COL_STRING := SELECTED_COL_STRING
-                                || SRC_JSON_STRING;
-          SELECTED_COL_STRING := SELECTED_COL_STRING
-                                || ') as source, q''['
-                                || DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)
-                                || ']'' || json_object(';
-          FOR IDX3 IN 1..VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP
-            DEST_JSON_STRING := DEST_JSON_STRING
-                                || 'q''['
-                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)
-                                || ']'' value dst_table."'
-                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)
-                                || '"';
-            IF (IDX3 = VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN
-              DEST_JSON_STRING := DEST_JSON_STRING
-                                  || ' ';
+          FOR IDX4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP
+            IF DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT = 1 THEN
+              DEST_PROJECTED_COL_ALIAS := '__DST_COL';
             ELSE
-              DEST_JSON_STRING := DEST_JSON_STRING
-                                  || ', ';
+              DEST_PROJECTED_COL_ALIAS := '__DST_COL_' || IDX4;
             END IF;
-          END LOOP;
-
-          SELECTED_COL_STRING := SELECTED_COL_STRING
-                                || DEST_JSON_STRING;
-          SELECTED_COL_STRING := SELECTED_COL_STRING
-                                ||') as target ';
-        END IF;
-
-        LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                || SELECTED_COL_STRING
+            EDGE_INNER_PROJECTION_STRING := EDGE_INNER_PROJECTION_STRING
+                                            || ', X."'
+                                            || DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
+                                            || '" AS "'
+                                            || DEST_PROJECTED_COL_ALIAS
+                                            || '"';
+          END LOOP;          
+          
+          INNER_QUERY_STRING := 'SELECT '
+                                || INNER_PROPS_LABELS_STRING
+                                || EDGE_INNER_PROJECTION_STRING
                                 || ' FROM "'
                                 || DB_OBJECT_OWNER_LIST(IDX1)
                                 || '"."'
                                 || DB_TABLE_NAME_LIST(IDX1)
-                                || '" X ';
-
-        IF ELEMENT_TYPE = 'EDGE' THEN
-          LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                  || ' JOIN "'
-                                  || SRC_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)
-                                  || '"."'
-                                  ||SRC_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)
-                                  || '" src_table ON (';
-          SRC_JSON_STRING := '';
-
-          FOR IDX4 IN 1..SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP
-            SRC_JSON_STRING := SRC_JSON_STRING
-                              || 'x."'
-                              || SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
-                              || '" = src_table."'
-                              || SRC_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
-                              || '"';
-            IF IDX4 = SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT THEN
-              SRC_JSON_STRING := SRC_JSON_STRING
-                                || ' ';
-            ELSE
-              SRC_JSON_STRING := SRC_JSON_STRING
-                                || ' AND ';
-            END IF;
-          END LOOP;
-
-          LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                  || SRC_JSON_STRING
-                                  || ')';
-          LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                  || ' JOIN "'
-                                  || DEST_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)
-                                  || '"."'
-                                  || DEST_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)
-                                  || '" dst_table ON (';
-
-          DEST_JSON_STRING := '';
-          FOR IDX4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP
-            DEST_JSON_STRING := DEST_JSON_STRING
-                                || 'x."'
-                                || DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
-                                || '" = dst_table."'
-                                || DEST_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
-                                || '"';
-            IF (IDX4 = DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT) THEN
-              DEST_JSON_STRING := DEST_JSON_STRING
-                                  || ' ';
-            ELSE
-              DEST_JSON_STRING := DEST_JSON_STRING
-                                  || ' AND ';
-            END IF;
-          END LOOP;
-
-          LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                  || DEST_JSON_STRING
-                                  || ')';
-        END IF;
-  
-        JSON_CONDITION_STRING := '';
-        FOR IDX5 IN 1..ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT LOOP
-          JSON_CONDITION_STRING := JSON_CONDITION_STRING
-                                  || 'X."'
-                                  || ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5)
-                                  || '"= JSON_QUERY('
-                                  || GRAPH_VIZ_TABLE_NAME
-                                  || '.'
-                                  || VERTEX_ID_COL_NAME
-                                  || ', ''$.KEY_VALUE."'
-                                  || REPLACE(REPLACE(ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5), '''', ''''''), '\', '\\')
-                                  || '"'' RETURNING JSON)';
-          IF (IDX5 = ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT) THEN
-            JSON_CONDITION_STRING := JSON_CONDITION_STRING
-                                    || '';
-          ELSE
-            JSON_CONDITION_STRING := JSON_CONDITION_STRING
-                                    || ' AND ';
-          END IF;
-        END LOOP;
-
-        LATERAL_QUERY_STRING := LATERAL_QUERY_STRING
-                                ||'WHERE JSON_VALUE("'
+                                || '" X '
+                                || 'WHERE JSON_VALUE("'
                                 || GRAPH_VIZ_TABLE_NAME
                                 || '"."'
                                 || VERTEX_ID_COL_NAME
@@ -747,6 +671,123 @@ CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS
                                 || ELEMENT_NAME
                                 || ']'' AND '
                                 || JSON_CONDITION_STRING;
+
+          SRC_JSON_STRING := '';
+          FOR IDX2 IN 1..VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP
+            SRC_JSON_STRING := SRC_JSON_STRING
+                               || 'q''['
+                               || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)
+                               || ']'' value src_table."'
+                               || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)
+                               || '"';
+            IF (IDX2 != VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN
+              SRC_JSON_STRING := SRC_JSON_STRING
+                                 || ', ';
+            END IF;
+          END LOOP;
+
+          DEST_JSON_STRING := '';
+          FOR IDX3 IN 1..VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP
+            DEST_JSON_STRING := DEST_JSON_STRING
+                                || 'q''['
+                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)
+                                || ']'' value dst_table."'
+                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)
+                                || '"';
+            IF (IDX3 != VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN
+              DEST_JSON_STRING := DEST_JSON_STRING
+                                  || ', ';
+            END IF;
+          END LOOP;
+          
+          OUTER_SELECT_STRING := 'SELECT p.properties, p.labels, q''['
+                                 || SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)
+                                 || ']'' || json_object('
+                                 || SRC_JSON_STRING
+                                 || ') as source, q''['
+                                 || DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)
+                                 || ']'' || json_object('
+                                 || DEST_JSON_STRING
+                                 || ') as target ';               
+          
+          SRC_OUTER_JOIN_STRING := '';
+          FOR IDX4 IN 1..SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP
+            IF SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT = 1 THEN
+              SRC_PROJECTED_COL_ALIAS := '__SRC_COL';
+            ELSE
+              SRC_PROJECTED_COL_ALIAS := '__SRC_COL_' || IDX4;
+            END IF;
+            SRC_OUTER_JOIN_STRING := SRC_OUTER_JOIN_STRING
+                                     || 'p."'
+                                     || SRC_PROJECTED_COL_ALIAS
+                                     || '" = src_table."'
+                                     || SRC_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
+                                     || '"';
+            IF (IDX4 != SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT) THEN
+              SRC_OUTER_JOIN_STRING := SRC_OUTER_JOIN_STRING
+                                       || ' AND ';
+            END IF;
+          END LOOP;
+          
+          DEST_OUTER_JOIN_STRING := '';
+          FOR IDX4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP
+            IF DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT = 1 THEN
+              DEST_PROJECTED_COL_ALIAS := '__DST_COL';
+            ELSE
+              DEST_PROJECTED_COL_ALIAS := '__DST_COL_' || IDX4;
+            END IF;
+            DEST_OUTER_JOIN_STRING := DEST_OUTER_JOIN_STRING
+                                      || 'p."'
+                                      || DEST_PROJECTED_COL_ALIAS
+                                      || '" = dst_table."'
+                                      || DEST_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)
+                                      || '"';
+            IF (IDX4 != DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT) THEN
+              DEST_OUTER_JOIN_STRING := DEST_OUTER_JOIN_STRING
+                                        || ' AND ';
+            END IF;
+          END LOOP;          
+          
+          LATERAL_QUERY_STRING := OUTER_SELECT_STRING
+                                  || 'FROM ('
+                                  || INNER_QUERY_STRING
+                                  || ') p '
+                                  || 'JOIN "'
+                                  || SRC_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)
+                                  || '"."'
+                                  || SRC_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)
+                                  || '" src_table ON ('
+                                  || SRC_OUTER_JOIN_STRING
+                                  || ') '
+                                  || 'JOIN "'
+                                  || DEST_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)
+                                  || '"."'
+                                  || DEST_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)
+                                  || '" dst_table ON ('
+                                  || DEST_OUTER_JOIN_STRING
+                                  || ')';
+        ELSE                   
+          INNER_QUERY_STRING := 'SELECT '
+                                || INNER_PROPS_LABELS_STRING
+                                || ' FROM "'
+                                || DB_OBJECT_OWNER_LIST(IDX1)
+                                || '"."'
+                                || DB_TABLE_NAME_LIST(IDX1)
+                                || '" X '
+                                || 'WHERE JSON_VALUE("'
+                                || GRAPH_VIZ_TABLE_NAME
+                                || '"."'
+                                || VERTEX_ID_COL_NAME
+                                || '", ''$.ELEM_TABLE'') = q''['
+                                || ELEMENT_NAME
+                                || ']'' AND '
+                                || JSON_CONDITION_STRING;
+
+          LATERAL_QUERY_STRING := 'SELECT p.properties, p.labels FROM ('
+                                  || INNER_QUERY_STRING
+                                  || ') p';
+        END IF;
+
         ALL_QUERY_STRING := ALL_QUERY_STRING
                             || LATERAL_QUERY_STRING
                             || ' ';
