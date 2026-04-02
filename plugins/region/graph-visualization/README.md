@@ -1,8 +1,7 @@
 # Graph Visualization Plug-In
 
-This preview plugin supports visualization of property graph queries in the database as an interactive network graph.
-The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for Oracle AI Database 26ai, or in
-[PGQL](https://pgql-lang.org/) for Autonomous Database Serverless.
+This plug-in supports visualization of property graph queries in the database as an interactive network graph.
+The queries can be expressed in SQL (specifically the new SQL/PGQ standard) for database version 26ai or later, or in PGQL (https://pgql-lang.org/) for 19c. Note that PGQL on 19c only works on Autonomous Database Serverless.
 
 ## Pre-installation Steps for Oracle AI Database 26ai
 
