@@ -38,6 +38,7 @@ prompt APPLICATION 7040 - Poll
 -- Application Export:
 --   Application:     7040
 --   Name:            Poll
+--   Date and Time:   15:34 Thursday April 9, 2026
 --   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -46,7 +47,7 @@ prompt APPLICATION 7040 - Poll
 --       Computations:            29
 --       Validations:             31
 --       Processes:              113
---       Regions:                302
+--       Regions:                300
 --       Buttons:                194
 --       Dynamic Actions:         96
 --     Shared Components:
@@ -80,8 +81,8 @@ prompt APPLICATION 7040 - Poll
 --         Templates:              5
 --     Supporting Objects:  Included
 --       Install scripts:         35
---   Version:         24.2.14
---   Instance ID:     743382015964629
+--   Version:         24.2.15
+--   Instance ID:     743313204494559
 --
 
 prompt --application/delete_application
@@ -117,7 +118,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.2'
+,p_flow_version=>'24.2.3'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -136,7 +137,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Poll'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>28
-,p_version_scn=>17104349
+,p_version_scn=>73271873
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -24882,7 +24883,7 @@ wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(13938505610441793386)
 ,p_button_sequence=>70
 ,p_button_plug_id=>wwv_flow_imp.id(13937177314088369963)
-,p_button_name=>'TAKE_THIS_POLL'
+,p_button_name=>'TAKE_THIS_POLL2'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>4072362960822175091
@@ -27319,20 +27320,6 @@ wwv_flow_imp_page.create_page_plug(
   'show_line_breaks', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13937717517303439695)
-,p_plug_name=>'Wizard Buttons'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#'
-,p_escape_on_http_output=>'Y'
-,p_plug_template=>2674017834225413037
-,p_plug_display_sequence=>50
-,p_plug_display_point=>'REGION_POSITION_02'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML',
-  'show_line_breaks', 'N')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(13937718833280472773)
 ,p_plug_name=>'footer'
 ,p_region_template_options=>'#DEFAULT#'
@@ -28355,20 +28342,6 @@ wwv_flow_imp_page.create_page_plug(
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13938418222224746913)
-,p_plug_name=>'Wizard Buttons'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#'
-,p_escape_on_http_output=>'Y'
-,p_plug_template=>2674017834225413037
-,p_plug_display_sequence=>120
-,p_plug_display_point=>'REGION_POSITION_02'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML',
-  'show_line_breaks', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(13938423332800863552)
@@ -37338,7 +37311,7 @@ wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(14050720920567302288)
 ,p_button_sequence=>40
 ,p_button_plug_id=>wwv_flow_imp.id(14050720211830302267)
-,p_button_name=>'VIEW_INVITATIONS'
+,p_button_name=>'VIEW_INVITATIONS2'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
 ,p_button_template_id=>2349107722467437027
@@ -40685,10 +40658,11 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(165987702387131619)
 ,p_button_name=>'CANCEL'
 ,p_button_action=>'DEFINED_BY_DA'
-,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
+,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>4072362960822175091
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'PREVIOUS'
+,p_warn_on_unsaved_changes=>null
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(165988117746131619)

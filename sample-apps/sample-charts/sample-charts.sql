@@ -42,6 +42,7 @@ prompt APPLICATION 7830 - Sample Charts
 -- Application Export:
 --   Application:     7830
 --   Name:            Sample Charts
+--   Date and Time:   12:19 Monday April 13, 2026
 --   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -76,8 +77,8 @@ prompt APPLICATION 7830 - Sample Charts
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          4
---   Version:         24.2.14
---   Instance ID:     743382015964629
+--   Version:         24.2.15
+--   Instance ID:     743313204494559
 --
 
 prompt --application/delete_application
@@ -115,7 +116,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.4'
+,p_flow_version=>'24.2.5'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -145,7 +146,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_07=>'Oracle APEX'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>9
-,p_version_scn=>67639557
+,p_version_scn=>76942942
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -4470,7 +4471,7 @@ wwv_flow_imp_shared.create_plugin(
 '  ',
 '  return null;',
 'end ajax;'))
-,p_api_version=>2
+,p_api_version=>1
 ,p_render_function=>'render'
 ,p_ajax_function=>'ajax'
 ,p_standard_attributes=>'SOURCE_SQL'
