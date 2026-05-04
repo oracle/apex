@@ -38,6 +38,7 @@ prompt APPLICATION 7170 - Customers
 -- Application Export:
 --   Application:     7170
 --   Name:            Customers
+--   Date and Time:   12:23 Monday April 13, 2026
 --   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -59,7 +60,7 @@ prompt APPLICATION 7170 - Customers
 --       Navigation:
 --         Lists:                 22
 --         Breadcrumbs:            2
---           Entries:            113
+--           Entries:            112
 --         NavBar Entries:         1
 --       Security:
 --         Authentication:         1
@@ -78,8 +79,8 @@ prompt APPLICATION 7170 - Customers
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:        110
---   Version:         24.2.14
---   Instance ID:     743382015964629
+--   Version:         24.2.15
+--   Instance ID:     743313204494559
 --
 
 prompt --application/delete_application
@@ -129,7 +130,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.1'
+,p_flow_version=>'24.2.3'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -154,7 +155,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_04=>'Customers'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>31
-,p_version_scn=>32872768
+,p_version_scn=>76955766
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -4490,13 +4491,6 @@ begin
 wwv_flow_imp_shared.create_menu(
  p_id=>wwv_flow_imp.id(17812056344120543829)
 ,p_name=>'Breadcrumb1'
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(15843094180763770918)
-,p_parent_id=>wwv_flow_imp.id(15704337177953027117)
-,p_short_name=>'User Details'
-,p_link=>'f?p=&APP_ID.:58:&SESSION.::&DEBUG.:::'
-,p_page_id=>58
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(17812266238411580011)
@@ -42219,14 +42213,12 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(13556799500332819257)
 ,p_button_name=>'Reset_Report'
 ,p_button_action=>'REDIRECT_PAGE'
-,p_button_template_options=>'#DEFAULT#:#DEFAULT#:t-Button--iconLeft'
+,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>2349107722467437027
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RP,&APP_PAGE_ID.,RIR,CIR::'
 ,p_icon_css_classes=>'fa-undo'
-,p_grid_new_row=>'N'
-,p_grid_new_column=>'N'
 );
 wwv_flow_imp_page.create_page_branch(
  p_id=>wwv_flow_imp.id(13556818771231819331)
@@ -56269,7 +56261,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(18195096240616561442)
 ,p_button_name=>'RESET'
 ,p_button_action=>'REDIRECT_PAGE'
-,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
+,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>2349107722467437027
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'

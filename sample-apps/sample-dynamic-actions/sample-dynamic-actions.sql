@@ -38,6 +38,7 @@ prompt APPLICATION 7840 - Sample Dynamic Actions
 -- Application Export:
 --   Application:     7840
 --   Name:            Sample Dynamic Actions
+--   Date and Time:   12:54 Monday April 13, 2026
 --   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -71,8 +72,8 @@ prompt APPLICATION 7840 - Sample Dynamic Actions
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          4
---   Version:         24.2.14
---   Instance ID:     743382015964629
+--   Version:         24.2.15
+--   Instance ID:     743313204494559
 --
 
 prompt --application/delete_application
@@ -109,7 +110,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.0'
+,p_flow_version=>'24.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -129,7 +130,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_02=>'http://www.oracle.com/technetwork/developer-tools/apex/index.html'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>4
-,p_version_scn=>186610701
+,p_version_scn=>76968973
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -9731,11 +9732,12 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(611961741294935448)
 ,p_plug_name=>'Examples'
-,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_plug_template=>4072358936313175081
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
+,p_location=>null
 ,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -9745,9 +9747,10 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(573764390508627649)
 ,p_plug_name=>'Immediate'
 ,p_parent_plug_id=>wwv_flow_imp.id(611961741294935448)
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader:t-Region--stacked:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--stacked:t-Region--scrollBody'
 ,p_plug_template=>4072358936313175081
 ,p_plug_display_sequence=>30
+,p_location=>null
 ,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -9770,9 +9773,10 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(573764562417627650)
 ,p_plug_name=>'Debounce Delay'
 ,p_parent_plug_id=>wwv_flow_imp.id(611961741294935448)
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader:t-Region--stacked:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--stacked:t-Region--scrollBody'
 ,p_plug_template=>4072358936313175081
 ,p_plug_display_sequence=>40
+,p_location=>null
 ,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -9796,9 +9800,10 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(573764660933627651)
 ,p_plug_name=>'Debounce Immediate'
 ,p_parent_plug_id=>wwv_flow_imp.id(611961741294935448)
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader:t-Region--stacked:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--stacked:t-Region--scrollBody'
 ,p_plug_template=>4072358936313175081
 ,p_plug_display_sequence=>50
+,p_location=>null
 ,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -9822,9 +9827,10 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(573764766215627652)
 ,p_plug_name=>'Throttle Immediate'
 ,p_parent_plug_id=>wwv_flow_imp.id(611961741294935448)
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader:t-Region--stacked:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--stacked:t-Region--scrollBody'
 ,p_plug_template=>4072358936313175081
 ,p_plug_display_sequence=>60
+,p_location=>null
 ,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -9850,9 +9856,10 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(573764806247627653)
 ,p_plug_name=>'Throttle Delay'
 ,p_parent_plug_id=>wwv_flow_imp.id(611961741294935448)
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader:t-Region--stacked:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--stacked:t-Region--scrollBody'
 ,p_plug_template=>4072358936313175081
 ,p_plug_display_sequence=>70
+,p_location=>null
 ,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',

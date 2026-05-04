@@ -77,8 +77,8 @@ prompt APPLICATION 7050 - Opportunities
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:         93
---   Version:         24.2.14
---   Instance ID:     743382015964629
+--   Version:         24.2.15
+--   Instance ID:     743313204494559
 --
 
 prompt --application/delete_application
@@ -118,7 +118,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.1'
+,p_flow_version=>'24.2.2'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -141,7 +141,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_03=>'Opportunities'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>4
-,p_version_scn=>187972953
+,p_version_scn=>73252452
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -19812,6 +19812,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--large:t-Form-fieldContainer--radioButtonGroup'
 ,p_is_persistent=>'U'
 ,p_lov_display_extra=>'NO'
+,p_escape_on_http_output=>'N'
 ,p_encrypt_session_state_yn=>'N'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'number_of_columns', '4',
@@ -22118,6 +22119,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--large:t-Form-fieldContainer--radioButtonGroup'
 ,p_is_persistent=>'U'
 ,p_lov_display_extra=>'NO'
+,p_escape_on_http_output=>'N'
 ,p_encrypt_session_state_yn=>'N'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'number_of_columns', '4',
@@ -48621,7 +48623,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_template=>4072358936313175081
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_02'
+,p_location=>null
 ,p_required_patch=>wwv_flow_imp.id(7204555145359641276)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -48684,6 +48686,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_id=>2349107722467437027
 ,p_button_image_alt=>'Reset Filters'
 ,p_button_position=>'BELOW_BOX'
+,p_button_alignment=>'RIGHT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RP,&APP_PAGE_ID.::'
 ,p_icon_css_classes=>'fa-undo-alt'
 );
@@ -48819,6 +48822,8 @@ wwv_flow_imp_page.create_page_item(
 ,p_help_text=>'Select the quarters you want to include in your results. The current calendar year is used if you haven''t selected a specific fiscal year in the "Fiscal Year" select list filter (above).'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'number_of_columns', '1')).to_clob
+,p_multi_value_type=>'SEPARATED'
+,p_multi_value_separator=>':'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(3310080337733823150)
