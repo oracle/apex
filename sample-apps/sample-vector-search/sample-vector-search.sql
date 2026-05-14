@@ -23,8 +23,8 @@ set define off verify off feedback off
 --------------------------------------------------------------------------------
 begin
 wwv_flow_imp.import_begin (
- p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.14'
+ p_version_yyyy_mm_dd=>'2026.03.30'
+,p_release=>'26.1.0'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7890
 ,p_default_id_offset=>0
@@ -56,7 +56,7 @@ prompt APPLICATION 7890 - Sample Vector Search
 --         App Settings:           3
 --         Build Options:          1
 --         Data Loads:             2
---         AI Configs:             2
+--         AI Agents:              2
 --       Navigation:
 --         Lists:                 10
 --         Breadcrumbs:            1
@@ -75,8 +75,8 @@ prompt APPLICATION 7890 - Sample Vector Search
 --     Supporting Objects:  Included
 --       Install scripts:          2
 --       Validations:              2
---   Version:         24.2.14
---   Instance ID:     743382015964629
+--   Version:         26.1.0
+--   Instance ID:     746015870406431
 --
 
 prompt --application/delete_application
@@ -90,19 +90,19 @@ wwv_imp_workspace.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ORACLE')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'Sample Vector Search')
-,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'SAMPLE-VECTOR-SEARCH109')
+,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'SAMPLE-VECTOR-SEARCH')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
 ,p_checksum_salt=>'5D05AD0CF4A918EFA266F2A1CC8AC701B172A1BDD047E3D375796E4EC053CEF9'
 ,p_bookmark_checksum_function=>'SH512'
-,p_compatibility_mode=>'24.2'
+,p_compatibility_mode=>'26.1'
 ,p_flow_language=>'en'
 ,p_flow_language_derived_from=>'FLOW_PRIMARY_LANGUAGE'
 ,p_allow_feedback_yn=>'Y'
 ,p_date_format=>'DS'
 ,p_timestamp_format=>'DS'
 ,p_timestamp_tz_format=>'DS'
-,p_flow_image_prefix => nvl(wwv_flow_application_install.get_image_prefix,'')
+,p_flow_image_prefix=>nvl(wwv_flow_application_install.get_image_prefix,'')
 ,p_authentication_id=>wwv_flow_imp.id(26568274666740914)
 ,p_application_tab_set=>0
 ,p_logo_type=>'T'
@@ -110,22 +110,20 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'24.2.1'
+,p_flow_version=>'26.1.0'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
-,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
-,p_exact_substitutions_only=>'Y'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
 ,p_runtime_api_usage=>'T:W'
 ,p_security_scheme=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_rejoin_existing_sessions=>'N'
 ,p_csv_encoding=>'Y'
-,p_auto_time_zone=>'N'
+,p_modernization_available=>'Y'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample Vector Search'
-,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
+,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>45
-,p_version_scn=>128309536
+,p_version_scn=>'113168917'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -136,13 +134,6 @@ wwv_imp_workspace.create_flow(
 'Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.',
 'Licensed under the Universal Permissive License v 1.0',
 'as shown at https://oss.oracle.com/licenses/upl/'))
-);
-end;
-/
-prompt --application/user_interfaces
-begin
-wwv_flow_imp_shared.create_user_interface(
- p_id=>wwv_flow_imp.id(7890)
 ,p_theme_id=>42
 ,p_home_url=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
 ,p_login_url=>'f?p=&APP_ID.:LOGIN:&APP_SESSION.::&DEBUG.:::'
@@ -151,11 +142,11 @@ wwv_flow_imp_shared.create_user_interface(
 ,p_global_page_id=>0
 ,p_navigation_list_id=>wwv_flow_imp.id(26569066502740918)
 ,p_navigation_list_position=>'SIDE'
-,p_navigation_list_template_id=>2467739217141810545
+,p_navigation_list_template_id=>2469215554099805162
 ,p_nav_list_template_options=>'#DEFAULT#:t-TreeNav--styleA:js-navCollapsed--hidden'
 ,p_nav_bar_type=>'LIST'
 ,p_nav_bar_list_id=>wwv_flow_imp.id(26569902283740948)
-,p_nav_bar_list_template_id=>2847543055748234966
+,p_nav_bar_list_template_id=>2849019392706229583
 ,p_nav_bar_template_options=>'#DEFAULT#'
 );
 end;
@@ -163,7 +154,7 @@ end;
 prompt --workspace/credentials/oci_credentials
 begin
 wwv_imp_workspace.create_credential(
- p_id=>wwv_flow_imp.id(14610758767804040)
+ p_id=>14610758767804040
 ,p_name=>'OCI Credentials'
 ,p_static_id=>'EBA_CREDENTIALS_OCI'
 ,p_authentication_type=>'OCI'
@@ -175,7 +166,7 @@ end;
 prompt --workspace/credentials/openai_credentials
 begin
 wwv_imp_workspace.create_credential(
- p_id=>wwv_flow_imp.id(14611336591828962)
+ p_id=>14611336591828962
 ,p_name=>'OpenAI Credentials'
 ,p_static_id=>'EBA_CREDENTIALS_OPENAI'
 ,p_authentication_type=>'HTTP_HEADER'
@@ -189,113 +180,263 @@ end;
 prompt --workspace/remote_servers/oci_genai_service
 begin
 wwv_imp_workspace.create_remote_server(
- p_id=>wwv_flow_imp.id(14610997010804045)
+ p_id=>14610997010804045
 ,p_name=>'OCI GenAI Service'
 ,p_static_id=>'EBA_GENAI_OCI'
 ,p_base_url=>nvl(wwv_flow_application_install.get_remote_server_base_url('EBA_GENAI_OCI'),'https://inference.generativeai.us-chicago-1.oci.oraclecloud.com')
 ,p_https_host=>nvl(wwv_flow_application_install.get_remote_server_https_host('EBA_GENAI_OCI'),'')
 ,p_server_type=>'GENERATIVE_AI'
-,p_ords_timezone=>nvl(wwv_flow_application_install.get_remote_server_ords_tz('EBA_GENAI_OCI'),'')
-,p_credential_id=>wwv_flow_imp.id(14610758767804040)
-,p_remote_sql_default_schema=>nvl(wwv_flow_application_install.get_remote_server_default_db('EBA_GENAI_OCI'),'')
-,p_mysql_sql_modes=>nvl(wwv_flow_application_install.get_remote_server_sql_mode('EBA_GENAI_OCI'),'')
-,p_prompt_on_install=>false
+,p_credential_id=>14610758767804040
 ,p_ai_provider_type=>'OCI_GENAI'
 ,p_ai_is_builder_service=>false
+,p_ai_is_default_for_new_apps=>false
 ,p_ai_model_name=>nvl(wwv_flow_application_install.get_remote_server_ai_model('EBA_GENAI_OCI'),'cohere.command-r-08-2024')
 ,p_ai_http_headers=>nvl(wwv_flow_application_install.get_remote_server_ai_headers('EBA_GENAI_OCI'),'')
 ,p_ai_attributes=>nvl(wwv_flow_application_install.get_remote_server_ai_attrs('EBA_GENAI_OCI'),'{"compartmentId":"ocid1.compartment.oc1","servingMode":{"modelId":"cohere.command-r-08-2024","servingType":"ON_DEMAND"}}')
+,p_ai_max_tokens=>nvl(wwv_flow_application_install.get_remote_server_ai_maxtokens('EBA_GENAI_OCI'),'')
+,p_prompt_on_install=>false
 );
 end;
 /
 prompt --workspace/remote_servers/openai_genai_service
 begin
 wwv_imp_workspace.create_remote_server(
- p_id=>wwv_flow_imp.id(14611575625828962)
+ p_id=>14611575625828962
 ,p_name=>'OpenAI GenAI Service'
 ,p_static_id=>'EBA_GENAI_OPENAI'
 ,p_base_url=>nvl(wwv_flow_application_install.get_remote_server_base_url('EBA_GENAI_OPENAI'),'https://api.openai.com/v1')
 ,p_https_host=>nvl(wwv_flow_application_install.get_remote_server_https_host('EBA_GENAI_OPENAI'),'')
 ,p_server_type=>'GENERATIVE_AI'
-,p_ords_timezone=>nvl(wwv_flow_application_install.get_remote_server_ords_tz('EBA_GENAI_OPENAI'),'')
-,p_credential_id=>wwv_flow_imp.id(14611336591828962)
-,p_remote_sql_default_schema=>nvl(wwv_flow_application_install.get_remote_server_default_db('EBA_GENAI_OPENAI'),'')
-,p_mysql_sql_modes=>nvl(wwv_flow_application_install.get_remote_server_sql_mode('EBA_GENAI_OPENAI'),'')
-,p_prompt_on_install=>false
+,p_credential_id=>14611336591828962
 ,p_ai_provider_type=>'OPENAI'
 ,p_ai_is_builder_service=>false
+,p_ai_is_default_for_new_apps=>false
 ,p_ai_model_name=>nvl(wwv_flow_application_install.get_remote_server_ai_model('EBA_GENAI_OPENAI'),'gpt-4o')
 ,p_ai_http_headers=>nvl(wwv_flow_application_install.get_remote_server_ai_headers('EBA_GENAI_OPENAI'),'')
 ,p_ai_attributes=>nvl(wwv_flow_application_install.get_remote_server_ai_attrs('EBA_GENAI_OPENAI'),'')
-);
-end;
-/
-prompt --workspace/remote_servers/openai_vector_service
-begin
-wwv_imp_workspace.create_remote_server(
- p_id=>wwv_flow_imp.id(15639632983805312)
-,p_name=>'OpenAI Vector Service'
-,p_static_id=>'EBA_VECTOR_OPENAI'
-,p_base_url=>nvl(wwv_flow_application_install.get_remote_server_base_url('EBA_VECTOR_OPENAI'),'https://api.openai.com/v1')
-,p_https_host=>nvl(wwv_flow_application_install.get_remote_server_https_host('EBA_VECTOR_OPENAI'),'')
-,p_server_type=>'VECTOR'
-,p_ords_timezone=>nvl(wwv_flow_application_install.get_remote_server_ords_tz('EBA_VECTOR_OPENAI'),'')
-,p_credential_id=>wwv_flow_imp.id(14611336591828962)
-,p_remote_sql_default_schema=>nvl(wwv_flow_application_install.get_remote_server_default_db('EBA_VECTOR_OPENAI'),'')
-,p_mysql_sql_modes=>nvl(wwv_flow_application_install.get_remote_server_sql_mode('EBA_VECTOR_OPENAI'),'')
+,p_ai_max_tokens=>nvl(wwv_flow_application_install.get_remote_server_ai_maxtokens('EBA_GENAI_OPENAI'),'')
 ,p_prompt_on_install=>false
-,p_ai_provider_type=>'OPENAI'
-,p_ai_is_builder_service=>false
-,p_ai_model_name=>nvl(wwv_flow_application_install.get_remote_server_ai_model('EBA_VECTOR_OPENAI'),'text-embedding-3-small')
-,p_ai_http_headers=>nvl(wwv_flow_application_install.get_remote_server_ai_headers('EBA_VECTOR_OPENAI'),'')
-,p_ai_attributes=>nvl(wwv_flow_application_install.get_remote_server_ai_attrs('EBA_VECTOR_OPENAI'),'')
-,p_embedding_type=>'GENAI_PROVIDER'
 );
 end;
 /
 prompt --workspace/remote_servers/oci_vector_service
 begin
 wwv_imp_workspace.create_remote_server(
- p_id=>wwv_flow_imp.id(16013343297879238)
+ p_id=>16013343297879238
 ,p_name=>'OCI Vector Service'
 ,p_static_id=>'EBA_VECTOR_OCI'
 ,p_base_url=>nvl(wwv_flow_application_install.get_remote_server_base_url('EBA_VECTOR_OCI'),'https://inference.generativeai.us-chicago-1.oci.oraclecloud.com')
 ,p_https_host=>nvl(wwv_flow_application_install.get_remote_server_https_host('EBA_VECTOR_OCI'),'')
 ,p_server_type=>'VECTOR'
-,p_ords_timezone=>nvl(wwv_flow_application_install.get_remote_server_ords_tz('EBA_VECTOR_OCI'),'')
-,p_credential_id=>wwv_flow_imp.id(14610758767804040)
-,p_remote_sql_default_schema=>nvl(wwv_flow_application_install.get_remote_server_default_db('EBA_VECTOR_OCI'),'')
-,p_mysql_sql_modes=>nvl(wwv_flow_application_install.get_remote_server_sql_mode('EBA_VECTOR_OCI'),'')
-,p_prompt_on_install=>false
+,p_credential_id=>14610758767804040
 ,p_ai_provider_type=>'OCI_GENAI'
-,p_ai_is_builder_service=>false
 ,p_ai_model_name=>nvl(wwv_flow_application_install.get_remote_server_ai_model('EBA_VECTOR_OCI'),'cohere.embed-english-v3.0')
 ,p_ai_http_headers=>nvl(wwv_flow_application_install.get_remote_server_ai_headers('EBA_VECTOR_OCI'),'')
 ,p_ai_attributes=>nvl(wwv_flow_application_install.get_remote_server_ai_attrs('EBA_VECTOR_OCI'),'{"compartmentId":"ocid1.compartment.oc1","servingMode":{"modelId":"cohere.embed-english-v3.0","servingType":"ON_DEMAND"}}')
+,p_ai_max_tokens=>nvl(wwv_flow_application_install.get_remote_server_ai_maxtokens('EBA_VECTOR_OCI'),'')
 ,p_embedding_type=>'GENAI_PROVIDER'
+,p_prompt_on_install=>false
 );
 end;
 /
-prompt --application/shared_components/ai_config/oci
+prompt --workspace/remote_servers/openai_vector_service
 begin
-wwv_flow_imp_shared.create_ai_config(
+wwv_imp_workspace.create_remote_server(
+ p_id=>15639632983805312
+,p_name=>'OpenAI Vector Service'
+,p_static_id=>'EBA_VECTOR_OPENAI'
+,p_base_url=>nvl(wwv_flow_application_install.get_remote_server_base_url('EBA_VECTOR_OPENAI'),'https://api.openai.com/v1')
+,p_https_host=>nvl(wwv_flow_application_install.get_remote_server_https_host('EBA_VECTOR_OPENAI'),'')
+,p_server_type=>'VECTOR'
+,p_credential_id=>14611336591828962
+,p_ai_provider_type=>'OPENAI'
+,p_ai_model_name=>nvl(wwv_flow_application_install.get_remote_server_ai_model('EBA_VECTOR_OPENAI'),'text-embedding-3-small')
+,p_ai_http_headers=>nvl(wwv_flow_application_install.get_remote_server_ai_headers('EBA_VECTOR_OPENAI'),'')
+,p_ai_attributes=>nvl(wwv_flow_application_install.get_remote_server_ai_attrs('EBA_VECTOR_OPENAI'),'')
+,p_ai_max_tokens=>nvl(wwv_flow_application_install.get_remote_server_ai_maxtokens('EBA_VECTOR_OPENAI'),'')
+,p_embedding_type=>'GENAI_PROVIDER'
+,p_prompt_on_install=>false
+);
+end;
+/
+prompt --application/plugin_settings
+begin
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26565546874740912)
+,p_plugin_type=>'DYNAMIC ACTION'
+,p_plugin=>'NATIVE_OPEN_AI_ASSISTANT'
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26564322947740912)
+,p_plugin_type=>'ITEM TYPE'
+,p_plugin=>'NATIVE_COLOR_PICKER'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_as', 'POPUP',
+  'mode', 'FULL')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26565878850740913)
+,p_plugin_type=>'ITEM TYPE'
+,p_plugin=>'NATIVE_DATE_PICKER_APEX'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'appearance_behavior', 'MONTH-PICKER:YEAR-PICKER:TODAY-BUTTON',
+  'days_outside_month', 'VISIBLE',
+  'show_on', 'FOCUS',
+  'time_increment', '15')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26566114264740913)
+,p_plugin_type=>'ITEM TYPE'
+,p_plugin=>'NATIVE_GEOCODED_ADDRESS'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'background', 'default',
+  'display_as', 'LIST',
+  'map_preview', 'POPUP:ITEM',
+  'match_mode', 'RELAX_HOUSE_NUMBER')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26564053314740912)
+,p_plugin_type=>'ITEM TYPE'
+,p_plugin=>'NATIVE_SELECT_MANY'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_values_as', 'separated')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26567673283740913)
+,p_plugin_type=>'ITEM TYPE'
+,p_plugin=>'NATIVE_SINGLE_CHECKBOX'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'checked_value', 'Y',
+  'unchecked_value', 'N')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26564669072740912)
+,p_plugin_type=>'ITEM TYPE'
+,p_plugin=>'NATIVE_STAR_RATING'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'default_icon', 'fa-star',
+  'tooltip', '#VALUE#')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26564935760740912)
+,p_plugin_type=>'ITEM TYPE'
+,p_plugin=>'NATIVE_YES_NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_style', 'SWITCH_CB',
+  'off_value', 'N',
+  'on_value', 'Y')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26567358789740913)
+,p_plugin_type=>'PROCESS TYPE'
+,p_plugin=>'NATIVE_GEOCODING'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'match_mode', 'RELAX_HOUSE_NUMBER')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26565289060740912)
+,p_plugin_type=>'REGION TYPE'
+,p_plugin=>'NATIVE_DISPLAY_SELECTOR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'include_slider', 'Y')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26563785772740910)
+,p_plugin_type=>'REGION TYPE'
+,p_plugin=>'NATIVE_IR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'actions_menu_structure', 'IG')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26566452277740913)
+,p_plugin_type=>'REGION TYPE'
+,p_plugin=>'NATIVE_MAP_REGION'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'use_vector_tile_layers', 'Y')).to_clob
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26567070134740913)
+,p_plugin_type=>'WEB SOURCE TYPE'
+,p_plugin=>'NATIVE_ADFBC'
+,p_version_scn=>'50290795'
+);
+wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(26566764166740913)
+,p_plugin_type=>'WEB SOURCE TYPE'
+,p_plugin=>'NATIVE_BOSS'
+,p_version_scn=>'50290795'
+);
+end;
+/
+prompt --application/shared_components/ai_agent/oci
+begin
+wwv_flow_imp_shared.create_ai_agent(
  p_id=>wwv_flow_imp.id(32287787472274682)
 ,p_name=>'OCI'
 ,p_static_id=>'oci'
-,p_remote_server_id=>wwv_flow_imp.id(14610997010804045)
-,p_version_scn=>71047988
+,p_remote_server_id=>14610997010804045
+,p_version_scn=>'71047988'
 );
 end;
 /
-prompt --application/shared_components/ai_config/openai
+prompt --application/shared_components/ai_agent/openai
 begin
-wwv_flow_imp_shared.create_ai_config(
+wwv_flow_imp_shared.create_ai_agent(
  p_id=>wwv_flow_imp.id(32287534921273568)
 ,p_name=>'OPENAI'
 ,p_static_id=>'openai'
-,p_remote_server_id=>wwv_flow_imp.id(14611575625828962)
-,p_version_scn=>71050950
-,p_config_comment=>'Not used in the application, but needed to connect the application to the AI Service.'
+,p_remote_server_id=>14611575625828962
+,p_version_scn=>'71050950'
+,p_agent_comment=>'Not used in the application, but needed to connect the application to the AI Service.'
+);
+end;
+/
+prompt --application/shared_components/navigation/lists/administration
+begin
+wwv_flow_imp_shared.create_list(
+ p_id=>wwv_flow_imp.id(26885968671938778)
+,p_name=>'Administration'
+,p_static_id=>'administration'
+,p_version_scn=>'124380376'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(26886568880938780)
+,p_list_item_display_sequence=>15
+,p_list_item_link_text=>'Application Theme Style'
+,p_static_id=>'application-theme-style'
+,p_list_item_link_target=>'f?p=&APP_ID.:52:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-design'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(26886189136938779)
+,p_list_item_display_sequence=>10
+,p_list_item_link_text=>'Reset Sample Data Tables'
+,p_static_id=>'reset-sample-data-tables'
+,p_list_item_link_target=>'f?p=&APP_ID.:51:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-database'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(31661809251364060)
+,p_list_item_display_sequence=>5
+,p_list_item_link_text=>'Set AI Provider'
+,p_static_id=>'set-ai-provider'
+,p_list_item_link_target=>'f?p=&APP_ID.:54:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-key'
+,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
 /
@@ -304,194 +445,39 @@ begin
 wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(14190948692845326)
 ,p_name=>'AI Generated Data Progress'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>124383924
+,p_static_id=>'ai-generated-data-progress'
+,p_version_scn=>'124383924'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14850751217427267)
+,p_list_item_display_sequence=>40
+,p_list_item_link_text=>'Confirmation'
+,p_static_id=>'confirmation'
+,p_list_item_link_target=>'f?p=&APP_ID.:14:&SESSION.::&DEBUG.::::'
+,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(14191102579845330)
 ,p_list_item_display_sequence=>10
 ,p_list_item_link_text=>'Enter Prompt'
+,p_static_id=>'enter-prompt'
 ,p_list_item_link_target=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.::::'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14191506670845331)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Preview and Upload Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.::::'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(14191928832845331)
 ,p_list_item_display_sequence=>30
 ,p_list_item_link_text=>'Generate Vector Embeddings'
+,p_static_id=>'generate-vector-embeddings'
 ,p_list_item_link_target=>'f?p=&APP_ID.:13:&SESSION.::&DEBUG.::::'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14850751217427267)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Confirmation'
-,p_list_item_link_target=>'f?p=&APP_ID.:14:&SESSION.::&DEBUG.::::'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/upload_data_progress
-begin
-wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(14193624344893271)
-,p_name=>'Upload Data Progress'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>124384366
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14193861620893271)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Select File'
-,p_list_item_link_target=>'f?p=&APP_ID.:25:&APP_SESSION.::&DEBUG.:::'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14194223984893271)
+ p_id=>wwv_flow_imp.id(14191506670845331)
 ,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Preview and Load Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:26:&SESSION.::&DEBUG.::::'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14194621990893271)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Generate Vector Embeddings'
-,p_list_item_link_target=>'f?p=&APP_ID.:27:&APP_SESSION.::&DEBUG.:::'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14851084142439035)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Confirmation'
-,p_list_item_link_target=>'f?p=&APP_ID.:30:&SESSION.::&DEBUG.::::'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/movie_vector_search
-begin
-wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(14563222337261426)
-,p_name=>'Movie Vector Search'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>124378845
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14563448485261426)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Prepare Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-file-code-o'
-,p_list_text_01=>'Use AI to generate real movie data to perform vector search on.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14847825791354908)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Basic Vector Search'
-,p_list_item_link_target=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-search'
-,p_list_item_disp_cond_type=>'EXISTS'
-,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
-,p_list_text_01=>'Search movie data using vector search based on the TITLE, MOVIEDESCRIPTION, and ACTORS fields.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14848156456360528)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Vector vs. Oracle Text'
-,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-search'
-,p_list_item_disp_cond_type=>'EXPRESSION'
-,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_moviedata_and_oracle_text'
-,p_list_item_disp_condition2=>'PLSQL'
-,p_list_text_01=>'<strong>Compare</strong> vector based search with traditional Oracle Text search.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14848401703364540)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Vector and Oracle Text'
-,p_list_item_link_target=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-search'
-,p_list_item_disp_cond_type=>'EXPRESSION'
-,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_moviedata_and_oracle_text'
-,p_list_item_disp_condition2=>'PLSQL'
-,p_list_text_01=>'<strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14848748256378257)
-,p_list_item_display_sequence=>50
-,p_list_item_link_text=>'Movie Recommendation'
-,p_list_item_link_target=>'f?p=&APP_ID.:41:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-rocket'
-,p_list_item_disp_cond_type=>'EXISTS'
-,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
-,p_list_text_01=>'Use vector search to recommend movies <strong>based on </strong>their<strong> vector similarity</strong>.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14849091016382747)
-,p_list_item_display_sequence=>60
-,p_list_item_link_text=>'Mixed Languages'
-,p_list_item_link_target=>'f?p=&APP_ID.:42:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-rocket'
-,p_list_item_disp_cond_type=>'EXISTS'
-,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
-,p_list_text_01=>'Apply vector search to find relevant content across different languages, <strong>bridging language barriers</strong> in your data.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-end;
-/
-prompt --application/shared_components/navigation/lists/vector_search_custom_data
-begin
-wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(14660657478603054)
-,p_name=>'Vector Search (Custom Data)'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>115120918
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14660848054603055)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Basic Vector Search'
-,p_list_item_link_target=>'f?p=&APP_ID.:31:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-search'
-,p_list_item_disp_cond_type=>'EXISTS'
-,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null'
-,p_list_text_01=>'Search data using vectors based on the first 10 columns of your uploaded data. '
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14661282956603056)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Vector vs. Oracle Text'
-,p_list_item_link_target=>'f?p=&APP_ID.:32:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-search'
-,p_list_item_disp_cond_type=>'EXPRESSION'
-,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_datatable_and_oracle_text'
-,p_list_item_disp_condition2=>'PLSQL'
-,p_list_text_01=>'<strong>Compare</strong> vector based search with traditional Oracle Text search.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14661644061603056)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Vector and Oracle Text'
-,p_list_item_link_target=>'f?p=&APP_ID.:33:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-search'
-,p_list_item_disp_cond_type=>'EXPRESSION'
-,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_datatable_and_oracle_text'
-,p_list_item_disp_condition2=>'PLSQL'
-,p_list_text_01=>'<strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.'
+,p_list_item_link_text=>'Preview and Upload Data'
+,p_static_id=>'preview-and-upload-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.::::'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
@@ -501,22 +487,14 @@ begin
 wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(14666527271720723)
 ,p_name=>'Custom Vector Search'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>124364933
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14666777652720725)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Prepare Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:25:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-file-csv-o'
-,p_list_text_01=>'Upload your custom data to perform vector search on.'
-,p_list_item_current_type=>'TARGET_PAGE'
+,p_static_id=>'custom-vector-search'
+,p_version_scn=>'124364933'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(14667188762720725)
 ,p_list_item_display_sequence=>20
 ,p_list_item_link_text=>'Basic Vector Search'
+,p_static_id=>'basic-vector-search'
 ,p_list_item_link_target=>'f?p=&APP_ID.:31:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-search'
 ,p_list_item_disp_cond_type=>'EXISTS'
@@ -525,9 +503,33 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14666777652720725)
+,p_list_item_display_sequence=>10
+,p_list_item_link_text=>'Prepare Data'
+,p_static_id=>'prepare-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:25:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-file-csv-o'
+,p_list_text_01=>'Upload your custom data to perform vector search on.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14847032842331648)
+,p_list_item_display_sequence=>40
+,p_list_item_link_text=>'Vector and Oracle Text'
+,p_static_id=>'vector-and-oracle-text'
+,p_list_item_link_target=>'f?p=&APP_ID.:33:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-search'
+,p_list_item_disp_cond_type=>'EXPRESSION'
+,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_datatable_and_oracle_text'
+,p_list_item_disp_condition2=>'PLSQL'
+,p_list_text_01=>'<strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(14846751772323828)
 ,p_list_item_display_sequence=>30
 ,p_list_item_link_text=>'Vector vs. Oracle Text'
+,p_static_id=>'vector-vs-oracle-text'
 ,p_list_item_link_target=>'f?p=&APP_ID.:32:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-search'
 ,p_list_item_disp_cond_type=>'EXPRESSION'
@@ -536,16 +538,167 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_text_01=>'<strong>Compare</strong> vector based search with traditional Oracle Text search.'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
+end;
+/
+prompt --application/shared_components/navigation/lists/home_page_list
+begin
+wwv_flow_imp_shared.create_list(
+ p_id=>wwv_flow_imp.id(32150271482617636)
+,p_name=>'Home Page List'
+,p_static_id=>'home-page-list'
+,p_version_scn=>'126221802'
+);
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14847032842331648)
+ p_id=>wwv_flow_imp.id(32151603707617638)
+,p_list_item_display_sequence=>40
+,p_list_item_link_text=>'Administration'
+,p_static_id=>'administration'
+,p_list_item_link_target=>'f?p=&APP_ID.:50:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-gear'
+,p_list_text_01=>'Configure the AI provider, reset sample data, or change the application appearance.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(32151249311617638)
+,p_list_item_display_sequence=>30
+,p_list_item_link_text=>'Custom Data'
+,p_static_id=>'custom-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-database-user'
+,p_list_text_01=>'Experiment with vector search in APEX by uploading your own custom data.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(32150823249617638)
+,p_list_item_display_sequence=>20
+,p_list_item_link_text=>'Movie Data'
+,p_static_id=>'movie-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-film'
+,p_list_text_01=>'Explore vector search concepts with guided examples based on movies data.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+end;
+/
+prompt --application/shared_components/navigation/lists/movie_vector_search
+begin
+wwv_flow_imp_shared.create_list(
+ p_id=>wwv_flow_imp.id(14563222337261426)
+,p_name=>'Movie Vector Search'
+,p_static_id=>'movie-vector-search'
+,p_version_scn=>'124378845'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14847825791354908)
+,p_list_item_display_sequence=>20
+,p_list_item_link_text=>'Basic Vector Search'
+,p_static_id=>'basic-vector-search'
+,p_list_item_link_target=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-search'
+,p_list_item_disp_cond_type=>'EXISTS'
+,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
+,p_list_text_01=>'Search movie data using vector search based on the TITLE, MOVIEDESCRIPTION, and ACTORS fields.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14849091016382747)
+,p_list_item_display_sequence=>60
+,p_list_item_link_text=>'Mixed Languages'
+,p_static_id=>'mixed-languages'
+,p_list_item_link_target=>'f?p=&APP_ID.:42:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-rocket'
+,p_list_item_disp_cond_type=>'EXISTS'
+,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
+,p_list_text_01=>'Apply vector search to find relevant content across different languages, <strong>bridging language barriers</strong> in your data.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14848748256378257)
+,p_list_item_display_sequence=>50
+,p_list_item_link_text=>'Movie Recommendation'
+,p_static_id=>'movie-recommendation'
+,p_list_item_link_target=>'f?p=&APP_ID.:41:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-rocket'
+,p_list_item_disp_cond_type=>'EXISTS'
+,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
+,p_list_text_01=>'Use vector search to recommend movies <strong>based on </strong>their<strong> vector similarity</strong>.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14563448485261426)
+,p_list_item_display_sequence=>10
+,p_list_item_link_text=>'Prepare Data'
+,p_static_id=>'prepare-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-file-code-o'
+,p_list_text_01=>'Use AI to generate real movie data to perform vector search on.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14848401703364540)
 ,p_list_item_display_sequence=>40
 ,p_list_item_link_text=>'Vector and Oracle Text'
-,p_list_item_link_target=>'f?p=&APP_ID.:33:&SESSION.::&DEBUG.::::'
+,p_static_id=>'vector-and-oracle-text'
+,p_list_item_link_target=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-search'
 ,p_list_item_disp_cond_type=>'EXPRESSION'
-,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_datatable_and_oracle_text'
+,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_moviedata_and_oracle_text'
 ,p_list_item_disp_condition2=>'PLSQL'
 ,p_list_text_01=>'<strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14848156456360528)
+,p_list_item_display_sequence=>30
+,p_list_item_link_text=>'Vector vs. Oracle Text'
+,p_static_id=>'vector-vs-oracle-text'
+,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-search'
+,p_list_item_disp_cond_type=>'EXPRESSION'
+,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_moviedata_and_oracle_text'
+,p_list_item_disp_condition2=>'PLSQL'
+,p_list_text_01=>'<strong>Compare</strong> vector based search with traditional Oracle Text search.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+end;
+/
+prompt --application/shared_components/navigation/lists/navigation_bar
+begin
+wwv_flow_imp_shared.create_list(
+ p_id=>wwv_flow_imp.id(26569902283740948)
+,p_name=>'Navigation Bar'
+,p_static_id=>'navigation-bar'
+,p_version_scn=>'50291004'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(26582024950741011)
+,p_list_item_display_sequence=>10
+,p_list_item_link_text=>'&APP_USER.'
+,p_static_id=>'app-user'
+,p_list_item_link_target=>'#'
+,p_list_item_icon=>'fa-user'
+,p_list_text_02=>'has-username'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(26582503144741012)
+,p_list_item_display_sequence=>20
+,p_list_item_link_text=>'---'
+,p_static_id=>'list_item'
+,p_list_item_link_target=>'separator'
+,p_list_item_disp_cond_type=>'USER_IS_NOT_PUBLIC_USER'
+,p_parent_list_item_id=>wwv_flow_imp.id(26582024950741011)
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(26582979756741012)
+,p_list_item_display_sequence=>30
+,p_list_item_link_text=>'Sign Out'
+,p_static_id=>'sign-out'
+,p_list_item_link_target=>'&LOGOUT_URL.'
+,p_list_item_icon=>'fa-sign-out'
+,p_list_item_disp_cond_type=>'USER_IS_NOT_PUBLIC_USER'
+,p_parent_list_item_id=>wwv_flow_imp.id(26582024950741011)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
@@ -555,39 +708,34 @@ begin
 wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(26569066502740918)
 ,p_name=>'Navigation Menu'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>124400979
+,p_static_id=>'navigation-menu'
+,p_version_scn=>'124400979'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(26580521863740992)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Home'
-,p_list_item_link_target=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-home'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14561158735185073)
-,p_list_item_display_sequence=>11
-,p_list_item_link_text=>'Movie Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-film'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14630894988604380)
-,p_list_item_display_sequence=>13
-,p_list_item_link_text=>'Prepare Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.:11:::'
-,p_list_item_icon=>'fa-number-1-o'
-,p_parent_list_item_id=>wwv_flow_imp.id(14561158735185073)
+ p_id=>wwv_flow_imp.id(26857251890048845)
+,p_list_item_display_sequence=>150
+,p_list_item_link_text=>'Administration'
+,p_static_id=>'administration'
+,p_list_item_link_target=>'f?p=&APP_ID.:50:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-gear'
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'11'
+,p_list_item_current_for_pages=>'50'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(27481647128509857)
+,p_list_item_display_sequence=>170
+,p_list_item_link_text=>'Application Theme Style'
+,p_static_id=>'application-theme-style'
+,p_list_item_link_target=>'f?p=&APP_ID.:52:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-design'
+,p_parent_list_item_id=>wwv_flow_imp.id(26857251890048845)
+,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(14634257306692820)
 ,p_list_item_display_sequence=>200
 ,p_list_item_link_text=>'Basic Vector Search'
+,p_static_id=>'basic-vector-search'
 ,p_list_item_link_target=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.:15:::'
 ,p_list_item_icon=>'fa-number-2-o'
 ,p_list_item_disp_cond_type=>'EXISTS'
@@ -597,22 +745,118 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_for_pages=>'15'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14634501423697898)
-,p_list_item_display_sequence=>210
-,p_list_item_link_text=>'Vector vs. Oracle Text'
-,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.:16:::'
-,p_list_item_icon=>'fa-number-3-o'
-,p_list_item_disp_cond_type=>'EXPRESSION'
-,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_moviedata_and_oracle_text'
-,p_list_item_disp_condition2=>'PLSQL'
+ p_id=>wwv_flow_imp.id(14656489169511162)
+,p_list_item_display_sequence=>270
+,p_list_item_link_text=>'Basic Vector Search'
+,p_static_id=>'basic-vector-search-2'
+,p_list_item_link_target=>'f?p=&APP_ID.:31:&SESSION.::&DEBUG.:31:::'
+,p_list_item_icon=>'fa-number-2-o'
+,p_list_item_disp_cond_type=>'EXISTS'
+,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null'
+,p_parent_list_item_id=>wwv_flow_imp.id(14561678776197495)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'31'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14561678776197495)
+,p_list_item_display_sequence=>12
+,p_list_item_link_text=>'Custom Data'
+,p_static_id=>'custom-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-database-user'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(26580521863740992)
+,p_list_item_display_sequence=>10
+,p_list_item_link_text=>'Home'
+,p_static_id=>'home'
+,p_list_item_link_target=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-home'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14665527565695432)
+,p_list_item_display_sequence=>310
+,p_list_item_link_text=>'Mixed Languages'
+,p_static_id=>'mixed-languages'
+,p_list_item_link_target=>'f?p=&APP_ID.:42:&SESSION.::&DEBUG.:42:::'
+,p_list_item_icon=>'fa-number-6-o'
+,p_list_item_disp_cond_type=>'EXISTS'
+,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
 ,p_parent_list_item_id=>wwv_flow_imp.id(14561158735185073)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'16'
+,p_list_item_current_for_pages=>'42'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14561158735185073)
+,p_list_item_display_sequence=>11
+,p_list_item_link_text=>'Movie Data'
+,p_static_id=>'movie-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-film'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14665240187692558)
+,p_list_item_display_sequence=>300
+,p_list_item_link_text=>'Movie Recommendations'
+,p_static_id=>'movie-recommendations'
+,p_list_item_link_target=>'f?p=&APP_ID.:41:&SESSION.::&DEBUG.:41:::'
+,p_list_item_icon=>'fa-number-5-o'
+,p_list_item_disp_cond_type=>'EXISTS'
+,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
+,p_parent_list_item_id=>wwv_flow_imp.id(14561158735185073)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'41'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14630894988604380)
+,p_list_item_display_sequence=>13
+,p_list_item_link_text=>'Prepare Data'
+,p_static_id=>'prepare-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.:11:::'
+,p_list_item_icon=>'fa-number-1-o'
+,p_parent_list_item_id=>wwv_flow_imp.id(14561158735185073)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'11'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14655745548466893)
+,p_list_item_display_sequence=>250
+,p_list_item_link_text=>'Prepare Data'
+,p_static_id=>'prepare-data-2'
+,p_list_item_link_target=>'f?p=&APP_ID.:25:&SESSION.::&DEBUG.:25,26,27:::'
+,p_list_item_icon=>'fa-number-1-o'
+,p_parent_list_item_id=>wwv_flow_imp.id(14561678776197495)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'25'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(27461772339385625)
+,p_list_item_display_sequence=>160
+,p_list_item_link_text=>'Reset Sample Data Tables'
+,p_static_id=>'reset-sample-data-tables'
+,p_list_item_link_target=>'f?p=&APP_ID.:51:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-database'
+,p_parent_list_item_id=>wwv_flow_imp.id(26857251890048845)
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(31472283758841272)
+,p_list_item_display_sequence=>150
+,p_list_item_link_text=>'Set AI Provider'
+,p_static_id=>'set-ai-provider'
+,p_list_item_link_target=>'f?p=&APP_ID.:54:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-key'
+,p_parent_list_item_id=>wwv_flow_imp.id(26857251890048845)
+,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(14634890062701571)
 ,p_list_item_display_sequence=>220
 ,p_list_item_link_text=>'Vector and Oracle Text'
+,p_static_id=>'vector-and-oracle-text'
 ,p_list_item_link_target=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.:17:::'
 ,p_list_item_icon=>'fa-number-4-o'
 ,p_list_item_disp_cond_type=>'EXPRESSION'
@@ -623,76 +867,10 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_for_pages=>'17'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14665240187692558)
-,p_list_item_display_sequence=>300
-,p_list_item_link_text=>'Movie Recommendations'
-,p_list_item_link_target=>'f?p=&APP_ID.:41:&SESSION.::&DEBUG.:41:::'
-,p_list_item_icon=>'fa-number-5-o'
-,p_list_item_disp_cond_type=>'EXISTS'
-,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
-,p_parent_list_item_id=>wwv_flow_imp.id(14561158735185073)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'41'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14665527565695432)
-,p_list_item_display_sequence=>310
-,p_list_item_link_text=>'Mixed Languages'
-,p_list_item_link_target=>'f?p=&APP_ID.:42:&SESSION.::&DEBUG.:42:::'
-,p_list_item_icon=>'fa-number-6-o'
-,p_list_item_disp_cond_type=>'EXISTS'
-,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null'
-,p_parent_list_item_id=>wwv_flow_imp.id(14561158735185073)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'42'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14561678776197495)
-,p_list_item_display_sequence=>12
-,p_list_item_link_text=>'Custom Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-database-user'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14655745548466893)
-,p_list_item_display_sequence=>250
-,p_list_item_link_text=>'Prepare Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:25:&SESSION.::&DEBUG.:25,26,27:::'
-,p_list_item_icon=>'fa-number-1-o'
-,p_parent_list_item_id=>wwv_flow_imp.id(14561678776197495)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'25'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14656489169511162)
-,p_list_item_display_sequence=>270
-,p_list_item_link_text=>'Basic Vector Search'
-,p_list_item_link_target=>'f?p=&APP_ID.:31:&SESSION.::&DEBUG.:31:::'
-,p_list_item_icon=>'fa-number-2-o'
-,p_list_item_disp_cond_type=>'EXISTS'
-,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null'
-,p_parent_list_item_id=>wwv_flow_imp.id(14561678776197495)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'31'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(14656758985517960)
-,p_list_item_display_sequence=>280
-,p_list_item_link_text=>'Vector vs. Oracle Text'
-,p_list_item_link_target=>'f?p=&APP_ID.:32:&SESSION.::&DEBUG.:32:::'
-,p_list_item_icon=>'fa-number-3-o'
-,p_list_item_disp_cond_type=>'EXPRESSION'
-,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_datatable_and_oracle_text'
-,p_list_item_disp_condition2=>'PLSQL'
-,p_parent_list_item_id=>wwv_flow_imp.id(14561678776197495)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'32'
-);
-wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(14657068075533127)
 ,p_list_item_display_sequence=>290
 ,p_list_item_link_text=>'Vector and Oracle Text'
+,p_static_id=>'vector-and-oracle-text-2'
 ,p_list_item_link_target=>'f?p=&APP_ID.:33:&SESSION.::&DEBUG.:33:::'
 ,p_list_item_icon=>'fa-number-4-o'
 ,p_list_item_disp_cond_type=>'EXPRESSION'
@@ -703,111 +881,121 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_for_pages=>'33'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(26857251890048845)
-,p_list_item_display_sequence=>150
-,p_list_item_link_text=>'Administration'
-,p_list_item_link_target=>'f?p=&APP_ID.:50:&APP_SESSION.::&DEBUG.:::'
-,p_list_item_icon=>'fa-gear'
+ p_id=>wwv_flow_imp.id(14634501423697898)
+,p_list_item_display_sequence=>210
+,p_list_item_link_text=>'Vector vs. Oracle Text'
+,p_static_id=>'vector-vs-oracle-text'
+,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.:16:::'
+,p_list_item_icon=>'fa-number-3-o'
+,p_list_item_disp_cond_type=>'EXPRESSION'
+,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_moviedata_and_oracle_text'
+,p_list_item_disp_condition2=>'PLSQL'
+,p_parent_list_item_id=>wwv_flow_imp.id(14561158735185073)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'50'
+,p_list_item_current_for_pages=>'16'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(31472283758841272)
-,p_list_item_display_sequence=>150
-,p_list_item_link_text=>'Set AI Provider'
-,p_list_item_link_target=>'f?p=&APP_ID.:54:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-key'
-,p_parent_list_item_id=>wwv_flow_imp.id(26857251890048845)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(27461772339385625)
-,p_list_item_display_sequence=>160
-,p_list_item_link_text=>'Reset Sample Data Tables'
-,p_list_item_link_target=>'f?p=&APP_ID.:51:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-database'
-,p_parent_list_item_id=>wwv_flow_imp.id(26857251890048845)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(27481647128509857)
-,p_list_item_display_sequence=>170
-,p_list_item_link_text=>'Application Theme Style'
-,p_list_item_link_target=>'f?p=&APP_ID.:52:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-design'
-,p_parent_list_item_id=>wwv_flow_imp.id(26857251890048845)
-,p_list_item_current_type=>'TARGET_PAGE'
+ p_id=>wwv_flow_imp.id(14656758985517960)
+,p_list_item_display_sequence=>280
+,p_list_item_link_text=>'Vector vs. Oracle Text'
+,p_static_id=>'vector-vs-oracle-text-2'
+,p_list_item_link_target=>'f?p=&APP_ID.:32:&SESSION.::&DEBUG.:32:::'
+,p_list_item_icon=>'fa-number-3-o'
+,p_list_item_disp_cond_type=>'EXPRESSION'
+,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_datatable_and_oracle_text'
+,p_list_item_disp_condition2=>'PLSQL'
+,p_parent_list_item_id=>wwv_flow_imp.id(14561678776197495)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'32'
 );
 end;
 /
-prompt --application/shared_components/navigation/lists/navigation_bar
+prompt --application/shared_components/navigation/lists/upload_data_progress
 begin
 wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(26569902283740948)
-,p_name=>'Navigation Bar'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>50291004
+ p_id=>wwv_flow_imp.id(14193624344893271)
+,p_name=>'Upload Data Progress'
+,p_static_id=>'upload-data-progress'
+,p_version_scn=>'124384366'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(26582024950741011)
-,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'&APP_USER.'
-,p_list_item_link_target=>'#'
-,p_list_item_icon=>'fa-user'
-,p_list_text_02=>'has-username'
+ p_id=>wwv_flow_imp.id(14851084142439035)
+,p_list_item_display_sequence=>40
+,p_list_item_link_text=>'Confirmation'
+,p_static_id=>'confirmation'
+,p_list_item_link_target=>'f?p=&APP_ID.:30:&SESSION.::&DEBUG.::::'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(26582503144741012)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'---'
-,p_list_item_link_target=>'separator'
-,p_list_item_disp_cond_type=>'USER_IS_NOT_PUBLIC_USER'
-,p_parent_list_item_id=>wwv_flow_imp.id(26582024950741011)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(26582979756741012)
+ p_id=>wwv_flow_imp.id(14194621990893271)
 ,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Sign Out'
-,p_list_item_link_target=>'&LOGOUT_URL.'
-,p_list_item_icon=>'fa-sign-out'
-,p_list_item_disp_cond_type=>'USER_IS_NOT_PUBLIC_USER'
-,p_parent_list_item_id=>wwv_flow_imp.id(26582024950741011)
+,p_list_item_link_text=>'Generate Vector Embeddings'
+,p_static_id=>'generate-vector-embeddings'
+,p_list_item_link_target=>'f?p=&APP_ID.:27:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14194223984893271)
+,p_list_item_display_sequence=>20
+,p_list_item_link_text=>'Preview and Load Data'
+,p_static_id=>'preview-and-load-data'
+,p_list_item_link_target=>'f?p=&APP_ID.:26:&SESSION.::&DEBUG.::::'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14193861620893271)
+,p_list_item_display_sequence=>10
+,p_list_item_link_text=>'Select File'
+,p_static_id=>'select-file'
+,p_list_item_link_target=>'f?p=&APP_ID.:25:&APP_SESSION.::&DEBUG.:::'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
 /
-prompt --application/shared_components/navigation/lists/administration
+prompt --application/shared_components/navigation/lists/vector_search_custom_data
 begin
 wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(26885968671938778)
-,p_name=>'Administration'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>124380376
+ p_id=>wwv_flow_imp.id(14660657478603054)
+,p_name=>'Vector Search (Custom Data)'
+,p_static_id=>'vector-search-custom-data'
+,p_version_scn=>'115120918'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(31661809251364060)
-,p_list_item_display_sequence=>5
-,p_list_item_link_text=>'Set AI Provider'
-,p_list_item_link_target=>'f?p=&APP_ID.:54:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-key'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(26886189136938779)
+ p_id=>wwv_flow_imp.id(14660848054603055)
 ,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Reset Sample Data Tables'
-,p_list_item_link_target=>'f?p=&APP_ID.:51:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-database'
+,p_list_item_link_text=>'Basic Vector Search'
+,p_static_id=>'basic-vector-search'
+,p_list_item_link_target=>'f?p=&APP_ID.:31:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-search'
+,p_list_item_disp_cond_type=>'EXISTS'
+,p_list_item_disp_condition=>'select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null'
+,p_list_text_01=>'Search data using vectors based on the first 10 columns of your uploaded data. '
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(26886568880938780)
-,p_list_item_display_sequence=>15
-,p_list_item_link_text=>'Application Theme Style'
-,p_list_item_link_target=>'f?p=&APP_ID.:52:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-design'
+ p_id=>wwv_flow_imp.id(14661644061603056)
+,p_list_item_display_sequence=>30
+,p_list_item_link_text=>'Vector and Oracle Text'
+,p_static_id=>'vector-and-oracle-text'
+,p_list_item_link_target=>'f?p=&APP_ID.:33:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-search'
+,p_list_item_disp_cond_type=>'EXPRESSION'
+,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_datatable_and_oracle_text'
+,p_list_item_disp_condition2=>'PLSQL'
+,p_list_text_01=>'<strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.'
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(14661282956603056)
+,p_list_item_display_sequence=>20
+,p_list_item_link_text=>'Vector vs. Oracle Text'
+,p_static_id=>'vector-vs-oracle-text'
+,p_list_item_link_target=>'f?p=&APP_ID.:32:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-search'
+,p_list_item_disp_cond_type=>'EXPRESSION'
+,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_datatable_and_oracle_text'
+,p_list_item_disp_condition2=>'PLSQL'
+,p_list_text_01=>'<strong>Compare</strong> vector based search with traditional Oracle Text search.'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
@@ -817,13 +1005,14 @@ begin
 wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(26891210267974065)
 ,p_name=>'Vector Search (Movie Data)'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>115119551
+,p_static_id=>'vector-search-movie-data'
+,p_version_scn=>'115119551'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(26891422904974065)
 ,p_list_item_display_sequence=>10
 ,p_list_item_link_text=>'Basic Vector Search'
+,p_static_id=>'basic-vector-search'
 ,p_list_item_link_target=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-search'
 ,p_list_item_disp_cond_type=>'EXISTS'
@@ -832,21 +1021,10 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(26891887571974066)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Vector vs. Oracle Text'
-,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-search'
-,p_list_item_disp_cond_type=>'EXPRESSION'
-,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_moviedata_and_oracle_text'
-,p_list_item_disp_condition2=>'PLSQL'
-,p_list_text_01=>'<strong>Compare</strong> vector based search with traditional Oracle Text search.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(26892265090974066)
 ,p_list_item_display_sequence=>30
 ,p_list_item_link_text=>'Vector and Oracle Text'
+,p_static_id=>'vector-and-oracle-text'
 ,p_list_item_link_target=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-search'
 ,p_list_item_disp_cond_type=>'EXPRESSION'
@@ -855,41 +1033,17 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_text_01=>'<strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
-end;
-/
-prompt --application/shared_components/navigation/lists/home_page_list
-begin
-wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(32150271482617636)
-,p_name=>'Home Page List'
-,p_list_status=>'PUBLIC'
-,p_version_scn=>126221802
-);
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(32150823249617638)
+ p_id=>wwv_flow_imp.id(26891887571974066)
 ,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Movie Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-film'
-,p_list_text_01=>'Explore vector search concepts with guided examples based on movies data.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(32151249311617638)
-,p_list_item_display_sequence=>30
-,p_list_item_link_text=>'Custom Data'
-,p_list_item_link_target=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-database-user'
-,p_list_text_01=>'Experiment with vector search in APEX by uploading your own custom data.'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(32151603707617638)
-,p_list_item_display_sequence=>40
-,p_list_item_link_text=>'Administration'
-,p_list_item_link_target=>'f?p=&APP_ID.:50:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-gear'
-,p_list_text_01=>'Configure the AI provider, reset sample data, or change the application appearance.'
+,p_list_item_link_text=>'Vector vs. Oracle Text'
+,p_static_id=>'vector-vs-oracle-text'
+,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-search'
+,p_list_item_disp_cond_type=>'EXPRESSION'
+,p_list_item_disp_condition=>'eba_sample_vector_search_pkg.has_moviedata_and_oracle_text'
+,p_list_item_disp_condition2=>'PLSQL'
+,p_list_text_01=>'<strong>Compare</strong> vector based search with traditional Oracle Text search.'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
@@ -976,34 +1130,7 @@ wwv_flow_imp_shared.create_app_static_file(
 ,p_file_name=>'SAMPLE.csv'
 ,p_mime_type=>'text/csv'
 ,p_file_charset=>'utf-8'
-,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/shared_components/files/icons_app_icon_32_png
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7AF4000000017352474200AECE1CE900000554494441545847ED976B6C935518C77FEFDB76EDEE5DD7B1AEDB70372E43C7861BB22917110283C4808860102F189068540C06';
-wwv_flow_imp.g_varchar2_table(2) := 'FCA004A3D14434C12F46901831848018203A060282A08CEB189771C9B86C50D80663EBD66DDDD6767D5FF39E016EA3638364F10BE75B9BD3737ECFE5FCFF4FA5A89CE92AFFE3921E013CCA40EF1950916403E1F18330273D41A83511434804A0E26D6EC0';
-wwv_flow_imp.g_varchar2_table(3) := '5D7395FA8AD334DFBC02AA1F901EA8A5EFDB84AAAA10664B262E7302E1F18351553F1E572DBE96262449C2101A8931221A555569A828E5C6E97DB4D65522C9729F217A04D02E8F4ACE247EE4148242CDD45D3C4EFD95527CEE06147FBB8853D21B308647';
-wwv_flow_imp.g_varchar2_table(4) := '63497B92A8A40CDCB5D7A92ADE41E3F5322459D727881E0054426393481A3B1BD960A4BA6437CE8AD2DB91ABC85247842A5A7974188223881E9C436CC6385A9DD5380E6EA5CD598D26308AA2224920F79095800092AC2775E26B84DBD3B876F8776E951D';
-wwv_flow_imp.g_varchar2_table(5) := '2337238DD481760E9D3CCF254715BA4E07AA8A82CE182C006C5913705E3C4EC5DF9BB059CD3C973B829BB5F5EC3D7C5280745F01012212D3499DF83A75178E5155B213B7CBC977CB17D1EAF1B06A4301572A6F760110D950144C913158D3F390757AAA4E';
-wwv_flow_imp.g_varchar2_table(6) := 'ECC16C927863C624460C1BC49C0FBF440E40101060E09897B0A4667179F7CF34555EC0E3F551B0EA73FE3C54C2EA8D85F8FD7E915EED40AD191545119F753A3D7A5328923E085F4B2392D24EFED8917CFCF61C9E9EB50859BE37050101D25F582C2A5CF1';
-wwv_flow_imp.g_varchar2_table(7) := 'D77A5AEB6FE0F5F9F9EDFBCFD8B2EB003F6DD94972BC0D6B5404D5B54E9C0D4DA426C661340671FEF255C2824D24D862686A69A5DC51CD989119AC58FA16A35FFEA0EF00C35FF99496DAEB380E6EC1DB5887C7D72E00B6EE2EE2875F0A593CEF45664E1E';
-wwv_flow_imp.g_varchar2_table(8) := 'C3AA8DDB387ABA8C77E74EC31C11C6CAB59BB19A23F8E49DB914959C61D9B76B199F9BC5574B163C28C0725AEBAA70146DC6D30D60CDA64216CC9ACA94B14FB1BE600F27CE5DE2CD99F94486850A200DE0BD57A7537CE602DFFCF8EBC3010C9DB608596F';
-wwv_flow_imp.g_varchar2_table(9) := 'A07CEF3AF1ACBA97203E365A5CE87435D1D8ECC63EC04A9041CFD5CA9B988C060658CCB4B479A9ACA9657476065F7FF4802548CC9B8E75E828CAF7ACC375ED3C1E8F8782D55FB0FFE829BEDF5080D7EB0BD8847A9D1E4398193928044F632DB2E2E5F9F1';
-wwv_flow_imp.g_varchar2_table(10) := 'B92C993F9BBC59EFF7BD07C26C29A4E5CFC7E538C7F5C305B81B6EB162E94271C09A4DDBEFD1818E67E827D862C796391E4D45AF1D29C41A6660DE8CC92427C6B170D94AF162FAA403483249E3666349C9A4AA6417374A0FF078B28D81F6584ACB2A7054';
-wwv_flow_imp.g_varchar2_table(11) := 'D7745136ED724348247123268ACCDD3A5BC4B523DB888E0A67D4F0A1DC72BA3876E642409BEA518AB5681E1B3D1363640C3567FFA1A6EC186DAE5A3411FE4F563529D663320F20263D8FD8E1CFE273BBA8D8B701D7D53320EBF0FB1511B94E17D8A07A36';
-wwv_flow_imp.g_varchar2_table(12) := '234521226108F6EC4984581385C13438CE8A67E9F7B6A1E9AA2EC8242ED74C2BC49A80EA6F17DF6BFB34FFD09CB33767BCBF1D2B7E7170CCB067881C380C9DC1487B6B337E6FAB28A5CE148ADE14427B9B9BFACB2769AA2E272A35134B4A969811AA8AFF';
-wwv_flow_imp.g_varchar2_table(13) := '10CFF87E10BD0FA5AA2AA20AB5251399308490E8780CC1E16206F0B5B88405BB1CE7C51CA065C0681E803D7B32512999D4979F12F6EC697222DD76D0BE356120275755D1DD68407796E8EA0E3FB863759A2969438A3D275F64C279F92495C53BF035D7DF';
-wwv_flow_imp.g_varchar2_table(14) := 'DDD3F9F8DE33D0A7B1A2EBA60E080BF6EC2958D246E0BC7482CAE2EDF89A1BEE81E81700A10BAA42509885F89C6E106E5717DA7E03E8189954A18CF1395385BDDF28DD2F7AA27319FB17A01384F6923C0D3562B6D4ACFE6E1BF53E963F441304FA89D6A8';
-wwv_flow_imp.g_varchar2_table(15) := 'E2DEAE7F45FB3F03BDF03F02F81794B56BBF28E4DC570000000049454E44AE426082';
-wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(26571067596740958)
-,p_file_name=>'icons/app-icon-32.png'
-,p_mime_type=>'image/png'
-,p_file_charset=>'utf-8'
-,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
@@ -1086,7 +1213,7 @@ wwv_flow_imp_shared.create_app_static_file(
 ,p_file_name=>'icons/app-icon-144-rounded.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
-,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
@@ -1204,7 +1331,7 @@ wwv_flow_imp_shared.create_app_static_file(
 ,p_file_name=>'icons/app-icon-192.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
-,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
@@ -1341,7 +1468,34 @@ wwv_flow_imp_shared.create_app_static_file(
 ,p_file_name=>'icons/app-icon-256-rounded.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
-,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/shared_components/files/icons_app_icon_32_png
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7AF4000000017352474200AECE1CE900000554494441545847ED976B6C935518C77FEFDB76EDEE5DD7B1AEDB70372E43C7861BB22917110283C4808860102F189068540C06';
+wwv_flow_imp.g_varchar2_table(2) := 'FCA004A3D14434C12F46901831848018203A060282A08CEB189771C9B86C50D80663EBD66DDDD6767D5FF39E016EA3638364F10BE75B9BD3737ECFE5FCFF4FA5A89CE92AFFE3921E013CCA40EF1950916403E1F18330273D41A83511434804A0E26D6EC0';
+wwv_flow_imp.g_varchar2_table(3) := '5D7395FA8AD334DFBC02AA1F901EA8A5EFDB84AAAA10664B262E7302E1F18351553F1E572DBE96262449C2101A8931221A555569A828E5C6E97DB4D65522C9729F217A04D02E8F4ACE247EE4148242CDD45D3C4EFD95527CEE06147FBB8853D21B308647';
+wwv_flow_imp.g_varchar2_table(4) := '63497B92A8A40CDCB5D7A92ADE41E3F5322459D727881E0054426393481A3B1BD960A4BA6437CE8AD2DB91ABC85247842A5A7974188223881E9C436CC6385A9DD5380E6EA5CD598D26308AA2224920F79095800092AC2775E26B84DBD3B876F8776E951D';
+wwv_flow_imp.g_varchar2_table(5) := '2337238DD481760E9D3CCF254715BA4E07AA8A82CE182C006C5913705E3C4EC5DF9BB059CD3C973B829BB5F5EC3D7C5280745F01012212D3499DF83A75178E5155B213B7CBC977CB17D1EAF1B06A4301572A6F760110D950144C913158D3F390757AAA4E';
+wwv_flow_imp.g_varchar2_table(6) := 'ECC16C927863C624460C1BC49C0FBF440E40101060E09897B0A4667179F7CF34555EC0E3F551B0EA73FE3C54C2EA8D85F8FD7E915EED40AD191545119F753A3D7A5328923E085F4B2392D24EFED8917CFCF61C9E9EB50859BE37050101D25F582C2A5CF1';
+wwv_flow_imp.g_varchar2_table(7) := 'D77A5AEB6FE0F5F9F9EDFBCFD8B2EB003F6DD94972BC0D6B5404D5B54E9C0D4DA426C661340671FEF255C2824D24D862686A69A5DC51CD989119AC58FA16A35FFEA0EF00C35FF99496DAEB380E6EC1DB5887C7D72E00B6EE2EE2875F0A593CEF45664E1E';
+wwv_flow_imp.g_varchar2_table(8) := 'C3AA8DDB387ABA8C77E74EC31C11C6CAB59BB19A23F8E49DB914959C61D9B76B199F9BC5574B163C28C0725AEBAA70146DC6D30D60CDA64216CC9ACA94B14FB1BE600F27CE5DE2CD99F94486850A200DE0BD57A7537CE602DFFCF8EBC3010C9DB608596F';
+wwv_flow_imp.g_varchar2_table(9) := 'A07CEF3AF1ACBA97203E365A5CE87435D1D8ECC63EC04A9041CFD5CA9B988C060658CCB4B479A9ACA9657476065F7FF4802548CC9B8E75E828CAF7ACC375ED3C1E8F8782D55FB0FFE829BEDF5080D7EB0BD8847A9D1E4398193928044F632DB2E2E5F9F1';
+wwv_flow_imp.g_varchar2_table(10) := 'B92C993F9BBC59EFF7BD07C26C29A4E5CFC7E538C7F5C305B81B6EB162E94271C09A4DDBEFD1818E67E827D862C796391E4D45AF1D29C41A6660DE8CC92427C6B170D94AF162FAA403483249E3666349C9A4AA6417374A0FF078B28D81F6584ACB2A7054';
+wwv_flow_imp.g_varchar2_table(11) := 'D7745136ED724348247123268ACCDD3A5BC4B523DB888E0A67D4F0A1DC72BA3876E642409BEA518AB5681E1B3D1363640C3567FFA1A6EC186DAE5A3411FE4F563529D663320F20263D8FD8E1CFE273BBA8D8B701D7D53320EBF0FB1511B94E17D8A07A36';
+wwv_flow_imp.g_varchar2_table(12) := '234521226108F6EC4984581385C13438CE8A67E9F7B6A1E9AA2EC8242ED74C2BC49A80EA6F17DF6BFB34FFD09CB33767BCBF1D2B7E7170CCB067881C380C9DC1487B6B337E6FAB28A5CE148ADE14427B9B9BFACB2769AA2E272A35134B4A969811AA8AFF';
+wwv_flow_imp.g_varchar2_table(13) := '10CFF87E10BD0FA5AA2AA20AB5251399308490E8780CC1E16206F0B5B88405BB1CE7C51CA065C0681E803D7B32512999D4979F12F6EC697222DD76D0BE356120275755D1DD68407796E8EA0E3FB863759A2969438A3D275F64C279F92495C53BF035D7DF';
+wwv_flow_imp.g_varchar2_table(14) := 'DDD3F9F8DE33D0A7B1A2EBA60E080BF6EC2958D246E0BC7482CAE2EDF89A1BEE81E81700A10BAA42509885F89C6E106E5717DA7E03E8189954A18CF1395385BDDF28DD2F7AA27319FB17A01384F6923C0D3562B6D4ACFE6E1BF53E963F441304FA89D6A8';
+wwv_flow_imp.g_varchar2_table(15) := 'E2DEAE7F45FB3F03BDF03F02F81794B56BBF28E4DC570000000049454E44AE426082';
+wwv_flow_imp_shared.create_app_static_file(
+ p_id=>wwv_flow_imp.id(26571067596740958)
+,p_file_name=>'icons/app-icon-32.png'
+,p_mime_type=>'image/png'
+,p_file_charset=>'utf-8'
+,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
@@ -1659,128 +1813,7 @@ wwv_flow_imp_shared.create_app_static_file(
 ,p_file_name=>'icons/app-icon-512.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
-,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/plugin_settings
-begin
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26563785772740910)
-,p_plugin_type=>'REGION TYPE'
-,p_plugin=>'NATIVE_IR'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'actions_menu_structure', 'IG')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26564053314740912)
-,p_plugin_type=>'ITEM TYPE'
-,p_plugin=>'NATIVE_SELECT_MANY'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'display_values_as', 'separated')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26564322947740912)
-,p_plugin_type=>'ITEM TYPE'
-,p_plugin=>'NATIVE_COLOR_PICKER'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'display_as', 'POPUP',
-  'mode', 'FULL')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26564669072740912)
-,p_plugin_type=>'ITEM TYPE'
-,p_plugin=>'NATIVE_STAR_RATING'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'default_icon', 'fa-star',
-  'tooltip', '#VALUE#')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26564935760740912)
-,p_plugin_type=>'ITEM TYPE'
-,p_plugin=>'NATIVE_YES_NO'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'display_style', 'SWITCH_CB',
-  'off_value', 'N',
-  'on_value', 'Y')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26565289060740912)
-,p_plugin_type=>'REGION TYPE'
-,p_plugin=>'NATIVE_DISPLAY_SELECTOR'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'include_slider', 'Y')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26565546874740912)
-,p_plugin_type=>'DYNAMIC ACTION'
-,p_plugin=>'NATIVE_OPEN_AI_ASSISTANT'
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26565878850740913)
-,p_plugin_type=>'ITEM TYPE'
-,p_plugin=>'NATIVE_DATE_PICKER_APEX'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'appearance_behavior', 'MONTH-PICKER:YEAR-PICKER:TODAY-BUTTON',
-  'days_outside_month', 'VISIBLE',
-  'show_on', 'FOCUS',
-  'time_increment', '15')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26566114264740913)
-,p_plugin_type=>'ITEM TYPE'
-,p_plugin=>'NATIVE_GEOCODED_ADDRESS'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'background', 'default',
-  'display_as', 'LIST',
-  'map_preview', 'POPUP:ITEM',
-  'match_mode', 'RELAX_HOUSE_NUMBER',
-  'show_coordinates', 'N')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26566452277740913)
-,p_plugin_type=>'REGION TYPE'
-,p_plugin=>'NATIVE_MAP_REGION'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'use_vector_tile_layers', 'Y')).to_clob
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26566764166740913)
-,p_plugin_type=>'WEB SOURCE TYPE'
-,p_plugin=>'NATIVE_BOSS'
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26567070134740913)
-,p_plugin_type=>'WEB SOURCE TYPE'
-,p_plugin=>'NATIVE_ADFBC'
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26567358789740913)
-,p_plugin_type=>'PROCESS TYPE'
-,p_plugin=>'NATIVE_GEOCODING'
-,p_attribute_01=>'RELAX_HOUSE_NUMBER'
-,p_version_scn=>50290795
-);
-wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(26567673283740913)
-,p_plugin_type=>'ITEM TYPE'
-,p_plugin=>'NATIVE_SINGLE_CHECKBOX'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'checked_value', 'Y',
-  'unchecked_value', 'N')).to_clob
-,p_version_scn=>50290795
+,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
@@ -1789,10 +1822,12 @@ begin
 wwv_flow_imp_shared.create_security_scheme(
  p_id=>wwv_flow_imp.id(26573588654740962)
 ,p_name=>'Administration Rights'
+,p_static_id=>'administration-rights'
 ,p_scheme_type=>'NATIVE_FUNCTION_BODY'
-,p_attribute_01=>'return true;'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'plsql_function_body', 'return true;')).to_clob
 ,p_error_message=>'Insufficient privileges, user is not an Administrator'
-,p_version_scn=>50290906
+,p_version_scn=>'50290906'
 ,p_caching=>'BY_USER_BY_PAGE_VIEW'
 );
 end;
@@ -1808,7 +1843,7 @@ wwv_flow_imp_shared.create_flow_item(
  p_id=>wwv_flow_imp.id(28047947230013078)
 ,p_name=>'CURRENT_AI_PROVIDER'
 ,p_protection_level=>'I'
-,p_version_scn=>100668815
+,p_version_scn=>'100668815'
 );
 end;
 /
@@ -1818,7 +1853,7 @@ wwv_flow_imp_shared.create_flow_item(
  p_id=>wwv_flow_imp.id(21962540412871495)
 ,p_name=>'INITIALIZED_AI_PROVIDER'
 ,p_protection_level=>'I'
-,p_version_scn=>101770529
+,p_version_scn=>'101770529'
 );
 end;
 /
@@ -1828,22 +1863,7 @@ wwv_flow_imp_shared.create_flow_item(
  p_id=>wwv_flow_imp.id(32161396166869209)
 ,p_name=>'WEB_CREDENTIALS_ENTERED'
 ,p_protection_level=>'I'
-,p_version_scn=>69852646
-);
-end;
-/
-prompt --application/shared_components/logic/application_computations/initialized_ai_provider
-begin
-wwv_flow_imp_shared.create_flow_computation(
- p_id=>wwv_flow_imp.id(21962864084887136)
-,p_computation_sequence=>10
-,p_computation_item=>'INITIALIZED_AI_PROVIDER'
-,p_computation_point=>'BEFORE_HEADER'
-,p_computation_type=>'EXPRESSION'
-,p_computation_language=>'PLSQL'
-,p_computation_processed=>'REPLACE_EXISTING'
-,p_computation=>'apex_app_setting.get_value(''AI_PROVIDER_INITIALIZED'')'
-,p_version_scn=>74749430
+,p_version_scn=>'69852646'
 );
 end;
 /
@@ -1853,12 +1873,29 @@ wwv_flow_imp_shared.create_flow_computation(
  p_id=>wwv_flow_imp.id(28048520263022833)
 ,p_computation_sequence=>10
 ,p_computation_item=>'CURRENT_AI_PROVIDER'
+,p_static_id=>'current-ai-provider'
 ,p_computation_point=>'BEFORE_HEADER'
 ,p_computation_type=>'EXPRESSION'
 ,p_computation_language=>'PLSQL'
 ,p_computation_processed=>'REPLACE_EXISTING'
 ,p_computation=>'apex_app_setting.get_value(''AI_PROVIDER'')'
-,p_version_scn=>54048505
+,p_version_scn=>'54048505'
+);
+end;
+/
+prompt --application/shared_components/logic/application_computations/initialized_ai_provider
+begin
+wwv_flow_imp_shared.create_flow_computation(
+ p_id=>wwv_flow_imp.id(21962864084887136)
+,p_computation_sequence=>10
+,p_computation_item=>'INITIALIZED_AI_PROVIDER'
+,p_static_id=>'initialized-ai-provider'
+,p_computation_point=>'BEFORE_HEADER'
+,p_computation_type=>'EXPRESSION'
+,p_computation_language=>'PLSQL'
+,p_computation_processed=>'REPLACE_EXISTING'
+,p_computation=>'apex_app_setting.get_value(''AI_PROVIDER_INITIALIZED'')'
+,p_version_scn=>'74749430'
 );
 end;
 /
@@ -1868,25 +1905,18 @@ wwv_flow_imp_shared.create_flow_computation(
  p_id=>wwv_flow_imp.id(32162333758902248)
 ,p_computation_sequence=>10
 ,p_computation_item=>'WEB_CREDENTIALS_ENTERED'
+,p_static_id=>'web-credentials-entered'
 ,p_computation_point=>'BEFORE_HEADER'
 ,p_computation_type=>'EXPRESSION'
 ,p_computation_language=>'PLSQL'
 ,p_computation_processed=>'REPLACE_EXISTING'
 ,p_computation=>'apex_app_setting.get_value(''WC_STATUS'')'
-,p_version_scn=>119641972
+,p_version_scn=>'119641972'
 );
 end;
 /
 prompt --application/shared_components/logic/application_settings
 begin
-wwv_flow_imp_shared.create_app_setting(
- p_id=>wwv_flow_imp.id(21963218092899826)
-,p_name=>'AI_PROVIDER_INITIALIZED'
-,p_value=>'NO'
-,p_is_required=>'N'
-,p_valid_values=>'YES,NO'
-,p_version_scn=>126100500
-);
 wwv_flow_imp_shared.create_app_setting(
  p_id=>wwv_flow_imp.id(27640748174547600)
 ,p_name=>'AI_PROVIDER'
@@ -1894,7 +1924,15 @@ wwv_flow_imp_shared.create_app_setting(
 ,p_is_required=>'N'
 ,p_valid_values=>'OPENAI,OCI,NONE'
 ,p_on_upgrade_keep_value=>true
-,p_version_scn=>128125896
+,p_version_scn=>'128125896'
+);
+wwv_flow_imp_shared.create_app_setting(
+ p_id=>wwv_flow_imp.id(21963218092899826)
+,p_name=>'AI_PROVIDER_INITIALIZED'
+,p_value=>'NO'
+,p_is_required=>'N'
+,p_valid_values=>'YES,NO'
+,p_version_scn=>'126100500'
 );
 wwv_flow_imp_shared.create_app_setting(
  p_id=>wwv_flow_imp.id(32161735794884984)
@@ -1903,7 +1941,7 @@ wwv_flow_imp_shared.create_app_setting(
 ,p_is_required=>'N'
 ,p_valid_values=>'ENTERED,VOID'
 ,p_on_upgrade_keep_value=>true
-,p_version_scn=>124430470
+,p_version_scn=>'124430470'
 );
 end;
 /
@@ -1922,6 +1960,7 @@ begin
 wwv_flow_imp_page.create_page_group(
  p_id=>wwv_flow_imp.id(26573880665740964)
 ,p_group_name=>'Administration'
+,p_static_id=>'administration'
 );
 end;
 /
@@ -1930,136 +1969,149 @@ begin
 wwv_flow_imp_shared.create_menu(
  p_id=>wwv_flow_imp.id(26568570669740916)
 ,p_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(26858156054048846)
+,p_option_sequence=>40
+,p_short_name=>'Administration'
+,p_static_id=>'administration'
+,p_link=>'f?p=&APP_ID.:50:&SESSION.::&DEBUG.:::'
+,p_page_id=>50
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(27474594849412536)
+,p_parent_id=>wwv_flow_imp.id(26858156054048846)
+,p_short_name=>'Application Theme Style'
+,p_static_id=>'application-theme-style'
+,p_link=>'f?p=&APP_ID.:52:&SESSION.::&DEBUG.:::'
+,p_page_id=>52
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(14670765155811488)
+,p_parent_id=>wwv_flow_imp.id(14677304043005330)
+,p_short_name=>'Basic Vector Search'
+,p_static_id=>'basic-vector-search'
+,p_link=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.:::'
+,p_page_id=>15
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(14672396837835852)
+,p_parent_id=>wwv_flow_imp.id(14672144464831674)
+,p_short_name=>'Basic Vector Search'
+,p_static_id=>'basic-vector-search-2'
+,p_link=>'f?p=&APP_ID.:31:&SESSION.::&DEBUG.:::'
+,p_page_id=>31
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(14671899167827589)
+,p_option_sequence=>25
+,p_short_name=>'Custom Vector Search'
+,p_static_id=>'custom-vector-search'
+,p_link=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.:::'
+,p_page_id=>24
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(26568793157740916)
+,p_short_name=>'Home'
+,p_static_id=>'home'
+,p_link=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>1
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(26856810898041914)
+,p_option_sequence=>30
+,p_short_name=>'Mixed Languages'
+,p_static_id=>'mixed-languages'
+,p_link=>'f?p=&APP_ID.:42:&SESSION.::&DEBUG.:::'
+,p_page_id=>42
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(26855551744038223)
+,p_short_name=>'Movie Recommendation'
+,p_static_id=>'movie-recommendation'
+,p_link=>'f?p=&APP_ID.:41:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>41
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(14562568909227184)
+,p_short_name=>'Movie Vector Search'
+,p_static_id=>'movie-vector-search'
+,p_link=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.:::'
+,p_page_id=>10
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(27093990055480825)
 ,p_parent_id=>wwv_flow_imp.id(26858156054048846)
 ,p_option_sequence=>5
 ,p_short_name=>'Reset Sample Data Tables'
+,p_static_id=>'reset-sample-data-tables'
 ,p_link=>'f?p=&APP_ID.:51:&SESSION.::&DEBUG.:::'
 ,p_page_id=>51
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(14562568909227184)
-,p_short_name=>'Movie Vector Search'
-,p_link=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.:::'
-,p_page_id=>10
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(14670765155811488)
-,p_parent_id=>wwv_flow_imp.id(14677304043005330)
-,p_short_name=>'Basic Vector Search'
-,p_link=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.:::'
-,p_page_id=>15
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(14672144464831674)
-,p_parent_id=>wwv_flow_imp.id(14671899167827589)
-,p_short_name=>'Vector Search'
-,p_link=>'f?p=&APP_ID.:30:&SESSION.::&DEBUG.:::'
-,p_page_id=>30
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(14672396837835852)
-,p_parent_id=>wwv_flow_imp.id(14672144464831674)
-,p_short_name=>'Basic Vector Search'
-,p_link=>'f?p=&APP_ID.:31:&SESSION.::&DEBUG.:::'
-,p_page_id=>31
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(14677304043005330)
-,p_parent_id=>wwv_flow_imp.id(14562568909227184)
-,p_short_name=>'Vector Search'
-,p_link=>'f?p=&APP_ID.:14:&SESSION.::&DEBUG.:::'
-,p_page_id=>14
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(15189872847504092)
 ,p_parent_id=>wwv_flow_imp.id(26858156054048846)
 ,p_short_name=>'Set AI Provider'
+,p_static_id=>'set-ai-provider'
 ,p_link=>'f?p=&APP_ID.:54:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>54
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(26568793157740916)
-,p_short_name=>'Home'
-,p_link=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>1
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(26855551744038223)
-,p_short_name=>'Movie Recommendation'
-,p_link=>'f?p=&APP_ID.:41:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>41
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(27474594849412536)
-,p_parent_id=>wwv_flow_imp.id(26858156054048846)
-,p_short_name=>'Application Theme Style'
-,p_link=>'f?p=&APP_ID.:52:&SESSION.::&DEBUG.:::'
-,p_page_id=>52
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(14672594412845524)
-,p_parent_id=>wwv_flow_imp.id(14672144464831674)
-,p_option_sequence=>20
-,p_short_name=>'Vector vs. Oracle Text Search'
-,p_link=>'f?p=&APP_ID.:32:&SESSION.::&DEBUG.:::'
-,p_page_id=>32
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(14671899167827589)
-,p_option_sequence=>25
-,p_short_name=>'Custom Vector Search'
-,p_link=>'f?p=&APP_ID.:24:&SESSION.::&DEBUG.:::'
-,p_page_id=>24
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(14671278596813646)
-,p_parent_id=>wwv_flow_imp.id(14677304043005330)
-,p_option_sequence=>30
-,p_short_name=>'Vector vs. Oracle Text Search'
-,p_link=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.:::'
-,p_page_id=>16
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(26856810898041914)
-,p_option_sequence=>30
-,p_short_name=>'Mixed Languages'
-,p_link=>'f?p=&APP_ID.:42:&SESSION.::&DEBUG.:::'
-,p_page_id=>42
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(14672764902847722)
 ,p_parent_id=>wwv_flow_imp.id(14672144464831674)
 ,p_option_sequence=>40
 ,p_short_name=>'Vector and Oracle Text Search'
+,p_static_id=>'vector-and-oracle-text-search'
 ,p_link=>'f?p=&APP_ID.:33:&SESSION.::&DEBUG.:::'
 ,p_page_id=>33
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(26858156054048846)
-,p_option_sequence=>40
-,p_short_name=>'Administration'
-,p_link=>'f?p=&APP_ID.:50:&SESSION.::&DEBUG.:::'
-,p_page_id=>50
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(14671422085815292)
 ,p_parent_id=>wwv_flow_imp.id(14677304043005330)
 ,p_option_sequence=>50
 ,p_short_name=>'Vector and Oracle Text Search'
+,p_static_id=>'vector-and-oracle-text-search-2'
 ,p_link=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.:::'
 ,p_page_id=>17
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(14672144464831674)
+,p_parent_id=>wwv_flow_imp.id(14671899167827589)
+,p_short_name=>'Vector Search'
+,p_static_id=>'vector-search'
+,p_link=>'f?p=&APP_ID.:30:&SESSION.::&DEBUG.:::'
+,p_page_id=>30
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(14677304043005330)
+,p_parent_id=>wwv_flow_imp.id(14562568909227184)
+,p_short_name=>'Vector Search'
+,p_static_id=>'vector-search-2'
+,p_link=>'f?p=&APP_ID.:14:&SESSION.::&DEBUG.:::'
+,p_page_id=>14
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(14672594412845524)
+,p_parent_id=>wwv_flow_imp.id(14672144464831674)
+,p_option_sequence=>20
+,p_short_name=>'Vector vs. Oracle Text Search'
+,p_static_id=>'vector-vs-oracle-text-search'
+,p_link=>'f?p=&APP_ID.:32:&SESSION.::&DEBUG.:::'
+,p_page_id=>32
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(14671278596813646)
+,p_parent_id=>wwv_flow_imp.id(14677304043005330)
+,p_option_sequence=>30
+,p_short_name=>'Vector vs. Oracle Text Search'
+,p_static_id=>'vector-vs-oracle-text-search-2'
+,p_link=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.:::'
+,p_page_id=>16
 );
 end;
 /
 prompt --application/shared_components/navigation/breadcrumbentry
-begin
-null;
-end;
-/
-prompt --application/shared_components/user_interface/templates/popuplov
 begin
 null;
 end;
@@ -2069,50 +2121,50 @@ begin
 wwv_flow_imp_shared.create_theme(
  p_id=>wwv_flow_imp.id(26569462704740920)
 ,p_theme_id=>42
+,p_static_id=>'universal-theme'
 ,p_theme_name=>'Universal Theme'
 ,p_theme_internal_name=>'UNIVERSAL_THEME'
-,p_version_identifier=>'24.2'
+,p_version_identifier=>'26.1'
 ,p_navigation_type=>'L'
 ,p_nav_bar_type=>'LIST'
-,p_reference_id=>4072363937200175119
 ,p_is_locked=>false
-,p_current_theme_style_id=>2597873239612181258
-,p_default_page_template=>4072355960268175073
-,p_default_dialog_template=>2100407606326202693
-,p_error_template=>2101157952850466385
-,p_printer_friendly_template=>4072355960268175073
-,p_login_template=>2101157952850466385
-,p_default_button_template=>4072362960822175091
-,p_default_region_template=>4072358936313175081
-,p_default_chart_template=>4072358936313175081
-,p_default_form_template=>4072358936313175081
-,p_default_reportr_template=>4072358936313175081
-,p_default_tabform_template=>4072358936313175081
-,p_default_wizard_template=>4072358936313175081
-,p_default_menur_template=>2531463326621247859
-,p_default_listr_template=>4072358936313175081
-,p_default_irr_template=>2100526641005906379
-,p_default_report_template=>2538654340625403440
-,p_default_label_template=>1609121967514267634
-,p_default_menu_template=>4072363345357175094
-,p_default_calendar_template=>4072363550766175095
-,p_default_list_template=>4072361143931175087
-,p_default_nav_list_template=>2526754704087354841
-,p_default_top_nav_list_temp=>2526754704087354841
-,p_default_side_nav_list_temp=>2467739217141810545
+,p_current_theme_style_id=>2243014446517417
+,p_default_page_template=>4073832297226169690
+,p_default_dialog_template=>2101883943284197310
+,p_error_template=>2102634289808461002
+,p_printer_friendly_template=>4073832297226169690
+,p_login_template=>2102634289808461002
+,p_default_button_template=>4073839297780169708
+,p_default_region_template=>4073835273271169698
+,p_default_chart_template=>4073835273271169698
+,p_default_form_template=>4073835273271169698
+,p_default_reportr_template=>4073835273271169698
+,p_default_wizard_template=>4073835273271169698
+,p_default_menur_template=>2532939663579242476
+,p_default_listr_template=>4073835273271169698
+,p_default_irr_template=>2102002977963900996
+,p_default_report_template=>2540130677583398057
+,p_default_label_template=>1610598304472262251
+,p_default_menu_template=>4073839682315169711
+,p_default_list_template=>4073837480889169704
+,p_default_top_nav_list_temp=>2528231041045349458
+,p_default_side_nav_list_temp=>2469215554099805162
 ,p_default_nav_list_position=>'SIDE'
-,p_default_dialogbtnr_template=>2126429139436695430
-,p_default_dialogr_template=>4501440665235496320
-,p_default_option_label=>1609121967514267634
-,p_default_required_label=>1609122147107268652
-,p_default_navbar_list_template=>2847543055748234966
-,p_file_prefix => nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/24.2/')
+,p_default_dialogbtnr_template=>2127905476394690047
+,p_default_dialogr_template=>4502917002193490937
+,p_default_option_label=>1610598304472262251
+,p_default_required_label=>1610598484065263269
+,p_default_navbar_list_template=>2849019392706229583
+,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.1/')
 ,p_files_version=>64
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
+,p_reference_id=>wwv_imp_util.get_subscription_id(4073840274158169736,2000,'universal-theme',8842.261)
+,p_version_scn=>'SH256:uQ4JZ2SNi6_ApHjT-kqrEfO43wbND5yijbsMF-bW90c'
+,p_version_scn_master=>'SH256:WOPVC8vP1TPWUxczh2dJ4mCZcNGSTzA1cn8DjR2oQjY'
 );
 end;
 /
@@ -2146,8 +2198,9 @@ begin
 wwv_flow_imp_shared.create_build_option(
  p_id=>wwv_flow_imp.id(26567952363740914)
 ,p_build_option_name=>'Commented Out'
+,p_static_id=>'commented-out'
 ,p_build_option_status=>'EXCLUDE'
-,p_version_scn=>50290795
+,p_version_scn=>'50290795'
 );
 end;
 /
@@ -2158,7 +2211,7 @@ wwv_flow_imp_shared.create_message(
 ,p_name=>'EBA_VECTOR.STATUS_UPDATE_AI_GENERATION'
 ,p_message_text=>'%0 out of %1 categories generated.'
 ,p_is_js_message=>true
-,p_version_scn=>116272461
+,p_version_scn=>'116272461'
 );
 end;
 /
@@ -2172,114 +2225,17 @@ begin
 wwv_flow_imp_shared.create_authentication(
  p_id=>wwv_flow_imp.id(26568274666740914)
 ,p_name=>'Oracle APEX Accounts'
+,p_static_id=>'oracle-apex-accounts'
 ,p_scheme_type=>'NATIVE_APEX_ACCOUNTS'
 ,p_invalid_session_type=>'LOGIN'
 ,p_use_secure_cookie_yn=>'N'
 ,p_ras_mode=>0
-,p_version_scn=>50290795
+,p_version_scn=>'50290795'
 );
 end;
 /
 prompt --application/shared_components/data_loads/genai_csv_load
 begin
-wwv_flow_imp_shared.create_data_profile(
- p_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'GenAI CSV Load'
-,p_format=>'CSV'
-,p_encoding=>'utf-8'
-,p_csv_enclosed=>'"'
-,p_has_header_row=>true
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26863105410699182)
-,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'TITLE'
-,p_sequence=>2
-,p_is_primary_key=>true
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_max_length=>4000
-,p_has_time_zone=>true
-,p_selector_type=>'NAME'
-,p_selector=>'TITLE'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26863447474699183)
-,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'MOVIEDESCRIPTION'
-,p_sequence=>3
-,p_column_type=>'DATA'
-,p_data_type=>'CLOB'
-,p_selector_type=>'NAME'
-,p_selector=>'MOVIEDESCRIPTION'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26863759408699183)
-,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'ACTORS'
-,p_sequence=>4
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_max_length=>4000
-,p_selector_type=>'NAME'
-,p_selector=>'ACTORS'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26864075327699183)
-,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'GENRE'
-,p_sequence=>5
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_max_length=>4000
-,p_selector_type=>'NAME'
-,p_selector=>'GENRE'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26864397328699184)
-,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'VOTES'
-,p_sequence=>6
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_selector_type=>'NAME'
-,p_selector=>'VOTES'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26864686769699184)
-,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'RELEASE_DATE'
-,p_sequence=>7
-,p_column_type=>'DATA'
-,p_data_type=>'DATE'
-,p_format_mask=>'YYYY-MM-DD'
-,p_has_time_zone=>false
-,p_selector_type=>'NAME'
-,p_selector=>'RELEASE_DATE'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26864980639699184)
-,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'RATING'
-,p_sequence=>8
-,p_column_type=>'DATA'
-,p_data_type=>'NUMBER'
-,p_has_time_zone=>true
-,p_selector_type=>'NAME'
-,p_selector=>'RATING'
-);
-wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26865293510699184)
-,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
-,p_name=>'EMBEDDING_VECTOR'
-,p_sequence=>18
-,p_column_type=>'SQL_EXPRESSION'
-,p_data_type=>'VARCHAR2'
-,p_max_length=>4000
-,p_has_time_zone=>true
-,p_transform_type=>'SQL_EXPRESSION'
-,p_expression1=>'NULL'
-);
 wwv_flow_imp_shared.create_load_table(
  p_id=>wwv_flow_imp.id(26865649864699185)
 ,p_name=>'GenAI CSV Load'
@@ -2291,12 +2247,127 @@ wwv_flow_imp_shared.create_load_table(
 ,p_commit_interval=>200
 ,p_error_handling=>'IGNORE'
 ,p_skip_validation=>'N'
-,p_version_scn=>80607727
+,p_version_scn=>'80607727'
+);
+wwv_flow_imp_shared.create_data_profile(
+ p_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'GenAI CSV Load'
+,p_format=>'CSV'
+,p_encoding=>'utf-8'
+,p_csv_enclosed=>'"'
+,p_has_header_row=>true
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26863759408699183)
+,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'ACTORS'
+,p_static_id=>'actors'
+,p_sequence=>4
+,p_column_type=>'DATA'
+,p_data_type=>'VARCHAR2'
+,p_max_length=>4000
+,p_selector_type=>'NAME'
+,p_selector=>'ACTORS'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26865293510699184)
+,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'EMBEDDING_VECTOR'
+,p_static_id=>'embedding-vector'
+,p_sequence=>18
+,p_column_type=>'SQL_EXPRESSION'
+,p_data_type=>'VARCHAR2'
+,p_max_length=>4000
+,p_expression1=>'NULL'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26864075327699183)
+,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'GENRE'
+,p_static_id=>'genre'
+,p_sequence=>5
+,p_column_type=>'DATA'
+,p_data_type=>'VARCHAR2'
+,p_max_length=>4000
+,p_selector_type=>'NAME'
+,p_selector=>'GENRE'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26863447474699183)
+,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'MOVIEDESCRIPTION'
+,p_static_id=>'moviedescription'
+,p_sequence=>3
+,p_column_type=>'DATA'
+,p_data_type=>'CLOB'
+,p_selector_type=>'NAME'
+,p_selector=>'MOVIEDESCRIPTION'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26864980639699184)
+,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'RATING'
+,p_static_id=>'rating'
+,p_sequence=>8
+,p_column_type=>'DATA'
+,p_data_type=>'NUMBER'
+,p_selector_type=>'NAME'
+,p_selector=>'RATING'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26864686769699184)
+,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'RELEASE_DATE'
+,p_static_id=>'release-date'
+,p_sequence=>7
+,p_column_type=>'DATA'
+,p_data_type=>'DATE'
+,p_format_mask=>'YYYY-MM-DD'
+,p_has_time_zone=>false
+,p_selector_type=>'NAME'
+,p_selector=>'RELEASE_DATE'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26863105410699182)
+,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'TITLE'
+,p_static_id=>'title'
+,p_sequence=>2
+,p_is_primary_key=>true
+,p_column_type=>'DATA'
+,p_data_type=>'VARCHAR2'
+,p_max_length=>4000
+,p_selector_type=>'NAME'
+,p_selector=>'TITLE'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26864397328699184)
+,p_data_profile_id=>wwv_flow_imp.id(26863078011699176)
+,p_name=>'VOTES'
+,p_static_id=>'votes'
+,p_sequence=>6
+,p_column_type=>'DATA'
+,p_data_type=>'NUMBER'
+,p_selector_type=>'NAME'
+,p_selector=>'VOTES'
 );
 end;
 /
 prompt --application/shared_components/data_loads/manual_csv_load
 begin
+wwv_flow_imp_shared.create_load_table(
+ p_id=>wwv_flow_imp.id(26872215558699189)
+,p_name=>'Manual CSV Load'
+,p_static_id=>'manual_csv_load'
+,p_target_type=>'TABLE'
+,p_table_name=>'EBA_VECTOR_DATATABLE'
+,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
+,p_loading_method=>'REPLACE'
+,p_commit_interval=>200
+,p_error_handling=>'IGNORE'
+,p_skip_validation=>'N'
+,p_version_scn=>'101639109'
+);
 wwv_flow_imp_shared.create_data_profile(
  p_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'Manual CSV Load'
@@ -2310,18 +2381,31 @@ wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26868892648699187)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL1'
+,p_static_id=>'col'
 ,p_sequence=>2
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
 ,p_max_length=>4000
-,p_has_time_zone=>true
 ,p_selector_type=>'SEQ'
 ,p_selector=>'1'
+);
+wwv_flow_imp_shared.create_data_profile_col(
+ p_id=>wwv_flow_imp.id(26871576633699189)
+,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
+,p_name=>'COL10'
+,p_static_id=>'col-10'
+,p_sequence=>11
+,p_column_type=>'DATA'
+,p_data_type=>'VARCHAR2'
+,p_max_length=>4000
+,p_selector_type=>'SEQ'
+,p_selector=>'10'
 );
 wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26869154510699188)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL2'
+,p_static_id=>'col-2'
 ,p_sequence=>3
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
@@ -2333,6 +2417,7 @@ wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26869496603699188)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL3'
+,p_static_id=>'col-3'
 ,p_sequence=>4
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
@@ -2344,6 +2429,7 @@ wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26869716512699188)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL4'
+,p_static_id=>'col-4'
 ,p_sequence=>5
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
@@ -2355,6 +2441,7 @@ wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26870076946699188)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL5'
+,p_static_id=>'col-5'
 ,p_sequence=>6
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
@@ -2366,6 +2453,7 @@ wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26870334241699188)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL6'
+,p_static_id=>'col-6'
 ,p_sequence=>7
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
@@ -2377,6 +2465,7 @@ wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26870653003699188)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL7'
+,p_static_id=>'col-7'
 ,p_sequence=>8
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
@@ -2388,6 +2477,7 @@ wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26870946671699188)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL8'
+,p_static_id=>'col-8'
 ,p_sequence=>9
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
@@ -2399,6 +2489,7 @@ wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26871240635699189)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'COL9'
+,p_static_id=>'col-9'
 ,p_sequence=>10
 ,p_column_type=>'DATA'
 ,p_data_type=>'VARCHAR2'
@@ -2407,81 +2498,55 @@ wwv_flow_imp_shared.create_data_profile_col(
 ,p_selector=>'9'
 );
 wwv_flow_imp_shared.create_data_profile_col(
- p_id=>wwv_flow_imp.id(26871576633699189)
-,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
-,p_name=>'COL10'
-,p_sequence=>11
-,p_column_type=>'DATA'
-,p_data_type=>'VARCHAR2'
-,p_max_length=>4000
-,p_selector_type=>'SEQ'
-,p_selector=>'10'
-);
-wwv_flow_imp_shared.create_data_profile_col(
  p_id=>wwv_flow_imp.id(26871899115699189)
 ,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
 ,p_name=>'EMBEDDING_VECTOR'
+,p_static_id=>'embedding-vector'
 ,p_sequence=>21
 ,p_column_type=>'SQL_EXPRESSION'
 ,p_data_type=>'VARCHAR2'
 ,p_max_length=>4000
-,p_has_time_zone=>true
-,p_transform_type=>'SQL_EXPRESSION'
 ,p_expression1=>'NULL'
-);
-wwv_flow_imp_shared.create_load_table(
- p_id=>wwv_flow_imp.id(26872215558699189)
-,p_name=>'Manual CSV Load'
-,p_static_id=>'manual_csv_load'
-,p_target_type=>'TABLE'
-,p_table_name=>'EBA_VECTOR_DATATABLE'
-,p_data_profile_id=>wwv_flow_imp.id(26868796610699187)
-,p_loading_method=>'REPLACE'
-,p_commit_interval=>200
-,p_error_handling=>'IGNORE'
-,p_skip_validation=>'N'
-,p_version_scn=>101639109
 );
 end;
 /
-prompt --application/shared_components/navigation/search_config/oracle_text_search_and_vector_datatable
+prompt --application/shared_components/navigation/search_config/oci_basic_vector_search_datatable
 begin
 wwv_flow_imp_shared.create_search_config(
- p_id=>wwv_flow_imp.id(14705397227405739)
-,p_label=>'ORACLE-TEXT-SEARCH-AND-VECTOR-DATATABLE'
-,p_static_id=>'oracle_text_search_and_vector_datatable'
-,p_search_type=>'TEXT_MANUAL'
-,p_location=>'LOCAL'
+ p_id=>wwv_flow_imp.id(26881450222843584)
+,p_label=>'OCI-BASIC-VECTOR-SEARCH-DATATABLE'
+,p_static_id=>'OCI_ADVANCED_VECTOR_SEARCH'
+,p_search_type=>'VECTOR'
 ,p_query_type=>'TABLE'
 ,p_query_table=>'EBA_VECTOR_DATATABLE'
-,p_oratext_index_column_name=>'COL1'
+,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
+,p_vector_provider_id=>16013343297879238
+,p_vector_search_type=>'EXACT'
+,p_vector_distance_metric=>'DOT'
 ,p_return_max_results=>10
-,p_query_order_by=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'VECTOR_DISTANCE(embedding_vector, ',
-'    apex_ai.get_vector_embeddings(',
-'        p_value =>             :P33_SEARCH, ',
-'        p_service_static_id => case when :CURRENT_AI_PROVIDER = ''OCI'' then ''EBA_VECTOR_OCI'' else ''EBA_VECTOR_OPENAI'' end), DOT) ASC'))
 ,p_pk_column_name=>'ID'
 ,p_title_column_name=>'COL1'
 ,p_subtitle_column_name=>'COL2'
 ,p_description_column_name=>'COL3'
 ,p_icon_source_type=>'STATIC_CLASS'
-,p_icon_css_classes=>'fa-film'
-,p_version_scn=>106554704
+,p_icon_css_classes=>'fa-sitemap-vertical'
+,p_version_scn=>'106554472'
 );
 end;
 /
-prompt --application/shared_components/navigation/search_config/oracle_text_search_moviedata
+prompt --application/shared_components/navigation/search_config/oci_basic_vector_search_moviedata
 begin
 wwv_flow_imp_shared.create_search_config(
- p_id=>wwv_flow_imp.id(14707557746494741)
-,p_label=>'ORACLE-TEXT-SEARCH-MOVIEDATA'
-,p_static_id=>'oracle_text_search_moviedata'
-,p_search_type=>'TEXT_MANUAL'
-,p_location=>'LOCAL'
+ p_id=>wwv_flow_imp.id(26879557964827740)
+,p_label=>'OCI-BASIC-VECTOR-SEARCH-MOVIEDATA'
+,p_static_id=>'OCI_BASIC_VECTOR_SEARCH'
+,p_search_type=>'VECTOR'
 ,p_query_type=>'TABLE'
 ,p_query_table=>'EBA_VECTOR_MOVIEDATA'
-,p_oratext_index_column_name=>'MOVIEDESCRIPTION'
+,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
+,p_vector_provider_id=>16013343297879238
+,p_vector_search_type=>'EXACT'
+,p_vector_distance_metric=>'DOT'
 ,p_return_max_results=>10
 ,p_pk_column_name=>'ID'
 ,p_title_column_name=>'TITLE'
@@ -2490,7 +2555,7 @@ wwv_flow_imp_shared.create_search_config(
 ,p_badge_column_name=>'RATING'
 ,p_icon_source_type=>'STATIC_CLASS'
 ,p_icon_css_classes=>'fa-film'
-,p_version_scn=>106509225
+,p_version_scn=>'106110171'
 );
 end;
 /
@@ -2501,12 +2566,11 @@ wwv_flow_imp_shared.create_search_config(
 ,p_label=>'OCI-MOVIE-RECOMMENDATION'
 ,p_static_id=>'OCI_MOVIE_RECOMMENDATION'
 ,p_search_type=>'VECTOR'
-,p_location=>'LOCAL'
 ,p_query_type=>'TABLE'
 ,p_query_table=>'EBA_VECTOR_MOVIEDATA'
 ,p_query_where=>'SUBSTR(moviedescription, 1, 40) <> SUBSTR(:P41_SEARCH, 1, 40)'
 ,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
-,p_vector_provider_id =>wwv_flow_imp.id(16013343297879238)
+,p_vector_provider_id=>16013343297879238
 ,p_vector_search_type=>'EXACT'
 ,p_vector_distance_metric=>'DOT'
 ,p_return_max_results=>5
@@ -2519,7 +2583,105 @@ wwv_flow_imp_shared.create_search_config(
 ,p_link_target=>'f?p=&APP_ID.:49:&APP_SESSION.::&DEBUG.:49:P49_SEARCH_ID:&ID.'
 ,p_icon_source_type=>'STATIC_CLASS'
 ,p_icon_css_classes=>'fa-film'
-,p_version_scn=>119703015
+,p_version_scn=>'119703015'
+);
+end;
+/
+prompt --application/shared_components/navigation/search_config/openai_basic_vector_search_datatable
+begin
+wwv_flow_imp_shared.create_search_config(
+ p_id=>wwv_flow_imp.id(32204777597721912)
+,p_label=>'OPENAI-BASIC-VECTOR-SEARCH-DATATABLE'
+,p_static_id=>'OPENAI_ADVANCED_VECTOR_SEARCH'
+,p_search_type=>'VECTOR'
+,p_query_type=>'TABLE'
+,p_query_table=>'EBA_VECTOR_DATATABLE'
+,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
+,p_vector_provider_id=>15639632983805312
+,p_vector_search_type=>'EXACT'
+,p_vector_distance_metric=>'DOT'
+,p_return_max_results=>10
+,p_pk_column_name=>'ID'
+,p_title_column_name=>'COL1'
+,p_subtitle_column_name=>'COL2'
+,p_description_column_name=>'COL3'
+,p_icon_source_type=>'STATIC_CLASS'
+,p_icon_css_classes=>'fa-sitemap-vertical'
+,p_version_scn=>'106554312'
+);
+end;
+/
+prompt --application/shared_components/navigation/search_config/openai_basic_vector_search_moviedata
+begin
+wwv_flow_imp_shared.create_search_config(
+ p_id=>wwv_flow_imp.id(32205139326725138)
+,p_label=>'OPENAI-BASIC-VECTOR-SEARCH-MOVIEDATA'
+,p_static_id=>'OPENAI_BASIC_VECTOR_SEARCH'
+,p_search_type=>'VECTOR'
+,p_query_type=>'TABLE'
+,p_query_table=>'EBA_VECTOR_MOVIEDATA'
+,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
+,p_vector_provider_id=>15639632983805312
+,p_vector_search_type=>'EXACT'
+,p_vector_distance_metric=>'DOT'
+,p_return_max_results=>10
+,p_pk_column_name=>'ID'
+,p_title_column_name=>'TITLE'
+,p_subtitle_column_name=>'ACTORS'
+,p_description_column_name=>'MOVIEDESCRIPTION'
+,p_badge_column_name=>'RATING'
+,p_icon_source_type=>'STATIC_CLASS'
+,p_icon_css_classes=>'fa-film'
+,p_version_scn=>'106109376'
+);
+end;
+/
+prompt --application/shared_components/navigation/search_config/openai_movie_recommendation
+begin
+wwv_flow_imp_shared.create_search_config(
+ p_id=>wwv_flow_imp.id(32204106105713615)
+,p_label=>'OPENAI-MOVIE-RECOMMENDATION'
+,p_static_id=>'OPENAI_MOVIE_RECOMMENDATION'
+,p_search_type=>'VECTOR'
+,p_query_type=>'TABLE'
+,p_query_table=>'EBA_VECTOR_MOVIEDATA'
+,p_query_where=>'SUBSTR(moviedescription, 1, 40) <> SUBSTR(:P41_SEARCH, 1, 40)'
+,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
+,p_vector_provider_id=>15639632983805312
+,p_vector_search_type=>'EXACT'
+,p_vector_distance_metric=>'DOT'
+,p_return_max_results=>5
+,p_pk_column_name=>'ID'
+,p_title_column_name=>'TITLE'
+,p_subtitle_column_name=>'ACTORS'
+,p_description_column_name=>'MOVIEDESCRIPTION'
+,p_badge_column_name=>'RATING'
+,p_link_target_type=>'REDIRECT_PAGE'
+,p_link_target=>'f?p=&APP_ID.:49:&APP_SESSION.::&DEBUG.:49:P49_SEARCH_ID:&ID.'
+,p_icon_source_type=>'STATIC_CLASS'
+,p_icon_css_classes=>'fa-film'
+,p_version_scn=>'119702249'
+);
+end;
+/
+prompt --application/shared_components/navigation/search_config/oracle_text_search_datatable
+begin
+wwv_flow_imp_shared.create_search_config(
+ p_id=>wwv_flow_imp.id(26879025249810515)
+,p_label=>'ORACLE-TEXT-SEARCH-DATATABLE'
+,p_static_id=>'ORACLE_TEXT_SEARCH'
+,p_search_type=>'TEXT_MANUAL'
+,p_query_type=>'TABLE'
+,p_query_table=>'EBA_VECTOR_DATATABLE'
+,p_oratext_index_column_name=>'COL1'
+,p_return_max_results=>10
+,p_pk_column_name=>'ID'
+,p_title_column_name=>'COL1'
+,p_subtitle_column_name=>'COL2'
+,p_description_column_name=>'COL3'
+,p_icon_source_type=>'STATIC_CLASS'
+,p_icon_css_classes=>'fa-sitemap-vertical'
+,p_version_scn=>'106553931'
 );
 end;
 /
@@ -2530,7 +2692,6 @@ wwv_flow_imp_shared.create_search_config(
 ,p_label=>'ORACLE-TEXT-SEARCH-AND-VECTOR-MOVIEDATA'
 ,p_static_id=>'ORACLE_TEXT_SEARCH_AND_VECTOR'
 ,p_search_type=>'TEXT_MANUAL'
-,p_location=>'LOCAL'
 ,p_query_type=>'TABLE'
 ,p_query_table=>'EBA_VECTOR_MOVIEDATA'
 ,p_oratext_index_column_name=>'MOVIEDESCRIPTION'
@@ -2547,46 +2708,46 @@ wwv_flow_imp_shared.create_search_config(
 ,p_badge_column_name=>'RATING'
 ,p_icon_source_type=>'STATIC_CLASS'
 ,p_icon_css_classes=>'fa-film'
-,p_version_scn=>106508917
+,p_version_scn=>'106508917'
 );
 end;
 /
-prompt --application/shared_components/navigation/search_config/oracle_text_search_datatable
+prompt --application/shared_components/navigation/search_config/oracle_text_search_and_vector_datatable
 begin
 wwv_flow_imp_shared.create_search_config(
- p_id=>wwv_flow_imp.id(26879025249810515)
-,p_label=>'ORACLE-TEXT-SEARCH-DATATABLE'
-,p_static_id=>'ORACLE_TEXT_SEARCH'
+ p_id=>wwv_flow_imp.id(14705397227405739)
+,p_label=>'ORACLE-TEXT-SEARCH-AND-VECTOR-DATATABLE'
+,p_static_id=>'oracle_text_search_and_vector_datatable'
 ,p_search_type=>'TEXT_MANUAL'
-,p_location=>'LOCAL'
 ,p_query_type=>'TABLE'
 ,p_query_table=>'EBA_VECTOR_DATATABLE'
 ,p_oratext_index_column_name=>'COL1'
 ,p_return_max_results=>10
+,p_query_order_by=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'VECTOR_DISTANCE(embedding_vector, ',
+'    apex_ai.get_vector_embeddings(',
+'        p_value =>             :P33_SEARCH, ',
+'        p_service_static_id => case when :CURRENT_AI_PROVIDER = ''OCI'' then ''EBA_VECTOR_OCI'' else ''EBA_VECTOR_OPENAI'' end), DOT) ASC'))
 ,p_pk_column_name=>'ID'
 ,p_title_column_name=>'COL1'
 ,p_subtitle_column_name=>'COL2'
 ,p_description_column_name=>'COL3'
 ,p_icon_source_type=>'STATIC_CLASS'
-,p_icon_css_classes=>'fa-sitemap-vertical'
-,p_version_scn=>106553931
+,p_icon_css_classes=>'fa-film'
+,p_version_scn=>'106554704'
 );
 end;
 /
-prompt --application/shared_components/navigation/search_config/oci_basic_vector_search_moviedata
+prompt --application/shared_components/navigation/search_config/oracle_text_search_moviedata
 begin
 wwv_flow_imp_shared.create_search_config(
- p_id=>wwv_flow_imp.id(26879557964827740)
-,p_label=>'OCI-BASIC-VECTOR-SEARCH-MOVIEDATA'
-,p_static_id=>'OCI_BASIC_VECTOR_SEARCH'
-,p_search_type=>'VECTOR'
-,p_location=>'LOCAL'
+ p_id=>wwv_flow_imp.id(14707557746494741)
+,p_label=>'ORACLE-TEXT-SEARCH-MOVIEDATA'
+,p_static_id=>'oracle_text_search_moviedata'
+,p_search_type=>'TEXT_MANUAL'
 ,p_query_type=>'TABLE'
 ,p_query_table=>'EBA_VECTOR_MOVIEDATA'
-,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
-,p_vector_provider_id =>wwv_flow_imp.id(16013343297879238)
-,p_vector_search_type=>'EXACT'
-,p_vector_distance_metric=>'DOT'
+,p_oratext_index_column_name=>'MOVIEDESCRIPTION'
 ,p_return_max_results=>10
 ,p_pk_column_name=>'ID'
 ,p_title_column_name=>'TITLE'
@@ -2595,112 +2756,7 @@ wwv_flow_imp_shared.create_search_config(
 ,p_badge_column_name=>'RATING'
 ,p_icon_source_type=>'STATIC_CLASS'
 ,p_icon_css_classes=>'fa-film'
-,p_version_scn=>106110171
-);
-end;
-/
-prompt --application/shared_components/navigation/search_config/oci_basic_vector_search_datatable
-begin
-wwv_flow_imp_shared.create_search_config(
- p_id=>wwv_flow_imp.id(26881450222843584)
-,p_label=>'OCI-BASIC-VECTOR-SEARCH-DATATABLE'
-,p_static_id=>'OCI_ADVANCED_VECTOR_SEARCH'
-,p_search_type=>'VECTOR'
-,p_location=>'LOCAL'
-,p_query_type=>'TABLE'
-,p_query_table=>'EBA_VECTOR_DATATABLE'
-,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
-,p_vector_provider_id =>wwv_flow_imp.id(16013343297879238)
-,p_vector_search_type=>'EXACT'
-,p_vector_distance_metric=>'DOT'
-,p_return_max_results=>10
-,p_pk_column_name=>'ID'
-,p_title_column_name=>'COL1'
-,p_subtitle_column_name=>'COL2'
-,p_description_column_name=>'COL3'
-,p_icon_source_type=>'STATIC_CLASS'
-,p_icon_css_classes=>'fa-sitemap-vertical'
-,p_version_scn=>106554472
-);
-end;
-/
-prompt --application/shared_components/navigation/search_config/openai_movie_recommendation
-begin
-wwv_flow_imp_shared.create_search_config(
- p_id=>wwv_flow_imp.id(32204106105713615)
-,p_label=>'OPENAI-MOVIE-RECOMMENDATION'
-,p_static_id=>'OPENAI_MOVIE_RECOMMENDATION'
-,p_search_type=>'VECTOR'
-,p_location=>'LOCAL'
-,p_query_type=>'TABLE'
-,p_query_table=>'EBA_VECTOR_MOVIEDATA'
-,p_query_where=>'SUBSTR(moviedescription, 1, 40) <> SUBSTR(:P41_SEARCH, 1, 40)'
-,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
-,p_vector_provider_id =>wwv_flow_imp.id(15639632983805312)
-,p_vector_search_type=>'EXACT'
-,p_vector_distance_metric=>'DOT'
-,p_return_max_results=>5
-,p_pk_column_name=>'ID'
-,p_title_column_name=>'TITLE'
-,p_subtitle_column_name=>'ACTORS'
-,p_description_column_name=>'MOVIEDESCRIPTION'
-,p_badge_column_name=>'RATING'
-,p_link_target_type=>'REDIRECT_PAGE'
-,p_link_target=>'f?p=&APP_ID.:49:&APP_SESSION.::&DEBUG.:49:P49_SEARCH_ID:&ID.'
-,p_icon_source_type=>'STATIC_CLASS'
-,p_icon_css_classes=>'fa-film'
-,p_version_scn=>119702249
-);
-end;
-/
-prompt --application/shared_components/navigation/search_config/openai_basic_vector_search_datatable
-begin
-wwv_flow_imp_shared.create_search_config(
- p_id=>wwv_flow_imp.id(32204777597721912)
-,p_label=>'OPENAI-BASIC-VECTOR-SEARCH-DATATABLE'
-,p_static_id=>'OPENAI_ADVANCED_VECTOR_SEARCH'
-,p_search_type=>'VECTOR'
-,p_location=>'LOCAL'
-,p_query_type=>'TABLE'
-,p_query_table=>'EBA_VECTOR_DATATABLE'
-,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
-,p_vector_provider_id =>wwv_flow_imp.id(15639632983805312)
-,p_vector_search_type=>'EXACT'
-,p_vector_distance_metric=>'DOT'
-,p_return_max_results=>10
-,p_pk_column_name=>'ID'
-,p_title_column_name=>'COL1'
-,p_subtitle_column_name=>'COL2'
-,p_description_column_name=>'COL3'
-,p_icon_source_type=>'STATIC_CLASS'
-,p_icon_css_classes=>'fa-sitemap-vertical'
-,p_version_scn=>106554312
-);
-end;
-/
-prompt --application/shared_components/navigation/search_config/openai_basic_vector_search_moviedata
-begin
-wwv_flow_imp_shared.create_search_config(
- p_id=>wwv_flow_imp.id(32205139326725138)
-,p_label=>'OPENAI-BASIC-VECTOR-SEARCH-MOVIEDATA'
-,p_static_id=>'OPENAI_BASIC_VECTOR_SEARCH'
-,p_search_type=>'VECTOR'
-,p_location=>'LOCAL'
-,p_query_type=>'TABLE'
-,p_query_table=>'EBA_VECTOR_MOVIEDATA'
-,p_oratext_index_column_name=>'EMBEDDING_VECTOR'
-,p_vector_provider_id =>wwv_flow_imp.id(15639632983805312)
-,p_vector_search_type=>'EXACT'
-,p_vector_distance_metric=>'DOT'
-,p_return_max_results=>10
-,p_pk_column_name=>'ID'
-,p_title_column_name=>'TITLE'
-,p_subtitle_column_name=>'ACTORS'
-,p_description_column_name=>'MOVIEDESCRIPTION'
-,p_badge_column_name=>'RATING'
-,p_icon_source_type=>'STATIC_CLASS'
-,p_icon_css_classes=>'fa-film'
-,p_version_scn=>106109376
+,p_version_scn=>'106509225'
 );
 end;
 /
@@ -2714,9 +2770,9 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>0
 ,p_name=>'Global Page'
-,p_step_title=>'Global Page'
+,p_reload_on_submit=>null
+,p_warn_on_unsaved_changes=>null
 ,p_autocomplete_on_off=>'OFF'
-,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'D'
 ,p_page_component_map=>'14'
 );
@@ -2730,33 +2786,19 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'HOME'
 ,p_step_title=>'Sample Vector Search'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(26581476523740998)
-,p_plug_name=>'&APP_NAME.'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2674017834225413037
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_location=>null
-,p_plug_source=>'<p>Demonstration of AI Vector Search in Oracle APEX</p>'
-,p_plug_query_num_rows=>15
-,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML',
-  'show_line_breaks', 'Y')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(31840317192390084)
 ,p_plug_name=>'About this Application'
+,p_static_id=>'about-this-application'
 ,p_region_template_options=>'#DEFAULT#:margin-bottom-lg'
-,p_plug_template=>3371237801798025892
+,p_plug_template=>3372714138756020509
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>'<p>This application highlights the features and capabilities of AI Vector Search in Oracle APEX. Use this application to better understand the native and declarative functionality of Vector Search available in the Oracle Database 23ai.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -2764,16 +2806,35 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(26581476523740998)
+,p_plug_name=>'&APP_NAME.'
+,p_static_id=>'app-name'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>2675494171183407654
+,p_plug_display_sequence=>10
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'<p>Demonstration of AI Vector Search in Oracle APEX</p>'
+,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(31840915897390090)
 ,p_plug_name=>'App Navigation'
+,p_static_id=>'app-navigation'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_component_template_options=>'#DEFAULT#:u-colors:t-Cards--featured force-fa-lg:t-Cards--displayIcons:t-Cards--3cols:t-Cards--iconsRounded:t-Cards--animColorFill'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(32150271482617636)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2886769488667748277
+,p_list_template_id=>2888245825625742894
 ,p_landmark_type=>'navigation'
 ,p_landmark_label=>'App'
 );
@@ -2798,6 +2859,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'MOVIE-VECTOR-SEARCH'
 ,p_step_title=>'Movie Vector Search'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'06'
@@ -2805,29 +2867,33 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(14562087865227180)
 ,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
+,p_plug_template=>2532939663579242476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(26568570669740916)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
+,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38095230707438679)
 ,p_plug_name=>'Movie Vector Search Navigation'
+,p_static_id=>'movie-vector-search-navigation'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-MediaList--showBadges'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(14563222337261426)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2067994871570597190
+,p_list_template_id=>2069471208528591807
 ,p_landmark_type=>'navigation'
 ,p_landmark_label=>'Movie'
-,p_ai_enabled=>false
 );
 end;
 /
@@ -2841,6 +2907,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Prepare Movie Data'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_width=>'1024'
 ,p_dialog_resizable=>'Y'
@@ -2848,53 +2915,57 @@ wwv_flow_imp_page.create_page(
 ,p_page_component_map=>'17'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(22282466764071002)
-,p_plug_name=>'Progress'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
-,p_plug_template=>4501440665235496320
+ p_id=>wwv_flow_imp.id(38097892114502925)
+,p_plug_name=>'Button Bar'
+,p_static_id=>'button-bar'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
 ,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_list_id=>wwv_flow_imp.id(14190948692845326)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2010149141494510257
-,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38097210988502918)
 ,p_plug_name=>'Data Generation'
+,p_static_id=>'data-generation'
 ,p_title=>'What kind of movie data should AI create for you?'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(38097892114502925)
-,p_plug_name=>'Button Bar'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
+ p_id=>wwv_flow_imp.id(22282466764071002)
+,p_plug_name=>'Progress'
+,p_static_id=>'progress'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
+,p_list_id=>wwv_flow_imp.id(14190948692845326)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2011625478452504874
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(14568394528335985)
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(38097892114502925)
 ,p_button_name=>'GENERATE_DATA'
+,p_static_id=>'generate-data'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Generate Data'
 ,p_button_position=>'NEXT'
@@ -2913,6 +2984,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P11_EXE_ID'
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(38097210988502918)
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -2924,18 +2996,18 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(38097210988502918)
 ,p_prompt=>'Prompt Input'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXTAREA'
 ,p_cSize=>30
 ,p_cHeight=>5
-,p_field_template=>1609122147107268652
+,p_field_template=>1610598484065263269
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'auto_height', 'Y',
   'character_counter', 'N',
   'resizable', 'Y',
   'trim_spaces', 'BOTH')).to_clob
-,p_ai_enabled=>false
-,p_show_quick_picks=>'Y'
+,p_quick_pick_type=>'STATIC'
 ,p_quick_pick_label_01=>'Hollywood Movies'
 ,p_quick_pick_value_01=>'Generate data on the most successful Hollywood movies.'
 ,p_quick_pick_label_02=>'European Movies'
@@ -2946,6 +3018,7 @@ wwv_flow_imp_page.create_page_item(
 wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(14194594206496968)
 ,p_validation_name=>'P11_PROMPT_INPUT not null'
+,p_static_id=>'p11-prompt-input-not-null'
 ,p_validation_sequence=>10
 ,p_validation=>'P11_PROMPT_INPUT'
 ,p_validation_type=>'ITEM_NOT_NULL'
@@ -2955,27 +3028,12 @@ wwv_flow_imp_page.create_page_validation(
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(14569310656335997)
-,p_process_sequence=>10
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_EXECUTION_CHAIN'
-,p_process_name=>'Generate Sample Data'
-,p_attribute_01=>'Y'
-,p_attribute_02=>'N'
-,p_attribute_03=>'P11_EXE_ID'
-,p_attribute_04=>'IGNORE'
-,p_attribute_06=>'1'
-,p_attribute_09=>'N'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_imp.id(14568394528335985)
-,p_internal_uid=>11260412829604374
-);
-wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(14568974290335994)
 ,p_process_sequence=>20
 ,p_parent_process_id=>wwv_flow_imp.id(14569310656335997)
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Ask AI'
+,p_static_id=>'ask-ai'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '    l_response          clob            := ''TITLE;MOVIEDESCRIPTION;ACTORS;GENRE;RELEASE_DATE;RATING'' || chr(10);',
@@ -3067,6 +3125,24 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>11260076463604371
 );
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(14569310656335997)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_EXECUTION_CHAIN'
+,p_process_name=>'Generate Sample Data'
+,p_static_id=>'generate-sample-data'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'executions_limit', '1',
+  'return_id_into_item', 'P11_EXE_ID',
+  'run_in_background', 'Y',
+  'serialize', 'N',
+  'submit_immediately', 'N',
+  'temporary_file_handling', 'IGNORE')).to_clob
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(14568394528335985)
+,p_internal_uid=>11260412829604374
+);
 end;
 /
 prompt --application/pages/page_00012
@@ -3085,49 +3161,36 @@ wwv_flow_imp_page.create_page(
 '   font-family: monospace;',
 '   font-size: 8pt;',
 '   overflow-x: scroll; }'))
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_resizable=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'17'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(32639107158105792)
-,p_plug_name=>'Data Generated Successfully'
-,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--success'
-,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>20
+ p_id=>wwv_flow_imp.id(40814269386681027)
+,p_plug_name=>'Button Bar'
+,p_static_id=>'button-bar'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_source=>'<p>Your data has been successfully generated and is available to preview below. The next step is to upload this data into the datatable.</p>'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(33173023509243007)
-,p_plug_name=>'Progress'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
-,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
+ p_id=>wwv_flow_imp.id(32639107158105792)
+,p_plug_name=>'Data Generated Successfully'
+,p_static_id=>'data-generated-successfully'
+,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--success'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_list_id=>wwv_flow_imp.id(14190948692845326)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2010149141494510257
-,p_ai_enabled=>false
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34668921069660517)
-,p_plug_name=>'Generating Data...'
-,p_region_name=>'progress'
-,p_icon_css_classes=>'fa-refresh fa-anim-spin'
-,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>10
-,p_location=>null
-,p_plug_source=>'<p role="alert" id="status" class="u-tC">Data generation initiated.</p>'
-,p_ai_enabled=>false
+,p_plug_source=>'<p>Your data has been successfully generated and is available to preview below. The next step is to upload this data into the datatable.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -3135,53 +3198,74 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(40814205352681026)
 ,p_plug_name=>'Generated CSV'
+,p_static_id=>'generated-csv'
 ,p_title=>'Generated Data Preview'
 ,p_region_template_options=>'#DEFAULT#:js-useLocalStorage:is-collapsed:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>2664334895415463485
+,p_plug_template=>2665811232373458102
 ,p_plug_display_sequence=>50
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(40814269386681027)
-,p_plug_name=>'Button Bar'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
+ p_id=>wwv_flow_imp.id(34668921069660517)
+,p_plug_name=>'Generating Data...'
+,p_static_id=>'generating-data'
+,p_region_name=>'progress'
+,p_icon_css_classes=>'fa-refresh fa-anim-spin'
+,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--customIcons:t-Alert--info'
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
+,p_plug_source=>'<p role="alert" id="status" class="u-tC">Data generation initiated.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
-wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(14573911687340709)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_imp.id(40814269386681027)
-,p_button_name=>'UPLOAD'
-,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
-,p_button_is_hot=>'Y'
-,p_button_image_alt=>'Upload Data'
-,p_button_position=>'NEXT'
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(33173023509243007)
+,p_plug_name=>'Progress'
+,p_static_id=>'progress'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_list_id=>wwv_flow_imp.id(14190948692845326)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2011625478452504874
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(14574367277340709)
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(40814269386681027)
 ,p_button_name=>'PREV'
+,p_static_id=>'prev'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2349107722467437027
+,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>'Back'
 ,p_button_position=>'PREVIOUS'
 ,p_button_redirect_url=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.:::'
 ,p_icon_css_classes=>'fa-chevron-left'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(14573911687340709)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(40814269386681027)
+,p_button_name=>'UPLOAD'
+,p_static_id=>'upload'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Upload Data'
+,p_button_position=>'NEXT'
 );
 wwv_flow_imp_page.create_page_branch(
  p_id=>wwv_flow_imp.id(14584036743340720)
@@ -3193,11 +3277,31 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_sequence=>30
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(40818182020681039)
+,p_name=>'P12_AI_OUTPUT'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(40814205352681026)
+,p_prompt=>'AI Generated Data'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXTAREA'
+,p_cSize=>30
+,p_cHeight=>12
+,p_tag_css_classes=>'csv'
+,p_field_template=>3033038003750078790
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--large:margin-bottom-sm'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'auto_height', 'Y',
+  'character_counter', 'N',
+  'resizable', 'Y',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(34671259649660526)
 ,p_name=>'P12_SOFAR'
 ,p_item_sequence=>60
 ,p_item_plug_id=>wwv_flow_imp.id(40814205352681026)
 ,p_item_default=>'-1'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -3209,32 +3313,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>70
 ,p_item_plug_id=>wwv_flow_imp.id(40814205352681026)
 ,p_item_default=>'-2'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'value_protected', 'N')).to_clob
 );
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(40818182020681039)
-,p_name=>'P12_AI_OUTPUT'
-,p_item_sequence=>40
-,p_item_plug_id=>wwv_flow_imp.id(40814205352681026)
-,p_prompt=>'AI Generated Data'
-,p_display_as=>'NATIVE_TEXTAREA'
-,p_cSize=>30
-,p_cHeight=>12
-,p_tag_css_classes=>'csv'
-,p_field_template=>3031561666792084173
-,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--large:margin-bottom-sm'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'auto_height', 'Y',
-  'character_counter', 'N',
-  'resizable', 'Y',
-  'trim_spaces', 'BOTH')).to_clob
-);
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(14576704386340712)
 ,p_name=>'Generation Running Update'
+,p_static_id=>'generation-running-update'
 ,p_event_sequence=>10
 ,p_triggering_element_type=>'JAVASCRIPT_EXPRESSION'
 ,p_triggering_element=>'document'
@@ -3250,17 +3338,19 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>20
 ,p_execute_on_page_init=>'N'
 ,p_name=>'Get Execution Progress'
+,p_static_id=>'get-execution-progress'
 ,p_action=>'NATIVE_SET_VALUE'
 ,p_affected_elements_type=>'ITEM'
 ,p_affected_elements=>'P12_SOFAR,P12_TOTALWORK'
-,p_attribute_01=>'SQL_STATEMENT'
-,p_attribute_03=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select sofar, totalwork',
-'  from apex_appl_page_bg_proc_status',
-' where application_id = :APP_ID',
-'   and execution_id = :P11_EXE_ID'))
-,p_attribute_08=>'Y'
-,p_attribute_09=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'escape_special_characters', 'Y',
+  'sql_query', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'select sofar, totalwork',
+    '  from apex_appl_page_bg_proc_status',
+    ' where application_id = :APP_ID',
+    '   and execution_id = :P11_EXE_ID')),
+  'suppress_change_event', 'N',
+  'type', 'SQL_STATEMENT')).to_clob
 ,p_wait_for_result=>'Y'
 );
 wwv_flow_imp_page.create_page_da_action(
@@ -3270,8 +3360,10 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>30
 ,p_execute_on_page_init=>'N'
 ,p_name=>'Show Execution Progress'
+,p_static_id=>'show-execution-progress'
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attribute_01=>'$("#status").text( apex.lang.formatMessage( "EBA_VECTOR.STATUS_UPDATE_AI_GENERATION", $v("P12_SOFAR"), $v("P12_TOTALWORK") ) );'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', '$("#status").text( apex.lang.formatMessage( "EBA_VECTOR.STATUS_UPDATE_AI_GENERATION", $v("P12_SOFAR"), $v("P12_TOTALWORK") ) );')).to_clob
 );
 wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(14578277480340716)
@@ -3280,52 +3372,17 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>80
 ,p_execute_on_page_init=>'N'
 ,p_name=>'Trigger "Finished" When All Done'
+,p_static_id=>'trigger-finished-when-all-done'
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attribute_01=>'apex.event.trigger( document, "generationFinished" )'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', 'apex.event.trigger( document, "generationFinished" )')).to_clob
 ,p_client_condition_type=>'JAVASCRIPT_EXPRESSION'
 ,p_client_condition_expression=>'$v("P12_SOFAR") === $v("P12_TOTALWORK")'
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(14578684029340716)
-,p_name=>'Toggle Text Field Visibility on Page Load'
-,p_event_sequence=>20
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'ready'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14579116069340717)
-,p_event_id=>wwv_flow_imp.id(14578684029340716)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'Y'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(40814205352681026)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14579679132340717)
-,p_event_id=>wwv_flow_imp.id(14578684029340716)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'Y'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(40814269386681027)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14580176143340718)
-,p_event_id=>wwv_flow_imp.id(14578684029340716)
-,p_event_result=>'TRUE'
-,p_action_sequence=>30
-,p_execute_on_page_init=>'Y'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(32639107158105792)
-);
-wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(14580564340340718)
 ,p_name=>'Toggle Generation Finished Indicator'
+,p_static_id=>'toggle-generation-finished-indicator'
 ,p_event_sequence=>40
 ,p_triggering_element_type=>'JAVASCRIPT_EXPRESSION'
 ,p_triggering_element=>'document'
@@ -3335,44 +3392,37 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_event_type_custom=>'generationFinished'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14581020687340718)
-,p_event_id=>wwv_flow_imp.id(14580564340340718)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_name=>'Stop the Refresh Timer'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attribute_01=>'window.clearInterval( gInterval );'
-);
-wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(14581583979340718)
 ,p_event_id=>wwv_flow_imp.id(14580564340340718)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>20
 ,p_execute_on_page_init=>'N'
 ,p_name=>'Get the Generated Content'
+,p_static_id=>'get-the-generated-content'
 ,p_action=>'NATIVE_SET_VALUE'
 ,p_affected_elements_type=>'ITEM'
 ,p_affected_elements=>'P12_AI_OUTPUT'
-,p_attribute_01=>'SQL_STATEMENT'
-,p_attribute_03=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select output ',
-'  from eba_vector_ai_helper',
-' where execution_id = :P11_EXE_ID'))
-,p_attribute_08=>'N'
-,p_attribute_09=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'escape_special_characters', 'N',
+  'sql_query', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'select output ',
+    '  from eba_vector_ai_helper',
+    ' where execution_id = :P11_EXE_ID')),
+  'suppress_change_event', 'N',
+  'type', 'SQL_STATEMENT')).to_clob
 ,p_wait_for_result=>'Y'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14582057462340719)
+ p_id=>wwv_flow_imp.id(14583545813340720)
 ,p_event_id=>wwv_flow_imp.id(14580564340340718)
 ,p_event_result=>'TRUE'
-,p_action_sequence=>40
+,p_action_sequence=>70
 ,p_execute_on_page_init=>'N'
-,p_name=>'Show the Text Area with CSV '
-,p_action=>'NATIVE_SHOW'
+,p_name=>'Hide the Execution Progress Text Area'
+,p_static_id=>'hide-the-execution-progress-text-area'
+,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(40814205352681026)
+,p_affected_region_id=>wwv_flow_imp.id(34668921069660517)
 );
 wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(14582551223340719)
@@ -3381,6 +3431,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>50
 ,p_execute_on_page_init=>'N'
 ,p_name=>'Show the Button Bar with CSV '
+,p_static_id=>'show-the-button-bar-with-csv'
 ,p_action=>'NATIVE_SHOW'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(40814269386681027)
@@ -3392,42 +3443,73 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>60
 ,p_execute_on_page_init=>'N'
 ,p_name=>'Show the Success Text Area'
+,p_static_id=>'show-the-success-text-area'
 ,p_action=>'NATIVE_SHOW'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(32639107158105792)
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14583545813340720)
+ p_id=>wwv_flow_imp.id(14582057462340719)
 ,p_event_id=>wwv_flow_imp.id(14580564340340718)
 ,p_event_result=>'TRUE'
-,p_action_sequence=>70
+,p_action_sequence=>40
 ,p_execute_on_page_init=>'N'
-,p_name=>'Hide the Execution Progress Text Area'
+,p_name=>'Show the Text Area with CSV '
+,p_static_id=>'show-the-text-area-with-csv'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(40814205352681026)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(14581020687340718)
+,p_event_id=>wwv_flow_imp.id(14580564340340718)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Stop the Refresh Timer'
+,p_static_id=>'stop-the-refresh-timer'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', 'window.clearInterval( gInterval );')).to_clob
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(14578684029340716)
+,p_name=>'Toggle Text Field Visibility on Page Load'
+,p_static_id=>'toggle-text-field-visibility-on-page-load'
+,p_event_sequence=>20
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'ready'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(14579116069340717)
+,p_event_id=>wwv_flow_imp.id(14578684029340716)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_static_id=>'native-hide'
 ,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(34668921069660517)
+,p_affected_region_id=>wwv_flow_imp.id(40814205352681026)
 );
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(14575331415340711)
-,p_process_sequence=>50
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_EXECUTION_CHAIN'
-,p_process_name=>'Load Data'
-,p_attribute_01=>'N'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_imp.id(14573911687340709)
-,p_internal_uid=>11266433588609088
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(14579679132340717)
+,p_event_id=>wwv_flow_imp.id(14578684029340716)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_static_id=>'native-hide-2'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(40814269386681027)
 );
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(14574983600340710)
-,p_process_sequence=>60
-,p_parent_process_id=>wwv_flow_imp.id(14575331415340711)
-,p_process_type=>'NATIVE_DATA_LOADING'
-,p_process_name=>'Data Load'
-,p_attribute_01=>wwv_flow_imp.id(26865649864699185)
-,p_attribute_02=>'TEXT'
-,p_attribute_04=>'P12_AI_OUTPUT'
-,p_internal_uid=>11266085773609087
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(14580176143340718)
+,p_event_id=>wwv_flow_imp.id(14578684029340716)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_static_id=>'native-hide-3'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(32639107158105792)
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(14575701106340711)
@@ -3435,6 +3517,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_parent_process_id=>wwv_flow_imp.id(14575331415340711)
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Clean Data'
+,p_static_id=>'clean-data'
 ,p_process_sql_clob=>'eba_sample_vector_search_pkg.delete_invalid_movie_data'
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>11266803279609088
@@ -3445,9 +3528,36 @@ wwv_flow_imp_page.create_page_process(
 ,p_parent_process_id=>wwv_flow_imp.id(14575331415340711)
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Clear Success Message'
+,p_static_id=>'clear-success-message'
 ,p_process_sql_clob=>'apex_application.g_print_success_message := null;'
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>11202133728643440
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(14574983600340710)
+,p_process_sequence=>60
+,p_parent_process_id=>wwv_flow_imp.id(14575331415340711)
+,p_process_type=>'NATIVE_DATA_LOADING'
+,p_process_name=>'Data Load'
+,p_static_id=>'data-load'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'data_load_definition_id', wwv_flow_imp.id(26865649864699185),
+  'source_data_type', 'TEXT',
+  'source_textarea_item', 'P12_AI_OUTPUT')).to_clob
+,p_internal_uid=>11266085773609087
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(14575331415340711)
+,p_process_sequence=>50
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_EXECUTION_CHAIN'
+,p_process_name=>'Load Data'
+,p_static_id=>'load-data'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'run_in_background', 'N')).to_clob
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(14573911687340709)
+,p_internal_uid=>11266433588609088
 );
 end;
 /
@@ -3461,53 +3571,22 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Prepare Movie Data'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_resizable=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'03'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(14511134743375064)
-,p_plug_name=>'Data Uploaded Successfully'
-,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
-,p_plug_template=>3371237801798025892
-,p_plug_display_sequence=>10
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Your data has been loaded successfully into the data table.</p>',
-'<p>The next step to enable vector search is to generate <em>vector embeddings</em> that represent this data. These embeddings are then stored in the database and serve as the <strong>foundation for performing vector searches</strong>.</p>'))
-,p_plug_display_condition_type=>'EXISTS'
-,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select 1',
-'  from eba_vector_moviedata',
-' where embedding_vector is null;'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(33187127342253165)
-,p_plug_name=>'Progress'
-,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
-,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
-,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_location=>null
-,p_list_id=>wwv_flow_imp.id(14190948692845326)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2010149141494510257
-,p_ai_enabled=>false
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(40818614085620898)
 ,p_plug_name=>'Buttons'
+,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
+,p_plug_template=>2127905476394690047
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -3515,7 +3594,8 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(42650663739176658)
 ,p_name=>'Data Loading Summary'
-,p_template=>4072358936313175081
+,p_static_id=>'data-loading-summary'
+,p_template=>4073835273271169698
 ,p_display_sequence=>30
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-BadgeList--xlarge:t-BadgeList--circular:t-BadgeList--fixed:t-Report--hideNoPagination'
@@ -3530,7 +3610,7 @@ wwv_flow_imp_page.create_report_region(
 '  from eba_vector_moviedata;'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2104643962563030528
+,p_query_row_template=>2106120299521025145
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
@@ -3564,14 +3644,51 @@ wwv_flow_imp_page.create_report_columns(
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(14511134743375064)
+,p_plug_name=>'Data Uploaded Successfully'
+,p_static_id=>'data-uploaded-successfully'
+,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Your data has been loaded successfully into the data table.</p>',
+'<p>The next step to enable vector search is to generate <em>vector embeddings</em> that represent this data. These embeddings are then stored in the database and serve as the <strong>foundation for performing vector searches</strong>.</p>'))
+,p_plug_display_condition_type=>'EXISTS'
+,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select 1',
+'  from eba_vector_moviedata',
+' where embedding_vector is null;'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(33187127342253165)
+,p_plug_name=>'Progress'
+,p_static_id=>'progress'
+,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_list_id=>wwv_flow_imp.id(14190948692845326)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2011625478452504874
+);
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(14585668255349801)
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(40818614085620898)
 ,p_button_name=>'GENERATE_VECTOR_EMBEDDINGS'
+,p_static_id=>'generate-vector-embeddings'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Generate Vector Embeddings'
 ,p_button_position=>'NEXT'
@@ -3587,9 +3704,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(40818614085620898)
 ,p_button_name=>'PREV'
+,p_static_id=>'prev'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2349107722467437027
+,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>'Back'
 ,p_button_position=>'PREVIOUS'
 ,p_button_redirect_url=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.:::'
@@ -3604,11 +3722,28 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_sequence=>10
 );
 wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(14588287179349805)
+,p_process_sequence=>20
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Clean Helper Table'
+,p_static_id=>'clean-helper-table'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    execute immediate ''truncate table eba_vector_ai_helper'';',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(14585668255349801)
+,p_internal_uid=>11279389352618182
+);
+wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(14588670622349806)
 ,p_process_sequence=>10
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Generate Vectors Embeddings'
+,p_static_id=>'generate-vectors-embeddings'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '    l_vector vector;',
@@ -3634,21 +3769,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_when_button_id=>wwv_flow_imp.id(14585668255349801)
 ,p_internal_uid=>11279772795618183
 );
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(14588287179349805)
-,p_process_sequence=>20
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Clean Helper Table'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'begin',
-'    execute immediate ''truncate table eba_vector_ai_helper'';',
-'end;'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_imp.id(14585668255349801)
-,p_internal_uid=>11279389352618182
-);
 end;
 /
 prompt --application/pages/page_00014
@@ -3660,55 +3780,59 @@ wwv_flow_imp_page.create_page(
 ,p_page_mode=>'MODAL'
 ,p_step_title=>'Prepare Movie Data'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_resizable=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'06'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(38162426588792420)
+,p_plug_name=>'Movie Vector Search Navigation'
+,p_static_id=>'movie-vector-search-navigation'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-MediaList--showBadges'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_list_id=>wwv_flow_imp.id(26891210267974065)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2069471208528591807
+,p_landmark_label=>'Movie Vector Search'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(48038482978707646)
+,p_plug_name=>'Progress'
+,p_static_id=>'progress'
+,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_list_id=>wwv_flow_imp.id(14190948692845326)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2011625478452504874
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38162359480793925)
 ,p_plug_name=>'Ready for Vector Search'
+,p_static_id=>'ready-for-vector-search'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--success'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Vector embeddings for your data have been generated! You can now perform vector searches on your data.</p>',
 '<p>Select a vector search example below to get started.</p>'))
 ,p_plug_display_condition_type=>'EXISTS'
 ,p_plug_display_when_condition=>'select 1 from eba_vector_moviedata where embedding_vector is not null and rownum = 1'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(38162426588792420)
-,p_plug_name=>'Movie Vector Search Navigation'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-MediaList--showBadges'
-,p_plug_template=>3371237801798025892
-,p_plug_display_sequence=>20
-,p_location=>null
-,p_list_id=>wwv_flow_imp.id(26891210267974065)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2067994871570597190
-,p_landmark_label=>'Movie Vector Search'
-,p_ai_enabled=>false
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(48038482978707646)
-,p_plug_name=>'Progress'
-,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
-,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
-,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_location=>null
-,p_list_id=>wwv_flow_imp.id(14190948692845326)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2010149141494510257
-,p_ai_enabled=>false
 );
 end;
 /
@@ -3721,6 +3845,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Basic Vector Search'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'26'
@@ -3728,10 +3853,12 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(33055233406586716)
 ,p_plug_name=>'About Basic Vector Search'
+,p_static_id=>'about-basic-vector-search'
 ,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>This example performs a vector search on the <em>TITLE</em>, <em>MOVIEDESCRIPTION</em>, and <em>ACTORS</em> columns and returns movies that are similar to your search terms.</p>',
@@ -3748,7 +3875,6 @@ wwv_flow_imp_page.create_page_plug(
 '    <li>Superheroes</li>',
 '</ul>'))
 ,p_landmark_type=>'complementary'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -3757,14 +3883,30 @@ wwv_flow_imp_page.create_page_plug(
 ''))
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(60678821071162837)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(26568570669740916)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(33055346574586717)
 ,p_plug_name=>'Content'
+,p_static_id=>'content'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -3772,15 +3914,16 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(33055474593586718)
 ,p_plug_name=>'Search'
+,p_static_id=>'search'
 ,p_parent_plug_id=>wwv_flow_imp.id(33055346574586717)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_landmark_type=>'search'
 ,p_landmark_label=>'Basic Vector'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -3788,11 +3931,13 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38126732829597867)
 ,p_plug_name=>'Search Results OCI'
+,p_static_id=>'search-results-oci'
 ,p_parent_plug_id=>wwv_flow_imp.id(33055346574586717)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
@@ -3818,15 +3963,18 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Basic Vector Search OCI'
+,p_static_id=>'basic-vector-search-oci'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(43125422376089354)
 ,p_plug_name=>'Search Results OPENAI'
+,p_static_id=>'search-results-openai'
 ,p_parent_plug_id=>wwv_flow_imp.id(33055346574586717)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
@@ -3852,19 +4000,7 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Basic Vector Search OPENAI'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(60678821071162837)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
-,p_plug_display_sequence=>40
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_imp.id(26568570669740916)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
-,p_ai_enabled=>false
+,p_static_id=>'basic-vector-search-openai'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(38127809386597867)
@@ -3873,16 +4009,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(33055474593586718)
 ,p_prompt=>'Search'
 ,p_placeholder=>'Enter your search term, e.g. Subconscious Mind or Darth Vader'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>30
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_css_classes=>'mxw800 t-Form-fieldContainer--noPadding'
 ,p_item_icon_css_classes=>'fa-search'
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
   'trim_spaces', 'BOTH')).to_clob
@@ -3898,37 +4034,20 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Vector vs. Oracle Text'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'26'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(33058808073590892)
-,p_plug_name=>'Oracle Text not available'
-,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--danger'
-,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>10
-,p_location=>null
-,p_plug_source=>'<p>This feature cannot be used because Oracle Text is not available in this instance.</p>'
-,p_plug_display_condition_type=>'NOT_EXISTS'
-,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select 1 ',
-'  from sys.all_objects',
-' where owner       = ''CTXSYS'' ',
-'   and object_name = ''CTX_DDL'' ',
-'   and rownum      = 1;'))
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(41910681816112885)
 ,p_plug_name=>'About Vector vs. Oracle Text Search'
+,p_static_id=>'about-vector-vs-oracle-text-search'
 ,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p><strong>Compare</strong> vector search (focused on meaning) with Oracle Text search (focused on keywords and phrases) <strong>to see their differences</strong>.</p>',
@@ -3943,20 +4062,72 @@ wwv_flow_imp_page.create_page_plug(
 '    <li>Superheroes</li>',
 '</ul>'))
 ,p_landmark_type=>'complementary'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(60679105413164907)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(26568570669740916)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(41916618139154961)
 ,p_plug_name=>'Content'
+,p_static_id=>'content'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(45966815347938884)
+,p_plug_name=>'Oracle Text'
+,p_static_id=>'oracle-text'
+,p_parent_plug_id=>wwv_flow_imp.id(41916618139154961)
+,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(33058808073590892)
+,p_plug_name=>'Oracle Text not available'
+,p_static_id=>'oracle-text-not-available'
+,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--danger'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'<p>This feature cannot be used because Oracle Text is not available in this instance.</p>'
+,p_plug_display_condition_type=>'NOT_EXISTS'
+,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select 1 ',
+'  from sys.all_objects',
+' where owner       = ''CTXSYS'' ',
+'   and object_name = ''CTX_DDL'' ',
+'   and rownum      = 1;'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -3964,52 +4135,38 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(41922042921203341)
 ,p_plug_name=>'Search'
+,p_static_id=>'search'
 ,p_parent_plug_id=>wwv_flow_imp.id(41916618139154961)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_landmark_type=>'search'
 ,p_landmark_label=>'Vector vs. Oracle Text'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(45966730143938883)
-,p_plug_name=>'Vector'
-,p_parent_plug_id=>wwv_flow_imp.id(41916618139154961)
-,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+ p_id=>wwv_flow_imp.id(46364456749405531)
+,p_plug_name=>'Search Results'
+,p_static_id=>'search-results'
+,p_parent_plug_id=>wwv_flow_imp.id(45966815347938884)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(43130183229093542)
-,p_plug_name=>'Search Results OPENAI'
-,p_parent_plug_id=>wwv_flow_imp.id(45966730143938883)
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P16_SEARCH'
-,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
-,p_plug_display_when_condition=>'CURRENT_AI_PROVIDER'
-,p_plug_display_when_cond2=>'OPENAI'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'custom_layout', 'N',
   'lazy_loading', 'Y',
   'minimum_characters', '0',
-  'no_query_entered_message', 'Please enter a search term.',
+  'no_query_entered_message', 'Please enter your search term.',
   'no_results_found_message', 'No results found.',
   'results_per_page', '15',
   'results_per_page_type', 'STATIC',
@@ -4019,21 +4176,24 @@ wwv_flow_imp_page.create_page_plug(
   'use_pagination', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_search_region_source(
- p_id=>wwv_flow_imp.id(14599589754435065)
-,p_region_id=>wwv_flow_imp.id(43130183229093542)
-,p_search_config_id=>wwv_flow_imp.id(32205139326725138)
+ p_id=>wwv_flow_imp.id(14601718038435067)
+,p_region_id=>wwv_flow_imp.id(46364456749405531)
+,p_search_config_id=>wwv_flow_imp.id(14707557746494741)
 ,p_use_as_initial_result=>false
-,p_display_sequence=>10
-,p_name=>'Basic Vector Search OPENAI'
+,p_display_sequence=>22
+,p_name=>'Oracle Text Search'
+,p_static_id=>'oracle-text-search'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(45966362519938880)
 ,p_plug_name=>'Search Results OCI'
+,p_static_id=>'search-results-oci'
 ,p_parent_plug_id=>wwv_flow_imp.id(45966730143938883)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P16_SEARCH'
@@ -4060,38 +4220,29 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>20
 ,p_name=>'Basic Vector Search OCI'
+,p_static_id=>'basic-vector-search-oci'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(45966815347938884)
-,p_plug_name=>'Oracle Text'
-,p_parent_plug_id=>wwv_flow_imp.id(41916618139154961)
-,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>20
-,p_plug_new_grid_row=>false
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(46364456749405531)
-,p_plug_name=>'Search Results'
-,p_parent_plug_id=>wwv_flow_imp.id(45966815347938884)
+ p_id=>wwv_flow_imp.id(43130183229093542)
+,p_plug_name=>'Search Results OPENAI'
+,p_static_id=>'search-results-openai'
+,p_parent_plug_id=>wwv_flow_imp.id(45966730143938883)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
-,p_plug_display_sequence=>10
+,p_plug_template=>1557215235004102827
+,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P16_SEARCH'
+,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_plug_display_when_condition=>'CURRENT_AI_PROVIDER'
+,p_plug_display_when_cond2=>'OPENAI'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'custom_layout', 'N',
   'lazy_loading', 'Y',
   'minimum_characters', '0',
-  'no_query_entered_message', 'Please enter your search term.',
+  'no_query_entered_message', 'Please enter a search term.',
   'no_results_found_message', 'No results found.',
   'results_per_page', '15',
   'results_per_page_type', 'STATIC',
@@ -4101,25 +4252,28 @@ wwv_flow_imp_page.create_page_plug(
   'use_pagination', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_search_region_source(
- p_id=>wwv_flow_imp.id(14601718038435067)
-,p_region_id=>wwv_flow_imp.id(46364456749405531)
-,p_search_config_id=>wwv_flow_imp.id(14707557746494741)
+ p_id=>wwv_flow_imp.id(14599589754435065)
+,p_region_id=>wwv_flow_imp.id(43130183229093542)
+,p_search_config_id=>wwv_flow_imp.id(32205139326725138)
 ,p_use_as_initial_result=>false
-,p_display_sequence=>22
-,p_name=>'Oracle Text Search'
+,p_display_sequence=>10
+,p_name=>'Basic Vector Search OPENAI'
+,p_static_id=>'basic-vector-search-openai'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(60679105413164907)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
-,p_plug_display_sequence=>40
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_imp.id(26568570669740916)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
-,p_ai_enabled=>false
+ p_id=>wwv_flow_imp.id(45966730143938883)
+,p_plug_name=>'Vector'
+,p_static_id=>'vector'
+,p_parent_plug_id=>wwv_flow_imp.id(41916618139154961)
+,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(46371505748405548)
@@ -4128,16 +4282,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(41922042921203341)
 ,p_prompt=>'Search'
 ,p_placeholder=>'Enter your search term, e.g. Subconscious Mind or Darth Vader'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_css_classes=>'mxw800 t-Form-fieldContainer--noPadding'
 ,p_item_icon_css_classes=>'fa-search'
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_warn_on_unsaved_changes=>'I'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'SEARCH',
   'trim_spaces', 'BOTH')).to_clob
@@ -4153,37 +4307,20 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Vector and Oracle Text'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'26'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(40993315938925017)
-,p_plug_name=>'Oracle Text not available'
-,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--danger'
-,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>10
-,p_location=>null
-,p_plug_source=>'<p>This feature cannot be used because Oracle Text is not available in this instance.</p>'
-,p_plug_display_condition_type=>'NOT_EXISTS'
-,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select 1 ',
-'  from sys.all_objects',
-' where owner       = ''CTXSYS'' ',
-'   and object_name = ''CTX_DDL'' ',
-'   and rownum      = 1;'))
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(41917681654116790)
 ,p_plug_name=>'About Vector and Oracle Text Search'
+,p_static_id=>'about-vector-and-oracle-text-search'
 ,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p><strong>Combine</strong> vector and Oracle Text search for better and more accurate results.</p>',
@@ -4199,20 +4336,56 @@ wwv_flow_imp_page.create_page_plug(
 '    <li>Superheroes</li>',
 '</ul>'))
 ,p_landmark_type=>'complementary'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(60679377751166264)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(26568570669740916)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(41923729117159369)
 ,p_plug_name=>'Content'
+,p_static_id=>'content'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(40993315938925017)
+,p_plug_name=>'Oracle Text not available'
+,p_static_id=>'oracle-text-not-available'
+,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--danger'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'<p>This feature cannot be used because Oracle Text is not available in this instance.</p>'
+,p_plug_display_condition_type=>'NOT_EXISTS'
+,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select 1 ',
+'  from sys.all_objects',
+' where owner       = ''CTXSYS'' ',
+'   and object_name = ''CTX_DDL'' ',
+'   and rownum      = 1;'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4220,15 +4393,16 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(41930399711222258)
 ,p_plug_name=>'Search'
+,p_static_id=>'search'
 ,p_parent_plug_id=>wwv_flow_imp.id(41923729117159369)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_landmark_type=>'search'
 ,p_landmark_label=>'Vector and Oracle Text'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4236,11 +4410,13 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(43137198973096254)
 ,p_plug_name=>'Search Results'
+,p_static_id=>'search-results'
 ,p_parent_plug_id=>wwv_flow_imp.id(41923729117159369)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P17_SEARCH'
@@ -4264,19 +4440,7 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Oracle Text And Vector'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(60679377751166264)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
-,p_plug_display_sequence=>40
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_imp.id(26568570669740916)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
-,p_ai_enabled=>false
+,p_static_id=>'oracle-text-and-vector'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(46582335494174520)
@@ -4285,16 +4449,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(41930399711222258)
 ,p_prompt=>'Search'
 ,p_placeholder=>'Enter your search term, e.g. Luke Skywalker'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_css_classes=>'mxw800 t-Form-fieldContainer--noPadding'
 ,p_item_icon_css_classes=>'fa-search'
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_warn_on_unsaved_changes=>'I'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'Y',
   'subtype', 'SEARCH',
   'trim_spaces', 'BOTH')).to_clob
@@ -4310,37 +4474,41 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Custom Vector Search'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'06'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(60680054117171285)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(26568570669740916)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(49454839009462253)
 ,p_plug_name=>' Custom Vector Search Navigation'
+,p_static_id=>'custom-vector-search-navigation'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-MediaList--showBadges'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(14666527271720723)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2067994871570597190
+,p_list_template_id=>2069471208528591807
 ,p_landmark_type=>'navigation'
 ,p_landmark_label=>'Custom'
-,p_ai_enabled=>false
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(60680054117171285)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_imp.id(26568570669740916)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
-,p_ai_enabled=>false
 );
 end;
 /
@@ -4353,6 +4521,7 @@ wwv_flow_imp_page.create_page(
 ,p_page_mode=>'MODAL'
 ,p_step_title=>'Prepare Custom Data'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_width=>'1024px'
 ,p_dialog_resizable=>'Y'
@@ -4360,25 +4529,13 @@ wwv_flow_imp_page.create_page(
 ,p_page_component_map=>'17'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21911693918640745)
-,p_plug_name=>'Progress'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
-,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_location=>null
-,p_list_id=>wwv_flow_imp.id(14193624344893271)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2010149141494510257
-,p_ai_enabled=>false
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(35059987577744386)
 ,p_plug_name=>'About This Page'
+,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3371237801798025892
+,p_plug_template=>3372714138756020509
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>This wizard allows you to upload your own data so that you can try vector search.</p>',
@@ -4389,20 +4546,66 @@ wwv_flow_imp_page.create_page_plug(
 '    <li>Only the first 10 columns will be used for data loading and generating vector embeddings. Each column allows strings up to 255 bytes.</li>',
 '    <li>You may upload data in .csv, .xslx, or .txt format.</li>',
 '</ul>'))
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(37069727600433647)
+,p_plug_name=>'Buttons'
+,p_static_id=>'buttons'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(40867806051044956)
+,p_plug_name=>'Loaded File'
+,p_static_id=>'loaded-file'
+,p_parent_plug_id=>wwv_flow_imp.id(35060203968744388)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_display_condition_type=>'ITEM_IS_NOT_NULL'
+,p_plug_display_when_condition=>'P25_FILE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'output_as', 'TEXT',
+  'show_line_breaks', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(21911693918640745)
+,p_plug_name=>'Progress'
+,p_static_id=>'progress'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_list_id=>wwv_flow_imp.id(14193624344893271)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2011625478452504874
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(35060165345744387)
 ,p_plug_name=>'RDS'
+,p_static_id=>'rds'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3371237801798025892
+,p_plug_template=>3372714138756020509
 ,p_plug_display_sequence=>40
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_region_icons', 'N',
   'include_show_all', 'Y',
@@ -4410,59 +4613,30 @@ wwv_flow_imp_page.create_page_plug(
   'remember_selection', 'USER')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(35060203968744388)
-,p_plug_name=>'Upload File'
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>50
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(35060778946744393)
 ,p_plug_name=>'Upload a File'
+,p_static_id=>'upload-a-file'
 ,p_parent_plug_id=>wwv_flow_imp.id(35060203968744388)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
   'output_as', 'TEXT',
   'show_line_breaks', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(40867806051044956)
-,p_plug_name=>'Loaded File'
-,p_parent_plug_id=>wwv_flow_imp.id(35060203968744388)
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
+ p_id=>wwv_flow_imp.id(35060203968744388)
+,p_plug_name=>'Upload File'
+,p_static_id=>'upload-file'
+,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>50
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_display_condition_type=>'ITEM_IS_NOT_NULL'
-,p_plug_display_when_condition=>'P25_FILE'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'TEXT',
-  'show_line_breaks', 'Y')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(37069727600433647)
-,p_plug_name=>'Buttons'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_03'
-,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4472,9 +4646,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(37069727600433647)
 ,p_button_name=>'NEXT'
+,p_static_id=>'next'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Next'
 ,p_button_position=>'NEXT'
@@ -4495,12 +4670,14 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(35060778946744393)
 ,p_prompt=>'Upload a File'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_FILE'
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:margin-right-none'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'allow_copy_paste', 'N',
   'allow_multiple_files', 'N',
   'display_as', 'DROPZONE_BLOCK',
   'dropzone_description', 'Supported formats CSV, TXT, XLSX',
@@ -4514,11 +4691,11 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P25_FILE_ERROR_ROW_COUNT'
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(35060778946744393)
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'value_protected', 'Y')).to_clob
-,p_ai_enabled=>false
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(40877416013045008)
@@ -4526,6 +4703,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(40867806051044956)
 ,p_item_default=>'''EBA_VECTOR_DATATABLE'''
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -4535,6 +4713,7 @@ wwv_flow_imp_page.create_page_computation(
  p_id=>wwv_flow_imp.id(28076453231923568)
 ,p_computation_sequence=>5
 ,p_computation_item=>'P25_FILE_NAME'
+,p_static_id=>'p25-file-name'
 ,p_computation_point=>'BEFORE_HEADER'
 ,p_computation_type=>'QUERY'
 ,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -4557,49 +4736,22 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Prepare Custom Data'
 ,p_autocomplete_on_off=>'OFF'
 ,p_inline_css=>'.t-Report-colHead {white-space: nowrap }'
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_resizable=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'03'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21911973181641905)
-,p_plug_name=>'Progress'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
-,p_plug_template=>4501440665235496320
+ p_id=>wwv_flow_imp.id(39807535890677615)
+,p_plug_name=>'Buttons'
+,p_static_id=>'buttons'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
 ,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_list_id=>wwv_flow_imp.id(14193624344893271)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2010149141494510257
-,p_ai_enabled=>false
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(37797973635988355)
-,p_plug_name=>'RDS'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3371237801798025892
-,p_plug_display_sequence=>30
-,p_location=>null
-,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'display_region_icons', 'N',
-  'include_show_all', 'Y',
-  'rds_mode', 'STANDARD',
-  'remember_selection', 'USER')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(37798012258988356)
-,p_plug_name=>'Upload File'
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>50
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4607,25 +4759,26 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(37798981850988365)
 ,p_plug_name=>'Loaded File'
+,p_static_id=>'loaded-file'
 ,p_parent_plug_id=>wwv_flow_imp.id(37798012258988356)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_display_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_plug_display_when_condition=>'P25_FILE'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
   'output_as', 'TEXT',
   'show_line_breaks', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(38656586767560102)
 ,p_name=>'Preview'
+,p_static_id=>'preview'
 ,p_parent_plug_id=>wwv_flow_imp.id(37798012258988356)
-,p_template=>4072358936313175081
+,p_template=>4073835273271169698
 ,p_display_sequence=>50
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--staticRowColors:t-Report--rowHighlight:t-Report--horizontalBorders:t-Report--hideNoPagination'
@@ -4658,7 +4811,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_display_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2538654340625403440
+,p_query_row_template=>2540130677583398057
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
@@ -4669,36 +4822,12 @@ wwv_flow_imp_page.create_report_region(
 ,p_plug_query_strip_html=>'N'
 );
 wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(14510619842375059)
-,p_query_column_id=>1
-,p_column_alias=>'TITLE'
-,p_column_display_sequence=>10
-,p_column_heading=>'Title'
-,p_use_as_row_header=>'Y'
+ p_id=>wwv_flow_imp.id(27753267838106045)
+,p_query_column_id=>10
+,p_column_alias=>'COL10'
+,p_column_display_sequence=>100
+,p_column_heading=>'Column 10'
 ,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(14510908948375062)
-,p_query_column_id=>2
-,p_column_alias=>'SUBTITLE'
-,p_column_display_sequence=>20
-,p_column_heading=>'Subtitle'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(14510881185375061)
-,p_query_column_id=>3
-,p_column_alias=>'DESCRIPTION'
-,p_column_display_sequence=>30
-,p_column_heading=>'Description'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
@@ -4763,24 +4892,80 @@ wwv_flow_imp_page.create_report_columns(
 ,p_include_in_export=>'Y'
 );
 wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(27753267838106045)
-,p_query_column_id=>10
-,p_column_alias=>'COL10'
-,p_column_display_sequence=>100
-,p_column_heading=>'Column 10'
+ p_id=>wwv_flow_imp.id(14510881185375061)
+,p_query_column_id=>3
+,p_column_alias=>'DESCRIPTION'
+,p_column_display_sequence=>30
+,p_column_heading=>'Description'
 ,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(14510908948375062)
+,p_query_column_id=>2
+,p_column_alias=>'SUBTITLE'
+,p_column_display_sequence=>20
+,p_column_heading=>'Subtitle'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(14510619842375059)
+,p_query_column_id=>1
+,p_column_alias=>'TITLE'
+,p_column_display_sequence=>10
+,p_column_heading=>'Title'
+,p_use_as_row_header=>'Y'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(39807535890677615)
-,p_plug_name=>'Buttons'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
+ p_id=>wwv_flow_imp.id(21911973181641905)
+,p_plug_name=>'Progress'
+,p_static_id=>'progress'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
+,p_list_id=>wwv_flow_imp.id(14193624344893271)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2011625478452504874
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(37797973635988355)
+,p_plug_name=>'RDS'
+,p_static_id=>'rds'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>30
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_region_icons', 'N',
+  'include_show_all', 'Y',
+  'rds_mode', 'STANDARD',
+  'remember_selection', 'USER')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(37798012258988356)
+,p_plug_name=>'Upload File'
+,p_static_id=>'upload-file'
+,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>50
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4790,9 +4975,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(39807535890677615)
 ,p_button_name=>'NEXT'
+,p_static_id=>'next'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Load Data'
 ,p_button_position=>'NEXT'
@@ -4802,9 +4988,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_sequence=>20
 ,p_button_plug_id=>wwv_flow_imp.id(39807535890677615)
 ,p_button_name=>'PREV'
+,p_static_id=>'prev'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2349107722467437027
+,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>'Back'
 ,p_button_position=>'PREVIOUS'
 ,p_icon_css_classes=>'fa-chevron-left'
@@ -4833,6 +5020,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(37798981850988365)
 ,p_item_default=>'''EBA_VECTOR_DATATABLE'''
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -4842,6 +5030,7 @@ wwv_flow_imp_page.create_page_computation(
  p_id=>wwv_flow_imp.id(27754718490106046)
 ,p_computation_sequence=>10
 ,p_computation_item=>'P26_FILE_NAME'
+,p_static_id=>'p26-file-name'
 ,p_computation_type=>'QUERY'
 ,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select filename',
@@ -4852,35 +5041,15 @@ wwv_flow_imp_page.create_page_computation(
 ,p_compute_when_type=>'EXPRESSION'
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(28699339955689196)
-,p_process_sequence=>20
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_EXECUTION_CHAIN'
-,p_process_name=>'Upload Sample Data'
-,p_attribute_01=>'N'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_imp.id(27754092685106046)
-,p_internal_uid=>3692637774827129
-);
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(28700621602696679)
-,p_process_sequence=>80
-,p_parent_process_id=>wwv_flow_imp.id(28699339955689196)
-,p_process_type=>'NATIVE_DATA_LOADING'
-,p_process_name=>'Load File Data'
-,p_attribute_01=>wwv_flow_imp.id(26872215558699189)
-,p_attribute_02=>'FILE'
-,p_attribute_03=>'P25_FILE'
-,p_internal_uid=>3693919421834612
-);
-wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(27755480462106047)
 ,p_process_sequence=>90
 ,p_parent_process_id=>wwv_flow_imp.id(28699339955689196)
 ,p_process_type=>'NATIVE_SESSION_STATE'
 ,p_process_name=>'Clear File Cache'
-,p_attribute_01=>'CLEAR_CACHE_FOR_PAGES'
-,p_attribute_04=>'25,26'
+,p_static_id=>'clear-file-cache'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'pages', '25,26',
+  'type', 'CLEAR_CACHE_FOR_PAGES')).to_clob
 ,p_internal_uid=>2748778281243980
 );
 wwv_flow_imp_page.create_page_process(
@@ -4889,9 +5058,36 @@ wwv_flow_imp_page.create_page_process(
 ,p_parent_process_id=>wwv_flow_imp.id(28699339955689196)
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Clear Success Message'
+,p_static_id=>'clear-success-message'
 ,p_process_sql_clob=>'apex_application.g_print_success_message := null;'
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>11202358748643442
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(28700621602696679)
+,p_process_sequence=>80
+,p_parent_process_id=>wwv_flow_imp.id(28699339955689196)
+,p_process_type=>'NATIVE_DATA_LOADING'
+,p_process_name=>'Load File Data'
+,p_static_id=>'load-file-data'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'data_load_definition_id', wwv_flow_imp.id(26872215558699189),
+  'source_data_type', 'FILE',
+  'source_file_browse_item', 'P25_FILE')).to_clob
+,p_internal_uid=>3693919421834612
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(28699339955689196)
+,p_process_sequence=>20
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_EXECUTION_CHAIN'
+,p_process_name=>'Upload Sample Data'
+,p_static_id=>'upload-sample-data'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'run_in_background', 'N')).to_clob
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(27754092685106046)
+,p_internal_uid=>3692637774827129
 );
 end;
 /
@@ -4905,31 +5101,34 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Prepare Custom Data'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_resizable=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'03'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21912229909643462)
-,p_plug_name=>'Progress'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
-,p_plug_template=>4501440665235496320
+ p_id=>wwv_flow_imp.id(39778368153547413)
+,p_plug_name=>'Buttons'
+,p_static_id=>'buttons'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
 ,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_list_id=>wwv_flow_imp.id(14193624344893271)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2010149141494510257
-,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(25943800203932809)
 ,p_plug_name=>'Data Uploaded Successfully'
+,p_static_id=>'data-uploaded-successfully'
 ,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
-,p_plug_template=>3371237801798025892
+,p_plug_template=>3372714138756020509
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Your data has been loaded successfully into the data table.</p>',
@@ -4939,15 +5138,30 @@ wwv_flow_imp_page.create_page_plug(
 'select 1',
 '  from eba_vector_datatable',
 ' where embedding_vector is null;'))
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(21912229909643462)
+,p_plug_name=>'Progress'
+,p_static_id=>'progress'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_list_id=>wwv_flow_imp.id(14193624344893271)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2011625478452504874
+);
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(27691106698837205)
 ,p_name=>'Summary'
-,p_template=>4072358936313175081
+,p_static_id=>'summary'
+,p_template=>4073835273271169698
 ,p_display_sequence=>20
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-BadgeList--xlarge:t-BadgeList--circular:t-BadgeList--fixed:t-Report--hideNoPagination'
@@ -4959,7 +5173,7 @@ wwv_flow_imp_page.create_report_region(
 '  from eba_vector_datatable;'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2104643962563030528
+,p_query_row_template=>2106120299521025145
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
@@ -4993,27 +5207,15 @@ wwv_flow_imp_page.create_report_columns(
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(39778368153547413)
-,p_plug_name=>'Buttons'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_03'
-,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(27704349826958162)
 ,p_button_sequence=>20
 ,p_button_plug_id=>wwv_flow_imp.id(39778368153547413)
 ,p_button_name=>'GENERATE_VECTOR_EMBEDDINGS'
+,p_static_id=>'generate-vector-embeddings'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Generate Vector Embeddings'
 ,p_button_position=>'NEXT'
@@ -5029,9 +5231,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(39778368153547413)
 ,p_button_name=>'PREV'
+,p_static_id=>'prev'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2349107722467437027
+,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>'Back'
 ,p_button_position=>'PREVIOUS'
 ,p_button_redirect_url=>'f?p=&APP_ID.:26:&SESSION.::&DEBUG.:::'
@@ -5051,6 +5254,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Generate Vectors Embeddings'
+,p_static_id=>'generate-vectors-embeddings'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
 '',
@@ -5076,52 +5280,56 @@ wwv_flow_imp_page.create_page(
 ,p_page_mode=>'MODAL'
 ,p_step_title=>'Prepare Custom Data'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_resizable=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'06'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(36766158688118380)
-,p_plug_name=>'Progress'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
-,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_location=>null
-,p_list_id=>wwv_flow_imp.id(14193624344893271)
-,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2010149141494510257
-,p_ai_enabled=>false
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(49513023390648422)
 ,p_plug_name=>'Custom Vector Search Navigation'
+,p_static_id=>'custom-vector-search-navigation'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_component_template_options=>'#DEFAULT#:t-MediaList--showBadges'
-,p_plug_template=>3371237801798025892
+,p_plug_template=>3372714138756020509
 ,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(14660657478603054)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2067994871570597190
+,p_list_template_id=>2069471208528591807
 ,p_landmark_label=>'Custom Vector Search'
-,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(36766158688118380)
+,p_plug_name=>'Progress'
+,p_static_id=>'progress'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayCurrentLabelOnly'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_list_id=>wwv_flow_imp.id(14193624344893271)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>2011625478452504874
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(49513750767652094)
 ,p_plug_name=>'Ready for Vector Search'
+,p_static_id=>'ready-for-vector-search'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--success'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Vector embeddings for your data have been generated! You can now perform vector searches on your data.</p>',
 '<p>Select a vector search example below to get started.</p>'))
 ,p_plug_display_condition_type=>'EXISTS'
 ,p_plug_display_when_condition=>'select 1 from eba_vector_datatable where embedding_vector is not null and rownum = 1'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -5137,6 +5345,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Basic Vector Search'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'26'
@@ -5144,10 +5353,12 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21772034982887465)
 ,p_plug_name=>'About Basic Vector Search'
+,p_static_id=>'about-basic-vector-search'
 ,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Search using vectors including all data fields of the uploaded data for deeper and broader results.</p>',
@@ -5170,24 +5381,28 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(26834247520881123)
 ,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
+,p_plug_template=>2532939663579242476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(26568570669740916)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
+,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(42013102707970474)
 ,p_plug_name=>'Content'
+,p_static_id=>'content'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -5195,62 +5410,30 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(42018513354020607)
 ,p_plug_name=>'Search'
+,p_static_id=>'search'
 ,p_parent_plug_id=>wwv_flow_imp.id(42013102707970474)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_landmark_type=>'search'
 ,p_landmark_label=>'Basic Vector'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(43226419993906240)
-,p_plug_name=>'Search Results OPENAI'
-,p_parent_plug_id=>wwv_flow_imp.id(42013102707970474)
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_plug_source_type=>'NATIVE_SEARCH_REGION'
-,p_ajax_items_to_submit=>'P31_SEARCH'
-,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
-,p_plug_display_when_condition=>'CURRENT_AI_PROVIDER'
-,p_plug_display_when_cond2=>'OPENAI'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'custom_layout', 'N',
-  'lazy_loading', 'Y',
-  'minimum_characters', '0',
-  'no_query_entered_message', 'Please enter your search term.',
-  'no_results_found_message', 'No results found.',
-  'results_per_page', '15',
-  'results_per_page_type', 'STATIC',
-  'search_as_you_type', 'Y',
-  'search_page_item', 'P31_SEARCH',
-  'show_result_count', 'N',
-  'use_pagination', 'Y')).to_clob
-);
-wwv_flow_imp_page.create_search_region_source(
- p_id=>wwv_flow_imp.id(14693874869247774)
-,p_region_id=>wwv_flow_imp.id(43226419993906240)
-,p_search_config_id=>wwv_flow_imp.id(32204777597721912)
-,p_use_as_initial_result=>false
-,p_display_sequence=>10
-,p_name=>'Basic Vector Search OPENAI Datatable'
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(48033216067062365)
 ,p_plug_name=>'Search Results OCI'
+,p_static_id=>'search-results-oci'
 ,p_parent_plug_id=>wwv_flow_imp.id(42013102707970474)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P31_SEARCH'
@@ -5277,6 +5460,45 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Basic Vector Search OCI Datatable'
+,p_static_id=>'basic-vector-search-oci-datatable'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(43226419993906240)
+,p_plug_name=>'Search Results OPENAI'
+,p_static_id=>'search-results-openai'
+,p_parent_plug_id=>wwv_flow_imp.id(42013102707970474)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>1557215235004102827
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_SEARCH_REGION'
+,p_ajax_items_to_submit=>'P31_SEARCH'
+,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_plug_display_when_condition=>'CURRENT_AI_PROVIDER'
+,p_plug_display_when_cond2=>'OPENAI'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'custom_layout', 'N',
+  'lazy_loading', 'Y',
+  'minimum_characters', '0',
+  'no_query_entered_message', 'Please enter your search term.',
+  'no_results_found_message', 'No results found.',
+  'results_per_page', '15',
+  'results_per_page_type', 'STATIC',
+  'search_as_you_type', 'Y',
+  'search_page_item', 'P31_SEARCH',
+  'show_result_count', 'N',
+  'use_pagination', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_search_region_source(
+ p_id=>wwv_flow_imp.id(14693874869247774)
+,p_region_id=>wwv_flow_imp.id(43226419993906240)
+,p_search_config_id=>wwv_flow_imp.id(32204777597721912)
+,p_use_as_initial_result=>false
+,p_display_sequence=>10
+,p_name=>'Basic Vector Search OPENAI Datatable'
+,p_static_id=>'basic-vector-search-openai-datatable'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(48035431534062388)
@@ -5285,16 +5507,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(42018513354020607)
 ,p_prompt=>'Search'
 ,p_placeholder=>'Enter your search term, e.g. Testing'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_css_classes=>'mxw800 t-Form-fieldContainer--noPadding'
 ,p_item_icon_css_classes=>'fa-search'
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_warn_on_unsaved_changes=>'I'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'SEARCH',
   'trim_spaces', 'BOTH')).to_clob
@@ -5310,16 +5532,90 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Vector vs. Oracle Text'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'26'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(30622929601409448)
+,p_plug_name=>'About Vector vs. Oracle Text Search'
+,p_static_id=>'about-vector-vs-oracle-text-search'
+,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>30
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p><strong>Compare</strong> vector search (focused on meaning) with Oracle Text search (focused on keywords and phrases) <strong>to see their differences</strong>.</p>',
+'',
+'<p>Note that performing a vector search will always yield results, regardless of the quality of the match. The best matches will be displayed at the top of the resultset.</p>',
+'',
+'<p>To search, start typing your query, and the results will be displayed immediately. Here are a few example search terms to get started:</p>',
+'',
+'<ul>',
+'    <li>Testing</li>',
+'    <li>Results that include errors.</li>',
+'</ul>'))
+,p_landmark_type=>'complementary'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(35076000228702089)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(26568570669740916)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(30628865924451524)
+,p_plug_name=>'Content'
+,p_static_id=>'content'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>20
+,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(34679063133235447)
+,p_plug_name=>'Oracle Text'
+,p_static_id=>'oracle-text'
+,p_parent_plug_id=>wwv_flow_imp.id(30628865924451524)
+,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21771055858887455)
 ,p_plug_name=>'Oracle Text not available'
+,p_static_id=>'oracle-text-not-available'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--danger'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>'<p>This feature cannot be used because Oracle Text is not available in this instance.</p>'
 ,p_plug_display_condition_type=>'NOT_EXISTS'
@@ -5334,87 +5630,35 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(30622929601409448)
-,p_plug_name=>'About Vector vs. Oracle Text Search'
-,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>30
-,p_plug_new_grid_row=>false
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p><strong>Compare</strong> vector search (focused on meaning) with Oracle Text search (focused on keywords and phrases) <strong>to see their differences</strong>.</p>',
-'',
-'<p>Note that performing a vector search will always yield results, regardless of the quality of the match. The best matches will be displayed at the top of the resultset.</p>',
-'',
-'<p>To search, start typing your query, and the results will be displayed immediately. Here are a few example search terms to get started:</p>',
-'',
-'<ul>',
-'    <li>Testing</li>',
-'    <li>Results that include errors.</li>',
-'</ul>'))
-,p_landmark_type=>'complementary'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(30628865924451524)
-,p_plug_name=>'Content'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>20
-,p_plug_grid_column_span=>8
-,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(30634290706499904)
 ,p_plug_name=>'Search'
+,p_static_id=>'search'
 ,p_parent_plug_id=>wwv_flow_imp.id(30628865924451524)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_landmark_type=>'search'
 ,p_landmark_label=>'Vector vs. Oracle Text'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34678977929235446)
-,p_plug_name=>'Vector'
-,p_parent_plug_id=>wwv_flow_imp.id(30628865924451524)
-,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+ p_id=>wwv_flow_imp.id(35076704534702094)
+,p_plug_name=>'Search Results'
+,p_static_id=>'search-results'
+,p_parent_plug_id=>wwv_flow_imp.id(34679063133235447)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(31842431014390105)
-,p_plug_name=>'Search Results OPENAI'
-,p_parent_plug_id=>wwv_flow_imp.id(34678977929235446)
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P32_SEARCH'
-,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
-,p_plug_display_when_condition=>'CURRENT_AI_PROVIDER'
-,p_plug_display_when_cond2=>'OPENAI'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'custom_layout', 'N',
   'lazy_loading', 'Y',
@@ -5429,21 +5673,24 @@ wwv_flow_imp_page.create_page_plug(
   'use_pagination', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_search_region_source(
- p_id=>wwv_flow_imp.id(31842586010390106)
-,p_region_id=>wwv_flow_imp.id(31842431014390105)
-,p_search_config_id=>wwv_flow_imp.id(32204777597721912)
+ p_id=>wwv_flow_imp.id(27104376263622409)
+,p_region_id=>wwv_flow_imp.id(35076704534702094)
+,p_search_config_id=>wwv_flow_imp.id(26879025249810515)
 ,p_use_as_initial_result=>false
-,p_display_sequence=>10
-,p_name=>'Basic Vector Search OPENAI Datatable'
+,p_display_sequence=>22
+,p_name=>'Oracle Text Search'
+,p_static_id=>'oracle-text-search'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(34678610305235443)
 ,p_plug_name=>'Search Results OCI'
+,p_static_id=>'search-results-oci'
 ,p_parent_plug_id=>wwv_flow_imp.id(34678977929235446)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P32_SEARCH'
@@ -5470,33 +5717,24 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>20
 ,p_name=>'Basic Vector Search OCI Datatable'
+,p_static_id=>'basic-vector-search-oci-datatable'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34679063133235447)
-,p_plug_name=>'Oracle Text'
-,p_parent_plug_id=>wwv_flow_imp.id(30628865924451524)
-,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>20
-,p_plug_new_grid_row=>false
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(35076704534702094)
-,p_plug_name=>'Search Results'
-,p_parent_plug_id=>wwv_flow_imp.id(34679063133235447)
+ p_id=>wwv_flow_imp.id(31842431014390105)
+,p_plug_name=>'Search Results OPENAI'
+,p_static_id=>'search-results-openai'
+,p_parent_plug_id=>wwv_flow_imp.id(34678977929235446)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
-,p_plug_display_sequence=>10
+,p_plug_template=>1557215235004102827
+,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P32_SEARCH'
+,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_plug_display_when_condition=>'CURRENT_AI_PROVIDER'
+,p_plug_display_when_cond2=>'OPENAI'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'custom_layout', 'N',
   'lazy_loading', 'Y',
@@ -5511,26 +5749,28 @@ wwv_flow_imp_page.create_page_plug(
   'use_pagination', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_search_region_source(
- p_id=>wwv_flow_imp.id(27104376263622409)
-,p_region_id=>wwv_flow_imp.id(35076704534702094)
-,p_search_config_id=>wwv_flow_imp.id(26879025249810515)
+ p_id=>wwv_flow_imp.id(31842586010390106)
+,p_region_id=>wwv_flow_imp.id(31842431014390105)
+,p_search_config_id=>wwv_flow_imp.id(32204777597721912)
 ,p_use_as_initial_result=>false
-,p_display_sequence=>22
-,p_name=>'Oracle Text Search'
+,p_display_sequence=>10
+,p_name=>'Basic Vector Search OPENAI Datatable'
+,p_static_id=>'basic-vector-search-openai-datatable'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(35076000228702089)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'REGION_POSITION_01'
+ p_id=>wwv_flow_imp.id(34678977929235446)
+,p_plug_name=>'Vector'
+,p_static_id=>'vector'
+,p_parent_plug_id=>wwv_flow_imp.id(30628865924451524)
+,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(26568570669740916)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
-,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(35082004942702108)
@@ -5539,16 +5779,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(30634290706499904)
 ,p_prompt=>'Search'
 ,p_placeholder=>'Enter your search term, e.g. Testing'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_css_classes=>'mxw800 t-Form-fieldContainer--noPadding'
 ,p_item_icon_css_classes=>'fa-search'
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_warn_on_unsaved_changes=>'I'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'SEARCH',
   'trim_spaces', 'BOTH')).to_clob
@@ -5564,37 +5804,20 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Vector and Oracle Text'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'26'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(29698817803218870)
-,p_plug_name=>'Oracle Text not available'
-,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--danger'
-,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>10
-,p_location=>null
-,p_plug_source=>'<p>This feature cannot be used because Oracle Text is not available in this instance.</p>'
-,p_plug_display_condition_type=>'NOT_EXISTS'
-,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select 1 ',
-'  from sys.all_objects',
-' where owner       = ''CTXSYS'' ',
-'   and object_name = ''CTX_DDL'' ',
-'   and rownum      = 1;'))
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(30623183518410643)
 ,p_plug_name=>'About Vector and Oracle Text Search'
+,p_static_id=>'about-vector-and-oracle-text-search'
 ,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p><strong>Combine</strong> vector and Oracle Text search for better and more accurate results.</p>',
@@ -5610,20 +5833,56 @@ wwv_flow_imp_page.create_page_plug(
 '    <li>Spreadsheet</li>',
 '</ul>'))
 ,p_landmark_type=>'complementary'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(35283760787468359)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(26568570669740916)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(30629230981453222)
 ,p_plug_name=>'Content'
+,p_static_id=>'content'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(29698817803218870)
+,p_plug_name=>'Oracle Text not available'
+,p_static_id=>'oracle-text-not-available'
+,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--danger'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'<p>This feature cannot be used because Oracle Text is not available in this instance.</p>'
+,p_plug_display_condition_type=>'NOT_EXISTS'
+,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select 1 ',
+'  from sys.all_objects',
+' where owner       = ''CTXSYS'' ',
+'   and object_name = ''CTX_DDL'' ',
+'   and rownum      = 1;'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -5631,15 +5890,16 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(30635901575516111)
 ,p_plug_name=>'Search'
+,p_static_id=>'search'
 ,p_parent_plug_id=>wwv_flow_imp.id(30629230981453222)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_landmark_type=>'search'
 ,p_landmark_label=>'Vector and Oracle Text'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -5647,11 +5907,13 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(31842700837390107)
 ,p_plug_name=>'Search Results'
+,p_static_id=>'search-results'
 ,p_parent_plug_id=>wwv_flow_imp.id(30629230981453222)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P33_SEARCH'
@@ -5675,19 +5937,7 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Oracle Text And Vector Datatable'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(35283760787468359)
-,p_plug_name=>'Breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_menu_id=>wwv_flow_imp.id(26568570669740916)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
-,p_ai_enabled=>false
+,p_static_id=>'oracle-text-and-vector-datatable'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(35286118163468371)
@@ -5696,16 +5946,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(30635901575516111)
 ,p_prompt=>'Search'
 ,p_placeholder=>'Enter your search term, e.g. Testing'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_css_classes=>'mxw800 t-Form-fieldContainer--noPadding'
 ,p_item_icon_css_classes=>'fa-search'
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_warn_on_unsaved_changes=>'I'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'SEARCH',
   'trim_spaces', 'BOTH')).to_clob
@@ -5721,31 +5971,72 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Movie Recommendation'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'26'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(30647019480815937)
+,p_plug_name=>'About Movie Recommendation'
+,p_static_id=>'about-movie-recommendation'
+,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>50
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>The dropdown menu allows selecting a movie to <strong>find similar movies</strong> based on its title, moviedescription, and actors in descending order. Click on the movies to view detailed information about them.</p>',
+'',
+'<p>Note that performing a vector search will always yield results, regardless of the quality of the match. The best matches will be displayed at the top of the resultset.</p>'))
+,p_landmark_type=>'complementary'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(26855007513038223)
 ,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
+,p_plug_template=>2532939663579242476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(26568570669740916)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
+,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(30643242139782658)
 ,p_plug_name=>'Content'
+,p_static_id=>'content'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>30
 ,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(30643603731784407)
+,p_plug_name=>'Search'
+,p_static_id=>'search'
+,p_parent_plug_id=>wwv_flow_imp.id(30643242139782658)
+,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_landmark_type=>'search'
+,p_landmark_label=>'Select Movie Recommendation'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -5753,11 +6044,13 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(27121904358811370)
 ,p_plug_name=>'Search Results OCI'
+,p_static_id=>'search-results-oci'
 ,p_parent_plug_id=>wwv_flow_imp.id(30643242139782658)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P41_SEARCH'
@@ -5784,31 +6077,18 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Movie Recommendation'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(30643603731784407)
-,p_plug_name=>'Search'
-,p_parent_plug_id=>wwv_flow_imp.id(30643242139782658)
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_landmark_type=>'search'
-,p_landmark_label=>'Select Movie Recommendation'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
+,p_static_id=>'movie-recommendation'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(31843025437390111)
 ,p_plug_name=>'Search Results OPENAI'
+,p_static_id=>'search-results-openai'
 ,p_parent_plug_id=>wwv_flow_imp.id(30643242139782658)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P41_SEARCH'
@@ -5835,24 +6115,7 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Movie Recommendation'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(30647019480815937)
-,p_plug_name=>'About Movie Recommendation'
-,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>50
-,p_plug_new_grid_row=>false
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>The dropdown menu allows selecting a movie to <strong>find similar movies</strong> based on its title, moviedescription, and actors in descending order. Click on the movies to view detailed information about them.</p>',
-'',
-'<p>Note that performing a vector search will always yield results, regardless of the quality of the match. The best matches will be displayed at the top of the resultset.</p>'))
-,p_landmark_type=>'complementary'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
+,p_static_id=>'movie-recommendation'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(27121732823811368)
@@ -5860,6 +6123,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(30643603731784407)
 ,p_prompt=>'Search'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SELECT_ONE'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select title, ',
@@ -5867,17 +6131,19 @@ wwv_flow_imp_page.create_page_item(
 '  from eba_vector_moviedata;'))
 ,p_cSize=>30
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'case_sensitive', 'N',
   'fetch_on_search', 'N',
+  'infinite_scroll', 'N',
   'match_type', 'CONTAINS',
   'min_chars', '0')).to_clob
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(27122406472811375)
 ,p_name=>'Submit Page'
+,p_static_id=>'submit-page'
 ,p_event_sequence=>10
 ,p_triggering_element_type=>'ITEM'
 ,p_triggering_element=>'P41_SEARCH'
@@ -5892,10 +6158,12 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>10
 ,p_execute_on_page_init=>'N'
 ,p_name=>'Refresh Search Results OCI'
+,p_static_id=>'refresh-search-results-oci'
 ,p_action=>'NATIVE_REFRESH'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(27121904358811370)
-,p_attribute_01=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(14196213290650180)
@@ -5904,10 +6172,12 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>20
 ,p_execute_on_page_init=>'N'
 ,p_name=>'Refresh Search Results OpenAI'
+,p_static_id=>'refresh-search-results-openai'
 ,p_action=>'NATIVE_REFRESH'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(31843025437390111)
-,p_attribute_01=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
 );
 end;
 /
@@ -5920,31 +6190,84 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Mixed Languages'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'26'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(30647332777816884)
+,p_plug_name=>'About Mixed Languages'
+,p_static_id=>'about-mixed-languages'
+,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>40
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Each language yields unique results, as it connects to different attributes or contexts, enhancing the diversity and relevance of search outcomes.</p>',
+'',
+unistr('<p>The system leverages vector embeddings to identify semantically similar results across multiple languages, even if the query combines different languages (e.g., <strong><span lang="zh-Hans">\592A\7A7A</span> and Star Wars</strong>).</p>'),
+'',
+'<p>Note that performing a vector search will always yield results, regardless of the quality of the match. The best matches will be displayed at the top of the resultset.</p>',
+'',
+'<p>To search, start typing your query, and the results will be displayed immediately. ',
+'    Try out the Arabic, Mandarin, German, or French term for "Space":</p>',
+'',
+'<ul>',
+unistr('    <li><span lang="ar">\0627\0644\0641\0636\0627\0621</span></li>'),
+unistr('    <li><span lang="zh-Hans">\592A\7A7A</span></li>'),
+'    <li><span lang="de">Weltraum</span></li>',
+'    <li><span lang="fr">espace</span></li>',
+'</ul>'))
+,p_landmark_type=>'complementary'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(26856399650041913)
 ,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
+,p_plug_template=>2532939663579242476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(26568570669740916)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
+,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(30645238262805830)
 ,p_plug_name=>'Content'
+,p_static_id=>'content'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
+,p_plug_template=>4502917002193490937
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(30644571663795758)
+,p_plug_name=>'Search'
+,p_static_id=>'search'
+,p_parent_plug_id=>wwv_flow_imp.id(30645238262805830)
+,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_landmark_type=>'search'
+,p_landmark_label=>'Mixed Languages'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -5952,11 +6275,13 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(27122217795811373)
 ,p_plug_name=>'Search Results OCI'
+,p_static_id=>'search-results-oci'
 ,p_parent_plug_id=>wwv_flow_imp.id(30645238262805830)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P42_SEARCH'
@@ -5983,31 +6308,18 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Vector Comparison'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(30644571663795758)
-,p_plug_name=>'Search'
-,p_parent_plug_id=>wwv_flow_imp.id(30645238262805830)
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_landmark_type=>'search'
-,p_landmark_label=>'Mixed Languages'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
+,p_static_id=>'vector-comparison'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(31843226561390113)
 ,p_plug_name=>'Search Results OPENAI'
+,p_static_id=>'search-results-openai'
 ,p_parent_plug_id=>wwv_flow_imp.id(30645238262805830)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1555738898046108210
+,p_plug_template=>1557215235004102827
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_SEARCH_REGION'
 ,p_ajax_items_to_submit=>'P42_SEARCH'
@@ -6034,36 +6346,7 @@ wwv_flow_imp_page.create_search_region_source(
 ,p_use_as_initial_result=>false
 ,p_display_sequence=>10
 ,p_name=>'Vector Comparison'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(30647332777816884)
-,p_plug_name=>'About Mixed Languages'
-,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>40
-,p_plug_new_grid_row=>false
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Each language yields unique results, as it connects to different attributes or contexts, enhancing the diversity and relevance of search outcomes.</p>',
-'',
-unistr('<p>The system leverages vector embeddings to identify semantically similar results across multiple languages, even if the query combines different languages (e.g., <strong><span lang="zh-Hans">\592A\7A7A</span> and Star Wars</strong>).</p>'),
-'',
-'<p>Note that performing a vector search will always yield results, regardless of the quality of the match. The best matches will be displayed at the top of the resultset.</p>',
-'',
-'<p>To search, start typing your query, and the results will be displayed immediately. ',
-'    Try out the Arabic, Mandarin, German, or French term for "Space":</p>',
-'',
-'<ul>',
-unistr('    <li><span lang="ar">\0627\0644\0641\0636\0627\0621</span></li>'),
-unistr('    <li><span lang="zh-Hans">\592A\7A7A</span></li>'),
-'    <li><span lang="de">Weltraum</span></li>',
-'    <li><span lang="fr">espace</span></li>',
-'</ul>'))
-,p_landmark_type=>'complementary'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
+,p_static_id=>'vector-comparison'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(27122188783811372)
@@ -6072,14 +6355,14 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(30644571663795758)
 ,p_prompt=>'Search'
 ,p_placeholder=>'Enter your search term'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>30
 ,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
-  'send_on_page_submit', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'TEXT',
   'trim_spaces', 'BOTH')).to_clob
@@ -6098,18 +6381,35 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>2100407606326202693
+,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
 ,p_dialog_width=>'600'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'23'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1593375319890247667)
+,p_plug_name=>'Buttons'
+,p_static_id=>'buttons'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>20
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(7381949152366)
 ,p_plug_name=>'Movie Details Report'
+,p_static_id=>'movie-details-report'
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>2072724515482255512
+,p_plug_template=>2074200852440250129
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select title, moviedescription, actors, genre, release_date, rating',
@@ -6139,27 +6439,15 @@ wwv_flow_imp_page.create_card(
 ,p_badge_label=>'Rating'
 ,p_media_adv_formatting=>false
 );
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1593375319890247667)
-,p_plug_name=>'Buttons'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
-,p_plug_display_sequence=>20
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_03'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(14822184384392706)
 ,p_button_sequence=>30
 ,p_button_plug_id=>wwv_flow_imp.id(1593375319890247667)
 ,p_button_name=>'FIND_SIMILAR_MOVIES'
+,p_static_id=>'find-similar-movies'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Find Similar Movies'
 ,p_button_position=>'NEXT'
@@ -6177,6 +6465,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P49_SEARCH_ID'
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(7381949152366)
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -6188,6 +6477,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Find Similar Movies'
+,p_static_id=>'find-similar-movies'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
 '    select moviedescription',
@@ -6210,6 +6500,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'ADMINISTRATION'
 ,p_step_title=>'Administration'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'06'
@@ -6217,28 +6508,33 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(26839539680898576)
 ,p_plug_name=>'Administration Navigation'
+,p_static_id=>'administration-navigation'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-MediaList--showBadges'
-,p_plug_template=>4072358936313175081
+,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(26885968671938778)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2067994871570597190
+,p_list_template_id=>2069471208528591807
 ,p_landmark_type=>'navigation'
 ,p_landmark_label=>'Administration'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(26857677793048846)
 ,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
+,p_plug_template=>2532939663579242476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(26568570669740916)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
+,p_menu_template_id=>4073839682315169711
 );
 end;
 /
@@ -6250,6 +6546,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'RESET-SAMPLE-DATA-TABLES'
 ,p_step_title=>'Reset Sample Data Tables'
 ,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'11'
@@ -6257,69 +6554,75 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(31021729976705593)
 ,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
+,p_plug_template=>2532939663579242476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(26568570669740916)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
-,p_ai_enabled=>false
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(36597133015291862)
-,p_plug_name=>'Reset Data'
-,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--info'
-,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>10
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Would you like to reset your data?</p>',
-'<p>This action will restore the data tables to their initial state, clearing all current data.</p>'))
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
+,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(36597240019291863)
 ,p_plug_name=>'Buttons'
+,p_static_id=>'buttons'
 ,p_parent_plug_id=>wwv_flow_imp.id(36597133015291862)
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
+,p_plug_template=>2127905476394690047
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
-wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(27091051042480822)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_imp.id(36597240019291863)
-,p_button_name=>'DELETE'
-,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#:t-Button--danger'
-,p_button_template_id=>4072362960822175091
-,p_button_image_alt=>'Reset'
-,p_button_position=>'NEXT'
-,p_confirm_message=>'Are you sure you want to clear data from all data tables?'
-,p_confirm_style=>'danger'
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(36597133015291862)
+,p_plug_name=>'Reset Data'
+,p_static_id=>'reset-data'
+,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--info'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Would you like to reset your data?</p>',
+'<p>This action will restore the data tables to their initial state, clearing all current data.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(27091478607480822)
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(36597240019291863)
 ,p_button_name=>'CANCEL'
+,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'PREVIOUS'
 ,p_button_redirect_url=>'f?p=&APP_ID.:50:&SESSION.::&DEBUG.:::'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(27091051042480822)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(36597240019291863)
+,p_button_name=>'DELETE'
+,p_static_id=>'delete'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--danger'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>'Reset'
+,p_button_position=>'NEXT'
+,p_confirm_message=>'Are you sure you want to clear data from all data tables?'
+,p_confirm_style=>'danger'
 );
 wwv_flow_imp_page.create_page_branch(
  p_id=>wwv_flow_imp.id(27095104088480826)
@@ -6335,6 +6638,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Delete Data'
+,p_static_id=>'delete-data'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
 '    delete from eba_vector_moviedata;',
@@ -6361,6 +6665,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -6369,46 +6674,43 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(3906251192630571437)
 ,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
+,p_plug_template=>2532939663579242476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(26568570669740916)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
+,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5887136968267659907)
 ,p_plug_name=>'Set Theme Style'
+,p_static_id=>'set-theme-style'
 ,p_icon_css_classes=>'fa-design'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--customIcons:t-Alert--info'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source=>'<p>Select the look and feel of the application you would like to use for all users of this application.</p>'
-,p_plug_query_headings_type=>'QUERY_COLUMNS'
-,p_plug_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
-,p_plug_query_show_nulls_as=>' - '
-,p_pagination_display_position=>'BOTTOM_RIGHT'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
-  'output_as', 'HTML',
-  'show_line_breaks', 'N')).to_clob
+  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(27472244324412520)
 ,p_button_sequence=>40
 ,p_button_plug_id=>wwv_flow_imp.id(5887136968267659907)
 ,p_button_name=>'SAVE'
+,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -6460,7 +6762,7 @@ wwv_flow_imp_page.create_page_item(
 '   and t.ui_type_name   = ''DESKTOP''',
 '   and t.is_current = ''Yes'''))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>1609121967514267634
+,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_restricted_characters=>'WEB_SAFE'
@@ -6473,6 +6775,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Set Theme Style'
+,p_static_id=>'set-theme-style'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'if :P52_DESKTOP_THEME_STYLE_ID is not null then',
 '    for c1 in ( select theme_number',
@@ -6525,6 +6828,7 @@ wwv_flow_imp_page.create_page(
 '  font-weight: 400;',
 '}',
 '.apex-item-yes-no {white-space:pre;}'))
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'Use this items on this page to configure the app.'
@@ -6533,42 +6837,44 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(15189452908504083)
 ,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2531463326621247859
+,p_plug_template=>2532939663579242476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(26568570669740916)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4072363345357175094
+,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(26705149377197141)
-,p_plug_name=>'Button OPENAI'
+ p_id=>wwv_flow_imp.id(33639146378659846)
+,p_plug_name=>'Button OCI'
+,p_static_id=>'button-oci'
 ,p_region_css_classes=>'step-container'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
-,p_plug_display_sequence=>80
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(33638874183659843)
-,p_plug_name=>'Select Provider'
-,p_title=>'Select AI Provider'
+ p_id=>wwv_flow_imp.id(26705149377197141)
+,p_plug_name=>'Button OPENAI'
+,p_static_id=>'button-openai'
 ,p_region_css_classes=>'step-container'
-,p_icon_css_classes=>'fa-number-1'
-,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>20
-,p_plug_item_display_point=>'BELOW'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>80
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_source=>'<p>Select an AI provider you want to use for generating data and creating vector embeddings.</p>'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -6576,30 +6882,16 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(33638989925659844)
 ,p_plug_name=>'Enter OCI Web Credentials'
+,p_static_id=>'enter-oci-web-credentials'
 ,p_title=>'Enter Web Credentials'
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-2'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source=>'<p>Enter the OCI credentials you would like to use for this application.</p>'
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(51475605601480595)
-,p_plug_name=>'Web Credentials'
-,p_parent_plug_id=>wwv_flow_imp.id(33638989925659844)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--noBorder:t-Region--hiddenOverflow'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>40
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -6607,42 +6899,61 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(33639084835659845)
 ,p_plug_name=>'Enter OpenAI Web Credentials'
+,p_static_id=>'enter-openai-web-credentials'
 ,p_title=>'Enter Web Credentials'
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-2'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>60
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source=>'<p>Enter the OpenAI API key you would like to use for this application.</p>'
-,p_ai_enabled=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(33639146378659846)
-,p_plug_name=>'Button OCI'
+ p_id=>wwv_flow_imp.id(33638874183659843)
+,p_plug_name=>'Select Provider'
+,p_static_id=>'select-provider'
+,p_title=>'Select AI Provider'
 ,p_region_css_classes=>'step-container'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
-,p_plug_display_sequence=>70
-,p_include_in_reg_disp_sel_yn=>'Y'
+,p_icon_css_classes=>'fa-number-1'
+,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
-,p_ai_enabled=>false
+,p_plug_source=>'<p>Select an AI provider you want to use for generating data and creating vector embeddings.</p>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(51475605601480595)
+,p_plug_name=>'Web Credentials'
+,p_static_id=>'web-credentials'
+,p_parent_plug_id=>wwv_flow_imp.id(33638989925659844)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--noBorder:t-Region--hiddenOverflow'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(15177933232504052)
+ p_id=>wwv_flow_imp.id(15188932049504081)
 ,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_imp.id(26705149377197141)
-,p_button_name=>'COMPLETE_OPENAI'
+,p_button_plug_id=>wwv_flow_imp.id(33639146378659846)
+,p_button_name=>'COMPLETE_OCI'
+,p_static_id=>'complete-oci'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2082829544945815391
+,p_button_template_id=>2084305881903810008
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CHANGE'
@@ -6650,13 +6961,14 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-check-circle'
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(15188932049504081)
+ p_id=>wwv_flow_imp.id(15177933232504052)
 ,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_imp.id(33639146378659846)
-,p_button_name=>'COMPLETE_OCI'
+,p_button_plug_id=>wwv_flow_imp.id(26705149377197141)
+,p_button_name=>'COMPLETE_OPENAI'
+,p_static_id=>'complete-openai'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2082829544945815391
+,p_button_template_id=>2084305881903810008
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CHANGE'
@@ -6675,6 +6987,190 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_condition_text=>'YES'
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(58402811483303711)
+,p_name=>'P54_AI_PROVIDER'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(33638874183659843)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'AI Provider'
+,p_source=>'CURRENT_AI_PROVIDER'
+,p_source_type=>'ITEM'
+,p_display_as=>'NATIVE_RADIOGROUP'
+,p_lov=>'STATIC:OCI Generative AI;OCI,Open AI;OPENAI'
+,p_grid_label_column_span=>0
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'number_of_columns', '2',
+  'page_action_on_selection', 'NONE')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(59408243085987141)
+,p_name=>'P54_OCI_COMPARTMENT_ID'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(33638989925659844)
+,p_prompt=>'Compartment ID'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_help_text=>'The Oracle Cloud Infrastructure Compartment ID'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(58439977837404652)
+,p_name=>'P54_OCI_FINGERPRINT'
+,p_item_sequence=>70
+,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
+,p_prompt=>'OCI Public Key Fingerprint'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_help_text=>'<p>Enter the <em>public RSA key fingerprint</em> for OCI authentication. </p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a'
+||'></p>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(58439749714404650)
+,p_name=>'P54_OCI_PRIVATE_KEY'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
+,p_prompt=>'OCI Private Key'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXTAREA'
+,p_cSize=>80
+,p_cMaxlength=>4000
+,p_cHeight=>5
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_help_text=>'<p>Enter the private key in PEM format for OCI authentication. &PRODUCT_NAME. stores this information encrypted and secure, so it cannot be retrieved back in clear text.</p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.orac'
+||'le.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'auto_height', 'N',
+  'character_counter', 'N',
+  'resizable', 'Y',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(59408168214987140)
+,p_name=>'P54_OCI_REGION'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(33638989925659844)
+,p_item_default=>'us-chicago-1'
+,p_prompt=>'Region'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_help_text=>'The Oracle Cloud Infrastructure Region. The default is us-chicago-1'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+,p_quick_pick_type=>'STATIC'
+,p_quick_pick_label_01=>'US Midwest (Chicago)'
+,p_quick_pick_value_01=>'us-chicago-1'
+,p_quick_pick_label_02=>'US East (Ashburn)'
+,p_quick_pick_value_02=>'us-ashburn-1'
+,p_quick_pick_label_03=>'US West (Phoenix)'
+,p_quick_pick_value_03=>'us-phoenix-1'
+,p_quick_pick_label_04=>'Germany Central (Frankfurt)'
+,p_quick_pick_value_04=>'eu-frankfurt-1'
+,p_quick_pick_label_05=>'UK South (London)'
+,p_quick_pick_value_05=>'uk-london-1'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(58439852762404651)
+,p_name=>'P54_OCI_TENANCY_ID'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
+,p_prompt=>'OCI Tenancy ID'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Enter the Oracle Cloud Infrastructure <em>Tenancy''s OCID</em>.</p>',
+'<p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(58439673509404649)
+,p_name=>'P54_OCI_USER_ID'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
+,p_prompt=>'OCI User ID'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#:margin-top-md'
+,p_help_text=>'<p>Enter the Oracle Cloud Infrastructure <em>User OCID</em>. &PRODUCT_NAME. does not store this information encrypted.</p> <p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm'
+||'">Oracle Cloud Infrastructure Documentation</a></p>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(51483257333480655)
+,p_name=>'P54_OCI_WEB_CREDENTIALS_HEADER'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
+,p_prompt=>'Web Credential'
+,p_source=>'OCI Credentials'
+,p_source_type=>'STATIC'
+,p_display_as=>'NATIVE_DISPLAY_ONLY'
+,p_field_template=>2320077351817916916
+,p_item_template_options=>'#DEFAULT#'
+,p_protection_level=>'S'
+,p_help_text=>'Denotes the name of the Web Credential which is used for accessing the <strong>OCI Generative AI</strong>. Navigate to <strong>Workspace Utilities</strong>, <strong>Web Credential</strong> to review existing Web Credentials.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'based_on', 'VALUE',
+  'format', 'PLAIN',
+  'send_on_page_submit', 'Y',
+  'show_line_breaks', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(58445549313406156)
+,p_name=>'P54_OPENAI_API_KEY'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(33639084835659845)
+,p_prompt=>'OpenAI API Key'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_PASSWORD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Enter the <em>API Key</em> to authenticate against the AI Provider.</p>',
+'<p>Example: "sk-pr..."</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'submit_when_enter_pressed', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(40546451904772571)
 ,p_name=>'P54_OPENAI_WEB_CRED_HEADER'
 ,p_item_sequence=>10
@@ -6683,7 +7179,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>'OpenAI Credentials'
 ,p_source_type=>'STATIC'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2318601014859922299
+,p_field_template=>2320077351817916916
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Denotes the name of the Web Credential which is used for accessing the <strong>OpenAI Generative AI</strong>. Navigate to <strong>Workspace Utilities</strong>, <strong>Web Credential</strong> to review existing Web Credentials.'
@@ -6699,197 +7195,17 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>40
 ,p_item_plug_id=>wwv_flow_imp.id(33638989925659844)
 ,p_prompt=>'Edit Web Credentials'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_YES_NO'
-,p_field_template=>2318601014859922299
+,p_field_template=>2320077351817916916
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'use_defaults', 'Y')).to_clob
 );
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(51483257333480655)
-,p_name=>'P54_OCI_WEB_CREDENTIALS_HEADER'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
-,p_prompt=>'Web Credential'
-,p_source=>'OCI Credentials'
-,p_source_type=>'STATIC'
-,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2318601014859922299
-,p_item_template_options=>'#DEFAULT#'
-,p_protection_level=>'S'
-,p_help_text=>'Denotes the name of the Web Credential which is used for accessing the <strong>OCI Generative AI</strong>. Navigate to <strong>Workspace Utilities</strong>, <strong>Web Credential</strong> to review existing Web Credentials.'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'based_on', 'VALUE',
-  'format', 'PLAIN',
-  'send_on_page_submit', 'Y',
-  'show_line_breaks', 'Y')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(58402811483303711)
-,p_name=>'P54_AI_PROVIDER'
-,p_item_sequence=>20
-,p_item_plug_id=>wwv_flow_imp.id(33638874183659843)
-,p_use_cache_before_default=>'NO'
-,p_prompt=>'AI Provider'
-,p_source=>'CURRENT_AI_PROVIDER'
-,p_source_type=>'ITEM'
-,p_display_as=>'NATIVE_RADIOGROUP'
-,p_lov=>'STATIC:OCI Generative AI;OCI,Open AI;OPENAI'
-,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
-,p_item_template_options=>'#DEFAULT#'
-,p_lov_display_extra=>'NO'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'number_of_columns', '2',
-  'page_action_on_selection', 'NONE')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(58439673509404649)
-,p_name=>'P54_OCI_USER_ID'
-,p_item_sequence=>30
-,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
-,p_prompt=>'OCI User ID'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#:margin-top-md'
-,p_help_text=>'<p>Enter the Oracle Cloud Infrastructure <em>User OCID</em>. &PRODUCT_NAME. does not store this information encrypted.</p> <p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm'
-||'">Oracle Cloud Infrastructure Documentation</a></p>'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'send_on_page_submit', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(58439749714404650)
-,p_name=>'P54_OCI_PRIVATE_KEY'
-,p_item_sequence=>40
-,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
-,p_prompt=>'OCI Private Key'
-,p_display_as=>'NATIVE_TEXTAREA'
-,p_cSize=>80
-,p_cMaxlength=>4000
-,p_cHeight=>5
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_is_persistent=>'N'
-,p_help_text=>'<p>Enter the private key in PEM format for OCI authentication. &PRODUCT_NAME. stores this information encrypted and secure, so it cannot be retrieved back in clear text.</p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.orac'
-||'le.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'auto_height', 'N',
-  'character_counter', 'N',
-  'resizable', 'Y',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(58439852762404651)
-,p_name=>'P54_OCI_TENANCY_ID'
-,p_item_sequence=>50
-,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
-,p_prompt=>'OCI Tenancy ID'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Enter the Oracle Cloud Infrastructure <em>Tenancy''s OCID</em>.</p>',
-'<p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'send_on_page_submit', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(58439977837404652)
-,p_name=>'P54_OCI_FINGERPRINT'
-,p_item_sequence=>70
-,p_item_plug_id=>wwv_flow_imp.id(51475605601480595)
-,p_prompt=>'OCI Public Key Fingerprint'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_help_text=>'<p>Enter the <em>public RSA key fingerprint</em> for OCI authentication. </p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a'
-||'></p>'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'send_on_page_submit', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(58445549313406156)
-,p_name=>'P54_OPENAI_API_KEY'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(33639084835659845)
-,p_prompt=>'OpenAI API Key'
-,p_display_as=>'NATIVE_PASSWORD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_is_persistent=>'N'
-,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Enter the <em>API Key</em> to authenticate against the AI Provider.</p>',
-'<p>Example: "sk-pr..."</p>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'submit_when_enter_pressed', 'Y')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(59408168214987140)
-,p_name=>'P54_OCI_REGION'
-,p_item_sequence=>20
-,p_item_plug_id=>wwv_flow_imp.id(33638989925659844)
-,p_item_default=>'us-chicago-1'
-,p_prompt=>'Region'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_help_text=>'The Oracle Cloud Infrastructure Region. The default is us-chicago-1'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'send_on_page_submit', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-,p_show_quick_picks=>'Y'
-,p_quick_pick_label_01=>'US Midwest (Chicago)'
-,p_quick_pick_value_01=>'us-chicago-1'
-,p_quick_pick_label_02=>'US East (Ashburn)'
-,p_quick_pick_value_02=>'us-ashburn-1'
-,p_quick_pick_label_03=>'US West (Phoenix)'
-,p_quick_pick_value_03=>'us-phoenix-1'
-,p_quick_pick_label_04=>'Germany Central (Frankfurt)'
-,p_quick_pick_value_04=>'eu-frankfurt-1'
-,p_quick_pick_label_05=>'UK South (London)'
-,p_quick_pick_value_05=>'uk-london-1'
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(59408243085987141)
-,p_name=>'P54_OCI_COMPARTMENT_ID'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(33638989925659844)
-,p_prompt=>'Compartment ID'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_help_text=>'The Oracle Cloud Infrastructure Compartment ID'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'send_on_page_submit', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-);
 wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(15192962804504100)
 ,p_validation_name=>'P54_OCI_COMPARTMENT_ID not null'
+,p_static_id=>'p54-oci-compartment-id-not-null'
 ,p_validation_sequence=>20
 ,p_validation=>'P54_OCI_COMPARTMENT_ID'
 ,p_validation_type=>'ITEM_NOT_NULL'
@@ -6899,8 +7215,39 @@ wwv_flow_imp_page.create_page_validation(
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(15192511410504100)
+,p_validation_name=>'P54_OCI_FINGERPRINT not null'
+,p_static_id=>'p54-oci-fingerprint-not-null'
+,p_validation_sequence=>80
+,p_validation=>'P54_OCI_FINGERPRINT'
+,p_validation_type=>'ITEM_NOT_NULL'
+,p_error_message=>'#LABEL# must have a value.'
+,p_validation_condition=>'P54_SHOW_WEB_CREDENTIALS'
+,p_validation_condition2=>'Y'
+,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_when_button_pressed=>wwv_flow_imp.id(15188932049504081)
+,p_associated_item=>wwv_flow_imp.id(58439977837404652)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
+);
+wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(15191353488504099)
+,p_validation_name=>'P54_OCI_PRIVATE_KEY not null'
+,p_static_id=>'p54-oci-private-key-not-null'
+,p_validation_sequence=>60
+,p_validation=>'P54_OCI_PRIVATE_KEY'
+,p_validation_type=>'ITEM_NOT_NULL'
+,p_error_message=>'#LABEL# must have a value.'
+,p_validation_condition=>'P54_SHOW_WEB_CREDENTIALS'
+,p_validation_condition2=>'Y'
+,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_when_button_pressed=>wwv_flow_imp.id(15188932049504081)
+,p_associated_item=>wwv_flow_imp.id(58439749714404650)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
+);
+wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(15191773681504100)
 ,p_validation_name=>'P54_OCI_REGION not null'
+,p_static_id=>'p54-oci-region-not-null'
 ,p_validation_sequence=>30
 ,p_validation=>'P54_OCI_REGION'
 ,p_validation_type=>'ITEM_NOT_NULL'
@@ -6910,8 +7257,24 @@ wwv_flow_imp_page.create_page_validation(
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(15192177011504100)
+,p_validation_name=>'P54_OCI_TENANCY_ID not null'
+,p_static_id=>'p54-oci-tenancy-id-not-null'
+,p_validation_sequence=>70
+,p_validation=>'P54_OCI_TENANCY_ID'
+,p_validation_type=>'ITEM_NOT_NULL'
+,p_error_message=>'#LABEL# must have a value.'
+,p_validation_condition=>'P54_SHOW_WEB_CREDENTIALS'
+,p_validation_condition2=>'Y'
+,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_when_button_pressed=>wwv_flow_imp.id(15188932049504081)
+,p_associated_item=>wwv_flow_imp.id(58439852762404651)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
+);
+wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(15190955860504099)
 ,p_validation_name=>'P54_OCI_USER_ID not null'
+,p_static_id=>'p54-oci-user-id-not-null'
 ,p_validation_sequence=>40
 ,p_validation=>'P54_OCI_USER_ID'
 ,p_validation_type=>'ITEM_NOT_NULL'
@@ -6926,6 +7289,7 @@ wwv_flow_imp_page.create_page_validation(
 wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(15193332543504101)
 ,p_validation_name=>'P54_OPENAI_API_KEY not null'
+,p_static_id=>'p54-openai-api-key-not-null'
 ,p_validation_sequence=>50
 ,p_validation=>'P54_OPENAI_API_KEY'
 ,p_validation_type=>'ITEM_NOT_NULL'
@@ -6934,84 +7298,10 @@ wwv_flow_imp_page.create_page_validation(
 ,p_associated_item=>wwv_flow_imp.id(58445549313406156)
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
-wwv_flow_imp_page.create_page_validation(
- p_id=>wwv_flow_imp.id(15191353488504099)
-,p_validation_name=>'P54_OCI_PRIVATE_KEY not null'
-,p_validation_sequence=>60
-,p_validation=>'P54_OCI_PRIVATE_KEY'
-,p_validation_type=>'ITEM_NOT_NULL'
-,p_error_message=>'#LABEL# must have a value.'
-,p_validation_condition=>'P54_SHOW_WEB_CREDENTIALS'
-,p_validation_condition2=>'Y'
-,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
-,p_when_button_pressed=>wwv_flow_imp.id(15188932049504081)
-,p_associated_item=>wwv_flow_imp.id(58439749714404650)
-,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
-);
-wwv_flow_imp_page.create_page_validation(
- p_id=>wwv_flow_imp.id(15192177011504100)
-,p_validation_name=>'P54_OCI_TENANCY_ID not null'
-,p_validation_sequence=>70
-,p_validation=>'P54_OCI_TENANCY_ID'
-,p_validation_type=>'ITEM_NOT_NULL'
-,p_error_message=>'#LABEL# must have a value.'
-,p_validation_condition=>'P54_SHOW_WEB_CREDENTIALS'
-,p_validation_condition2=>'Y'
-,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
-,p_when_button_pressed=>wwv_flow_imp.id(15188932049504081)
-,p_associated_item=>wwv_flow_imp.id(58439852762404651)
-,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
-);
-wwv_flow_imp_page.create_page_validation(
- p_id=>wwv_flow_imp.id(15192511410504100)
-,p_validation_name=>'P54_OCI_FINGERPRINT not null'
-,p_validation_sequence=>80
-,p_validation=>'P54_OCI_FINGERPRINT'
-,p_validation_type=>'ITEM_NOT_NULL'
-,p_error_message=>'#LABEL# must have a value.'
-,p_validation_condition=>'P54_SHOW_WEB_CREDENTIALS'
-,p_validation_condition2=>'Y'
-,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
-,p_when_button_pressed=>wwv_flow_imp.id(15188932049504081)
-,p_associated_item=>wwv_flow_imp.id(58439977837404652)
-,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(15194872093504104)
-,p_name=>'Toggle Switch Visibility'
-,p_event_sequence=>10
-,p_triggering_element_type=>'ITEM'
-,p_triggering_element=>'P54_SHOW_WEB_CREDENTIALS'
-,p_condition_element=>'P54_SHOW_WEB_CREDENTIALS'
-,p_triggering_condition_type=>'EQUALS'
-,p_triggering_expression=>'Y'
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'change'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(15195391747504106)
-,p_event_id=>wwv_flow_imp.id(15194872093504104)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'Y'
-,p_action=>'NATIVE_SHOW'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(51475605601480595)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(15195855846504106)
-,p_event_id=>wwv_flow_imp.id(15194872093504104)
-,p_event_result=>'FALSE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'Y'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(51475605601480595)
-);
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(15196296129504107)
 ,p_name=>'Change AI Provider'
+,p_static_id=>'change-ai-provider'
 ,p_event_sequence=>20
 ,p_triggering_element_type=>'ITEM'
 ,p_triggering_element=>'P54_AI_PROVIDER'
@@ -7020,48 +7310,13 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_event_type=>'change'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(15198219005504108)
-,p_event_id=>wwv_flow_imp.id(15196296129504107)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
-,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'apex_app_setting.set_value(''AI_PROVIDER'', :P54_AI_PROVIDER);',
-':CURRENT_AI_PROVIDER := :P54_AI_PROVIDER;'))
-,p_attribute_02=>'P54_AI_PROVIDER'
-,p_attribute_05=>'PLSQL'
-,p_wait_for_result=>'Y'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(15199727448504109)
-,p_event_id=>wwv_flow_imp.id(15196296129504107)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'Y'
-,p_name=>'Hide OCI Web Credentials'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(33638989925659844)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(15199241408504109)
-,p_event_id=>wwv_flow_imp.id(15196296129504107)
-,p_event_result=>'TRUE'
-,p_action_sequence=>30
-,p_execute_on_page_init=>'Y'
-,p_name=>'Hide OpenAI Web Credentials'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(33639084835659845)
-);
-wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(15200216334504109)
 ,p_event_id=>wwv_flow_imp.id(15196296129504107)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>40
 ,p_execute_on_page_init=>'Y'
 ,p_name=>'Hide Complete Button OCI'
+,p_static_id=>'hide-complete-button-oci'
 ,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(33639146378659846)
@@ -7073,37 +7328,51 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>50
 ,p_execute_on_page_init=>'Y'
 ,p_name=>'Hide Complete Button OPENAI'
+,p_static_id=>'hide-complete-button-openai'
 ,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(26705149377197141)
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(15198744368504109)
+ p_id=>wwv_flow_imp.id(15199727448504109)
 ,p_event_id=>wwv_flow_imp.id(15196296129504107)
 ,p_event_result=>'TRUE'
-,p_action_sequence=>60
+,p_action_sequence=>20
 ,p_execute_on_page_init=>'Y'
-,p_name=>'Show OCI Web Credentials'
-,p_action=>'NATIVE_SHOW'
+,p_name=>'Hide OCI Web Credentials'
+,p_static_id=>'hide-oci-web-credentials'
+,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(33638989925659844)
-,p_client_condition_type=>'EQUALS'
-,p_client_condition_element=>'P54_AI_PROVIDER'
-,p_client_condition_expression=>'OCI'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(15197778618504108)
+ p_id=>wwv_flow_imp.id(15199241408504109)
 ,p_event_id=>wwv_flow_imp.id(15196296129504107)
 ,p_event_result=>'TRUE'
-,p_action_sequence=>70
+,p_action_sequence=>30
 ,p_execute_on_page_init=>'Y'
-,p_name=>'Show OpenAI Web Credentials'
-,p_action=>'NATIVE_SHOW'
+,p_name=>'Hide OpenAI Web Credentials'
+,p_static_id=>'hide-openai-web-credentials'
+,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(33639084835659845)
-,p_client_condition_type=>'EQUALS'
-,p_client_condition_element=>'P54_AI_PROVIDER'
-,p_client_condition_expression=>'OPENAI'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(15198219005504108)
+,p_event_id=>wwv_flow_imp.id(15196296129504107)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-execute-plsql-code'
+,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'items_to_submit', 'P54_AI_PROVIDER',
+  'language', 'PLSQL',
+  'plsql_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'apex_app_setting.set_value(''AI_PROVIDER'', :P54_AI_PROVIDER);',
+    ':CURRENT_AI_PROVIDER := :P54_AI_PROVIDER;')),
+  'show_processing', 'N')).to_clob
+,p_wait_for_result=>'Y'
 );
 wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(15200750794504110)
@@ -7112,6 +7381,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>80
 ,p_execute_on_page_init=>'Y'
 ,p_name=>'Show Complete Button OCI'
+,p_static_id=>'show-complete-button-oci'
 ,p_action=>'NATIVE_SHOW'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(33639146378659846)
@@ -7126,6 +7396,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>90
 ,p_execute_on_page_init=>'Y'
 ,p_name=>'Show Complete Button OpenAI'
+,p_static_id=>'show-complete-button-openai'
 ,p_action=>'NATIVE_SHOW'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(26705149377197141)
@@ -7133,12 +7404,109 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_client_condition_element=>'P54_AI_PROVIDER'
 ,p_client_condition_expression=>'OPENAI'
 );
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(15198744368504109)
+,p_event_id=>wwv_flow_imp.id(15196296129504107)
+,p_event_result=>'TRUE'
+,p_action_sequence=>60
+,p_execute_on_page_init=>'Y'
+,p_name=>'Show OCI Web Credentials'
+,p_static_id=>'show-oci-web-credentials'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(33638989925659844)
+,p_client_condition_type=>'EQUALS'
+,p_client_condition_element=>'P54_AI_PROVIDER'
+,p_client_condition_expression=>'OCI'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(15197778618504108)
+,p_event_id=>wwv_flow_imp.id(15196296129504107)
+,p_event_result=>'TRUE'
+,p_action_sequence=>70
+,p_execute_on_page_init=>'Y'
+,p_name=>'Show OpenAI Web Credentials'
+,p_static_id=>'show-openai-web-credentials'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(33639084835659845)
+,p_client_condition_type=>'EQUALS'
+,p_client_condition_element=>'P54_AI_PROVIDER'
+,p_client_condition_expression=>'OPENAI'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(15194872093504104)
+,p_name=>'Toggle Switch Visibility'
+,p_static_id=>'toggle-switch-visibility'
+,p_event_sequence=>10
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P54_SHOW_WEB_CREDENTIALS'
+,p_condition_element=>'P54_SHOW_WEB_CREDENTIALS'
+,p_triggering_condition_type=>'EQUALS'
+,p_triggering_expression=>'Y'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(15195855846504106)
+,p_event_id=>wwv_flow_imp.id(15194872093504104)
+,p_event_result=>'FALSE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_static_id=>'native-hide'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(51475605601480595)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(15195391747504106)
+,p_event_id=>wwv_flow_imp.id(15194872093504104)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_static_id=>'native-show'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(51475605601480595)
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(14607965374680021)
+,p_process_sequence=>100
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Clear Data OCI'
+,p_static_id=>'clear-data-oci'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'delete from eba_vector_moviedata;',
+'delete from eba_vector_datatable;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(15188932049504081)
+,p_internal_uid=>11528594944693131
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(14608099313680022)
+,p_process_sequence=>120
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Clear Data Open AI'
+,p_static_id=>'clear-data-open-ai'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'delete from eba_vector_moviedata;',
+'delete from eba_vector_datatable;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(15177933232504052)
+,p_internal_uid=>11528461005693130
+);
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(15194041126504102)
 ,p_process_sequence=>90
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Complete OCI'
+,p_static_id=>'complete-oci'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '    l_vector    vector;',
@@ -7201,25 +7569,12 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>11885143299772479
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(14607965374680021)
-,p_process_sequence=>100
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Clear Data OCI'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'delete from eba_vector_moviedata;',
-'delete from eba_vector_datatable;'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_imp.id(15188932049504081)
-,p_internal_uid=>11528594944693131
-);
-wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(15193695525504101)
 ,p_process_sequence=>110
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Complete Open AI'
+,p_static_id=>'complete-open-ai'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '    l_vector    vector;',
@@ -7262,25 +7617,12 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>11884797698772478
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(14608099313680022)
-,p_process_sequence=>120
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Clear Data Open AI'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'delete from eba_vector_moviedata;',
-'delete from eba_vector_datatable;'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_imp.id(15177933232504052)
-,p_internal_uid=>11528461005693130
-);
-wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(14607868140680020)
 ,p_process_sequence=>10
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Set Items'
+,p_static_id=>'set-items'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
 '    if apex_app_setting.get_value(''WC_STATUS'') = ''ENTERED'' then',
@@ -7323,22 +7665,24 @@ wwv_flow_imp_page.create_page(
 '  font-weight: 400;',
 '}',
 '.apex-item-yes-no {white-space:pre;}'))
-,p_step_template=>2979075366320325194
+,p_step_template=>2980551703278319811
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'Use this items on this page to configure the app.'
 ,p_page_component_map=>'16'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(1959079330331701)
-,p_plug_name=>'Introduction Wizard Container'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3371237801798025892
-,p_plug_display_sequence=>10
+ p_id=>wwv_flow_imp.id(21770716045887452)
+,p_plug_name=>'Button OCI'
+,p_static_id=>'button-oci'
+,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
+,p_region_css_classes=>'step-container'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>60
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_display_condition_type=>'EXPRESSION'
-,p_plug_display_when_condition=>'sys.dbms_db_version.version >= 23'
-,p_plug_display_when_cond2=>'PLSQL'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7346,60 +7690,15 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(14836719044424747)
 ,p_plug_name=>'Button OPENAI'
+,p_static_id=>'button-openai'
 ,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
+,p_plug_template=>2127905476394690047
 ,p_plug_display_sequence=>70
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21770302707887447)
-,p_plug_name=>'Introduction Wizard'
-,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
-,p_region_css_classes=>'step-container'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4501440665235496320
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21770314222887448)
-,p_plug_name=>'Welcome to Sample Vector Search'
-,p_parent_plug_id=>wwv_flow_imp.id(21770302707887447)
-,p_region_template_options=>'t-HeroRegion--noPadding'
-,p_plug_template=>2674017834225413037
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_plug_source=>'Please take a moment to complete this first time setup.'
-,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21770443850887449)
-,p_plug_name=>'Select Provider'
-,p_title=>'Select AI Provider'
-,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
-,p_region_css_classes=>'step-container'
-,p_icon_css_classes=>'fa-number-1'
-,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2040683448887306517
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'BELOW'
-,p_location=>null
-,p_plug_source=>'<p>Select an AI provider you want to use for generating data and creating vector embeddings.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7407,12 +7706,13 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21770559592887450)
 ,p_plug_name=>'Enter OCI Web Credentials'
+,p_static_id=>'enter-oci-web-credentials'
 ,p_title=>'Enter Web Credentials'
 ,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-2'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -7423,28 +7723,15 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(39607175268708201)
-,p_plug_name=>'Web Credentials'
-,p_parent_plug_id=>wwv_flow_imp.id(21770559592887450)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--noBorder:t-Region--hiddenOverflow'
-,p_plug_template=>4072358936313175081
-,p_plug_display_sequence=>40
-,p_plug_display_point=>'SUB_REGIONS'
-,p_location=>null
-,p_ai_enabled=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(21770654502887451)
 ,p_plug_name=>'Enter OpenAI Web Credentials'
+,p_static_id=>'enter-openai-web-credentials'
 ,p_title=>'Enter Web Credentials'
 ,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-2'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>50
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -7455,15 +7742,52 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21770716045887452)
-,p_plug_name=>'Button OCI'
+ p_id=>wwv_flow_imp.id(21770302707887447)
+,p_plug_name=>'Introduction Wizard'
+,p_static_id=>'introduction-wizard'
 ,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
 ,p_region_css_classes=>'step-container'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2126429139436695430
-,p_plug_display_sequence=>60
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1959079330331701)
+,p_plug_name=>'Introduction Wizard Container'
+,p_static_id=>'introduction-wizard-container'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_display_condition_type=>'EXPRESSION'
+,p_plug_display_when_condition=>'sys.dbms_db_version.version >= 23'
+,p_plug_display_when_cond2=>'PLSQL'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(21770443850887449)
+,p_plug_name=>'Select Provider'
+,p_static_id=>'select-provider'
+,p_title=>'Select AI Provider'
+,p_parent_plug_id=>wwv_flow_imp.id(1959079330331701)
+,p_region_css_classes=>'step-container'
+,p_icon_css_classes=>'fa-number-1'
+,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_plug_source=>'<p>Select an AI provider you want to use for generating data and creating vector embeddings.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7471,10 +7795,12 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1959184970331702)
 ,p_plug_name=>'Unsupported Database Version'
+,p_static_id=>'unsupported-database-version'
 ,p_region_css_classes=>'u-tC'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--warning'
-,p_plug_template=>2040683448887306517
+,p_plug_template=>2042159785845301134
 ,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>'<p>This app showcases Vector Search in <strong>Oracle Database 23ai</strong> and is not compatible with earlier versions of the database. <a href="https://www.oracle.com/database/ai-vector-search/" target="_blank">Learn more about Oracle AI Vector Se'
 ||'arch</a></p>'
@@ -7485,14 +7811,47 @@ wwv_flow_imp_page.create_page_plug(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(39607175268708201)
+,p_plug_name=>'Web Credentials'
+,p_static_id=>'web-credentials'
+,p_parent_plug_id=>wwv_flow_imp.id(21770559592887450)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--noBorder:t-Region--hiddenOverflow'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(21770314222887448)
+,p_plug_name=>'Welcome to Sample Vector Search'
+,p_static_id=>'welcome-to-sample-vector-search'
+,p_parent_plug_id=>wwv_flow_imp.id(21770302707887447)
+,p_region_template_options=>'t-HeroRegion--noPadding'
+,p_plug_template=>2675494171183407654
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'Please take a moment to complete this first time setup.'
+,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(14836858994424748)
+ p_id=>wwv_flow_imp.id(21770872189887453)
 ,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_imp.id(14836719044424747)
-,p_button_name=>'COMPLETE_OPENAI'
+,p_button_plug_id=>wwv_flow_imp.id(21770716045887452)
+,p_button_name=>'COMPLETE_OCI'
+,p_static_id=>'complete-oci'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2082829544945815391
+,p_button_template_id=>2084305881903810008
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Complete Setup'
 ,p_button_position=>'CHANGE'
@@ -7501,13 +7860,14 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-check-circle'
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(21770872189887453)
+ p_id=>wwv_flow_imp.id(14836858994424748)
 ,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_imp.id(21770716045887452)
-,p_button_name=>'COMPLETE_OCI'
+,p_button_plug_id=>wwv_flow_imp.id(14836719044424747)
+,p_button_name=>'COMPLETE_OPENAI'
+,p_static_id=>'complete-openai'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2082829544945815391
+,p_button_template_id=>2084305881903810008
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Complete Setup'
 ,p_button_position=>'CHANGE'
@@ -7527,6 +7887,190 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_condition_text=>'YES'
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(46532116191531270)
+,p_name=>'P100_AI_PROVIDER'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(21770443850887449)
+,p_item_default=>'CURRENT_AI_PROVIDER'
+,p_item_default_type=>'ITEM'
+,p_prompt=>'AI Provider'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_RADIOGROUP'
+,p_lov=>'STATIC:OCI Generative AI;OCI,Open AI;OPENAI'
+,p_grid_label_column_span=>0
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'number_of_columns', '2',
+  'page_action_on_selection', 'NONE')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(47536889862214697)
+,p_name=>'P100_OCI_COMPARTMENT_ID'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(21770559592887450)
+,p_prompt=>'Compartment ID'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_help_text=>'The Oracle Cloud Infrastructure Compartment ID'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(46566329413632203)
+,p_name=>'P100_OCI_FINGERPRINT'
+,p_item_sequence=>70
+,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
+,p_prompt=>'OCI Public Key Fingerprint'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_help_text=>'<p>Enter the <em>public RSA key fingerprint</em> for OCI authentication. </p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a'
+||'></p>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(46566101290632201)
+,p_name=>'P100_OCI_PRIVATE_KEY'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
+,p_prompt=>'OCI Private Key'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXTAREA'
+,p_cSize=>80
+,p_cMaxlength=>4000
+,p_cHeight=>5
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_help_text=>'<p>Enter the private key in PEM format for OCI authentication. &PRODUCT_NAME. stores this information encrypted and secure, so it cannot be retrieved back in clear text.</p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.orac'
+||'le.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'auto_height', 'N',
+  'character_counter', 'N',
+  'resizable', 'Y',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(47536814991214696)
+,p_name=>'P100_OCI_REGION'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(21770559592887450)
+,p_item_default=>'us-chicago-1'
+,p_prompt=>'Region'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_help_text=>'The Oracle Cloud Infrastructure Region. The default is us-chicago-1'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+,p_quick_pick_type=>'STATIC'
+,p_quick_pick_label_01=>'US Midwest (Chicago)'
+,p_quick_pick_value_01=>'us-chicago-1'
+,p_quick_pick_label_02=>'US East (Ashburn)'
+,p_quick_pick_value_02=>'us-ashburn-1'
+,p_quick_pick_label_03=>'US West (Phoenix)'
+,p_quick_pick_value_03=>'us-phoenix-1'
+,p_quick_pick_label_04=>'Germany Central (Frankfurt)'
+,p_quick_pick_value_04=>'eu-frankfurt-1'
+,p_quick_pick_label_05=>'UK South (London)'
+,p_quick_pick_value_05=>'uk-london-1'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(46566204338632202)
+,p_name=>'P100_OCI_TENANCY_ID'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
+,p_prompt=>'OCI Tenancy ID'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Enter the Oracle Cloud Infrastructure <em>Tenancy''s OCID</em>.</p>',
+'<p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(46566025085632200)
+,p_name=>'P100_OCI_USER_ID'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
+,p_prompt=>'OCI User ID'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#:margin-top-md'
+,p_help_text=>'<p>Enter the Oracle Cloud Infrastructure <em>User OCID</em>. &PRODUCT_NAME. does not store this information encrypted.</p> <p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm'
+||'">Oracle Cloud Infrastructure Documentation</a></p>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(39609608909708206)
+,p_name=>'P100_OCI_WEB_CRED_HEADER'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
+,p_prompt=>'Web Credential'
+,p_source=>'OCI Credentials'
+,p_source_type=>'STATIC'
+,p_display_as=>'NATIVE_DISPLAY_ONLY'
+,p_field_template=>2320077351817916916
+,p_item_template_options=>'#DEFAULT#'
+,p_protection_level=>'S'
+,p_help_text=>'Denotes the name of the Web Credential which is used for accessing the <strong>OCI Generative AI</strong>. Navigate to <strong>Workspace Utilities</strong>, <strong>Web Credential</strong> to review existing Web Credentials.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'based_on', 'VALUE',
+  'format', 'PLAIN',
+  'send_on_page_submit', 'Y',
+  'show_line_breaks', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(46567480196633702)
+,p_name=>'P100_OPENAI_API_KEY'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(21770654502887451)
+,p_prompt=>'OpenAI API Key'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_PASSWORD'
+,p_cSize=>80
+,p_field_template=>2528236951996823187
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Enter the <em>API Key</em> to authenticate against the AI Provider.</p>',
+'<p>Example: "sk-pr..."</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'submit_when_enter_pressed', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(28668382788000117)
 ,p_name=>'P100_OPENAI_WEB_CRED_HEADER'
 ,p_item_sequence=>10
@@ -7535,7 +8079,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>'OpenAI Credentials'
 ,p_source_type=>'STATIC'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2318601014859922299
+,p_field_template=>2320077351817916916
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Denotes the name of the Web Credential which is used for accessing the <strong>OpenAI Generative AI</strong>. Navigate to <strong>Workspace Utilities</strong>, <strong>Web Credential</strong> to review existing Web Credentials.'
@@ -7552,8 +8096,9 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(21770559592887450)
 ,p_item_default=>'Y'
 ,p_prompt=>'Edit Web Credentials'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_YES_NO'
-,p_field_template=>2318601014859922299
+,p_field_template=>2320077351817916916
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Use the <em>Edit Web Credentials</em> switch to manage your OCI Web Credentials.</p>',
@@ -7561,199 +8106,10 @@ wwv_flow_imp_page.create_page_item(
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'use_defaults', 'Y')).to_clob
 );
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(39609608909708206)
-,p_name=>'P100_OCI_WEB_CRED_HEADER'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
-,p_prompt=>'Web Credential'
-,p_source=>'OCI Credentials'
-,p_source_type=>'STATIC'
-,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2318601014859922299
-,p_item_template_options=>'#DEFAULT#'
-,p_protection_level=>'S'
-,p_help_text=>'Denotes the name of the Web Credential which is used for accessing the <strong>OCI Generative AI</strong>. Navigate to <strong>Workspace Utilities</strong>, <strong>Web Credential</strong> to review existing Web Credentials.'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'based_on', 'VALUE',
-  'format', 'PLAIN',
-  'send_on_page_submit', 'Y',
-  'show_line_breaks', 'Y')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(46532116191531270)
-,p_name=>'P100_AI_PROVIDER'
-,p_item_sequence=>20
-,p_item_plug_id=>wwv_flow_imp.id(21770443850887449)
-,p_item_default=>'CURRENT_AI_PROVIDER'
-,p_item_default_type=>'ITEM'
-,p_prompt=>'AI Provider'
-,p_display_as=>'NATIVE_RADIOGROUP'
-,p_lov=>'STATIC:OCI Generative AI;OCI,Open AI;OPENAI'
-,p_grid_label_column_span=>0
-,p_field_template=>2040785906935475274
-,p_item_template_options=>'#DEFAULT#'
-,p_lov_display_extra=>'NO'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'number_of_columns', '2',
-  'page_action_on_selection', 'NONE')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(46566025085632200)
-,p_name=>'P100_OCI_USER_ID'
-,p_item_sequence=>30
-,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
-,p_prompt=>'OCI User ID'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#:margin-top-md'
-,p_help_text=>'<p>Enter the Oracle Cloud Infrastructure <em>User OCID</em>. &PRODUCT_NAME. does not store this information encrypted.</p> <p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm'
-||'">Oracle Cloud Infrastructure Documentation</a></p>'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(46566101290632201)
-,p_name=>'P100_OCI_PRIVATE_KEY'
-,p_item_sequence=>40
-,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
-,p_prompt=>'OCI Private Key'
-,p_display_as=>'NATIVE_TEXTAREA'
-,p_cSize=>80
-,p_cMaxlength=>4000
-,p_cHeight=>5
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_is_persistent=>'N'
-,p_help_text=>'<p>Enter the private key in PEM format for OCI authentication. &PRODUCT_NAME. stores this information encrypted and secure, so it cannot be retrieved back in clear text.</p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.orac'
-||'le.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'auto_height', 'N',
-  'character_counter', 'N',
-  'resizable', 'Y',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(46566204338632202)
-,p_name=>'P100_OCI_TENANCY_ID'
-,p_item_sequence=>50
-,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
-,p_prompt=>'OCI Tenancy ID'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Enter the Oracle Cloud Infrastructure <em>Tenancy''s OCID</em>.</p>',
-'<p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(46566329413632203)
-,p_name=>'P100_OCI_FINGERPRINT'
-,p_item_sequence=>70
-,p_item_plug_id=>wwv_flow_imp.id(39607175268708201)
-,p_prompt=>'OCI Public Key Fingerprint'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_help_text=>'<p>Enter the <em>public RSA key fingerprint</em> for OCI authentication. </p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a'
-||'></p>'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(46567480196633702)
-,p_name=>'P100_OPENAI_API_KEY'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(21770654502887451)
-,p_prompt=>'OpenAI API Key'
-,p_display_as=>'NATIVE_PASSWORD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_is_persistent=>'N'
-,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Enter the <em>API Key</em> to authenticate against the AI Provider.</p>',
-'<p>Example: "sk-pr..."</p>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'submit_when_enter_pressed', 'Y')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(47536814991214696)
-,p_name=>'P100_OCI_REGION'
-,p_item_sequence=>20
-,p_item_plug_id=>wwv_flow_imp.id(21770559592887450)
-,p_item_default=>'us-chicago-1'
-,p_prompt=>'Region'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_help_text=>'The Oracle Cloud Infrastructure Region. The default is us-chicago-1'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-,p_show_quick_picks=>'Y'
-,p_quick_pick_label_01=>'US Midwest (Chicago)'
-,p_quick_pick_value_01=>'us-chicago-1'
-,p_quick_pick_label_02=>'US East (Ashburn)'
-,p_quick_pick_value_02=>'us-ashburn-1'
-,p_quick_pick_label_03=>'US West (Phoenix)'
-,p_quick_pick_value_03=>'us-phoenix-1'
-,p_quick_pick_label_04=>'Germany Central (Frankfurt)'
-,p_quick_pick_value_04=>'eu-frankfurt-1'
-,p_quick_pick_label_05=>'UK South (London)'
-,p_quick_pick_value_05=>'uk-london-1'
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(47536889862214697)
-,p_name=>'P100_OCI_COMPARTMENT_ID'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(21770559592887450)
-,p_prompt=>'Compartment ID'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>80
-,p_field_template=>2526760615038828570
-,p_item_template_options=>'#DEFAULT#'
-,p_help_text=>'The Oracle Cloud Infrastructure Compartment ID'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
-);
-wwv_flow_imp_page.create_page_validation(
- p_id=>wwv_flow_imp.id(14507982378375032)
-,p_validation_name=>'P100_OCI_USER_ID not null'
-,p_validation_sequence=>10
-,p_validation=>'P100_OCI_USER_ID'
-,p_validation_type=>'ITEM_NOT_NULL'
-,p_error_message=>'#LABEL# must have a value.'
-,p_validation_condition=>'P100_SHOW_WEB_CREDENTIALS'
-,p_validation_condition2=>'Y'
-,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
-,p_when_button_pressed=>wwv_flow_imp.id(21770872189887453)
-,p_associated_item=>wwv_flow_imp.id(46566025085632200)
-,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
-);
 wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(14508621485375039)
 ,p_validation_name=>'P100_OCI_COMPARTMENT_ID not null'
+,p_static_id=>'p100-oci-compartment-id-not-null'
 ,p_validation_sequence=>20
 ,p_validation=>'P100_OCI_COMPARTMENT_ID'
 ,p_validation_type=>'ITEM_NOT_NULL'
@@ -7763,30 +8119,24 @@ wwv_flow_imp_page.create_page_validation(
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_validation(
- p_id=>wwv_flow_imp.id(14508782550375040)
-,p_validation_name=>'P100_OCI_REGION not null'
-,p_validation_sequence=>30
-,p_validation=>'P100_OCI_REGION'
+ p_id=>wwv_flow_imp.id(14508545572375038)
+,p_validation_name=>'P100_OCI_FINGERPRINT not null'
+,p_static_id=>'p100-oci-fingerprint-not-null'
+,p_validation_sequence=>70
+,p_validation=>'P100_OCI_FINGERPRINT'
 ,p_validation_type=>'ITEM_NOT_NULL'
 ,p_error_message=>'#LABEL# must have a value.'
+,p_validation_condition=>'P100_SHOW_WEB_CREDENTIALS'
+,p_validation_condition2=>'Y'
+,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
 ,p_when_button_pressed=>wwv_flow_imp.id(21770872189887453)
-,p_associated_item=>wwv_flow_imp.id(47536814991214696)
-,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
-);
-wwv_flow_imp_page.create_page_validation(
- p_id=>wwv_flow_imp.id(14508864895375041)
-,p_validation_name=>'P100_OPENAI_API_KEY not null'
-,p_validation_sequence=>40
-,p_validation=>'P100_OPENAI_API_KEY'
-,p_validation_type=>'ITEM_NOT_NULL'
-,p_error_message=>'#LABEL# must have a value.'
-,p_when_button_pressed=>wwv_flow_imp.id(14836858994424748)
-,p_associated_item=>wwv_flow_imp.id(46567480196633702)
+,p_associated_item=>wwv_flow_imp.id(46566329413632203)
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(14508050783375033)
 ,p_validation_name=>'P100_OCI_PRIVATE_KEY not null'
+,p_static_id=>'p100-oci-private-key-not-null'
 ,p_validation_sequence=>50
 ,p_validation=>'P100_OCI_PRIVATE_KEY'
 ,p_validation_type=>'ITEM_NOT_NULL'
@@ -7799,8 +8149,21 @@ wwv_flow_imp_page.create_page_validation(
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(14508782550375040)
+,p_validation_name=>'P100_OCI_REGION not null'
+,p_static_id=>'p100-oci-region-not-null'
+,p_validation_sequence=>30
+,p_validation=>'P100_OCI_REGION'
+,p_validation_type=>'ITEM_NOT_NULL'
+,p_error_message=>'#LABEL# must have a value.'
+,p_when_button_pressed=>wwv_flow_imp.id(21770872189887453)
+,p_associated_item=>wwv_flow_imp.id(47536814991214696)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
+);
+wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(14508455160375037)
 ,p_validation_name=>'P100_OCI_TENANCY_ID not null'
+,p_static_id=>'p100-oci-tenancy-id-not-null'
 ,p_validation_sequence=>60
 ,p_validation=>'P100_OCI_TENANCY_ID'
 ,p_validation_type=>'ITEM_NOT_NULL'
@@ -7813,55 +8176,36 @@ wwv_flow_imp_page.create_page_validation(
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_validation(
- p_id=>wwv_flow_imp.id(14508545572375038)
-,p_validation_name=>'P100_OCI_FINGERPRINT not null'
-,p_validation_sequence=>70
-,p_validation=>'P100_OCI_FINGERPRINT'
+ p_id=>wwv_flow_imp.id(14507982378375032)
+,p_validation_name=>'P100_OCI_USER_ID not null'
+,p_static_id=>'p100-oci-user-id-not-null'
+,p_validation_sequence=>10
+,p_validation=>'P100_OCI_USER_ID'
 ,p_validation_type=>'ITEM_NOT_NULL'
 ,p_error_message=>'#LABEL# must have a value.'
 ,p_validation_condition=>'P100_SHOW_WEB_CREDENTIALS'
 ,p_validation_condition2=>'Y'
 ,p_validation_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
 ,p_when_button_pressed=>wwv_flow_imp.id(21770872189887453)
-,p_associated_item=>wwv_flow_imp.id(46566329413632203)
+,p_associated_item=>wwv_flow_imp.id(46566025085632200)
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(21839852193558462)
-,p_name=>'Toggle Switch Visibility'
-,p_event_sequence=>10
-,p_triggering_element_type=>'ITEM'
-,p_triggering_element=>'P100_SHOW_WEB_CREDENTIALS'
-,p_condition_element=>'P100_SHOW_WEB_CREDENTIALS'
-,p_triggering_condition_type=>'EQUALS'
-,p_triggering_expression=>'Y'
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'change'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(21840290627558464)
-,p_event_id=>wwv_flow_imp.id(21839852193558462)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'Y'
-,p_action=>'NATIVE_SHOW'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(39607175268708201)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(21840719608558465)
-,p_event_id=>wwv_flow_imp.id(21839852193558462)
-,p_event_result=>'FALSE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'Y'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(39607175268708201)
+wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(14508864895375041)
+,p_validation_name=>'P100_OPENAI_API_KEY not null'
+,p_static_id=>'p100-openai-api-key-not-null'
+,p_validation_sequence=>40
+,p_validation=>'P100_OPENAI_API_KEY'
+,p_validation_type=>'ITEM_NOT_NULL'
+,p_error_message=>'#LABEL# must have a value.'
+,p_when_button_pressed=>wwv_flow_imp.id(14836858994424748)
+,p_associated_item=>wwv_flow_imp.id(46567480196633702)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(17089523668838218)
 ,p_name=>'Change AI Provider'
+,p_static_id=>'change-ai-provider'
 ,p_event_sequence=>20
 ,p_triggering_element_type=>'ITEM'
 ,p_triggering_element=>'P100_AI_PROVIDER'
@@ -7870,48 +8214,13 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_event_type=>'change'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(17089458085838217)
-,p_event_id=>wwv_flow_imp.id(17089523668838218)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
-,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'apex_app_setting.set_value(''AI_PROVIDER'', :P100_AI_PROVIDER);',
-':CURRENT_AI_PROVIDER := :P100_AI_PROVIDER;'))
-,p_attribute_02=>'P100_AI_PROVIDER'
-,p_attribute_05=>'PLSQL'
-,p_wait_for_result=>'Y'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14509288267375045)
-,p_event_id=>wwv_flow_imp.id(17089523668838218)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'Y'
-,p_name=>'Hide OCI Web Credentials'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(21770559592887450)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14509520900375048)
-,p_event_id=>wwv_flow_imp.id(17089523668838218)
-,p_event_result=>'TRUE'
-,p_action_sequence=>30
-,p_execute_on_page_init=>'Y'
-,p_name=>'Hide OpenAI Web Credentials'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(21770654502887451)
-);
-wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(14509669091375049)
 ,p_event_id=>wwv_flow_imp.id(17089523668838218)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>40
 ,p_execute_on_page_init=>'Y'
 ,p_name=>'Hide Complete Button OCI'
+,p_static_id=>'hide-complete-button-oci'
 ,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(21770716045887452)
@@ -7923,37 +8232,51 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>50
 ,p_execute_on_page_init=>'Y'
 ,p_name=>'Hide Complete Button OPENAI'
+,p_static_id=>'hide-complete-button-openai'
 ,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(14836719044424747)
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14509470960375047)
+ p_id=>wwv_flow_imp.id(14509288267375045)
 ,p_event_id=>wwv_flow_imp.id(17089523668838218)
 ,p_event_result=>'TRUE'
-,p_action_sequence=>60
+,p_action_sequence=>20
 ,p_execute_on_page_init=>'Y'
-,p_name=>'Show OCI Web Credentials'
-,p_action=>'NATIVE_SHOW'
+,p_name=>'Hide OCI Web Credentials'
+,p_static_id=>'hide-oci-web-credentials'
+,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(21770559592887450)
-,p_client_condition_type=>'EQUALS'
-,p_client_condition_element=>'P100_AI_PROVIDER'
-,p_client_condition_expression=>'OCI'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(14509360679375046)
+ p_id=>wwv_flow_imp.id(14509520900375048)
 ,p_event_id=>wwv_flow_imp.id(17089523668838218)
 ,p_event_result=>'TRUE'
-,p_action_sequence=>70
+,p_action_sequence=>30
 ,p_execute_on_page_init=>'Y'
-,p_name=>'Show OpenAI Web Credentials'
-,p_action=>'NATIVE_SHOW'
+,p_name=>'Hide OpenAI Web Credentials'
+,p_static_id=>'hide-openai-web-credentials'
+,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(21770654502887451)
-,p_client_condition_type=>'EQUALS'
-,p_client_condition_element=>'P100_AI_PROVIDER'
-,p_client_condition_expression=>'OPENAI'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(17089458085838217)
+,p_event_id=>wwv_flow_imp.id(17089523668838218)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-execute-plsql-code'
+,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'items_to_submit', 'P100_AI_PROVIDER',
+  'language', 'PLSQL',
+  'plsql_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'apex_app_setting.set_value(''AI_PROVIDER'', :P100_AI_PROVIDER);',
+    ':CURRENT_AI_PROVIDER := :P100_AI_PROVIDER;')),
+  'show_processing', 'N')).to_clob
+,p_wait_for_result=>'Y'
 );
 wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(14509755533375050)
@@ -7962,6 +8285,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>80
 ,p_execute_on_page_init=>'Y'
 ,p_name=>'Show Complete Button OCI'
+,p_static_id=>'show-complete-button-oci'
 ,p_action=>'NATIVE_SHOW'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(21770716045887452)
@@ -7976,6 +8300,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action_sequence=>90
 ,p_execute_on_page_init=>'Y'
 ,p_name=>'Show Complete Button OpenAI'
+,p_static_id=>'show-complete-button-openai'
 ,p_action=>'NATIVE_SHOW'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(14836719044424747)
@@ -7983,12 +8308,79 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_client_condition_element=>'P100_AI_PROVIDER'
 ,p_client_condition_expression=>'OPENAI'
 );
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(14509470960375047)
+,p_event_id=>wwv_flow_imp.id(17089523668838218)
+,p_event_result=>'TRUE'
+,p_action_sequence=>60
+,p_execute_on_page_init=>'Y'
+,p_name=>'Show OCI Web Credentials'
+,p_static_id=>'show-oci-web-credentials'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(21770559592887450)
+,p_client_condition_type=>'EQUALS'
+,p_client_condition_element=>'P100_AI_PROVIDER'
+,p_client_condition_expression=>'OCI'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(14509360679375046)
+,p_event_id=>wwv_flow_imp.id(17089523668838218)
+,p_event_result=>'TRUE'
+,p_action_sequence=>70
+,p_execute_on_page_init=>'Y'
+,p_name=>'Show OpenAI Web Credentials'
+,p_static_id=>'show-openai-web-credentials'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(21770654502887451)
+,p_client_condition_type=>'EQUALS'
+,p_client_condition_element=>'P100_AI_PROVIDER'
+,p_client_condition_expression=>'OPENAI'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(21839852193558462)
+,p_name=>'Toggle Switch Visibility'
+,p_static_id=>'toggle-switch-visibility'
+,p_event_sequence=>10
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P100_SHOW_WEB_CREDENTIALS'
+,p_condition_element=>'P100_SHOW_WEB_CREDENTIALS'
+,p_triggering_condition_type=>'EQUALS'
+,p_triggering_expression=>'Y'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(21840719608558465)
+,p_event_id=>wwv_flow_imp.id(21839852193558462)
+,p_event_result=>'FALSE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_static_id=>'native-hide'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(39607175268708201)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(21840290627558464)
+,p_event_id=>wwv_flow_imp.id(21839852193558462)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_static_id=>'native-show'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(39607175268708201)
+);
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(21771143214887456)
 ,p_process_sequence=>90
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Complete OCI'
+,p_static_id=>'complete-oci'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '    l_vector    vector;',
@@ -8058,6 +8450,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Complete Open AI'
+,p_static_id=>'complete-open-ai'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '    l_vector    vector;',
@@ -8112,7 +8505,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2101157952850466385
+,p_step_template=>2102634289808461002
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -8121,52 +8514,30 @@ wwv_flow_imp_page.create_page(
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(26574451341740977)
 ,p_plug_name=>'Sample Vector Search'
+,p_static_id=>'sample-vector-search'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2674157997338192145
+,p_plug_template=>2675634334296186762
 ,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
-  'output_as', 'HTML',
-  'show_line_breaks', 'Y')).to_clob
+  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(26576121640740987)
 ,p_button_sequence=>40
 ,p_button_plug_id=>wwv_flow_imp.id(26574451341740977)
 ,p_button_name=>'LOGIN'
+,p_static_id=>'login'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4072362960822175091
+,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Sign In'
 ,p_button_position=>'NEXT'
-,p_button_alignment=>'LEFT'
 ,p_grid_new_row=>'Y'
-,p_grid_new_column=>'Y'
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(26574981175740985)
-,p_name=>'P9999_USERNAME'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(26574451341740977)
-,p_prompt=>'Username'
-,p_placeholder=>'Username'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>40
-,p_cMaxlength=>100
-,p_tag_attributes=>'autocomplete="username"'
-,p_label_alignment=>'RIGHT'
-,p_field_template=>2040785906935475274
-,p_item_icon_css_classes=>'fa-user'
-,p_item_template_options=>'#DEFAULT#'
-,p_is_persistent=>'N'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'send_on_page_submit', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(26575349719740986)
@@ -8175,12 +8546,13 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(26574451341740977)
 ,p_prompt=>'Password'
 ,p_placeholder=>'Password'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_PASSWORD'
 ,p_cSize=>40
 ,p_cMaxlength=>100
 ,p_tag_attributes=>'autocomplete="current-password"'
 ,p_label_alignment=>'RIGHT'
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_icon_css_classes=>'fa-key'
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -8193,55 +8565,64 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_imp.id(26574451341740977)
 ,p_prompt=>'Remember username'
+,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SINGLE_CHECKBOX'
 ,p_label_alignment=>'RIGHT'
 ,p_display_when=>'apex_authentication.persistent_cookies_enabled'
 ,p_display_when2=>'PLSQL'
 ,p_display_when_type=>'EXPRESSION'
-,p_field_template=>2040785906935475274
+,p_field_template=>2042262243893469891
 ,p_item_template_options=>'#DEFAULT#'
-,p_escape_on_http_output=>'N'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'checked_value', '',
-  'unchecked_value', '',
   'use_defaults', 'Y')).to_clob
 );
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(26574981175740985)
+,p_name=>'P9999_USERNAME'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(26574451341740977)
+,p_prompt=>'Username'
+,p_placeholder=>'Username'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>40
+,p_cMaxlength=>100
+,p_tag_attributes=>'autocomplete="username"'
+,p_label_alignment=>'RIGHT'
+,p_field_template=>2042262243893469891
+,p_item_icon_css_classes=>'fa-user'
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(26578349336740989)
-,p_process_sequence=>10
+ p_id=>wwv_flow_imp.id(26580240364740990)
+,p_process_sequence=>30
 ,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_INVOKE_API'
-,p_process_name=>'Set Username Cookie'
-,p_attribute_01=>'PLSQL_PACKAGE'
-,p_attribute_03=>'APEX_AUTHENTICATION'
-,p_attribute_04=>'SEND_LOGIN_USERNAME_COOKIE'
+,p_process_type=>'NATIVE_SESSION_STATE'
+,p_process_name=>'Clear Page(s) Cache'
+,p_static_id=>'clear-page-s-cache'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'type', 'CLEAR_CACHE_CURRENT_PAGE')).to_clob
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_internal_uid=>1571647155878922
+,p_internal_uid=>1573538183878923
 );
-wwv_flow_imp_shared.create_invokeapi_comp_param(
- p_id=>wwv_flow_imp.id(26578884020740990)
-,p_page_process_id=>wwv_flow_imp.id(26578349336740989)
-,p_page_id=>9999
-,p_name=>'p_username'
-,p_direction=>'IN'
-,p_data_type=>'VARCHAR2'
-,p_has_default=>false
-,p_display_sequence=>1
-,p_value_type=>'EXPRESSION'
-,p_value_language=>'PLSQL'
-,p_value=>'lower( :P9999_USERNAME )'
-);
-wwv_flow_imp_shared.create_invokeapi_comp_param(
- p_id=>wwv_flow_imp.id(26579397603740990)
-,p_page_process_id=>wwv_flow_imp.id(26578349336740989)
-,p_page_id=>9999
-,p_name=>'p_consent'
-,p_direction=>'IN'
-,p_data_type=>'BOOLEAN'
-,p_has_default=>false
-,p_display_sequence=>2
-,p_value_type=>'ITEM'
-,p_value=>'P9999_REMEMBER'
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(26579824549740990)
+,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Get Username Cookie'
+,p_static_id=>'get-username-cookie'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+':P9999_USERNAME := apex_authentication.get_login_username_cookie;',
+':P9999_REMEMBER := case when :P9999_USERNAME is not null then ''Y'' end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>1573122368878923
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(26576480843740988)
@@ -8249,23 +8630,13 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_INVOKE_API'
 ,p_process_name=>'Login'
-,p_attribute_01=>'PLSQL_PACKAGE'
-,p_attribute_03=>'APEX_AUTHENTICATION'
-,p_attribute_04=>'LOGIN'
+,p_static_id=>'login'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'package', 'APEX_AUTHENTICATION',
+  'package_method', 'LOGIN',
+  'type', 'PLSQL_PACKAGE')).to_clob
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_internal_uid=>1569778662878921
-);
-wwv_flow_imp_shared.create_invokeapi_comp_param(
- p_id=>wwv_flow_imp.id(26576904830740988)
-,p_page_process_id=>wwv_flow_imp.id(26576480843740988)
-,p_page_id=>9999
-,p_name=>'p_username'
-,p_direction=>'IN'
-,p_data_type=>'VARCHAR2'
-,p_has_default=>false
-,p_display_sequence=>1
-,p_value_type=>'ITEM'
-,p_value=>'P9999_USERNAME'
 );
 wwv_flow_imp_shared.create_invokeapi_comp_param(
  p_id=>wwv_flow_imp.id(26577461357740989)
@@ -8290,407 +8661,554 @@ wwv_flow_imp_shared.create_invokeapi_comp_param(
 ,p_display_sequence=>3
 ,p_value_type=>'API_DEFAULT'
 );
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(26580240364740990)
-,p_process_sequence=>30
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_SESSION_STATE'
-,p_process_name=>'Clear Page(s) Cache'
-,p_attribute_01=>'CLEAR_CACHE_CURRENT_PAGE'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_internal_uid=>1573538183878923
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(26576904830740988)
+,p_page_process_id=>wwv_flow_imp.id(26576480843740988)
+,p_page_id=>9999
+,p_name=>'p_username'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>1
+,p_value_type=>'ITEM'
+,p_value=>'P9999_USERNAME'
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(26579824549740990)
+ p_id=>wwv_flow_imp.id(26578349336740989)
 ,p_process_sequence=>10
-,p_process_point=>'BEFORE_HEADER'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Get Username Cookie'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-':P9999_USERNAME := apex_authentication.get_login_username_cookie;',
-':P9999_REMEMBER := case when :P9999_USERNAME is not null then ''Y'' end;'))
-,p_process_clob_language=>'PLSQL'
-,p_internal_uid=>1573122368878923
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_INVOKE_API'
+,p_process_name=>'Set Username Cookie'
+,p_static_id=>'set-username-cookie'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'package', 'APEX_AUTHENTICATION',
+  'package_method', 'SEND_LOGIN_USERNAME_COOKIE',
+  'type', 'PLSQL_PACKAGE')).to_clob
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_internal_uid=>1571647155878922
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(26579397603740990)
+,p_page_process_id=>wwv_flow_imp.id(26578349336740989)
+,p_page_id=>9999
+,p_name=>'p_consent'
+,p_direction=>'IN'
+,p_data_type=>'BOOLEAN'
+,p_has_default=>false
+,p_display_sequence=>2
+,p_value_type=>'ITEM'
+,p_value=>'P9999_REMEMBER'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(26578884020740990)
+,p_page_process_id=>wwv_flow_imp.id(26578349336740989)
+,p_page_id=>9999
+,p_name=>'p_username'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>1
+,p_value_type=>'EXPRESSION'
+,p_value_language=>'PLSQL'
+,p_value=>'lower( :P9999_USERNAME )'
 );
 end;
 /
 prompt --application/deployment/definition
 begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '----------------------------------------------------------------'||wwv_flow.LF||
+'-- Remove Tables'||wwv_flow.LF||
+'------------------';
+wwv_flow_imp.g_varchar2_table(2) := '---------------------------------------------'||wwv_flow.LF||
+'drop table eba_vector_datatable purge;'||wwv_flow.LF||
+'drop table eba_';
+wwv_flow_imp.g_varchar2_table(3) := 'vector_moviedata purge;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'drop table eba_vector_ai_helper purge;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-----------------------------------';
+wwv_flow_imp.g_varchar2_table(4) := '-----------------------------'||wwv_flow.LF||
+'-- Remove Package'||wwv_flow.LF||
+'----------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(5) := '------------'||wwv_flow.LF||
+'drop package eba_sample_vector_search_pkg;';
 wwv_flow_imp_shared.create_install(
  p_id=>wwv_flow_imp.id(32055906392990968)
-,p_deinstall_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'----------------------------------------------------------------',
-'-- Remove Tables',
-'---------------------------------------------------------------',
-'drop table eba_vector_datatable purge;',
-'drop table eba_vector_moviedata purge;',
-'',
-'drop table eba_vector_ai_helper purge;',
-'',
-'----------------------------------------------------------------',
-'-- Remove Package',
-'----------------------------------------------------------------',
-'drop package eba_sample_vector_search_pkg;'))
+,p_deinstall_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
 prompt --application/deployment/install/install_create_sample_data
 begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '----------------------------------------------------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(2) := '---'||wwv_flow.LF||
+'-- Create Sample Dataset'||wwv_flow.LF||
+'-----------------------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(3) := '--------------------------------'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create table eba_vector_datatable ('||wwv_flow.LF||
+'    id               number ge';
+wwv_flow_imp.g_varchar2_table(4) := 'nerated by default as identity primary key,'||wwv_flow.LF||
+'    col1             varchar(255),'||wwv_flow.LF||
+'    col2             ';
+wwv_flow_imp.g_varchar2_table(5) := 'varchar(255),'||wwv_flow.LF||
+'    col3             varchar(255),'||wwv_flow.LF||
+'    col4             varchar(255),'||wwv_flow.LF||
+'    col5        ';
+wwv_flow_imp.g_varchar2_table(6) := '     varchar(255),'||wwv_flow.LF||
+'    col6             varchar(255),'||wwv_flow.LF||
+'    col7             varchar(255),'||wwv_flow.LF||
+'    col8   ';
+wwv_flow_imp.g_varchar2_table(7) := '          varchar(255),'||wwv_flow.LF||
+'    col9             varchar(255),'||wwv_flow.LF||
+'    col10            varchar(255),'||wwv_flow.LF||
+'    em';
+wwv_flow_imp.g_varchar2_table(8) := 'bedding_vector vector )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create table eba_vector_moviedata ('||wwv_flow.LF||
+'    id               number generated';
+wwv_flow_imp.g_varchar2_table(9) := ' by default as identity primary key,'||wwv_flow.LF||
+'    title            varchar2(255),'||wwv_flow.LF||
+'    moviedescription varcha';
+wwv_flow_imp.g_varchar2_table(10) := 'r2(4000),'||wwv_flow.LF||
+'    actors           varchar2(1000),'||wwv_flow.LF||
+'    genre            varchar2(255),'||wwv_flow.LF||
+'    release_date ';
+wwv_flow_imp.g_varchar2_table(11) := '    date,'||wwv_flow.LF||
+'    rating           number,'||wwv_flow.LF||
+'    embedding_vector vector )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create table eba_vector_ai_h';
+wwv_flow_imp.g_varchar2_table(12) := 'elper ('||wwv_flow.LF||
+'    execution_id     number primary key,'||wwv_flow.LF||
+'    output           clob )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'-------------------';
+wwv_flow_imp.g_varchar2_table(13) := '------------------------------------------------------------------------------------'||wwv_flow.LF||
+'-- Create Oracl';
+wwv_flow_imp.g_varchar2_table(14) := 'e Text Index for the movie data (AI generated data) table.'||wwv_flow.LF||
+'-----------------------------------------';
+wwv_flow_imp.g_varchar2_table(15) := '--------------------------------------------------------------'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    execute immediate ''drop ind';
+wwv_flow_imp.g_varchar2_table(16) := 'ex if exists eba_vector_moviedata_desc_ftx force'';'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    execute immediate ''begin ctxsys.ctx_ddl.drop';
+wwv_flow_imp.g_varchar2_table(17) := '_preference( ''''eba_vector_ds'''' ); exception when others then null; end;'';'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    execute immediate    ';
+wwv_flow_imp.g_varchar2_table(18) := '''begin '''||wwv_flow.LF||
+'                      || ''ctxsys.ctx_ddl.create_preference( ''''eba_vector_ds'''', ''''MULTI_COLU';
+wwv_flow_imp.g_varchar2_table(19) := 'MN_DATASTORE'''');'''||wwv_flow.LF||
+'                      || ''ctxsys.ctx_ddl.set_attribute( ''''eba_vector_ds'''', ''''COLUM';
+wwv_flow_imp.g_varchar2_table(20) := 'NS'''', ''''TITLE,MOVIEDESCRIPTION,ACTORS'''' );'''||wwv_flow.LF||
+'                      || ''end;'';'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    execute immediate ';
+wwv_flow_imp.g_varchar2_table(21) := '   ''create index eba_vector_moviedata_desc_ftx on eba_vector_moviedata (moviedescription)'''||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(22) := '             || ''indextype is ctxsys.context '''||wwv_flow.LF||
+'                      || ''parameters (''''datastore eba';
+wwv_flow_imp.g_varchar2_table(23) := '_vector_ds sync (on commit) memory 500M'''')'';'||wwv_flow.LF||
+'exception'||wwv_flow.LF||
+'    when others then'||wwv_flow.LF||
+'        -- Oracle TEXT i';
+wwv_flow_imp.g_varchar2_table(24) := 's not available. Ignore the error.'||wwv_flow.LF||
+'        null;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-------------------------------------------';
+wwv_flow_imp.g_varchar2_table(25) := '------------------------------------------------------------'||wwv_flow.LF||
+'-- Create Oracle Text Index for the "da';
+wwv_flow_imp.g_varchar2_table(26) := 'ta" (manually uploaded data) table.'||wwv_flow.LF||
+'----------------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(27) := '---------------------------------------'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    execute immediate ''drop index if exists eba_vector';
+wwv_flow_imp.g_varchar2_table(28) := '_datatable_desc_ftx force'';'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    execute immediate ''begin ctx_ddl.drop_preference( ''''eba_vector_2_ds';
+wwv_flow_imp.g_varchar2_table(29) := ''''' ); exception when others then null; end;'';'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    execute immediate    ''begin '''||wwv_flow.LF||
+'                   ';
+wwv_flow_imp.g_varchar2_table(30) := '   || ''ctxsys.ctx_ddl.create_preference( ''''eba_vector_2_ds'''', ''''MULTI_COLUMN_DATASTORE'''');'''||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(31) := '              || ''ctxsys.ctx_ddl.set_attribute( ''''eba_vector_2_ds'''', ''''COLUMNS'''', ''''col1,col2,col3,c';
+wwv_flow_imp.g_varchar2_table(32) := 'ol4,col5,col6,col7,col8,col9,col10'''' );'''||wwv_flow.LF||
+'                      || ''end;'';'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    execute immediate    ';
+wwv_flow_imp.g_varchar2_table(33) := '''create index eba_vector_datatable_desc_ftx on eba_vector_datatable (col1)'''||wwv_flow.LF||
+'                      ||';
+wwv_flow_imp.g_varchar2_table(34) := ' ''indextype is ctxsys.context '''||wwv_flow.LF||
+'                      || ''parameters (''''datastore eba_vector_2_ds sy';
+wwv_flow_imp.g_varchar2_table(35) := 'nc (on commit) memory 500M'''')'';'||wwv_flow.LF||
+''||wwv_flow.LF||
+'exception'||wwv_flow.LF||
+'    when others then'||wwv_flow.LF||
+'        -- Oracle TEXT is not availa';
+wwv_flow_imp.g_varchar2_table(36) := 'ble. Ignore the error.'||wwv_flow.LF||
+'        null;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(37) := '------------------------------------------------'||wwv_flow.LF||
+'-- Add Sample Data'||wwv_flow.LF||
+'--------------------------------';
+wwv_flow_imp.g_varchar2_table(38) := '-----------------------------------------------------------------------'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    -- Star Wars movie';
+wwv_flow_imp.g_varchar2_table(39) := ' data'||wwv_flow.LF||
+'    insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+'        moviedescription,'||wwv_flow.LF||
+'        actors';
+wwv_flow_imp.g_varchar2_table(40) := ','||wwv_flow.LF||
+'        genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'    values ('||wwv_flow.LF||
+'        ''Star Wars: A New Hope''';
+wwv_flow_imp.g_varchar2_table(41) := ','||wwv_flow.LF||
+'        ''A farm boy joins a rebellion against a tyrannical empire and discovers the power of the F';
+wwv_flow_imp.g_varchar2_table(42) := 'orce'','||wwv_flow.LF||
+'        ''Mark Hamill Carrie Fisher Harrison Ford'','||wwv_flow.LF||
+'        ''Sci-Fi'','||wwv_flow.LF||
+'        to_date(''1977-05';
+wwv_flow_imp.g_varchar2_table(43) := '-25'', ''YYYY-MM-DD''),'||wwv_flow.LF||
+'        4.7 );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+'        m';
+wwv_flow_imp.g_varchar2_table(44) := 'oviedescription,'||wwv_flow.LF||
+'        actors,'||wwv_flow.LF||
+'        genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'    values ('||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(45) := '        ''Star Wars: The Empire Strikes Back'','||wwv_flow.LF||
+'        ''The Rebel Alliance battles the Empire as Dart';
+wwv_flow_imp.g_varchar2_table(46) := 'h Vader pursues Luke Skywalker'','||wwv_flow.LF||
+'        ''Mark Hamill Carrie Fisher Harrison Ford'','||wwv_flow.LF||
+'        ''Sci-Fi''';
+wwv_flow_imp.g_varchar2_table(47) := ','||wwv_flow.LF||
+'        to_date(''1980-05-21'', ''YYYY-MM-DD''),'||wwv_flow.LF||
+'        4.8 );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    insert into eba_vector_moviedata ';
+wwv_flow_imp.g_varchar2_table(48) := '('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+'        moviedescription,'||wwv_flow.LF||
+'        actors,'||wwv_flow.LF||
+'        genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(49) := '    rating )'||wwv_flow.LF||
+'    values ('||wwv_flow.LF||
+'        ''Star Wars: Return of the Jedi'','||wwv_flow.LF||
+'        ''Luke Skywalker leads a m';
+wwv_flow_imp.g_varchar2_table(50) := 'ission to rescue Han Solo while preparing for a final confrontation with Darth Vader'','||wwv_flow.LF||
+'        ''Mark';
+wwv_flow_imp.g_varchar2_table(51) := ' Hamill Carrie Fisher Harrison Ford'','||wwv_flow.LF||
+'        ''Sci-Fi'', '||wwv_flow.LF||
+'        to_date(''1983-05-25'', ''YYYY-MM-DD'')';
+wwv_flow_imp.g_varchar2_table(52) := ', '||wwv_flow.LF||
+'        4.6 );'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'    insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+'        moviedescriptio';
+wwv_flow_imp.g_varchar2_table(53) := 'n,'||wwv_flow.LF||
+'        actors,'||wwv_flow.LF||
+'        genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'    values ('||wwv_flow.LF||
+'        ''Star ';
+wwv_flow_imp.g_varchar2_table(54) := 'Wars: The Force Awakens'','||wwv_flow.LF||
+'        ''A new threat emerges as a scavenger discovers her connection to t';
+wwv_flow_imp.g_varchar2_table(55) := 'he Force'','||wwv_flow.LF||
+'        ''Daisy Ridley Adam Driver John Boyega'', '||wwv_flow.LF||
+'        ''Sci-Fi'', '||wwv_flow.LF||
+'        to_date(''2015';
+wwv_flow_imp.g_varchar2_table(56) := '-12-18'', ''YYYY-MM-DD''), '||wwv_flow.LF||
+'        4.5 );'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'    insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(57) := '       moviedescription,'||wwv_flow.LF||
+'        actors,'||wwv_flow.LF||
+'        genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'    v';
+wwv_flow_imp.g_varchar2_table(58) := 'alues ('||wwv_flow.LF||
+'        ''Star Wars: The Last Jedi'', '||wwv_flow.LF||
+'        ''The Resistance struggles against the First Ord';
+wwv_flow_imp.g_varchar2_table(59) := 'er while Rey seeks guidance from Luke Skywalker'', '||wwv_flow.LF||
+'        ''Daisy Ridley Adam Driver Mark Hamill'', '||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(60) := '        ''Sci-Fi'', '||wwv_flow.LF||
+'        to_date(''2017-12-15'', ''YYYY-MM-DD''), '||wwv_flow.LF||
+'        4.3 );'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'   -- Other movie';
+wwv_flow_imp.g_varchar2_table(61) := ' data'||wwv_flow.LF||
+'    insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+'        moviedescription,'||wwv_flow.LF||
+'        actors';
+wwv_flow_imp.g_varchar2_table(62) := ','||wwv_flow.LF||
+'        genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'    values ('||wwv_flow.LF||
+'        ''Interstellar'','||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(63) := ' ''A team of explorers travels through a wormhole in space to ensure humanity''''s survival'','||wwv_flow.LF||
+'        ''';
+wwv_flow_imp.g_varchar2_table(64) := 'Matthew McConaughey Anne Hathaway Jessica Chastain'', '||wwv_flow.LF||
+'        ''Sci-Fi'', '||wwv_flow.LF||
+'        to_date(''2014-11-07';
+wwv_flow_imp.g_varchar2_table(65) := ''', ''YYYY-MM-DD''), '||wwv_flow.LF||
+'        4.8 );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+'        mov';
+wwv_flow_imp.g_varchar2_table(66) := 'iedescription,'||wwv_flow.LF||
+'        actors,'||wwv_flow.LF||
+'        genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'    values ('||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(67) := '      ''Inception'','||wwv_flow.LF||
+'        ''A skilled thief who steals secrets through dream-sharing technology is g';
+wwv_flow_imp.g_varchar2_table(68) := 'iven a chance to have his criminal history erased'','||wwv_flow.LF||
+'        ''Leonardo DiCaprio Joseph Gordon-Levitt ';
+wwv_flow_imp.g_varchar2_table(69) := 'Ellen Page'','||wwv_flow.LF||
+'        ''Sci-Fi'', '||wwv_flow.LF||
+'        to_date(''2010-07-16'', ''YYYY-MM-DD''), '||wwv_flow.LF||
+'        4.7 );'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(70) := ''||wwv_flow.LF||
+'    insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+'        moviedescription,'||wwv_flow.LF||
+'        actors,'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(71) := '     genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'    values ('''||wwv_flow.LF||
+'        The Matrix'','||wwv_flow.LF||
+'        ''A com';
+wwv_flow_imp.g_varchar2_table(72) := 'puter hacker discovers the true nature of his reality and his role in the war against its controller';
+wwv_flow_imp.g_varchar2_table(73) := 's'','||wwv_flow.LF||
+'        ''Keanu Reeves Laurence Fishburne Carrie-Anne Moss'', '||wwv_flow.LF||
+'        ''Sci-Fi'', '||wwv_flow.LF||
+'        to_date(';
+wwv_flow_imp.g_varchar2_table(74) := '''1999-03-31'', ''YYYY-MM-DD''), '||wwv_flow.LF||
+'        4.9 );'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'    insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        tit';
+wwv_flow_imp.g_varchar2_table(75) := 'le,'||wwv_flow.LF||
+'        moviedescription,'||wwv_flow.LF||
+'        actors,'||wwv_flow.LF||
+'        genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(76) := '    values ('||wwv_flow.LF||
+'        ''2001: A Space Odyssey'', '||wwv_flow.LF||
+'        ''A voyage to Jupiter with a sentient computer';
+wwv_flow_imp.g_varchar2_table(77) := ' turns deadly after it begins to malfunction'', '||wwv_flow.LF||
+'        ''Keir Dullea Gary Lockwood William Sylvester';
+wwv_flow_imp.g_varchar2_table(78) := ''', '||wwv_flow.LF||
+'        ''Sci-Fi'', '||wwv_flow.LF||
+'        to_date(''1968-04-03'', ''YYYY-MM-DD''), '||wwv_flow.LF||
+'        4.6 );'||wwv_flow.LF||
+'           '||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(79) := 'insert into eba_vector_moviedata ('||wwv_flow.LF||
+'        title,'||wwv_flow.LF||
+'        moviedescription,'||wwv_flow.LF||
+'        actors,'||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(80) := 'genre,'||wwv_flow.LF||
+'        release_date,'||wwv_flow.LF||
+'        rating )'||wwv_flow.LF||
+'    values ('||wwv_flow.LF||
+'        ''The Cave'','||wwv_flow.LF||
+'        ''A team of di';
+wwv_flow_imp.g_varchar2_table(81) := 'vers becomes trapped in an underwater cave system with predatory creatures'', '||wwv_flow.LF||
+'        ''Cole Hauser M';
+wwv_flow_imp.g_varchar2_table(82) := 'orris Chestnut Eddie Cibrian'', '||wwv_flow.LF||
+'        ''Horror'', '||wwv_flow.LF||
+'        to_date(''2005-08-26'', ''YYYY-MM-DD''), '||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(83) := '     3.2 );'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
 wwv_flow_imp_shared.create_install_script(
  p_id=>wwv_flow_imp.id(32061015984982819)
 ,p_install_id=>wwv_flow_imp.id(32055906392990968)
 ,p_name=>'create sample data'
 ,p_sequence=>10
 ,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'-------------------------------------------------------------------------------------------------------',
-'-- Create Sample Dataset',
-'-------------------------------------------------------------------------------------------------------',
-'',
-'create table eba_vector_datatable (',
-'    id               number generated by default as identity primary key,',
-'    col1             varchar(255),',
-'    col2             varchar(255),',
-'    col3             varchar(255),',
-'    col4             varchar(255),',
-'    col5             varchar(255),',
-'    col6             varchar(255),',
-'    col7             varchar(255),',
-'    col8             varchar(255),',
-'    col9             varchar(255),',
-'    col10            varchar(255),',
-'    embedding_vector vector )',
-'/',
-'',
-'create table eba_vector_moviedata (',
-'    id               number generated by default as identity primary key,',
-'    title            varchar2(255),',
-'    moviedescription varchar2(4000),',
-'    actors           varchar2(1000),',
-'    genre            varchar2(255),',
-'    release_date     date,',
-'    rating           number,',
-'    embedding_vector vector )',
-'/',
-'',
-'create table eba_vector_ai_helper (',
-'    execution_id     number primary key,',
-'    output           clob )',
-'/',
-'',
-'',
-'-------------------------------------------------------------------------------------------------------',
-'-- Create Oracle Text Index for the movie data (AI generated data) table.',
-'-------------------------------------------------------------------------------------------------------',
-'begin',
-'    execute immediate ''drop index if exists eba_vector_moviedata_desc_ftx force'';',
-'',
-'    execute immediate ''begin ctxsys.ctx_ddl.drop_preference( ''''eba_vector_ds'''' ); exception when others then null; end;'';',
-'',
-'    execute immediate    ''begin ''',
-'                      || ''ctxsys.ctx_ddl.create_preference( ''''eba_vector_ds'''', ''''MULTI_COLUMN_DATASTORE'''');''',
-'                      || ''ctxsys.ctx_ddl.set_attribute( ''''eba_vector_ds'''', ''''COLUMNS'''', ''''TITLE,MOVIEDESCRIPTION,ACTORS'''' );''',
-'                      || ''end;'';',
-'',
-'    execute immediate    ''create index eba_vector_moviedata_desc_ftx on eba_vector_moviedata (moviedescription)''',
-'                      || ''indextype is ctxsys.context ''',
-'                      || ''parameters (''''datastore eba_vector_ds sync (on commit) memory 500M'''')'';',
-'exception',
-'    when others then',
-'        -- Oracle TEXT is not available. Ignore the error.',
-'        null;',
-'end;',
-'/',
-'',
-'-------------------------------------------------------------------------------------------------------',
-'-- Create Oracle Text Index for the "data" (manually uploaded data) table.',
-'-------------------------------------------------------------------------------------------------------',
-'begin',
-'    execute immediate ''drop index if exists eba_vector_datatable_desc_ftx force'';',
-'',
-'    execute immediate ''begin ctx_ddl.drop_preference( ''''eba_vector_2_ds'''' ); exception when others then null; end;'';',
-'',
-'    execute immediate    ''begin ''',
-'                      || ''ctxsys.ctx_ddl.create_preference( ''''eba_vector_2_ds'''', ''''MULTI_COLUMN_DATASTORE'''');''',
-'                      || ''ctxsys.ctx_ddl.set_attribute( ''''eba_vector_2_ds'''', ''''COLUMNS'''', ''''col1,col2,col3,col4,col5,col6,col7,col8,col9,col10'''' );''',
-'                      || ''end;'';',
-'',
-'    execute immediate    ''create index eba_vector_datatable_desc_ftx on eba_vector_datatable (col1)''',
-'                      || ''indextype is ctxsys.context ''',
-'                      || ''parameters (''''datastore eba_vector_2_ds sync (on commit) memory 500M'''')'';',
-'',
-'exception',
-'    when others then',
-'        -- Oracle TEXT is not available. Ignore the error.',
-'        null;',
-'end;',
-'/',
-'',
-'-------------------------------------------------------------------------------------------------------',
-'-- Add Sample Data',
-'-------------------------------------------------------------------------------------------------------',
-'begin',
-'    -- Star Wars movie data',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''Star Wars: A New Hope'',',
-'        ''A farm boy joins a rebellion against a tyrannical empire and discovers the power of the Force'',',
-'        ''Mark Hamill Carrie Fisher Harrison Ford'',',
-'        ''Sci-Fi'',',
-'        to_date(''1977-05-25'', ''YYYY-MM-DD''),',
-'        4.7 );',
-'',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''Star Wars: The Empire Strikes Back'',',
-'        ''The Rebel Alliance battles the Empire as Darth Vader pursues Luke Skywalker'',',
-'        ''Mark Hamill Carrie Fisher Harrison Ford'',',
-'        ''Sci-Fi'',',
-'        to_date(''1980-05-21'', ''YYYY-MM-DD''),',
-'        4.8 );',
-'',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''Star Wars: Return of the Jedi'',',
-'        ''Luke Skywalker leads a mission to rescue Han Solo while preparing for a final confrontation with Darth Vader'',',
-'        ''Mark Hamill Carrie Fisher Harrison Ford'',',
-'        ''Sci-Fi'', ',
-'        to_date(''1983-05-25'', ''YYYY-MM-DD''), ',
-'        4.6 );',
-'    ',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''Star Wars: The Force Awakens'',',
-'        ''A new threat emerges as a scavenger discovers her connection to the Force'',',
-'        ''Daisy Ridley Adam Driver John Boyega'', ',
-'        ''Sci-Fi'', ',
-'        to_date(''2015-12-18'', ''YYYY-MM-DD''), ',
-'        4.5 );',
-'    ',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''Star Wars: The Last Jedi'', ',
-'        ''The Resistance struggles against the First Order while Rey seeks guidance from Luke Skywalker'', ',
-'        ''Daisy Ridley Adam Driver Mark Hamill'', ',
-'        ''Sci-Fi'', ',
-'        to_date(''2017-12-15'', ''YYYY-MM-DD''), ',
-'        4.3 );',
-'',
-'',
-'',
-'   -- Other movie data',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''Interstellar'',',
-'        ''A team of explorers travels through a wormhole in space to ensure humanity''''s survival'',',
-'        ''Matthew McConaughey Anne Hathaway Jessica Chastain'', ',
-'        ''Sci-Fi'', ',
-'        to_date(''2014-11-07'', ''YYYY-MM-DD''), ',
-'        4.8 );',
-'',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''Inception'',',
-'        ''A skilled thief who steals secrets through dream-sharing technology is given a chance to have his criminal history erased'',',
-'        ''Leonardo DiCaprio Joseph Gordon-Levitt Ellen Page'',',
-'        ''Sci-Fi'', ',
-'        to_date(''2010-07-16'', ''YYYY-MM-DD''), ',
-'        4.7 );',
-'       ',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (''',
-'        The Matrix'',',
-'        ''A computer hacker discovers the true nature of his reality and his role in the war against its controllers'',',
-'        ''Keanu Reeves Laurence Fishburne Carrie-Anne Moss'', ',
-'        ''Sci-Fi'', ',
-'        to_date(''1999-03-31'', ''YYYY-MM-DD''), ',
-'        4.9 );',
-'    ',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''2001: A Space Odyssey'', ',
-'        ''A voyage to Jupiter with a sentient computer turns deadly after it begins to malfunction'', ',
-'        ''Keir Dullea Gary Lockwood William Sylvester'', ',
-'        ''Sci-Fi'', ',
-'        to_date(''1968-04-03'', ''YYYY-MM-DD''), ',
-'        4.6 );',
-'           ',
-'    insert into eba_vector_moviedata (',
-'        title,',
-'        moviedescription,',
-'        actors,',
-'        genre,',
-'        release_date,',
-'        rating )',
-'    values (',
-'        ''The Cave'',',
-'        ''A team of divers becomes trapped in an underwater cave system with predatory creatures'', ',
-'        ''Cole Hauser Morris Chestnut Eddie Cibrian'', ',
-'        ''Horror'', ',
-'        to_date(''2005-08-26'', ''YYYY-MM-DD''), ',
-'        3.2 );',
-'end;',
-'/',
-''))
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
 prompt --application/deployment/install/install_helper_package
 begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create or replace package eba_sample_vector_search_pkg authid current_user'||wwv_flow.LF||
+'as'||wwv_flow.LF||
+'--'||wwv_flow.LF||
+'-- using the AUTHID';
+wwv_flow_imp.g_varchar2_table(2) := ' CURRENT_USER clause, as the package code references'||wwv_flow.LF||
+'-- the CTX_DDL package, which is often only ava';
+wwv_flow_imp.g_varchar2_table(3) := 'ilable through the CTXAPP *role*.'||wwv_flow.LF||
+'--'||wwv_flow.LF||
+''||wwv_flow.LF||
+'--------------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(4) := '------------------'||wwv_flow.LF||
+'-- returns TRUE, if Oracle TEXT and the EBA_VECTOR_MOVIEDATA table is '||wwv_flow.LF||
+'-- availab';
+wwv_flow_imp.g_varchar2_table(5) := 'le, false otherwise.'||wwv_flow.LF||
+'-------------------------------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(6) := '-'||wwv_flow.LF||
+'function has_moviedata_and_oracle_text return boolean;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'------------------------------------------';
+wwv_flow_imp.g_varchar2_table(7) := '--------------------------------------'||wwv_flow.LF||
+'-- returns TRUE, if Oracle TEXT and the EBA_VECTOR_DATATABLE ';
+wwv_flow_imp.g_varchar2_table(8) := 'table is '||wwv_flow.LF||
+'-- available, false otherwise.'||wwv_flow.LF||
+'-----------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(9) := '---------------------'||wwv_flow.LF||
+'function has_datatable_and_oracle_text return boolean;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'----------------------';
+wwv_flow_imp.g_varchar2_table(10) := '----------------------------------------------------------'||wwv_flow.LF||
+' -- deletes rows where mandatory fields a';
+wwv_flow_imp.g_varchar2_table(11) := 're null '||wwv_flow.LF||
+'--------------------------------------------------------------------------------'||wwv_flow.LF||
+'procedure ';
+wwv_flow_imp.g_varchar2_table(12) := 'delete_invalid_movie_data;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'end eba_sample_vector_search_pkg;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace package body eba_';
+wwv_flow_imp.g_varchar2_table(13) := 'sample_vector_search_pkg '||wwv_flow.LF||
+'as'||wwv_flow.LF||
+''||wwv_flow.LF||
+'----------------------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(14) := '----------'||wwv_flow.LF||
+'function has_moviedata_and_oracle_text return boolean '||wwv_flow.LF||
+'is'||wwv_flow.LF||
+'    l_count  number;'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(15) := 'select count(*)'||wwv_flow.LF||
+'      into l_count'||wwv_flow.LF||
+'      from ('||wwv_flow.LF||
+'        select 1 '||wwv_flow.LF||
+'          from eba_vector_moviedat';
+wwv_flow_imp.g_varchar2_table(16) := 'a'||wwv_flow.LF||
+'         where embedding_vector is not null'||wwv_flow.LF||
+'           and rownum            = 1'||wwv_flow.LF||
+'        union all';
+wwv_flow_imp.g_varchar2_table(17) := ''||wwv_flow.LF||
+'        select 1 '||wwv_flow.LF||
+'          from sys.all_objects'||wwv_flow.LF||
+'         where owner       = ''CTXSYS'' '||wwv_flow.LF||
+'           ';
+wwv_flow_imp.g_varchar2_table(18) := 'and object_name = ''CTX_DDL'' '||wwv_flow.LF||
+'           and rownum      = 1 );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    return l_count = 2;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'end has_mov';
+wwv_flow_imp.g_varchar2_table(19) := 'iedata_and_oracle_text;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'---------------------------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(20) := '-----'||wwv_flow.LF||
+'function has_datatable_and_oracle_text return boolean '||wwv_flow.LF||
+'is'||wwv_flow.LF||
+'    l_count  number;'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    selec';
+wwv_flow_imp.g_varchar2_table(21) := 't count(*)'||wwv_flow.LF||
+'      into l_count'||wwv_flow.LF||
+'      from ('||wwv_flow.LF||
+'        select 1 '||wwv_flow.LF||
+'          from eba_vector_datatable'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(22) := '      where embedding_vector is not null'||wwv_flow.LF||
+'           and rownum            = 1'||wwv_flow.LF||
+'        union all'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(23) := '    select 1 '||wwv_flow.LF||
+'          from sys.all_objects'||wwv_flow.LF||
+'         where owner       = ''CTXSYS'' '||wwv_flow.LF||
+'           and o';
+wwv_flow_imp.g_varchar2_table(24) := 'bject_name = ''CTX_DDL'' '||wwv_flow.LF||
+'           and rownum      = 1 );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    return l_count = 2;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'end has_datatabl';
+wwv_flow_imp.g_varchar2_table(25) := 'e_and_oracle_text;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'--------------------------------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(26) := ''||wwv_flow.LF||
+'procedure delete_invalid_movie_data'||wwv_flow.LF||
+'is'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    delete from eba_vector_moviedata'||wwv_flow.LF||
+'     where (    t';
+wwv_flow_imp.g_varchar2_table(27) := 'itle            is null'||wwv_flow.LF||
+'             or moviedescription is null'||wwv_flow.LF||
+'             or actors           is';
+wwv_flow_imp.g_varchar2_table(28) := ' null'||wwv_flow.LF||
+'             or genre            is null'||wwv_flow.LF||
+'             or release_date     is null'||wwv_flow.LF||
+'            ';
+wwv_flow_imp.g_varchar2_table(29) := ' or rating           is null );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'end delete_invalid_movie_data;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'end eba_sample_vector_search_pkg;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(30) := '/';
 wwv_flow_imp_shared.create_install_script(
  p_id=>wwv_flow_imp.id(15355493030024754)
 ,p_install_id=>wwv_flow_imp.id(32055906392990968)
 ,p_name=>'helper package'
 ,p_sequence=>20
 ,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'create or replace package eba_sample_vector_search_pkg authid current_user',
-'as',
-'--',
-'-- using the AUTHID CURRENT_USER clause, as the package code references',
-'-- the CTX_DDL package, which is often only available through the CTXAPP *role*.',
-'--',
-'',
-'--------------------------------------------------------------------------------',
-'-- returns TRUE, if Oracle TEXT and the EBA_VECTOR_MOVIEDATA table is ',
-'-- available, false otherwise.',
-'--------------------------------------------------------------------------------',
-'function has_moviedata_and_oracle_text return boolean;',
-'',
-'--------------------------------------------------------------------------------',
-'-- returns TRUE, if Oracle TEXT and the EBA_VECTOR_DATATABLE table is ',
-'-- available, false otherwise.',
-'--------------------------------------------------------------------------------',
-'function has_datatable_and_oracle_text return boolean;',
-'',
-'--------------------------------------------------------------------------------',
-' -- deletes rows where mandatory fields are null ',
-'--------------------------------------------------------------------------------',
-'procedure delete_invalid_movie_data;',
-'',
-'end eba_sample_vector_search_pkg;',
-'/',
-'',
-'create or replace package body eba_sample_vector_search_pkg ',
-'as',
-'',
-'--------------------------------------------------------------------------------',
-'function has_moviedata_and_oracle_text return boolean ',
-'is',
-'    l_count  number;',
-'begin',
-'    select count(*)',
-'      into l_count',
-'      from (',
-'        select 1 ',
-'          from eba_vector_moviedata',
-'         where embedding_vector is not null',
-'           and rownum            = 1',
-'        union all',
-'        select 1 ',
-'          from sys.all_objects',
-'         where owner       = ''CTXSYS'' ',
-'           and object_name = ''CTX_DDL'' ',
-'           and rownum      = 1 );',
-'',
-'    return l_count = 2;',
-'',
-'end has_moviedata_and_oracle_text;',
-'',
-'--------------------------------------------------------------------------------',
-'function has_datatable_and_oracle_text return boolean ',
-'is',
-'    l_count  number;',
-'begin',
-'    select count(*)',
-'      into l_count',
-'      from (',
-'        select 1 ',
-'          from eba_vector_datatable',
-'         where embedding_vector is not null',
-'           and rownum            = 1',
-'        union all',
-'        select 1 ',
-'          from sys.all_objects',
-'         where owner       = ''CTXSYS'' ',
-'           and object_name = ''CTX_DDL'' ',
-'           and rownum      = 1 );',
-'',
-'    return l_count = 2;',
-'',
-'end has_datatable_and_oracle_text;',
-'',
-'--------------------------------------------------------------------------------',
-'procedure delete_invalid_movie_data',
-'is',
-'begin',
-'    delete from eba_vector_moviedata',
-'     where (    title            is null',
-'             or moviedescription is null',
-'             or actors           is null',
-'             or genre            is null',
-'             or release_date     is null',
-'             or rating           is null );',
-'',
-'end delete_invalid_movie_data;',
-'',
-'end eba_sample_vector_search_pkg;',
-'',
-'/'))
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
