@@ -1,0 +1,18 @@
+plugin oracleElocationGeocoder (
+    name: Oracle Elocation Geocoder
+    staticId: COM.ORACLE.APEX.ELOCGEOCODER
+    type: dynamicAction
+    callbacks {
+        apiInterface: function
+        renderProcedureName: eba_spatial_gcdr_pkg.render_elocation_geocoder
+        ajaxProcedureName: eba_spatial_gcdr_pkg.ajax_elocation_geocoder
+    }
+    advanced {
+        category: miscellaneous
+        substituteAttributeValues: true
+    }
+    information {
+        version: 20140707
+    }
+)
+

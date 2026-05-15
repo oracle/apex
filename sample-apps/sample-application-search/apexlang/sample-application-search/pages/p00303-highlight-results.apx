@@ -1,0 +1,322 @@
+page 303 (
+    name: Highlight Results
+    alias: HIGHLIGHT-RESULTS
+    title: Highlight Results
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Setting card icon background to transparent 
+               so that the icon color from the Search Configuration 
+               renders correctly */
+            :root {
+                --a-cv-icon-background-color: transparent;
+            }
+            
+            /* Change card icon size */
+            .a-CardView-icon{
+                font-size: xx-large !important;
+            }
+            
+            /* Highlighting search term style */
+            
+            mark{
+                border: 1px solid black;
+                padding: 1px 0;
+            }
+            
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how to highlight search terms in search results using Application Search. To achieve this, you need to use the public <code>Search</code> function to perform a search with the desired search configuration(<em>Store search configuration</em> and <em>Product search configuration</em>) and add the highlighting. The search results will be displayed with the search terms highlighted in the matching rows.</p>
+                <p>Simply start typing a search query(or "<strong>Red</strong>" for example), and the configured Search Configuration will be triggered to display relevant results with highlighted search terms.</p>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Products and Stores
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with escaped_output as (
+                        select config_label,
+                               primary_key_1,
+                               apex_escape.html(title)       as title,
+                               apex_escape.html(subtitle)    as subtitle,
+                               apex_escape.html(description) as description,
+                               badge,
+                               icon_type,
+                               'fa ' || icon_value           as icon_value
+                          from table(
+                                   apex_search.search(
+                                       p_search_static_ids => apex_t_varchar2( 'store', 'product' ),
+                                       p_search_expression => :P303_SEARCH,
+                                       p_apply_order_bys   => 'N' ) ) )
+                select config_label,
+                       primary_key_1,
+                       replace( lower(title),       lower(apex_escape.html(:P303_SEARCH)), '<mark>' || lower(apex_escape.html(:P303_SEARCH)) || '</mark>' ) as title,
+                       replace( lower(subtitle),    lower(apex_escape.html(:P303_SEARCH)), '<mark>' || lower(apex_escape.html(:P303_SEARCH)) || '</mark>' ) as subtitle,
+                       replace( lower(description), lower(apex_escape.html(:P303_SEARCH)), '<mark>' || lower(apex_escape.html(:P303_SEARCH)) || '</mark>' ) as description,
+                       badge,
+                       icon_type,
+                       icon_value
+                  from escaped_output
+                ```
+            pageItemsToSubmit: P303_SEARCH
+        }
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: t-CardsRegion--styleA
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        card {
+            primaryKeyColumn1: PRIMARY_KEY_1
+        }
+        title {
+            advancedFormatting: true
+            htmlExpression: <div class="a-CardView-title">&TITLE!RAW.</div>
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: &SUBTITLE!RAW.
+        }
+        body {
+            advancedFormatting: true
+            htmlExpression: &DESCRIPTION!RAW.
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_VALUE
+            badgeColumn: BADGE
+        }
+        messages {
+            whenNoDataFound: No customers, products or stores found.
+        }
+    )
+
+    pageItem P303_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            valuePlaceholder: Enter your search term, e.g. 'red'
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 400
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 302
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction enter-key (
+        name: Enter key
+        execution {
+            sequence: 20
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P303_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.browserEvent.keyCode === 13
+                
+                ```
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction search (
+        name: Search
+        execution {
+            sequence: 10
+            type: throttle
+            time: 500
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P303_SEARCH
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

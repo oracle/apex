@@ -1,0 +1,955 @@
+page 60 (
+    name: Data Load Source
+    alias: DATA-LOAD-SOURCE
+    title: Data Load Source
+    pageGroup: @contacts
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region data-load-process-train (
+        name: Data Load Process Train
+        type: list
+        source {
+            list: @data-load-process-train-contacts
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/wizard-container
+            templateOptions: [
+                #DEFAULT#
+                t-Wizard--hideStepsSmall
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayLabels
+            ]
+        }
+    )
+
+    region data-load-source (
+        name: Data Load Source
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @data-load-process-train
+            slot: wizardSubRegions
+        }
+        advanced {
+            customAttributes: style="width:100%;max-width:none;"
+        }
+    )
+
+    region globalization (
+        name: Globalization
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @data-load-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            customAttributes: style="width:100%;max-width:none;"
+        }
+    )
+
+    region information (
+        name: Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This is  a 3-step wizard that allows the user to upload the existing data into a specified table. 
+                The user will have two options to upload data by copy and paste to the above textarea or choosing the 
+                file that contains the Customer contacts list.
+                Both of the above will take the user to second step that allows 
+                the user to map the columns of the columns with the column names of the uploaded data.
+                The third step, is straight forward step, it shows the data after lookups keys have been 
+                fetched and allows the user to review the data before the final submit. 
+                The last step will  allow the user to see the outcome of the submitted data, will show the report of inserted/updated and failed records. The failed records are displayed with the error message showing what caused the issue. 
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P60_COPY_PASTE (
+        type: textarea
+        label {
+            label: Copy and Paste Delimited Data
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 10
+        }
+        default {
+            type: static
+            staticValue: &P60_ORIG_COPY_PASTE.
+        }
+        help {
+            helpText: Copy and Paste your data here
+        }
+    )
+
+    pageItem P60_CURRENCY (
+        type: textField
+        label {
+            label: Currency Symbol
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 90
+            region: @globalization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            maxLength: 2
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select value
+                  from nls_session_parameters
+                 where parameter = 'NLS_CURRENCY'
+                ```
+        }
+        default {
+            type: static
+            staticValue: $
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: If your data contains international currency symbol, enter it here. For example, if your data has "&euro;1,234.56" or "&yen;1,234.56", enter "&euro;" or "&yen;".  Otherwise the data will not load correctly.
+        }
+    )
+
+    pageItem P60_DECIMAL_CHARACTER (
+        type: textField
+        label {
+            label: Decimal Character
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @globalization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            maxLength: 2
+        }
+        source {
+            type: expression
+            plsqlExpression: apex_application.get_nls_decimal_separator
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText:
+                ```html
+                <p>The decimal character separates the integer and decimal parts of a number.</p>
+                <p> Any character can be the decimal character. The character specified must be single-byte, and the decimal character must be different from group separator. The character can be a space, but cannot be any numeric character or any of the following characters:</p>
+                <ul class="noIndent">
+                <li>plus (+)</li>
+                <li>hyphen (-)</li> 
+                <li>less than sign (<)</li>
+                <li>greater than sign (>)</li> 
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P60_ENCLOSED_BY (
+        type: textField
+        label {
+            label: Optionally Enclosed By
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 50
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            maxLength: 2
+        }
+        default {
+            type: static
+            staticValue: "
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter a delimiter character. You can use this character to delineate the starting and ending boundary of a data value. If you specify a delimiter character, Data Workshop ignores whitespace occurring before the starting and ending boundary of a data value. You can also use this option to enclose a data value with the specified delimiter character.
+        }
+    )
+
+    pageItem P60_FILE_NAME (
+        type: fileUpload
+        label {
+            label: File Name
+            alignment: right
+        }
+        storage {
+            type: appTempFiles
+            purgeFileAt: endOfRequest
+        }
+        layout {
+            sequence: 30
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Name of the file to upload
+        }
+    )
+
+    pageItem P60_FIRST_ROW (
+        type: checkboxGroup
+        label {
+            label: First Row has Column Names
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @first-row-option
+        }
+        layout {
+            sequence: 60
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Select this box if your data contains column names in the first row.
+        }
+    )
+
+    pageItem P60_GROUP_SEPARATOR (
+        type: textField
+        label {
+            label: Group Separator
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 100
+            region: @globalization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            maxLength: 2
+        }
+        source {
+            type: expression
+            plsqlExpression: apex_application.get_nls_group_separator
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText:
+                ```html
+                <p>A group separator is a character that separates integer groups, for example to show thousands and millions.</p>
+                <p>Any character can be the group separator. The character specified must be single-byte, and the group separator must be different from any other decimal character. The character can be a space, but cannot be a numeric character or any of the following:</p>
+                <ul class="noIndent">
+                <li>plus (+)</li>
+                <li>hyphen (-)</li> 
+                <li>less than sign (<)</li>
+                <li>greater than sign (>)</li> 
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P60_IMPORT_FROM (
+        type: radioGroup
+        label {
+            label: Import From
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @data-load-option
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: PASTE
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P60_ORIG_COPY_PASTE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @data-load-source
+            slot: regionBody
+        }
+    )
+
+    pageItem P60_SAMPLE_DATA (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @information
+            slot: regionBody
+        }
+        source {
+            type: staticValue
+            staticValue:
+                ```
+                "Customer ID","Name","Title","Contact Type ID","Phone","Email"
+                
+                "Illumina","David Yvan","CFO","Other","-","-"
+                
+                "Massive Mashups","DesChamps Dio","CEO","Other","-","-"
+                
+                "Synergy Sales Solutions","Isha Ben","CFO","Other","-","-"
+                
+                "Monolithic Power Systems","Kevin Eggan","CFO","Other","-","-"
+                
+                "Monolithic Power Systems","Fabrice Inan","CFO","Other","-","-"
+                
+                "Altiris","Thomas Lin","Executive Director","Other","-","-"
+                
+                "Martek Biosciences","Josh Tenenbaum","Executive Director","Other","-","-"
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P60_SEPARATOR (
+        type: textField
+        label {
+            label: Separator
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            valueRequired: true
+            maxLength: 2
+        }
+        default {
+            type: static
+            staticValue: \t
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Identify a column separator character. Use <code>\t</code> for tab separators.
+        }
+    )
+
+    pageItem P60_STOP_START_TABLE (
+        type: stopAndStartGridLayout
+        label {
+            alignment: right
+        }
+        layout {
+            sequence: 70
+            region: @data-load-source
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @data-load-process-train
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 18
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 30
+            region: @data-load-process-train
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+                t-Button--large
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button try-sample-data (
+        buttonName: TRY_SAMPLE_DATA
+        label: Try Sample Data
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--primary
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction import-from-copy-and-paste (
+        name: Import From Copy and Paste
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P60_IMPORT_FROM
+        }
+        clientSideCondition {
+            type: item=value
+            item: P60_IMPORT_FROM
+            value: PASTE
+        }
+
+        action native-hide (
+            action: hide
+            settings {
+                hidePageItemsOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_COPY_PASTE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            settings {
+                showAllOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_COPY_PASTE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction import-from-file (
+        name: Import from File
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P60_IMPORT_FROM
+        }
+        clientSideCondition {
+            type: item=value
+            item: P60_IMPORT_FROM
+            value: UPLOAD
+        }
+
+        action native-hide (
+            action: hide
+            settings {
+                hidePageItemsOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_FILE_NAME
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            settings {
+                showAllOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_FILE_NAME
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction reset-import-from-for-upload (
+        name: Reset Import From For Upload
+        execution {
+            sequence: 50
+        }
+        when {
+            event: ready
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: $('li.htmldbStdErr').html() && $('li.htmldbStdErr').html().substring(0, 30) == 'File Name must have some value'
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: UPLOAD
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_IMPORT_FROM
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction set-copy-and-paste-textarea-with-sample-data (
+        name: Set copy and paste textarea with sample data
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @try-sample-data
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P60_COPY_PASTE
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: PASTE
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_IMPORT_FROM
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                value: &P60_SAMPLE_DATA.
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_COPY_PASTE
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value-3 (
+            action: setValue
+            settings {
+                value: ,
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_SEPARATOR
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value-4 (
+            action: setValue
+            settings {
+                value: "
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_ENCLOSED_BY
+            }
+            execution {
+                sequence: 50
+            }
+        )
+
+        action native-set-value-5 (
+            action: setValue
+            settings {
+                value: Y
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_FIRST_ROW
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-orig-cut-paste-value-and-submit (
+        name: Set orig cut paste value and submit
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @next
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P60_ORIG_COPY_PASTE
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    
+                    apex.widget.textareaClob.upload('P60_COPY_PASTE', 'NEXT');
+                    ```
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: $v('P60_COPY_PASTE')
+            }
+            affectedElements {
+                selectionType: items
+                items: P60_ORIG_COPY_PASTE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation filename-is-not-null (
+        name: Filename is not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P60_FILE_NAME
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P60_FILE_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item=value
+            item: P60_IMPORT_FROM
+            value: UPLOAD
+        }
+    )
+
+    validation paste-content-before-continuing (
+        name: Paste Content before continuing
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P60_ORIG_COPY_PASTE
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P60_COPY_PASTE
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item=value
+            item: P60_IMPORT_FROM
+            value: PASTE
+        }
+    )
+
+    process parse-uploaded-data (
+        name: Parse Uploaded Data
+        type: parseUploadedData
+        dataLoading {
+            dataLoadDefinition: @contacts
+        }
+        sourceData {
+            importFromItem: P60_IMPORT_FROM
+            fileNameItem: P60_FILE_NAME
+            copyAndPasteItem: P60_COPY_PASTE
+        }
+        parsingOptions {
+            separatorItem: P60_SEPARATOR
+            enclosedByItem: P60_ENCLOSED_BY
+            firstRowItem: P60_FIRST_ROW
+            currencySymbolItem: P60_CURRENCY
+            groupSeparatorItem: P60_GROUP_SEPARATOR
+            decimalCharItem: P60_DECIMAL_CHARACTER
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 15886232006062010184
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 61
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+)
+

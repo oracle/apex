@@ -1,0 +1,216 @@
+page 23 (
+    name: Help
+    alias: HELP
+    title: Help
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            div.helpContainer{width:960px;margin:16px auto;zoom:1}
+            div.helpContainer:before,div.helpContainer:after{content:"\0020";display:block;height:0;overflow:hidden}
+            div.helpContainer:after{clear:both}
+            div.helpContainer div.helpSide{float:left;width:300px}
+            div.helpContainer div.helpSide h1.appNameHeader{position:relative;font:bold 22px/36px Arial,sans-serif;color:#404040;padding:0;margin:0}
+            div.helpContainer div.helpSide h1.appNameHeader img{display:block;position:absolute;left:0;top:0}
+            div.helpContainer div.helpMain{float:right;border-left:1px solid #EEE;width:632px;padding-left:16px}
+            div.helpContainer div.helpMain h2{font:bold 20px/32px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h3{font:bold 16px/24px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h4{font:bold 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain p{font:normal 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain ul{list-style:outside disc;margin:0 0 0 24px}
+            div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}
+            div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>About this Application</h2>
+                <p><b>Sample Interactive Grid</b> explores the many uses and features of the Oracle Application Express Interactive Grid.
+                </p>
+                <h3>About the data used</h3>
+                <p>Most of the examples in this application use a modified EMP table called EBA_DEMO_IG_EMP and DEPT table called EBA_DEMO_IG_DEPT. Each of these tables have a few extra columns that are helpful in demonstrating the editing capabilities of Interactive Grid.
+                </p>
+                <p>To demonstrate various paging strategies and how larger datasets are handled another table called EBA_DEMO_IG_PEOPLE is used. This table is based on data from the <a target='_blank' href='http://pantheon.media.mit.edu/methods'>Pantheon dataset</a>: <i>Yu, A. Z., et al. (2016). Pantheon 1.0, a manually verified dataset of globally famous biographies. Scientific Data 2:150075. doi: 10.1038/sdata.2015.75</i>. It is a list of important historical people. The rating column is the Historical Popularity Index (see the web site for details of how this is calculated). The data is a subset of the Pantheon dataset with additional data, specifically death date and Wikipedia URL, extracted from Wikipedia.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       'Oracle' vendor
+                from apex_applications aa
+                where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            cssClasses: t-HeroRegion--featured
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App version
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+    )
+
+    region features (
+        name: Features
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>Features</h2>
+                <p>
+                <ul>
+                    <li>Read-only reports</li>
+                    <li>Cell Editing using standard page items</li>
+                    <li>Declarative or custom DML processing</li>
+                    <li>Column Groups</li>
+                    <li>Row header for selection</li>
+                    <li>Single or multiple Selection</li>
+                    <li>Saved Reports</li>
+                    <li>Linking to Interactive Grids</li>
+                    <li>Single Row View</li>
+                    <li>Icon and Detail View</li>
+                    <li>Chart View</li>
+                    <li>Pagination options traditional paging and scroll paging</li>
+                    <li>Master detail relationships between Interactive Grid regions</li>
+                    <li>Copy Down</li>
+                    <li>Copy row or cell range selection to clipboard</li>
+                    <li>Downloads</li>
+                    <li>Oracle Text searching</li>
+                </ul>
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+    region help-container (
+        name: Help Container
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region quick-start (
+        name: Quick Start
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <H2>Getting Started</h2>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Oracle Application Express Application Builder. Click on the "Edit Page" button to see how the pages are defined.
+                </p>
+                <p>Use the Next/Previous buttons at the top of the page to go through all the examples in order or use the side navigation to jump to a particular example.
+                </p>
+                <p>If you have questions, ask them on the <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137">OTN Forum</a>.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+)
+

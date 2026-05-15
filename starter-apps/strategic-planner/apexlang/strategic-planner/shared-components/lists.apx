@@ -1,0 +1,2151 @@
+list admin-access-control (
+    name: Admin - Access Control
+    config {
+        buildOption: @access-control
+    }
+
+    entry access-control (
+        label: Access Control
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10010
+            }
+        }
+        userDefinedAttributes {
+            1: Change access control settings and disable access control
+        }
+    )
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10011
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Access level for authenticated users of this application <br/>Currently &P10000_USER_COUNTS.
+        }
+    )
+
+)
+
+list admin-approval-options (
+    name: Admin - Approval Options
+    config {
+        buildOption: @approvals
+    }
+
+    entry approval-types (
+        label: Approval Types
+        icon {
+            imageIconCssClasses: fa-check
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4010
+            }
+        }
+        userDefinedAttributes {
+            1: Types of Approvals that can be associated with an &NOMENCLATURE_INITIATIVE. (and therefore able to be requested for a &NOMENCLATURE_PROJECT. within that &NOMENCLATURE_INITIATIVE.)
+        }
+    )
+
+    entry nomenclature-initiative-approval-types (
+        label: &NOMENCLATURE_INITIATIVE. Approval Types
+        icon {
+            imageIconCssClasses: fa-lightbulb-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 4012
+            }
+        }
+        userDefinedAttributes {
+            1: The approval types associated with each &NOMENCLATURE_INITIATIVE. (and therefore able to be requested for a &NOMENCLATURE_PROJECT. within that &NOMENCLATURE_INITIATIVE.)
+        }
+    )
+
+)
+
+list admin-configuration (
+    name: Admin - Configuration
+
+    entry about-page-text (
+        label: About Page Text
+        icon {
+            imageIconCssClasses: fa-info
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 14000
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Contents displayed on the About this App page
+        }
+    )
+
+    entry ai-prompts (
+        label: AI Prompts
+        icon {
+            imageIconCssClasses: fa-ai-prompt
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 12135
+            }
+        }
+        userDefinedAttributes {
+            1: Prompts used for generating summaries
+        }
+        config {
+            buildOption: @ai-project-summaries
+        }
+    )
+
+    entry application-settings (
+        label: Application Settings
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 12150
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Provide value for application settings such as Application home url (used in emails)
+        }
+    )
+
+    entry configure-application-features (
+        label: Configure Application Features
+        icon {
+            imageIconCssClasses: fa-sliders
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12130
+                clearCache: 12130
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Enable and disable application features
+        }
+        config {
+            buildOption: @configure-application-features
+        }
+    )
+
+    entry configure-external-person-link (
+        label: Configure External Person Link
+        icon {
+            imageIconCssClasses: fa-user-magnifying-glass
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 12140
+            }
+        }
+        userDefinedAttributes {
+            1: Setup link to provide more detail about the &NOMENCLATURE_USERS. defined in this application
+        }
+    )
+
+    entry delete-sample-data (
+        label: Delete Sample Data
+        icon {
+            imageIconCssClasses: fa-trash-o
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 14010
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Remove the sample data that installs with this application
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_AREAS
+                 where id in (1,2)
+                union all
+                select 1
+                  from SP_INITIATIVES
+                 where id in (1,2,3)
+                union all
+                select 1
+                  from SP_PROJECTS
+                 where id in (1,2,3,4,5,6)
+                union all
+                select 1
+                  from sp_activities
+                 where id in (1,2,3)
+                union all
+                select 1
+                  from sp_release_trains
+                 where id in (1,2)
+                union all
+                select 1
+                  from SP_TEAM_MEMBERS
+                 where id in (1,2,3)
+                ```
+        }
+    )
+
+    entry external-nomenclature-project-links (
+        label: External &NOMENCLATURE_PROJECT. Links
+        icon {
+            imageIconCssClasses: fa-external-link
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10750
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Define links to external systems based on &NOMENCLATURE_PROJECT. naming
+        }
+    )
+
+    entry nomenclature (
+        label: Nomenclature
+        icon {
+            imageIconCssClasses: fa-external-link-square
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10400
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Configure application name and labels of primary attribute names
+        }
+    )
+
+)
+
+list admin-lookup-values (
+    name: Admin - Lookup Values
+
+    entry activity-types (
+        label: Activity Types
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10700
+                clearCache: 10700
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Used to further describe logged activities
+            2: &P10000_ACTIVITY_TYPES.
+        }
+        config {
+            buildOption: @activity-planning
+        }
+    )
+
+    entry contributor-roles (
+        label: Contributor Roles
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10600
+                clearCache: 10600
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: How a person can be associated with a &NOMENCLATURE_PROJECT.
+            2: &P10000_RESOURCE_TYPES.
+        }
+    )
+
+    entry countries (
+        label: Countries
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 43
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Configure default quick picks for tags
+            2: &P10000_COUNTRIES.
+        }
+    )
+
+    entry default-competencies (
+        label: Default Competencies
+        icon {
+            imageIconCssClasses: fa-users-alt
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 154
+            }
+        }
+        userDefinedAttributes {
+            1: Associated with people and displayed under their profile
+            2: &P10000_COMPETENCIES.
+        }
+    )
+
+    entry nomenclature-initiative-focus-areas (
+        label: &NOMENCLATURE_INITIATIVE. Focus Areas
+        icon {
+            imageIconCssClasses: fa-user-magnifying-glass
+        }
+        layout {
+            sequence: 115
+        }
+        link {
+            target: {
+                page: 10150
+                clearCache: 10150
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Focus Areas that can be associated with &NOMENCLATURE_PROJECTS. (selection is limited by &NOMENCLATURE_INITIATIVE.)
+            2: &P10000_FOCUS_AREAS.
+        }
+    )
+
+    entry nomenclature-project-completeness-scales (
+        label: &NOMENCLATURE_PROJECT. Completeness Scales
+        icon {
+            imageIconCssClasses: fa-badge-check
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 10200
+            }
+        }
+        userDefinedAttributes {
+            1: Details of available completeness scales (from 0% to 100% in 10% increments) used for &NOMENCLATURE_PROJECTS.
+            2: &P10000_PROJECT_STATUS_SCALES.
+        }
+    )
+
+    entry nomenclature-project-default-tags (
+        label: &NOMENCLATURE_PROJECT. Default Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 10500
+                clearCache: 10500
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Configure default quick picks for tags
+            2: &P10000_DEFAULT_TAGS.
+        }
+    )
+
+    entry nomenclature-project-priorities (
+        label: &NOMENCLATURE_PROJECT. Priorities
+        icon {
+            imageIconCssClasses: fa-arrows-v
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 10800
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Available &NOMENCLATURE_PROJECT. priorities
+            2: &P10000_PROJECT_PRIORITIES.
+        }
+    )
+
+    entry nomenclature-project-sizes (
+        label: &NOMENCLATURE_PROJECT. Sizes
+        icon {
+            imageIconCssClasses: fa-users-alt
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 10100
+            }
+        }
+        userDefinedAttributes {
+            1: Sizes for &NOMENCLATURE_PROJECTS. with associated level of effort
+            2: &P10000_PROJECT_SIZES.
+        }
+    )
+
+    entry nomenclature-project-statuses (
+        label: &NOMENCLATURE_PROJECT. Statuses
+        icon {
+            imageIconCssClasses: fa-wizard
+        }
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 10110
+            }
+        }
+        userDefinedAttributes {
+            1: Available statuses for &NOMENCLATURE_PROJECTS., used when active (as defined by selected completeness scale) and not 100% complete
+            2: &P10000_PROJECT_STATUSES.
+        }
+    )
+
+    entry release-milestone-default-tags (
+        label: Release Milestone Default Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 10515
+            }
+        }
+        userDefinedAttributes {
+            1: Configure quick picks for release milestone tags
+            2: &P10000_RM_DEFAULT_TAGS.
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry release-milestone-types (
+        label: Release Milestone Types
+        icon {
+            imageIconCssClasses: fa-clipboard-check-alt
+        }
+        layout {
+            sequence: 140
+        }
+        link {
+            target: {
+                page: 10090
+            }
+        }
+        userDefinedAttributes {
+            1: Used to describe Release Milestones
+            2: &P10000_REL_MILESTONE_TYPES.
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry task-statuses (
+        label: Task Statuses
+        icon {
+            imageIconCssClasses: fa-wizard
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 10061
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Available statuses for tasks
+            2: &P10000_TASK_STATUSES.
+        }
+    )
+
+    entry task-types (
+        label: Task Types
+        icon {
+            imageIconCssClasses: fa-clipboard-list
+        }
+        layout {
+            sequence: 120
+        }
+        link {
+            target: {
+                page: 10064
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Available &NOMENCLATURE_PROJECT. task types
+            2: &P10000_TASK_TYPES.
+        }
+    )
+
+    entry team-member-default-tags (
+        label: Team Member Default Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 10520
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Configure default quick picks for tags
+            2: &P10000_TEAM_MBR_DEFAULT_TAGS.
+        }
+    )
+
+)
+
+list admin-monitoring (
+    name: Admin - Monitoring
+
+    entry application-log (
+        label: Application Log
+        icon {
+            imageIconCssClasses: fa-table-wrench
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 10050
+                clearCache: 10050
+            }
+        }
+        userDefinedAttributes {
+            1: Log of all changes to administrative data (users, settings, valid values)
+        }
+    )
+
+    entry email-reporting (
+        label: Email Reporting
+        icon {
+            imageIconCssClasses: fa-envelope-chart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 16020
+                clearCache: 16020
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all email queued to be sent and those already sent
+        }
+        config {
+            buildOption: @email-configured
+        }
+    )
+
+    entry error-log (
+        label: Error Log
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 16000
+            }
+        }
+        userDefinedAttributes {
+            1: Errors raised by the packaged used by this application
+        }
+    )
+
+    entry job-reporting (
+        label: Job Reporting
+        icon {
+            imageIconCssClasses: fa-user-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 16010
+                clearCache: 16010
+            }
+        }
+        userDefinedAttributes {
+            1: View status and run details of jobs supporting this application
+        }
+    )
+
+    entry page-performance (
+        label: Page Performance
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+        userDefinedAttributes {
+            1: Application page view details
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+        userDefinedAttributes {
+            1: Application page view details
+        }
+    )
+
+    entry page-views-by-user (
+        label: Page Views by User
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 72
+            }
+        }
+        userDefinedAttributes {
+            1: Application page view details
+        }
+    )
+
+    entry team-member-notifications (
+        label: Team Member Notifications
+        icon {
+            imageIconCssClasses: fa-bell
+        }
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 10790
+            }
+        }
+        userDefinedAttributes {
+            1: All notifications sent from this application.
+        }
+    )
+
+    entry workflow-console (
+        label: Workflow Console
+        icon {
+            imageIconCssClasses: fa-gears
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 4000
+            }
+        }
+        userDefinedAttributes {
+            1: Monitor the Workflow that manages approval of &NOMENCLATURE_PROJECTS.
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+)
+
+list admin-notifications (
+    name: Admin - Notifications
+
+    entry home-page-messages (
+        label: Home Page Messages
+        icon {
+            imageIconCssClasses: fa-bell-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10770
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Application home page messages
+            2: &P10000_SYSTEM_NOTIFICATIONS.
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        icon {
+            imageIconCssClasses: fa-bullhorn
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10074
+            }
+        }
+        userDefinedAttributes {
+            1: Manage available notifications that team members can subscribe to
+        }
+        config {
+            buildOption: @subscriptions
+        }
+    )
+
+    entry subscriptions (
+        label: Subscriptions
+        icon {
+            imageIconCssClasses: fa-envelope-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 16015
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View and manage which team members are subscribed to a given notification
+        }
+        config {
+            buildOption: @subscriptions
+        }
+    )
+
+)
+
+list admin-project-interactions (
+    name: Admin - Project Interactions
+
+    entry favorite-nomenclature-projects (
+        label: Favorite &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-table-heart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+        userDefinedAttributes {
+            1: Count of times each &NOMENCLATURE_PROJECT. has been favorited
+        }
+    )
+
+    entry favorited-nomenclature-projects-by-user (
+        label: Favorited &NOMENCLATURE_PROJECTS. by User
+        icon {
+            imageIconCssClasses: fa-user-heart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Each &NOMENCLATURE_PROJECT. a user has favorited
+        }
+    )
+
+    entry initiative-views (
+        label: Initiative Views
+        icon {
+            imageIconCssClasses: fa-lightbulb-o
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 81
+            }
+        }
+        userDefinedAttributes {
+            1: "Views of &NOMENCLATURE_INITIATIVES. by user over the last 90 days "
+        }
+    )
+
+    entry most-viewed-nomenclature-projects (
+        label: Most Viewed &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 97
+            }
+        }
+        userDefinedAttributes {
+            1: Most Viewed &NOMENCLATURE_PROJECTS. over the last 90 days
+        }
+    )
+
+    entry nomenclature-project-interactions-by-user (
+        label: &NOMENCLATURE_PROJECT. Interactions by User
+        icon {
+            imageIconCssClasses: fa-file-edit
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 610
+            }
+        }
+        userDefinedAttributes {
+            1: Each time a user viewed, or interacted in any way, with a &NOMENCLATURE_PROJECT. or something related to a &NOMENCLATURE_PROJECT. (Milestone, Review or Task)
+        }
+    )
+
+    entry nomenclature-projects-views-by-user (
+        label: &NOMENCLATURE_PROJECTS. Views by User
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 80
+            }
+        }
+        userDefinedAttributes {
+            1: Views of &NOMENCLATURE_PROJECTS. by user over the last 90 days
+        }
+    )
+
+    entry nomenclature-projects-views-by-user-by-month (
+        label: &NOMENCLATURE_PROJECTS. Views by User by Month
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 89
+            }
+        }
+        userDefinedAttributes {
+            1: Views of &NOMENCLATURE_PROJECTS. by User by Month over the last 4 months
+        }
+    )
+
+)
+
+list admin-utilities (
+    name: Admin - Utilities
+
+    entry manage-archived-projects (
+        label: Manage Archived Projects
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 11300
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: All archived &NOMENCLATURE_PROJECTS., with the ability to permanently delete
+        }
+    )
+
+    entry manage-duplicate-projects (
+        label: Manage Duplicate Projects
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 11320
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_PROJECTS. marked as duplicates, with the ability to permanently delete
+        }
+    )
+
+)
+
+list feedback (
+    name: Feedback
+    config {
+        buildOption: @feedback
+    }
+
+    entry user-feedback (
+        label: User Feedback
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12123
+                clearCache: 12123
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all feedback submitted by application users
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry about-this-app (
+        label: About this App
+        icon {
+            imageIconCssClasses: fa-info
+        }
+        layout {
+            sequence: 50
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 10820
+            }
+        }
+        config {
+            buildOption: @about-page
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 75
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 10000
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry alerts (
+        label: Alerts
+        icon {
+            imageIconCssClasses: fa-bell
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+                clearCache: 2
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+            4: Alerts
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_team_member_notifications
+                 where team_member_id = :APP_USER_ID
+                   and dismissed_yn = 'N'
+                   and instr(':'||notification_pref||':',':APP:') > 0
+                ```
+        }
+    )
+
+    entry app-user-first-name (
+        label: &APP_USER_FIRST_NAME.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry approval-requests (
+        label: Approval Requests
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 132
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+            4: Approval Requests
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :APPROVALS_PENDING_CNT > 0 or
+                :APPROVALS_MORE_INFO_CNT > 0
+                ```
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+    entry feedback (
+        label: Feedback
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 12120
+                items: {
+                    P12120_PAGE_ID: &APP_PAGE_ID.
+                }
+                clearCache: 12120
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_util.feedback_enabled
+        }
+        security {
+            authorizationScheme: @reader-rights
+        }
+        config {
+            buildOption: @feedback
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 5
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry list_item-2 (
+        label: ---
+        layout {
+            sequence: 45
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry list_item-3 (
+        label: ---
+        layout {
+            sequence: 78
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry my-activities (
+        label: My Activities
+        icon {
+            imageIconCssClasses: fa-badge-check
+        }
+        layout {
+            sequence: 4
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 102
+                items: {
+                    P102_PERSON: &APP_USER_FIRST_LAST_NAME.
+                }
+                clearCache: 102
+            }
+        }
+        config {
+            buildOption: @activity-planning
+        }
+    )
+
+    entry my-approval-configuration (
+        label: My Approval Configuration
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 17
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 147
+                clearCache: 147
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approval_chain c,
+                       sp_initiative_approvals a
+                 where a.id = c.initiative_approval_id
+                   and c.team_member_id = :APP_USER_ID
+                   and a.active_yn = 'Y'
+                ```
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+    entry my-favorite-nomenclature-projects (
+        label: My Favorite &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-heart
+        }
+        layout {
+            sequence: 2
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 23
+                items: {
+                    P23_FAVORITE: Yes
+                }
+                clearCache: 23
+            }
+        }
+    )
+
+    entry my-nomenclature-projects (
+        label: My &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 1
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 113
+                clearCache: 113
+            }
+        }
+    )
+
+    entry my-profile (
+        label: My Profile
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 12
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 5
+                items: {
+                    P5_ID: &APP_USER_ID.
+                }
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: APP_USER_ID
+        }
+    )
+
+    entry my-subscriptions (
+        label: My Subscriptions
+        icon {
+            imageIconCssClasses: fa-sliders
+        }
+        layout {
+            sequence: 15
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 139
+                clearCache: 139
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :APP_USER_ID is not null and
+                apex_util.get_build_option_status (
+                    p_application_id    => :APP_ID,
+                    p_build_option_name => 'Email Configured') = 'INCLUDE' and
+                apex_util.get_build_option_status (
+                    p_application_id    => :APP_ID,
+                    p_build_option_name => 'Subscriptions') = 'INCLUDE'
+                ```
+        }
+    )
+
+    entry my-tasks (
+        label: My Tasks
+        icon {
+            imageIconCssClasses: fa-clipboard-list
+        }
+        layout {
+            sequence: 3
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                page: 65
+                items: {
+                    IR_ASSIGNED_TO_OWNER_ID: " &APP_USER_ID."
+                }
+                clearCache: [
+                    65
+                    CIR
+                    RIR
+                ]
+            }
+        }
+    )
+
+    entry recent-projects (
+        label: Recent Projects
+        icon {
+            imageIconCssClasses: fa-folder-clock
+        }
+        layout {
+            sequence: 1
+            subentriesList: @recent-projects
+        }
+        userDefinedAttributes {
+            2: icon-only
+            4: Recent Projects
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 90
+            parentEntry: @app-user-first-name
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry activities-p1-activities (
+        label: "Activities [&P1_ACTIVITIES.]"
+        icon {
+            imageIconCssClasses: fa-badge-check
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                96
+                102
+            ]
+        }
+        link {
+            target: {
+                page: 102
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @activity-planning
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry nomenclature-areas-p1-areas (
+        label: "&NOMENCLATURE_AREAS. [&P1_AREAS.]"
+        icon {
+            imageIconCssClasses: fa-folder-o
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                17
+                9
+            ]
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry nomenclature-initiatives-p1-initiatives (
+        label: "&NOMENCLATURE_INITIATIVES. [&P1_INITIATIVES.]"
+        icon {
+            imageIconCssClasses: fa-lightbulb-o
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                21
+                66
+                94
+                53
+                160
+                164
+                11
+                33
+                57
+                59
+                62
+                68
+                127
+                170
+                171
+                172
+                173
+                174
+                175
+                112
+            ]
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry nomenclature-project-groups-p1-project-groups (
+        label: "&NOMENCLATURE_PROJECT. Groups [&P1_PROJECT_GROUPS.]"
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 45
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                70
+                119
+            ]
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+        config {
+            buildOption: @project-groups
+        }
+    )
+
+    entry nomenclature-projects-p1-projects (
+        label: "&NOMENCLATURE_PROJECTS. [&P1_PROJECTS.]"
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                23
+                300
+                113
+                64
+                29
+                30
+                502
+                507
+                505
+                160
+                60
+                116
+                121
+                98
+                126
+            ]
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry nomenclature-users-groups-p1-groups (
+        label: "&NOMENCLATURE_USERS. Groups [&P1_GROUPS.]"
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 110
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                150
+                151
+                152
+                103
+            ]
+        }
+        link {
+            target: {
+                page: 103
+                action: resetPagination
+            }
+        }
+    )
+
+    entry nomenclature-users-p1-people (
+        label: "&NOMENCLATURE_USERS. [&P1_PEOPLE.]"
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 100
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                5
+                19
+                20
+                74
+                61
+                148
+                153
+            ]
+        }
+        link {
+            target: {
+                page: 74
+                action: resetPagination
+            }
+        }
+    )
+
+    entry releases-p1-releases (
+        label: "Releases [&P1_RELEASES.]"
+        icon {
+            imageIconCssClasses: fa-ship
+        }
+        layout {
+            sequence: 77
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                63
+                77
+                38
+                76
+                8
+                117
+                202
+                42
+                69
+                133
+                14
+            ]
+        }
+        link {
+            target: {
+                page: 8
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry reports (
+        label: Reports
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 150
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                41
+                14
+                46
+                31
+                78
+                7
+                45
+                51
+                86
+                26
+                500
+                79
+                4
+                80
+                81
+                89
+                15
+                91
+                111
+                122
+                65
+                134
+                146
+                156
+                157
+                158
+                159
+                157
+                37
+                55
+                167
+                710
+            ]
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+)
+
+list recent-projects (
+    name: Recent Projects
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select the_level,
+                   label, 
+                   target, 
+                   is_current_list_entry,
+                   image,
+                   image_attribute,
+                   image_alt_attribute,
+                   attribute1,
+                   attribute2,
+                   attribute3,
+                   attribute4,
+                   attribute5,
+                   attribute6,
+                   attribute7,
+                   attribute8,
+                   attribute9,
+                   attribute10
+              from (
+            with recent_projects as (
+                select l.project_id, 
+                       max(page_rendered) page_rendered 
+                from SP_PROJ_INTERACTIONS_LOG l,
+                     sp_projects p
+                where l.app_user = lower(:APP_USER) and
+                      l.project_id = p.id and
+                      p.ARCHIVED_YN = 'N' and
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      l.page_rendered is not null
+                group by project_id, l.app_user
+                order by 2 desc
+                fetch first 10 rows only)
+            select distinct 
+                   1 as the_level,
+                   decode(
+                     greatest(length(project),70), 
+                     70, 
+                     project,
+                     substr(project,1,80)||'...') as label, 
+                   apex_page.get_url(p_page => 3, p_items => 'fi', p_clear_cache => '3', p_values => p.friendly_identifier) as target, 
+                   null    is_current_list_entry,
+                   'fa-pie-chart-'||PCT_COMPLETE as image,
+                   null    image_attribute,
+                   null    image_alt_attribute,
+                   null    attribute1,
+                   null    attribute2,
+                   null    attribute3,
+                   null    attribute4,
+                   null    attribute5,
+                   null    attribute6,
+                   null    attribute7,
+                   null    attribute8,
+                   null    attribute9,
+                   null    attribute10,
+                   l.page_rendered
+            from  sp_projects p,
+                  recent_projects l
+            where p.id = l.project_id 
+            )
+            order by page_rendered desc
+            ```
+    }
+)
+
+list reports (
+    name: Reports
+
+    entry all-ai-nomenclature-project-summaries (
+        label: All AI &NOMENCLATURE_PROJECT. Summaries
+        icon {
+            imageIconCssClasses: fa-ai-sparkle-generate-text
+        }
+        layout {
+            sequence: 105
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: All the AI Summaries for all &NOMENCLATURE_PROJECTS.
+        }
+        config {
+            buildOption: @ai-project-summaries
+        }
+    )
+
+    entry all-nomenclature-project-approvals (
+        label: All &NOMENCLATURE_PROJECT. Approvals
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 134
+            }
+        }
+        userDefinedAttributes {
+            1: Cross &NOMENCLATURE_PROJECT. Approvals with current workflow status
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+    entry all-release-summaries (
+        label: All Release Summaries
+        icon {
+            imageIconCssClasses: fa-ai-sparkle-generate-text
+        }
+        layout {
+            sequence: 185
+        }
+        link {
+            target: {
+                page: 167
+            }
+        }
+        userDefinedAttributes {
+            1: All AI Summaries generated for All Releases
+        }
+        config {
+            buildOption: @ai-release-summaries
+        }
+    )
+
+    entry archived-nomenclature-projects (
+        label: Archived &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 170
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_PROJECTS. that are archived
+        }
+    )
+
+    entry change-history (
+        label: Change History
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 79
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change reporting across &NOMENCLATURE_INITIATIVES., &NOMENCLATURE_PROJECTS. and Releases
+        }
+    )
+
+    entry comments (
+        label: Comments
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 158
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: All comments added to this system
+        }
+    )
+
+    entry cross-release-milestone-calendar (
+        label: Cross-Release Milestone Calendar
+        icon {
+            imageIconCssClasses: fa-calendar-month
+        }
+        layout {
+            sequence: 180
+        }
+        link {
+            target: {
+                page: 55
+            }
+        }
+        userDefinedAttributes {
+            1: Filterable calendar of Milestones across All Releases
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry documents (
+        label: Documents
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 156
+        }
+        link {
+            target: {
+                page: 156
+            }
+        }
+        userDefinedAttributes {
+            1: Documents added to the system
+            8: documents, images
+        }
+    )
+
+    entry duplicate-nomenclature-projects (
+        label: Duplicate &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-copy
+        }
+        layout {
+            sequence: 160
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_PROJECTS. marked as duplicates
+        }
+    )
+
+    entry images-in-comments-graph (
+        label: Images in Comments Graph
+        icon {
+            imageIconCssClasses: fa-ai-sparkle-message
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 157
+            }
+        }
+        userDefinedAttributes {
+            1: Count of images in comments vs count of comments with images, per month
+        }
+    )
+
+    entry links (
+        label: Links
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 146
+            }
+        }
+        userDefinedAttributes {
+            1: Links added to the system
+            8: documents, images
+        }
+    )
+
+    entry nomenclature-project-contributors (
+        label: &NOMENCLATURE_PROJECT. Contributors
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 159
+            }
+        }
+        userDefinedAttributes {
+            1: Cross &NOMENCLATURE_PROJECT. Contributor report
+        }
+    )
+
+    entry nomenclature-project-milestone-calendar (
+        label: &NOMENCLATURE_PROJECT. Milestone Calendar
+        icon {
+            imageIconCssClasses: fa-calendar-month
+        }
+        layout {
+            sequence: 140
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+        userDefinedAttributes {
+            1: Filterable calendar of &NOMENCLATURE_PROJECT. Milestones
+        }
+    )
+
+    entry nomenclature-project-milestones-reviews-and-tasks (
+        label: &NOMENCLATURE_PROJECT. Milestones, Reviews and Tasks
+        icon {
+            imageIconCssClasses: fa-clipboard-search
+        }
+        layout {
+            sequence: 120
+        }
+        link {
+            target: {
+                page: 65
+            }
+        }
+        userDefinedAttributes {
+            1: Milestones, Reviews and Tasks across all unarchived &NOMENCLATURE_PROJECTS.
+        }
+    )
+
+    entry nomenclature-projects (
+        label: &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-table-arrow-down
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 86
+            }
+        }
+        userDefinedAttributes {
+            1: All active &NOMENCLATURE_PROJECTS. (not archived and not marked as duplicates)
+        }
+    )
+
+    entry nomenclature-users-screen-names (
+        label: &NOMENCLATURE_USERS. Screen Names
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 122
+            }
+        }
+        userDefinedAttributes {
+            1: Screen names and tags, useful to find and review screen names
+        }
+    )
+
+    entry past-due-tasks-milestones-and-reviews (
+        label: Past Due Tasks, Milestones and Reviews
+        icon {
+            imageIconCssClasses: fa-warning
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 99
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_PROJECT. milestones, tasks and reviews that are past due
+        }
+    )
+
+)
+

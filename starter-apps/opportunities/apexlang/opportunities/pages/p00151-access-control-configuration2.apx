@@ -1,0 +1,544 @@
+page 151 (
+    name: Access Control Configuration
+    alias: ACCESS-CONTROL-CONFIGURATION2
+    title: Access Control Configuration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region access-control-configuration (
+        name: Access Control Configuration
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P151_ACCESS_CONTROL_SCOPE (
+        type: radioGroup
+        label {
+            label: Treat authenticated users not in ACL as
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-control-scope-2
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @access-control-configuration
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            type: expression
+            plsqlExpression: eba_sales_acl_api.get_preference_value('ACCESS_CONTROL_SCOPE');
+        }
+        default {
+            type: static
+            staticValue: PUBLIC_CONTRIBUTE
+        }
+        help {
+            inlineHelpText: This option determines the role of users that are not defined in the Access Control List (ACL).  A user with <strong>Reader</strong> role can only read application data. A user with <strong>Contributor</strong> role can read <strong>and write</strong> application data.
+        }
+    )
+
+    pageItem P151_AC_ENABLED (
+        type: switch
+        label {
+            label: Any authenticated user may access this application
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @access-control-configuration
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody: return eba_sales_acl_api.get_preference_value('ACCESS_CONTROL_ENABLED');
+            used: always
+        }
+        help {
+            inlineHelpText: Choose <strong>No</strong> if all users are defined in the access control list. Choose <strong>Yes</strong> if authenticated users not in the access control list may also use this application.
+        }
+    )
+
+    pageItem P151_HIDDEN_AC_ENABLED (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @access-control-configuration
+            slot: regionBody
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody: return eba_sales_acl_api.get_preference_value('ACCESS_CONTROL_ENABLED');
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P151_USERNAME_FORMAT (
+        type: switch
+        label {
+            label: Use Email for Usernames
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @access-control-configuration
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if (eba_sales_acl_api.get_preference_value('USERNAME_FORMAT') = 'EMAIL') then 
+                  return 'Y';
+                else
+                  return 'N';
+                end if;
+                ```
+            used: always
+        }
+        help {
+            inlineHelpText: This option determines whether to use email addresses as the username format for users in the Access Control List (ACL).  This is useful when using Single Sign-On or LDAP authentication.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction apply-changes-when-ac-disabled (
+        name: APPLY CHANGES WHEN AC DISABLED
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @save
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                ($v('P151_HIDDEN_AC_ENABLED') !== $v('P151_AC_ENABLED') &&
+                 $v('P151_AC_ENABLED') === 'N')
+                ```
+        }
+
+        action native-confirm (
+            action: confirm
+            settings {
+                message: Disabling Access Control means that all application features are available to any user who can authenticate. Are you sure you want to disable Access Control?
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: APPLY_CHANGES_AC_DISABLED
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction apply-changes-when-ac-enabled (
+        name: APPLY CHANGES WHEN AC ENABLED
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @save
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                ($v('P151_HIDDEN_AC_ENABLED') !== $v('P151_AC_ENABLED') &&
+                 $v('P151_AC_ENABLED') === 'Y')
+                ```
+        }
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: APPLY_CHANGES_AC_ENABLED
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction apply-changes-when-ac-unchanged (
+        name: APPLY CHANGES WHEN AC UNCHANGED
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @save
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: ($v('P151_HIDDEN_AC_ENABLED') === $v('P151_AC_ENABLED'))
+        }
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: APPLY_CHANGES_AC_UNCHANGED
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction enable-access-control-changed (
+        name: ENABLE ACCESS CONTROL CHANGED
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P151_AC_ENABLED
+        }
+        clientSideCondition {
+            type: item=value
+            item: P151_AC_ENABLED
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P151_ACCESS_CONTROL_SCOPE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P151_ACCESS_CONTROL_SCOPE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process access-control-disabled (
+        name: ACCESS CONTROL DISABLED
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    eba_sales_acl_api.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_ENABLED',
+                        p_preference_value => :P151_AC_ENABLED);
+                    eba_sales_acl_api.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_SCOPE',
+                        p_preference_value => (case 
+                                                   when :P151_AC_ENABLED = 'Y' then :P151_ACCESS_CONTROL_SCOPE
+                                                   else 'ACL_ONLY' 
+                                               end) );
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Access Control disabled. All application features are now available to any user who can authenticate.
+        }
+        error {
+            errorMessage: Error trying to disable Access Control.
+        }
+        advanced {
+            executionMappingIdentifier: 336767082499415707
+        }
+        serverSideCondition {
+            type: request=Value
+            value: APPLY_CHANGES_AC_DISABLED
+        }
+    )
+
+    process access-control-enabled (
+        name: ACCESS CONTROL ENABLED
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    eba_sales_acl_api.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_ENABLED',
+                        p_preference_value => :P151_AC_ENABLED);
+                    eba_sales_acl_api.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_SCOPE',
+                        p_preference_value => (case 
+                                                   when :P151_AC_ENABLED = 'Y' then :P151_ACCESS_CONTROL_SCOPE
+                                                   else 'ACL_ONLY' 
+                                               end) );
+                
+                    -- Seed user table with current user as an administrator or set the current user as administrator
+                    declare
+                       l_count number;
+                    begin
+                        select count(*) 
+                            into l_count 
+                        from eba_sales_users
+                        where username = :APP_USER;
+                        if l_count = 0 then
+                            insert into eba_sales_users(username, access_level_id) values (:APP_USER, 3);   
+                        else
+                            update eba_sales_users
+                            set access_level_id = 3
+                            where username = :APP_USER;
+                        end if;
+                    end;
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Access Control enabled. Access to the application and its features are defined by an administrator in the <a href="f?p=&APP_ID.:MANAGE_ACL:&APP_SESSION.:::RP::">Access Control List</a>.
+        }
+        error {
+            errorMessage: Error trying to enable Access Control.
+        }
+        advanced {
+            executionMappingIdentifier: 336766764626415707
+        }
+        serverSideCondition {
+            type: request=Value
+            value: APPLY_CHANGES_AC_ENABLED
+        }
+    )
+
+    process access-control-unchanged (
+        name: ACCESS CONTROL UNCHANGED
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    eba_sales_acl_api.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_ENABLED',
+                        p_preference_value => :P151_AC_ENABLED);
+                    eba_sales_acl_api.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_SCOPE',
+                        p_preference_value => (case 
+                                                   when :P151_AC_ENABLED = 'Y' then :P151_ACCESS_CONTROL_SCOPE
+                                                   else 'ACL_ONLY' 
+                                               end) );
+                end;
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Access Control Configuration saved.
+        }
+        error {
+            errorMessage: Error trying to save Access Control Configuration.
+        }
+        advanced {
+            executionMappingIdentifier: 336767542967415708
+        }
+        serverSideCondition {
+            type: request=Value
+            value: APPLY_CHANGES_AC_UNCHANGED
+        }
+    )
+
+    process set-username-format (
+        name: Set Username Format
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_sales_acl_api.set_preference_value (
+                    p_preference_name  => 'USERNAME_FORMAT',
+                    p_preference_value => case nvl(:P151_USERNAME_FORMAT,'N') 
+                                            when 'Y' then 'EMAIL'
+                                            when 'N' then 'STRING' 
+                                          end);
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 336766321588415706
+        }
+    )
+
+    branch (
+        name: Back to Admin
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 33
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

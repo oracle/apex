@@ -1,0 +1,1092 @@
+page 100 (
+    name: Getting Started
+    alias: GETTING-STARTED
+    title: Getting Started
+    appearance {
+        pageTemplate: @/minimal-no-navigation
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .step-container { max-width: 1168px; margin: 1.6rem auto }
+            .step-container .t-HeroRegion:not(.t-HeroRegion--featured) .t-HeroRegion-wrap { padding: 0 }
+            .t-Alert--info .t-Alert-icon { vertical-align: top }
+            .t-Alert--horizontal .t-Alert-title { line-height: 2.8rem }
+            .content-well { background: rgba(0, 0, 0, .05); border-radius: 2px; padding: 1.6rem }
+            .users-table .t-Report-report thead { display: none }
+            .users-table .t-Report-cell { padding: 0.8rem 0; font-size: 1.4rem; line-height: 1.5 }
+            .cta-button {padding: 16px 32px; font-size: 16px;}
+            .t-Card-info {
+              margin-top: 0;
+            }
+            
+            .t-Card-desc {
+              display: none;
+            }
+            
+            .t-Card-title {
+              font-weight: 400;
+            }
+            .apex-item-yes-no {white-space:pre;}
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: Use this items on this page to configure the app.
+    }
+
+    region button-oci (
+        name: Button OCI
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @introduction-wizard-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+            cssClasses: step-container
+        }
+    )
+
+    region button-openai (
+        name: Button OPENAI
+        type: staticContent
+        layout {
+            sequence: 70
+            parentRegion: @introduction-wizard-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+            cssClasses: step-container
+        }
+    )
+
+    region enter-oci-web-credentials (
+        name: Enter OCI Web Credentials
+        title: Enter Web Credentials
+        type: staticContent
+        source {
+            htmlCode: <p>Enter the OCI credentials you would like to use for this application.</p>
+        }
+        layout {
+            sequence: 40
+            parentRegion: @introduction-wizard-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-2
+            renderComponents: belowContent
+        }
+    )
+
+    region enter-openai-web-credentials (
+        name: Enter OpenAI Web Credentials
+        title: Enter Web Credentials
+        type: staticContent
+        source {
+            htmlCode: <p>Enter the OpenAI API key you would like to use for this application.</p>
+        }
+        layout {
+            sequence: 50
+            parentRegion: @introduction-wizard-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-2
+            renderComponents: belowContent
+        }
+    )
+
+    region introduction-wizard (
+        name: Introduction Wizard
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @introduction-wizard-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: step-container
+        }
+    )
+
+    region introduction-wizard-container (
+        name: Introduction Wizard Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: sys.dbms_db_version.version >= 23
+        }
+    )
+
+    region select-provider (
+        name: Select Provider
+        title: Select AI Provider
+        type: staticContent
+        source {
+            htmlCode: <p>Select an AI provider you want to use for generating data and creating vector embeddings.</p>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @introduction-wizard-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-1
+            renderComponents: belowContent
+        }
+    )
+
+    region unsupported-database-version (
+        name: Unsupported Database Version
+        type: staticContent
+        source {
+            htmlCode: <p>This app showcases Vector Search in <strong>Oracle Database 23ai</strong> and is not compatible with earlier versions of the database. <a href="https://www.oracle.com/database/ai-vector-search/" target="_blank">Learn more about Oracle AI Vector Search</a></p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+            cssClasses: u-tC
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: sys.dbms_db_version.version < 23
+        }
+    )
+
+    region web-credentials (
+        name: Web Credentials
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @enter-oci-web-credentials
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--hiddenOverflow
+            ]
+        }
+    )
+
+    region welcome-to-sample-vector-search (
+        name: Welcome to Sample Vector Search
+        type: staticContent
+        source {
+            htmlCode: Please take a moment to complete this first time setup.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @introduction-wizard
+            slot: subRegions
+        }
+        appearance {
+            template: @/hero
+            templateOptions: t-HeroRegion--noPadding
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    pageItem P100_AI_PROVIDER (
+        type: radioGroup
+        label {
+            label: AI Provider
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:OCI Generative AI;OCI,Open AI;OPENAI
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @select-provider
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: item
+            item: CURRENT_AI_PROVIDER
+        }
+    )
+
+    pageItem P100_OCI_COMPARTMENT_ID (
+        type: textField
+        label {
+            label: Compartment ID
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @enter-oci-web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        help {
+            helpText: The Oracle Cloud Infrastructure Compartment ID
+        }
+    )
+
+    pageItem P100_OCI_FINGERPRINT (
+        type: textField
+        label {
+            label: OCI Public Key Fingerprint
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        help {
+            helpText: <p>Enter the <em>public RSA key fingerprint</em> for OCI authentication. </p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>
+        }
+    )
+
+    pageItem P100_OCI_PRIVATE_KEY (
+        type: textarea
+        label {
+            label: OCI Private Key
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        sessionState {
+            storage: request
+        }
+        help {
+            helpText: <p>Enter the private key in PEM format for OCI authentication. &PRODUCT_NAME. stores this information encrypted and secure, so it cannot be retrieved back in clear text.</p><p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>
+        }
+    )
+
+    pageItem P100_OCI_REGION (
+        type: textField
+        label {
+            label: Region
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @enter-oci-web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        default {
+            type: static
+            staticValue: us-chicago-1
+        }
+        quickPicks {
+            type: static
+            label1: US Midwest (Chicago)
+            value1: us-chicago-1
+            label2: US East (Ashburn)
+            value2: us-ashburn-1
+            label3: US West (Phoenix)
+            value3: us-phoenix-1
+            label4: Germany Central (Frankfurt)
+            value4: eu-frankfurt-1
+            label5: UK South (London)
+            value5: uk-london-1
+        }
+        help {
+            helpText: The Oracle Cloud Infrastructure Region. The default is us-chicago-1
+        }
+    )
+
+    pageItem P100_OCI_TENANCY_ID (
+        type: textField
+        label {
+            label: OCI Tenancy ID
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        help {
+            helpText:
+                ```html
+                <p>Enter the Oracle Cloud Infrastructure <em>Tenancy's OCID</em>.</p>
+                <p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>
+                ```
+        }
+    )
+
+    pageItem P100_OCI_USER_ID (
+        type: textField
+        label {
+            label: OCI User ID
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+            ]
+            width: 80
+        }
+        help {
+            helpText: <p>Enter the Oracle Cloud Infrastructure <em>User OCID</em>. &PRODUCT_NAME. does not store this information encrypted.</p> <p><a rel="noopener noreferrer" target="_blank" href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/apisigningkey.htm">Oracle Cloud Infrastructure Documentation</a></p>
+        }
+    )
+
+    pageItem P100_OCI_WEB_CRED_HEADER (
+        type: displayOnly
+        label {
+            label: Web Credential
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: staticValue
+            staticValue: OCI Credentials
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Denotes the name of the Web Credential which is used for accessing the <strong>OCI Generative AI</strong>. Navigate to <strong>Workspace Utilities</strong>, <strong>Web Credential</strong> to review existing Web Credentials.
+        }
+    )
+
+    pageItem P100_OPENAI_API_KEY (
+        type: password
+        label {
+            label: OpenAI API Key
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @enter-openai-web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        sessionState {
+            storage: request
+        }
+        help {
+            helpText:
+                ```html
+                <p>Enter the <em>API Key</em> to authenticate against the AI Provider.</p>
+                <p>Example: "sk-pr..."</p>
+                ```
+        }
+    )
+
+    pageItem P100_OPENAI_WEB_CRED_HEADER (
+        type: displayOnly
+        label {
+            label: Web Credential
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @enter-openai-web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: staticValue
+            staticValue: OpenAI Credentials
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Denotes the name of the Web Credential which is used for accessing the <strong>OpenAI Generative AI</strong>. Navigate to <strong>Workspace Utilities</strong>, <strong>Web Credential</strong> to review existing Web Credentials.
+        }
+    )
+
+    pageItem P100_SHOW_WEB_CREDENTIALS (
+        type: switch
+        label {
+            label: Edit Web Credentials
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @enter-oci-web-credentials
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText:
+                ```html
+                <p>Use the <em>Edit Web Credentials</em> switch to manage your OCI Web Credentials.</p>
+                <p>Disabling the switch allows you to only edit the <em>Compartment ID</em> after successfully entering the web credentials for the first time.</p>
+                ```
+        }
+    )
+
+    button complete-oci (
+        buttonName: COMPLETE_OCI
+        label: Complete Setup
+        layout {
+            sequence: 10
+            region: @button-oci
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            cssClasses: cta-button
+            icon: fa-check-circle
+        }
+        behavior {
+            showProcessing: true
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button complete-openai (
+        buttonName: COMPLETE_OPENAI
+        label: Complete Setup
+        layout {
+            sequence: 10
+            region: @button-openai
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            cssClasses: cta-button
+            icon: fa-check-circle
+        }
+        behavior {
+            showProcessing: true
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction change-ai-provider (
+        name: Change AI Provider
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P100_AI_PROVIDER
+        }
+
+        action hide-complete-button-oci (
+            name: Hide Complete Button OCI
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @button-oci
+            }
+            execution {
+                sequence: 40
+            }
+        )
+
+        action hide-complete-button-openai (
+            name: Hide Complete Button OPENAI
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @button-openai
+            }
+            execution {
+                sequence: 50
+            }
+        )
+
+        action hide-oci-web-credentials (
+            name: Hide OCI Web Credentials
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @enter-oci-web-credentials
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action hide-openai-web-credentials (
+            name: Hide OpenAI Web Credentials
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @enter-openai-web-credentials
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    apex_app_setting.set_value('AI_PROVIDER', :P100_AI_PROVIDER);
+                    :CURRENT_AI_PROVIDER := :P100_AI_PROVIDER;
+                    ```
+                itemsToSubmit: P100_AI_PROVIDER
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action show-complete-button-oci (
+            name: Show Complete Button OCI
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @button-oci
+            }
+            execution {
+                sequence: 80
+            }
+            clientSideCondition {
+                type: item=value
+                item: P100_AI_PROVIDER
+                value: OCI
+            }
+        )
+
+        action show-complete-button-openai (
+            name: Show Complete Button OpenAI
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @button-openai
+            }
+            execution {
+                sequence: 90
+            }
+            clientSideCondition {
+                type: item=value
+                item: P100_AI_PROVIDER
+                value: OPENAI
+            }
+        )
+
+        action show-oci-web-credentials (
+            name: Show OCI Web Credentials
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @enter-oci-web-credentials
+            }
+            execution {
+                sequence: 60
+            }
+            clientSideCondition {
+                type: item=value
+                item: P100_AI_PROVIDER
+                value: OCI
+            }
+        )
+
+        action show-openai-web-credentials (
+            name: Show OpenAI Web Credentials
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @enter-openai-web-credentials
+            }
+            execution {
+                sequence: 70
+            }
+            clientSideCondition {
+                type: item=value
+                item: P100_AI_PROVIDER
+                value: OPENAI
+            }
+        )
+
+    )
+
+    dynamicAction toggle-switch-visibility (
+        name: Toggle Switch Visibility
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P100_SHOW_WEB_CREDENTIALS
+        }
+        clientSideCondition {
+            type: item=value
+            item: P100_SHOW_WEB_CREDENTIALS
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @web-credentials
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @web-credentials
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation p100-oci-compartment-id-not-null (
+        name: P100_OCI_COMPARTMENT_ID not null
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P100_OCI_COMPARTMENT_ID
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P100_OCI_COMPARTMENT_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-oci
+        }
+    )
+
+    validation p100-oci-fingerprint-not-null (
+        name: P100_OCI_FINGERPRINT not null
+        execution {
+            sequence: 70
+        }
+        validation {
+            type: itemIsNotNull
+            item: P100_OCI_FINGERPRINT
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P100_OCI_FINGERPRINT
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-oci
+            type: item=value
+            item: P100_SHOW_WEB_CREDENTIALS
+            value: Y
+        }
+    )
+
+    validation p100-oci-private-key-not-null (
+        name: P100_OCI_PRIVATE_KEY not null
+        execution {
+            sequence: 50
+        }
+        validation {
+            type: itemIsNotNull
+            item: P100_OCI_PRIVATE_KEY
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P100_OCI_PRIVATE_KEY
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-oci
+            type: item=value
+            item: P100_SHOW_WEB_CREDENTIALS
+            value: Y
+        }
+    )
+
+    validation p100-oci-region-not-null (
+        name: P100_OCI_REGION not null
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P100_OCI_REGION
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P100_OCI_REGION
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-oci
+        }
+    )
+
+    validation p100-oci-tenancy-id-not-null (
+        name: P100_OCI_TENANCY_ID not null
+        execution {
+            sequence: 60
+        }
+        validation {
+            type: itemIsNotNull
+            item: P100_OCI_TENANCY_ID
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P100_OCI_TENANCY_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-oci
+            type: item=value
+            item: P100_SHOW_WEB_CREDENTIALS
+            value: Y
+        }
+    )
+
+    validation p100-oci-user-id-not-null (
+        name: P100_OCI_USER_ID not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P100_OCI_USER_ID
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P100_OCI_USER_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-oci
+            type: item=value
+            item: P100_SHOW_WEB_CREDENTIALS
+            value: Y
+        }
+    )
+
+    validation p100-openai-api-key-not-null (
+        name: P100_OPENAI_API_KEY not null
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: itemIsNotNull
+            item: P100_OPENAI_API_KEY
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P100_OPENAI_API_KEY
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-openai
+        }
+    )
+
+    process complete-oci (
+        name: Complete OCI
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_vector    vector;
+                    l_response  clob;
+                begin
+                     
+                    apex_application_admin.set_remote_server(
+                        p_static_id              => 'EBA_GENAI_OCI',
+                        p_base_url               => 'https://inference.generativeai.' || :P100_OCI_REGION || '.oci.oraclecloud.com', 
+                        p_ai_model_name          => 'cohere.command-r-08-2024',
+                        p_ai_attributes          => '{"compartmentId":"' || apex_escape.json(:P100_OCI_COMPARTMENT_ID) || '","servingMode":{"modelId":"cohere.command-r-08-2024","servingType":"ON_DEMAND"}}' 
+                    );
+                    apex_application_admin.set_remote_server(
+                        p_static_id              => 'EBA_VECTOR_OCI',
+                        p_base_url               => 'https://inference.generativeai.' || :P100_OCI_REGION || '.oci.oraclecloud.com', 
+                        p_ai_model_name          => 'cohere.embed-english-v3.0',
+                        p_ai_attributes          => '{"compartmentId":"' || apex_escape.json(:P100_OCI_COMPARTMENT_ID) || '","servingMode":{"modelId":"cohere.embed-english-v3.0","servingType":"ON_DEMAND"}}'
+                    );
+                    
+                    
+                    if :P100_SHOW_WEB_CREDENTIALS = 'Y' then
+                        apex_credential.set_persistent_credentials (
+                            p_credential_static_id  =>  'EBA_CREDENTIALS_OCI',
+                            p_client_id             =>  :P100_OCI_USER_ID,
+                            p_client_secret         =>  :P100_OCI_PRIVATE_KEY,
+                            p_namespace             =>  :P100_OCI_TENANCY_ID,
+                            p_fingerprint           =>  :P100_OCI_FINGERPRINT
+                        );
+                
+                        :P100_OCI_PRIVATE_KEY := ' ';
+                    end if;
+                    
+                
+                    -- Test AI Provider
+                    l_vector := apex_ai.get_vector_embeddings(
+                        p_value             => 'apex',
+                        p_service_static_id => case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_VECTOR_OCI' else 'EBA_VECTOR_OPENAI' end
+                    );
+                
+                    l_response := apex_ai.generate(
+                        p_prompt            =>  'apex',
+                        p_system_prompt     =>  'test',
+                        p_service_static_id =>  case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_GENAI_OCI' else 'EBA_GENAI_OPENAI' end
+                    );
+                
+                
+                    -- To turn the switch off by default from now on, since the web credentials have been entered successfully.
+                    if :P100_SHOW_WEB_CREDENTIALS = 'Y' then
+                        apex_app_setting.set_value('WC_STATUS', 'ENTERED');
+                    end if;
+                
+                    -- To Complete Setup
+                    :INITIALIZED_AI_PROVIDER := 'YES';
+                    apex_app_setting.set_value('AI_PROVIDER_INITIALIZED' ,'YES');
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 90
+        }
+        successMessage {
+            successMessage: Success: Web credentials verified successfully.
+        }
+        error {
+            errorMessage: Invalid web credentials: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 7713632804735014
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-oci
+        }
+    )
+
+    process complete-open-ai (
+        name: Complete Open AI
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_vector    vector;
+                    l_response  clob;
+                begin
+                     
+                    apex_credential.set_persistent_credentials(
+                        p_credential_static_id   => 'EBA_CREDENTIALS_OPENAI',
+                        p_key                    => 'Authorization',
+                        p_value                  => 'Bearer ' || :P100_OPENAI_API_KEY );
+                    
+                
+                
+                
+                    -- Test AI Provider
+                    l_vector := apex_ai.get_vector_embeddings(
+                        p_value             => 'apex',
+                        p_service_static_id => case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_VECTOR_OCI' else 'EBA_VECTOR_OPENAI' end
+                    );
+                
+                    l_response := apex_ai.generate(
+                        p_prompt            =>  'apex',
+                        p_system_prompt     =>  'test',
+                        p_service_static_id =>  case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_GENAI_OCI' else 'EBA_GENAI_OPENAI' end
+                    );
+                
+                
+                
+                    
+                    -- To Complete Setup
+                    :INITIALIZED_AI_PROVIDER := 'YES';
+                    apex_app_setting.set_value('AI_PROVIDER_INITIALIZED' ,'YES');
+                    
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 100
+        }
+        successMessage {
+            successMessage: Success: Web credentials verified successfully.
+        }
+        error {
+            errorMessage: Invalid web credentials: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 11528234420693128
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-openai
+        }
+    )
+
+    branch (
+        name: Go to Home Page
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 1
+            }
+        }
+        serverSideCondition {
+            type: item=value
+            item: INITIALIZED_AI_PROVIDER
+            value: YES
+        }
+    )
+
+)
+

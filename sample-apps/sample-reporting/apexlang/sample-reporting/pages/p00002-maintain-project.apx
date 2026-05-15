@@ -1,0 +1,551 @@
+page 2 (
+    name: Maintain Project
+    alias: MAINTAIN-PROJECT
+    title: Maintain Project
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        height: 500
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: wizardButtons
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region maintain-project (
+        name: Maintain Project
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    pageItem P2_ASSIGNED_TO (
+        type: textField
+        label {
+            label: Assigned To
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 90
+            region: @maintain-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ASSIGNED_TO
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_BUDGET (
+        type: numberField
+        label {
+            label: Budget
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 110
+            region: @maintain-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: BUDGET
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_COST (
+        type: numberField
+        label {
+            label: Cost
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 100
+            region: @maintain-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COST
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_END_DATE (
+        type: datePicker
+        label {
+            label: End Date
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @maintain-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: END_DATE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @maintain-project
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_PROJECT (
+        type: selectList
+        label {
+            label: Project
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select distinct project d, project r
+                from eba_demo_ir_projects
+                order by 1
+                ```
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @maintain-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PROJECT
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_ROWID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @maintain-project
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ROWID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_START_DATE (
+        type: datePicker
+        label {
+            label: Start Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @maintain-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: START_DATE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_STATUS (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Open;Open,Closed;Closed
+        }
+        layout {
+            sequence: 80
+            region: @maintain-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STATUS
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_TASK_NAME (
+        type: textField
+        label {
+            label: Task Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 50
+            region: @maintain-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TASK_NAME
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P2_ROWID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_ROWID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_ROWID
+        }
+    )
+
+    dynamicAction cancel-modal (
+        name: Cancel Modal
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-modal (
+        name: Close Modal
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 1625401503046064548
+        }
+    )
+
+    process fetch-row-from-eba-demo-ir-projects (
+        name: Fetch Row from EBA_DEMO_IR_PROJECTS
+        type: autoRowFetch
+        source {
+            tableName: EBA_DEMO_IR_PROJECTS
+            pkColumn: ROWID
+            pkItem: P2_ROWID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 2551540757188499645
+        }
+    )
+
+    process process-row-of-eba-demo-ir-projects (
+        name: Process Row of EBA_DEMO_IR_PROJECTS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_DEMO_IR_PROJECTS
+            pkColumn: ROWID
+            pkItem: P2_ROWID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 2551540964712499646
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 2551541169566499646
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

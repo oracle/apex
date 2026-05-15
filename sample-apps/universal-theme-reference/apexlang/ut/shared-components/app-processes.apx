@@ -1,0 +1,20 @@
+appProcess apply-session-theme-style (
+    name: Apply Session Theme Style
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            apex_theme.set_session_style (
+                p_id => :P0_THEME_STYLE_ID );
+            ```
+    }
+    execution {
+        sequence: 1
+        point: processing
+    }
+    serverSideCondition {
+        type: expression
+        plsqlExpression: :request = 'APPLY_THEME_STYLE' and :P0_THEME_STYLE_ID is not null
+    }
+)
+

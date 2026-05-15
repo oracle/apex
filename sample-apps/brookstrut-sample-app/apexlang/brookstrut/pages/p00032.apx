@@ -1,0 +1,185 @@
+page 32 (
+    name: Table Counts
+    title: Table Counts
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region row-counts (
+        name: Row Counts
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                   to_char((select count(*) from OOW_DEMO_HIST_GEN_LOG),'999G999G999G999G990')    HIST_GEN_LOG,
+                   to_char((select count(*) from OOW_DEMO_ITEMS),'999G999G999G999G990')           ITEMS,
+                   to_char((select count(*) from OOW_DEMO_REGIONS),'999G999G999G999G990')         REGIONS,
+                   to_char((select count(*) from OOW_DEMO_SALES_HISTORY),'999G999G999G999G990')   SALES_HISTORY,
+                   to_char((select count(*) from OOW_DEMO_STORE_PRODUCTS),'999G999G999G999G990')  STORE_PRODUCTS,
+                   to_char((select count(*) from OOW_DEMO_STORES),'999G999G999G999G990')          STORES
+                from dual 
+                ```
+        }
+        layout {
+            sequence: 21
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-BadgeList--large
+                t-BadgeList--dash
+                t-BadgeList--fixed
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column HIST_GEN_LOG (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Hist Gen Log
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column ITEMS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Items
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column REGIONS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Regions
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column SALES_HISTORY (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Sales History
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column STORES (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Stores
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column STORE_PRODUCTS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Store Products
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 19
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

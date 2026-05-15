@@ -1,0 +1,45 @@
+searchConfig search1 (
+    name: Search1
+    source {
+        tableName: EBA_UT_CHART_PROJECTS
+        searchableColumns: [
+            CREATED_BY
+            UPDATED_BY
+            PROJECT
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: PROJECT
+    }
+    iconAndBadge {
+        iconSource: initials
+    }
+)
+
+searchConfig search2 (
+    name: Search2
+    source {
+        tableName: EBA_UT_DEMO_CARDS
+        searchableColumns: [
+            CATEGORY
+            TITLE
+            SUBTITLE
+            BODY
+            SECONDARY_BODY
+            ICON_CLASS
+            BADGE
+            IMAGE_URL
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        descriptionColumn: BODY
+    }
+    iconAndBadge {
+        iconSource: iconClassColumn
+        iconColumn: ICON_CLASS
+    }
+)
+

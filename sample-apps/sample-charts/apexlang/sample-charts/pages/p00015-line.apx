@@ -1,0 +1,1663 @@
+page 15 (
+    name: Line
+    alias: LINE
+    title: Line
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Line charts, using Oracle JET Data Visualizations, are showcased on this page. Line charts are useful for visualizing trends in a set of values over time and comparing these values across series.  This chart type is recommended for visualizing mixed frequency time data.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-line-chart
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region line-chart-data-labels-line-styles (
+        name: Line Chart (Data Labels & Line Styles)
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: lineChart
+            regionDisplaySelector: true
+        }
+        chart {
+            type: line
+        }
+        chartAppearance {
+            stack: true
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDataChange: none
+        }
+        legend {
+            position: top
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                type: curved
+            }
+            marker {
+                show: true
+                shape: plus
+            }
+            label {
+                show: true
+                position: center
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                style: dashed
+                type: stepped
+            }
+            marker {
+                show: true
+                shape: diamond
+            }
+            label {
+                show: true
+                position: belowMarker
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                style: dotted
+                type: centeredStepped
+            }
+            marker {
+                show: true
+                shape: star
+            }
+            label {
+                show: true
+                position: aboveMarker
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: true
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y1 Axis Title
+            minorTicks {
+                show: true
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+    )
+
+    region line-chart-data-labels-line-styles-information (
+        name: Line Chart (Data Labels & Line Styles) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a Line chart with varying line types and styles.<p/>
+                <strong>Maximum Width & Height</strong> - Chart-level attributes Maximum Width and Height have been set to 500px and 450px respectively, to size the chart within its region.  If you wish to default to using 100% width and height of the given region, simply remove these values, and utilitise the Template Options of the region to control the height as you wish.<p/> 
+                <strong>Orientation</strong> - Through the use of Dynamic actions, use the Horizontal/Vertical button to the top left of the chart to change the orientiation of the data items on the charts.<p/>
+                <strong>Chart Type</strong> - Through the use of Dynamic actions, use the Bar/Area/Line/Line with Area/Combo buttons to the top right of the chart to change the type of the chart.<p/>
+                <strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>
+                <strong>Marker</strong> - Use the series-level attribute to define various markers to the data items rendered on the chart.<p/>
+                <strong>Label Position</strong> - Use this series-level attribute to control the positioning of the labels on data items of the chart.<p/>
+                For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=dataLabels" target="_blank">Line Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=lineTypes" target="_blank">Line Chart: Line Types</a> examples.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @line-chart-data-labels-line-styles
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region line-chart-declarative-font-formatting (
+        name: Line Chart ( Declarative Font Formatting )
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: lineChartAxes
+            regionDisplaySelector: true
+        }
+        chart {
+            type: line
+        }
+        chartAppearance {
+            stack: true
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDataChange: none
+        }
+        legend {
+            position: top
+            fontFamily: trebuchetMs
+            fontStyle: italic
+            fontSize: 12
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                type: curved
+            }
+            marker {
+                show: true
+                shape: plus
+            }
+            label {
+                show: true
+                position: center
+                fontFamily: comicSansMs
+                fontColor: #3966ED
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                style: dashed
+                type: stepped
+            }
+            marker {
+                show: true
+                shape: diamond
+            }
+            label {
+                show: true
+                position: belowMarker
+                fontFamily: comicSansMs
+                fontColor: #8A3232
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                style: dotted
+                type: centeredStepped
+            }
+            marker {
+                show: true
+                shape: star
+            }
+            label {
+                show: true
+                position: aboveMarker
+                fontFamily: comicSansMs
+                fontColor: #FA1238
+            }
+        )
+
+        axis x (
+            name: x
+            title: X-Axis Title
+            title {
+                fontFamily: comicSansMs
+                fontStyle: normal
+                fontSize: 16
+                fontColor: #F544F5
+            }
+            minorTicks {
+                show: true
+            }
+            tickLabel {
+                fontFamily: courier
+                fontStyle: normal
+                fontColor: #2323EB
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y1 Axis Title
+            title {
+                fontFamily: times
+                fontStyle: italic
+                fontSize: 14
+                fontColor: GREEN
+            }
+            minorTicks {
+                show: true
+            }
+            tickLabel {
+                fontFamily: helvetica
+                fontStyle: oblique
+                fontSize: 14
+                fontColor: #F59D5A
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+    )
+
+    region line-chart-declarative-font-formatting-information (
+        name: Line Chart ( Declarative Font Formatting ) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a Line chart with font formatting applied to the axes, values, and legend text, declaratively.<p/><p/>
+                <strong>X-Axis Title</strong> - The axis-level Title attributes Font Family, Font Style, Font Size and Font Color have been set to style the x-axis title to use the font Comic Sans MS, the font style Normal, the font size 16px, and the font color #F544F5.<br/> 
+                <strong>X-Axis Tick Labels</strong> - The axis-level Tick Label attributes Font Family, Font Style, and Font Color have been set to style the x-axis labels to use the font Courier, the font style Normal, and the font color #2323EB.<p/> 
+                <strong>Y-Axis Title</strong> - The axis-level Title attributes Font Family, Font Style, Font Size and Font Color have been set to style the y-axis title to use the font Times, the font style Italic, the font size 14px, and the font color green.<br/> 
+                <strong>Y-Axis Tick Labels</strong> - The axis-level Tick Label attributes Font Family, Font Style, and Font Color have been set to style the y-axis labels to use the font Helvetica, the font style Oblique, the font size 14px, and the font color #F59D5A.<p/>
+                <strong>Legend Text</strong> - The chart-level Legend attributes Font Family, Font Style, and Font Color have been set to style the Legend text to use the font Trebuchet MS, the font style Italic, and the font size 12px.<p/>
+                <strong>Store A Series</strong> - The series-level Label attributes Font Family and Font Color have been set to style the values of the series using the font Comic Sans MS, and the font color to #FA1238.<br/>
+                <strong>Acme Series</strong> - The series-level Label attributes Font Family and Font Color have been set to style the values of the series using the font Comic Sans MS, and the font color to #3966ED.<br/>
+                <strong>Shop C Series</strong> - The series-level Label attributes Font Family and Font Color have been set to style the values of the series using the font Comic Sans MS, and the font color to #8A3232.<p/>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @line-chart-declarative-font-formatting
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region line-chart-reference-object-via-javascript-customizations (
+        name: Line Chart (Reference Object via JavaScript Customizations)
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: line
+        }
+        chartLayout {
+            maxWidth: 500
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDataChange: none
+        }
+        legend {
+            position: top
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ) {
+                
+                    // Define Reference Object line on Y Axis of chart
+                    var constantLineY = [ {text:"Reference Object", type: "line", value: 50, color: "#A0CEEC", displayInLegend: "on", lineWidth: 3, location: "back", lineStyle: "dashed", shortDesc: "Sample Reference Line"}];
+                    options.yAxis.referenceObjects = constantLineY;
+                    return options;
+                }
+                ```
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                type: curved
+            }
+            marker {
+                show: true
+                shape: plus
+            }
+            label {
+                show: true
+                position: center
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                style: dashed
+                type: stepped
+            }
+            marker {
+                show: true
+                shape: diamond
+            }
+            label {
+                show: true
+                position: belowMarker
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                style: dotted
+                type: centeredStepped
+            }
+            marker {
+                show: true
+                shape: star
+            }
+            label {
+                show: true
+                position: aboveMarker
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: true
+            }
+        )
+
+        axis y (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+        axis y-2 (
+            name: y
+            title: Y1 Axis Title
+            value {
+                step: 1
+            }
+            majorTicks {
+                minStep: 1
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region line-chart-reference-object-via-javascript-information (
+        name: Line Chart (Reference Object via JavaScript) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates how to customize a Line chart to apply a Reference Object, via JavaScript code customizations.<p/>
+                
+                <strong>JavaScript Code</strong> - Use this chart-level attribute to customize your chart attributes and data.  Any chart initialization changes, to attributes such as the chart y-axis, type, or orientation, can also be made.  The JavaScript Code should follow a template similar to the following:<br/>
+                
+                <pre>
+                function( options ) {
+                
+                    // Define Reference Object line on Y Axis of chart
+                    var constantLineY = [ {text:"Reference Object", type: "line", value: 50, color: "#A0CEEC", displayInLegend: "on", lineWidth: 3, location: "back", lineStyle: "dashed", shortDesc: "Sample Reference Line"}];
+                    
+                    // Set the referenceObjects option as part of the chart initialization
+                    options.yAxis.referenceObjects = constantLineY;
+                    
+                    return options;
+                }
+                </pre><p/>
+                
+                <p>
+                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.
+                </p>
+                <p>
+                For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=lineChart&demo=refObject" target="_blank">Line Chart: Reference Objects</a> example.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @line-chart-reference-object-via-javascript-customizations
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region line-chart-show-hide-labels-via-dynamic-action (
+        name: Line Chart ( Show/Hide Labels via Dynamic Action )
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: lineChartLabels
+            regionDisplaySelector: true
+        }
+        chart {
+            type: line
+        }
+        chartAppearance {
+            stack: true
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDataChange: none
+        }
+        legend {
+            position: top
+            fontFamily: trebuchetMs
+            fontStyle: italic
+            fontSize: 12
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                type: curved
+            }
+            marker {
+                show: true
+                shape: plus
+            }
+            label {
+                show: true
+                position: center
+                fontFamily: comicSansMs
+                fontColor: #3966ED
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                style: dashed
+                type: stepped
+            }
+            marker {
+                show: true
+                shape: diamond
+            }
+            label {
+                show: true
+                position: belowMarker
+                fontFamily: comicSansMs
+                fontColor: #8A3232
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            line {
+                style: dotted
+                type: centeredStepped
+            }
+            marker {
+                show: true
+                shape: star
+            }
+            label {
+                show: true
+                position: aboveMarker
+                fontFamily: comicSansMs
+                fontColor: #FA1238
+            }
+        )
+
+        axis x (
+            name: x
+            title: X-Axis Title
+            minorTicks {
+                show: true
+            }
+            tickLabel {
+                fontFamily: courier
+                fontStyle: normal
+                fontColor: #2323EB
+            }
+        )
+
+        axis y (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+        axis y-2 (
+            name: y
+            title: Y1 Axis Title
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: true
+            }
+            tickLabel {
+                fontFamily: helvetica
+                fontStyle: oblique
+                fontSize: 14
+                fontColor: #F59D5A
+            }
+        )
+
+    )
+
+    region line-chart-show-hide-labels-via-dynamic-action-information (
+        name: Line Chart ( Show/Hide Labels via Dynamic Action ) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a Line chart with two buttons on the region, allowing the user to show or hide the data labels on the chart, via Dynamic Actions.<p/><p/>
+                <strong>Hide Labels button</strong> - Use the following JavaScript code in a dynamic action triggered by the Click action of this button:<br/>
+                
+                <pre>
+                // Retrieve the series array from the chart - using the 'option' API
+                var series = apex.region("lineChartLabels").call( "option", "series" );
+                
+                // Set the labelPosition property for the series items
+                for ( i = 0; i < series.length; i++ ) {
+                    for ( j = 0; j < series[ i ].items.length; j++ ) {
+                        series[ i ].items[ j ].labelPosition = "none";    
+                    }
+                }
+                
+                // Invoke the refresh method to update the DOM
+                apex.region("lineChartLabels").widget().ojChart('refresh');
+                </pre><p/>
+                <strong>Show Labels button</strong> - Use the following JavaScript code in a dynamic action triggered by the Click action of this button:<br/>
+                
+                <pre>
+                // Retrieve the series array from the chart - using the 'option' API
+                var series = apex.region("lineChartLabels").call( "option", "series" );
+                
+                // Set the labelPosition property for the series items
+                for ( i = 0; i < series.length; i++ ) {
+                    for ( j = 0; j < series[ i ].items.length; j++ ) {
+                        series[ i ].items[ j ].labelPosition = "aboveMarker";
+                        // Set item[].label attribute to the value to be rendered as the label
+                        series[ i ].items[ j ].label = series[ i ].items[ j ].value;
+                    }
+                }
+                
+                // Invoke the refresh method to update the DOM
+                apex.region("lineChartLabels").widget().ojChart('refresh');
+                </pre><p/>
+                <p>
+                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.
+                </p>
+                <p>
+                For more information on labelPosition settings, refer to the Oracle JET <a href="&OJCHART_ITEM_API_URL.#labelPosition" target="_blank">ojChartItem API</a> example.
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @line-chart-show-hide-labels-via-dynamic-action
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region line-chart-time-axis (
+        name: Line Chart (Time Axis)
+        type: chart
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: line_chart
+            regionDisplaySelector: true
+        }
+        chart {
+            type: line
+        }
+        chartLayout {
+            height: 420
+        }
+        dataCursor {
+            cursor: true
+            behavior: smooth
+        }
+        settings {
+            timeAxisType: enabled
+            zoomAndScroll: delayed
+            initialZooming: first
+        }
+        overview {
+            show: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series stock-value (
+            name: Stock Value
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT
+                        pricing_date,
+                        closing_val,
+                        stock_code
+                    FROM
+                        EBA_DEMO_CHART_STOCKS
+                    ORDER BY
+                        pricing_date asc
+                    ```
+            }
+            columnMapping {
+                label: PRICING_DATE
+                value: CLOSING_VAL
+            }
+            marker {
+                show: false
+            }
+        )
+
+        axis x (
+            name: x
+            value {
+                format: datetimeFull
+                formatScaling: none
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 2
+                step: 50
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region line-chart-time-axis-information (
+        name: Line Chart (Time Axis) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a Line chart with a time axis, and numeric and date formatting.<p/>
+                <strong>Maximum Width & Height</strong> - Chart-level attributes Maximum Width and Height have been set to 500px and 450px respectively, to size the chart within its region.  If you wish to default to using 100% width and height of the given region, simply remove these values, and utilitise the Template Options of the region to control the height as you wish.<p/> 
+                <strong>Initial Zooming</strong> - Use the chart-level attribute to set the initial zooming behavior of the chart, to focus initial attention on a specific section of the chart.  The setting for this example is <strong>First</strong>, to initially zoom to the first data points on the chart.<p/>
+                <strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>
+                <strong>Format</strong> - Use the axis-level attribute to define currency formatting on the y-axis, and date formatting on the x-axis. New in APEX 18.1 is the ability to leave the <strong>Currency</strong> property empty, to allow for the currency symbol to be automatically derived from the application language. <p/>
+                For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank">Chart: Time Axis</a> example. For additional examples of time axis settings, refer to the <a href="f?p=&APP_ID.:25:&APP_SESSION.">Combination</a> examples.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @line-chart-time-axis
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    button area (
+        buttonName: Area
+        label: Area
+        layout {
+            sequence: 20
+            region: @line-chart-data-labels-line-styles
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-area-chart
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button bar (
+        buttonName: Bar
+        label: Bar
+        layout {
+            sequence: 10
+            region: @line-chart-data-labels-line-styles
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-bar-chart
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button combo (
+        buttonName: Combo
+        label: Combo
+        layout {
+            sequence: 50
+            region: @line-chart-data-labels-line-styles
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-combo-chart
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button hidelabels (
+        buttonName: HideLabels
+        label: Hide Labels
+        layout {
+            sequence: 10
+            region: @line-chart-show-hide-labels-via-dynamic-action
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button horizontal (
+        buttonName: Horizontal
+        label: Horizontal
+        layout {
+            sequence: 60
+            region: @line-chart-data-labels-line-styles
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-bar-chart-horizontal
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button line (
+        buttonName: Line
+        label: Line
+        layout {
+            sequence: 30
+            region: @line-chart-data-labels-line-styles
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-line-chart
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button linewitharea (
+        buttonName: LineWithArea
+        label: Line with Area
+        layout {
+            sequence: 40
+            region: @line-chart-data-labels-line-styles
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-line-area-chart
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset Zoom
+        layout {
+            sequence: 10
+            region: @line-chart-time-axis
+            slot: top
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button showlabels (
+        buttonName: ShowLabels
+        label: Show Labels
+        layout {
+            sequence: 20
+            region: @line-chart-show-hide-labels-via-dynamic-action
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button vertical (
+        buttonName: Vertical
+        label: Vertical
+        layout {
+            sequence: 70
+            region: @line-chart-data-labels-line-styles
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-line-area-chart
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction area (
+        name: Area
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @area
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("lineChart").widget().ojChart({type: 'area'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @line-chart-data-labels-line-styles
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction bar (
+        name: Bar
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @bar
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("lineChart").widget().ojChart({type: 'bar'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @line-chart-data-labels-line-styles
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction combo (
+        name: Combo
+        execution {
+            sequence: 80
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @combo
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("lineChart").widget().ojChart({type: 'combo'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @line-chart-data-labels-line-styles
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction hide-data-labels (
+        name: Hide Data Labels
+        execution {
+            sequence: 100
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @hidelabels
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // Retrieve the series array from the chart - using the 'option' API
+                    var series = apex.region("lineChartLabels").call( "option", "series" );
+                    
+                    // Set the labelPosition property for the series items
+                    for ( i = 0; i < series.length; i++ ) {
+                        for ( j = 0; j < series[ i ].items.length; j++ ) {
+                            series[ i ].items[ j ].labelPosition = "none";    
+                        }
+                    }
+                    
+                    // Invoke the refresh method to update the DOM
+                    apex.region("lineChartLabels").widget().ojChart('refresh');
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction horizontal-orientation (
+        name: Horizontal Orientation
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @horizontal
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("lineChart").widget().ojChart({orientation: 'horizontal'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @line-chart-data-labels-line-styles
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction line (
+        name: Line
+        execution {
+            sequence: 60
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @line
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("lineChart").widget().ojChart({type: 'line'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @line-chart-data-labels-line-styles
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction line-with-area (
+        name: Line with Area
+        execution {
+            sequence: 70
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @linewitharea
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("lineChart").widget().ojChart({type: 'lineWithArea'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @line-chart-data-labels-line-styles
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction reset-zoom (
+        name: Reset Zoom
+        execution {
+            sequence: 90
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @reset
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // Retrieve current xAxis settings
+                    var l_xAxis = apex.region( "line_chart" ).widget().ojChart( 'option', 'xAxis' );
+                    
+                    // Reset viewport
+                    apex.region( "line_chart" ).widget().ojChart({
+                        
+                        // Clear viewportMin and viewportMax settings on xAxis
+                        xAxis: $.extend( l_xAxis, { viewportMin: null, viewportMax: null } )
+                    
+                    });
+                    
+                    
+                    
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @line-chart-time-axis
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-data-labels (
+        name: Show Data Labels
+        execution {
+            sequence: 110
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @showlabels
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // Retrieve the series array from the chart - using the 'option' API
+                    var series = apex.region("lineChartLabels").call( "option", "series" );
+                    
+                    // Set the labelPosition property for the series items
+                    for ( i = 0; i < series.length; i++ ) {
+                        for ( j = 0; j < series[ i ].items.length; j++ ) {
+                            series[ i ].items[ j ].labelPosition = "aboveMarker";
+                            // Set item[].label attribute to the value to be rendered as the label
+                            series[ i ].items[ j ].label = series[ i ].items[ j ].value;
+                        }
+                    }
+                    
+                    // Invoke the refresh method to update the DOM
+                    apex.region("lineChartLabels").widget().ojChart('refresh');
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction vertical-orientation (
+        name: Vertical Orientation
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @vertical
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("lineChart").widget().ojChart({orientation: 'vertical'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @line-chart-data-labels-line-styles
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

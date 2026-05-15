@@ -1,0 +1,448 @@
+page 3004 (
+    name: Components - Content Row
+    alias: CONTENT-ROW-COMPONENT
+    title: Content Row - &APP_TITLE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region components-content-row (
+        name: Components - Content Row
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.ID,
+                       t.PROJECT,
+                       t.PARENT_TASK,
+                       t.TASK_NAME,
+                       t.START_DATE,
+                       t.END_DATE,
+                       t.STATUS,
+                       t.ASSIGNED_TO,
+                       p.project as proj_name,
+                       case t.status
+                         when 'Open'    then 'fa-exclamation-circle-o'
+                         when 'Closed'  then 'fa-check-circle u-success-text'
+                         when 'On-Hold' then 'fa-minus-circle u-danger-text'
+                         when 'Pending' then 'fa-exclamation-triangle u-warning-text'
+                       end icon_class
+                  from EBA_UT_CHART_TASKS t,
+                       EBA_UT_CHART_PROJECTS p
+                  where t.project = p.id
+                  order by p.created
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: ContentRowDemo
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: Task
+            title: &TASK_NAME.
+            description: Project: &PROJ_NAME.
+            miscellaneous: &STATUS.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS.
+            shape: noShape
+            size: small
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column ASSIGNED_TO (
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: ASSIGNED_TO
+                dataType: varchar2
+            }
+        )
+
+        column END_DATE (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: END_DATE
+                dataType: date
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column PARENT_TASK (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: PARENT_TASK
+                dataType: number
+            }
+        )
+
+        column PROJECT (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: number
+            }
+        )
+
+        column PROJ_NAME (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: PROJ_NAME
+                dataType: varchar2
+            }
+        )
+
+        column START_DATE (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: START_DATE
+                dataType: date
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        column TASK_NAME (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: TASK_NAME
+                dataType: varchar2
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 30
+                }
+            )
+
+            menu create (
+                label: Create
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+                appearance {
+                    icon: fa-plus
+                }
+            )
+
+            menu delete (
+                label: Delete
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+                appearance {
+                    icon: fa-trash-o
+                }
+            )
+
+            menu duplicate (
+                label: Duplicate
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+                appearance {
+                    icon: fa-clone
+                }
+            )
+
+        )
+
+        action edit (
+            position: primaryActions
+            template: button
+            label: Edit
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                displayType: icon
+                icon: fa-edit
+                hot: true
+            }
+        )
+
+    )
+
+    region configuration (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Content Row<br/>
+                <strong>Template</strong> Blank with Attributes (No Grid)<br/>
+                
+                <h4>Attributes</h4>
+                Each row has a <em>Title, Description, Miscellaneous,</em> and <em>Actions</em><br/>
+                
+                <h4>Avatar</h4>
+                <strong>Type:</strong> Icon<br/>
+                <strong>Icon:</strong> <em>the ICON_CLASS column</em><br/>
+                <strong>Shape:</strong> No Shape<br/>
+                <strong>Size:</strong> Small<br/>
+                
+                <h4>Primary Actions</h4>
+                Two actions are in the <strong>Primary Actions</strong> position for each content row item.<br/>
+                The first action uses the <strong>Button</strong> template, with <em>Display Type</em> set to Icon and the <em>Icon</em> and <em>Hot</em> properties set.<br/>
+                The second action uses the <strong>Menu</strong> template, and has three sub actions: Create, Duplicate, amd Delete.
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: ContentRowDemo
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    <strong>Content Row</strong> is a theme component that is suitable for displaying most types of content. This component features a column for an icon, title and description, miscellaneous attributes, and actions.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query (
+        name: Sample SQL Query
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            regionStaticId: ContentRowDemo
+        }
+    )
+
+)
+

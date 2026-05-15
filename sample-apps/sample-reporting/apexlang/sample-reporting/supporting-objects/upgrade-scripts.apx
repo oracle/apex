@@ -1,0 +1,88 @@
+upgradeScript "Create Dept Table" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-dept-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select table_name
+            from user_tables
+            where table_name = 'EBA_DEMO_IR_DEPT'
+            ```
+    }
+)
+
+upgradeScript "Create Emp Table" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: create-emp-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select table_name
+            from user_tables
+            where table_name = 'EBA_DEMO_IR_EMP'
+            ```
+    }
+)
+
+upgradeScript "Drop old objects" (
+    execution {
+        sequence: 59
+    }
+    script {
+        contentFile: drop-old-objects.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery:
+            ```sql
+            select object_name
+            from user_objects
+            where object_type = 'PACKAGE'
+                and object_name in ( 'EBA_DEMO_IR_FILTER_FW', 'EBA_DEMO_IR_FILTER2_FW' )
+            union all
+            select object_name
+            from user_objects
+            where object_type = 'TYPE'
+                and object_name in ( 'EBA_DEMO_IR_ACTIVE_FILTERS_TBL', 'EBA_DEMO_IR_FILTER_COL_TBL',
+                                    'EBA_DEMO_IR_FILTER_COLUMN_T', 'EBA_DEMO_IR_ACTIVE_FILTERS_T' )
+            ```
+    }
+)
+
+upgradeScript "Pipelined Function Package" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: pipelined-function-package.sql
+    }
+)
+
+upgradeScript "Refresh Data" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: refresh-data.sql
+    }
+)
+
+upgradeScript "Update Data Script" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: update-data-script.sql
+    }
+)
+

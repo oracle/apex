@@ -1,0 +1,15 @@
+substitution APP_DATETIME_FORMAT (
+)
+
+substitution APP_DATE_FORMAT (
+)
+
+substitution APP_NAME (
+)
+
+substitution APP_TIMESTAMP_FORMAT (
+)
+
+substitution APP_TIME_FORMAT (
+)
+

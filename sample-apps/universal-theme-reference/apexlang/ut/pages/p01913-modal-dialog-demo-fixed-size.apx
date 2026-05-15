@@ -1,0 +1,53 @@
+page 1913 (
+    name: Modal Dialog Demo - Fixed Size
+    alias: MODAL-DIALOG-DEMO-FIXED-SIZE
+    title: Fixed Height Modal Dialog
+    pageGroup: @components
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        height: 400
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This modal dialog has a fixed height of 400px and will not automatically resize to fit its contents.  This type of dialog is useful for wizards where the navigation buttons should remain in a constant position.</p>
+                <p>To set a height for a modal dialog page, simply set the "Height" property for the page in the Property Editor.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

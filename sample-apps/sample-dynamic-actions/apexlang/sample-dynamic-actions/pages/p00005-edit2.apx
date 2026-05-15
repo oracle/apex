@@ -1,0 +1,522 @@
+page 5 (
+    name: Edit
+    alias: EDIT2
+    title: Edit
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page shows how dynamic actions can control hiding and showing page elements, including controlling the item's label if it exists.</p>
+                <p>To achieve this, the page contains 1 dynamic action called 'JOB EQUALS SALESMAN'. This fires when the 'Job' page item changes and checks if the value is equal to 'SALESMAN'. If it is equal to 'SALESMAN', both the 'Hire date' and 'Commission' page items and their associated labels are shown, otherwise they are hidden.</p>
+                <p>It uses 2 native actions ('Show' and 'Hide').</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region maintain-employee (
+        name: Maintain Employee
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P5_COMM (
+        type: numberField
+        label {
+            label: Commission
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 80
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 7
+        }
+        validation {
+            maxLength: 7
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMM
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P5_DEPTNO (
+        type: selectList
+        label {
+            label: Department
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @department
+            displayNullValue: false
+        }
+        layout {
+            sequence: 90
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEPTNO
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P5_EMPNO (
+        type: textField
+        label {
+            label: Employee Number
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 4
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: EMPNO
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P5_ENAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            maxLength: 10
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENAME
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P5_HIREDATE (
+        type: datePicker
+        label {
+            label: Hire date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: HIREDATE
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P5_JOB (
+        type: selectList
+        label {
+            label: Job
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @job
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: JOB
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P5_MGR (
+        type: popupLov
+        label {
+            label: Manager
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sharedComponent
+            lov: @manager
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: MGR
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P5_ROWID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @maintain-employee
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ROWID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P5_SAL (
+        type: numberField
+        label {
+            label: Salary
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 70
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 7
+        }
+        validation {
+            maxLength: 7
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SAL
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P5_ROWID
+        }
+    )
+
+    dynamicAction job-equals-salesman (
+        name: JOB EQUALS SALESMAN
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P5_JOB
+        }
+        clientSideCondition {
+            type: item=value
+            item: P5_JOB
+            value: SALESMAN
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P5_HIREDATE
+                    P5_COMM
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: [
+                    P5_HIREDATE
+                    P5_COMM
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process fetch-row-from-eba-demo-da-emp (
+        name: Fetch Row from EBA_DEMO_DA_EMP
+        type: autoRowFetch
+        source {
+            tableName: EBA_DEMO_DA_EMP
+            pkColumn: ROWID
+            pkItem: P5_ROWID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 2647959836275068342
+        }
+    )
+
+    process process-row-of-eba-demo-da-emp (
+        name: Process Row of EBA_DEMO_DA_EMP
+        type: autoRowProcessing
+        target {
+            tableName: EBA_DEMO_DA_EMP
+            pkColumn: ROWID
+            pkItem: P5_ROWID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 2647960063441068342
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 2647960237472068343
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+)
+

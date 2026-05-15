@@ -1,0 +1,73 @@
+page 9 (
+    name: Activity Calendar
+    alias: ACTIVITY-CALENDAR
+    title: Activity Calendar
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This is a monthly calendar of application activity, reporting distinct users and their total page views by day. Click the <strong><</strong> button to go to the previous month and the <strong>></strong> button to go forward a month. Switch between the calendar view to the list view by clicking the <strong>list</strong> button.
+    }
+
+    region activity-calendar (
+        name: Activity Calendar
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                lower(USERID)||' - '||trim(to_char(count(*),'999G999G999G990'))   "Page Events",
+                trunc(time_stamp) the_day
+                from apex_activity_log l
+                where flow_id = :app_id 
+                and userid is not null 
+                and userid != 'nobody'
+                group by trunc(time_stamp), lower(USERID)
+                ```
+        }
+        layout {
+            sequence: 21
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            displayColumn: "Page Events"
+            startDateColumn: THE_DAY
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+)
+

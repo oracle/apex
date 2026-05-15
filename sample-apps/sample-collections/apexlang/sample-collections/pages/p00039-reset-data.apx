@@ -1,0 +1,136 @@
+page 39 (
+    name: Reset Data
+    alias: RESET-DATA
+    title: Reset Data
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumbs
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region manage-sample-application (
+        name: Manage Sample Application
+        type: staticContent
+        source {
+            htmlCode: <span class="infoTextRegion"><p>Click the reset data button to reset the data to default values.</p></span>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 35
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-data (
+        buttonName: reset_data
+        label: Reset Data
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process reset-data (
+        name: reset data
+        type: executeCode
+        source {
+            plsqlCode: eba_demo_cs_emp_data;
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Data has been reset to default values.
+        }
+        advanced {
+            executionMappingIdentifier: 1318681664518411746
+        }
+    )
+
+    branch (
+        name: go back to admin
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 35
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,141 @@
+customAttribute attribute_01 (
+    apexlangName: action
+    attribute: 1
+    name: Action
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    default {
+        value: add
+    }
+    help {
+        helpText: Specify if you want to <strong>add</strong> or <strong>remove</strong> a timer. If you add a timer with the same name again, the existing one will be removed and created again. If you remove an existing timer, you have to specify a name when you add the timer so that you are able to identify it when you remove it.
+    }
+
+    entry addTimer (
+        sequence: 10
+        display: Add Timer
+        return: add
+    )
+
+    entry removeTimer (
+        sequence: 20
+        display: Remove Timer
+        return: remove
+    )
+
+)
+
+customAttribute attribute_02 (
+    apexlangName: timerName
+    attribute: 2
+    name: Timer Name
+    validation {
+        maxLength: 20
+    }
+    appearance {
+        sequence: 20
+    }
+    builder {
+        displayWidth: 20
+    }
+    dependingOn {
+        attribute: @attribute_01/component
+        conditionType: =
+        value: add
+    }
+    help {
+        helpText: If you want to remove a timer with the "Remove Timer" action you have to specify a name for the timer when you create it. If you just want to create a timer you don't have to specify a timer name.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: timerName2
+    attribute: 3
+    name: Timer Name
+    validation {
+        required: true
+        maxLength: 20
+    }
+    appearance {
+        sequence: 30
+    }
+    builder {
+        displayWidth: 20
+    }
+    dependingOn {
+        attribute: @attribute_01/component
+        conditionType: =
+        value: remove
+    }
+    help {
+        helpText: Name of the timer you want to remove. Use the same name you used when you created the timer.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: expireInXMilliseconds
+    attribute: 4
+    name: Expire in x Milliseconds
+    type: integer
+    validation {
+        required: true
+        maxLength: 10
+    }
+    appearance {
+        sequence: 40
+    }
+    builder {
+        displayWidth: 10
+    }
+    dependingOn {
+        attribute: @attribute_01/component
+        conditionType: =
+        value: add
+    }
+    help {
+        helpText: Specify the number of milliseconds after which the timer should expire. There are 1000 milliseconds in one second.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: occurrence
+    attribute: 5
+    name: Occurrence
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 50
+    }
+    default {
+        value: infinite
+    }
+    dependingOn {
+        attribute: @attribute_01/component
+        conditionType: =
+        value: add
+    }
+    help {
+        helpText: Specify how often the timer should fire. The timer can be fired just <strong>once</strong> or <strong>infinite</strong> until you remove it with the "Remove Timer" action.
+    }
+
+    entry infinite (
+        sequence: 20
+        display: Infinite
+        return: infinite
+    )
+
+    entry once (
+        sequence: 10
+        display: Once
+        return: once
+    )
+
+)
+

@@ -1,0 +1,145 @@
+page 118 (
+    name: What are Release Comments
+    alias: WHAT-ARE-RELEASE-COMMENTS
+    title: Release Comments
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                Release comments are comments that track the progression of a specific release.  
+                
+                </p>
+                
+                <p>
+                    Organization:
+                    <p>
+                        Release Train > Release > <strong>Release Comments</strong>
+                    </p>
+                </p>
+                <br />
+                <br />
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-container (
+        name: button container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button what-is-a-project (
+        buttonName: what_is_a_project
+        label: What is a &NOMENCLATURE_PROJECT.?
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 107
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-a-release (
+        buttonName: what_is_a_release
+        label: What is a Release?
+        layout {
+            sequence: 30
+            region: @button-container
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 108
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-a-user (
+        buttonName: what_is_a_user
+        label: What is a &NOMENCLATURE_USER.?
+        layout {
+            sequence: 20
+            region: @button-container
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 109
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,371 @@
+workflow LAPTOP_PROCUREMENT (
+    name: Laptop Procurement
+    title: Laptop Procurement
+
+    parameter P_DELIVERED_FROM_STOCK (
+        label {
+            label: Delivered from Stock
+        }
+        parameter {
+            direction: out
+        }
+    )
+
+    version 1.0 (
+        additionalData {
+            type: tableView
+            tableName: EBA_DEMO_APPR_LAPTOP_REQUESTS
+        }
+        columnMapping {
+            primaryKeyColumn: ID
+        }
+
+        activity ConfirmDelivery (
+            name: Confirm Delivery
+            type: humanTaskCreate
+            humanTask {
+                definition: @LAPTOP_DELIVERED
+                taskIdItem: V_DELIVERY_ACTION_TASK_ID
+                detailsPkItem: APEX$WORKFLOW_DETAIL_PK
+            }
+            layout {
+                sequence: 80
+            }
+            advanced {
+                diagram: {"position":{"x":730,"y":1310},"z":14}
+            }
+            comments {
+                comments: This action task is completed by a conditional database trigger call to eba_demo_appr.laptop_delivered() procedure, which uses apex_approval.complete_task() in an autonomous transaction to do so.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_3
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":-10,\"dy\":0},\"name\":\"right\"},\"target\":{\"args\":{\"dx\":\"59.091%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[{\"x\":1220,\"y\":1340}],\"z\":16,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New (
+            name: Start
+            type: workflowStart
+            layout {
+                sequence: 10
+            }
+            advanced {
+                diagram: {"position":{"x":560,"y":970},"z":1}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_1
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"45.457%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":4,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_1 (
+            name: In Stock?
+            type: switch
+            condition {
+                conditionType: functionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    :P_DELIVERED_FROM_STOCK := case 
+                                               when eba_demo_appr.laptop_in_stock(:LAPTOP_TYPE) then 'Y'
+                                               else 'N'
+                                               end;
+                    return :P_DELIVERED_FROM_STOCK = 'Y';
+                    ```
+            }
+            layout {
+                sequence: 20
+            }
+            advanced {
+                diagram: {"position":{"x":730,"y":970},"z":2}
+            }
+
+            connection (
+                name: Yes
+                condition {
+                    when: true
+                }
+                activity {
+                    to: @New_4
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"right\",\"args\":{\"dx\":-10,\"dy\":0}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":5,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: No
+                condition {
+                    when: false
+                }
+                activity {
+                    to: @New_6
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"54.548%\",\"dy\":\"83.321%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"54.545%\",\"dy\":\"66.667%\",\"rotate\":true}},\"vertices\":[],\"z\":8,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_2 (
+            name: End
+            type: workflowEnd
+            layout {
+                sequence: 30
+            }
+            advanced {
+                diagram: {"position":{"x":1380,"y":970},"z":3}
+            }
+        )
+
+        activity New_3 (
+            name: Update for Delivery
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: UPDATE_LAPTOP_REQUEST
+            }
+            layout {
+                sequence: 40
+            }
+            advanced {
+                diagram: {"position":{"x":1090,"y":1150},"z":6}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_2
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.091%\",\"dy\":\"16.667%\",\"rotate\":true}},\"target\":{\"args\":{\"dx\":\"50%\",\"dy\":\"66.667%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[{\"x\":1220,\"y\":1090},{\"x\":1410,\"y\":1090}],\"z\":12,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_approval_task_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 40
+                }
+            )
+
+            parameter p_approver (
+                parameter {
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 60
+                }
+            )
+
+            parameter p_decision_date (
+                parameter {
+                    dataType: date
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 70
+                }
+            )
+
+            parameter p_delivery_action_task_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: item
+                    item: V_DELIVERY_ACTION_TASK_ID
+                }
+                advanced {
+                    displaySequence: 50
+                }
+            )
+
+            parameter p_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_status (
+                parameter {
+                    hasDefault: true
+                }
+                value {
+                    type: staticValue
+                    staticValue: DELIVERED
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+            parameter p_workflow_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 30
+                }
+            )
+
+        )
+
+        activity New_4 (
+            name: Deliver from Stock
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: DELIVER_LAPTOP_FROM_STOCK
+            }
+            layout {
+                sequence: 50
+            }
+            advanced {
+                diagram: {"position":{"x":1090,"y":970},"z":7}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_2
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"right\",\"args\":{\"dx\":-10,\"dy\":0}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":11,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_laptop_request_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+            parameter p_laptop_type (
+                value {
+                    type: item
+                    item: LAPTOP_TYPE
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+        )
+
+        activity New_6 (
+            name: Order Laptop
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: ORDER_LAPTOP_FROM_SUPPLIER
+            }
+            layout {
+                sequence: 70
+            }
+            advanced {
+                diagram: {"position":{"x":730,"y":1150},"z":13}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @ConfirmDelivery
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"54.545%\",\"dy\":\"33.333%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"54.545%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":15,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_laptop_request_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+            parameter p_laptop_type (
+                value {
+                    type: item
+                    item: LAPTOP_TYPE
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+        )
+
+        variable APPROVER (
+            label {
+                label: Approver
+            }
+        )
+
+        variable TASK_OUTCOME (
+            label {
+                label: TaskOutcome
+            }
+        )
+
+        variable V_DELIVERY_ACTION_TASK_ID (
+            label {
+                label: Delivery Action Task Id
+            }
+        )
+
+    )
+
+)
+

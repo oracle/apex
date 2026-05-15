@@ -1,0 +1,528 @@
+page 16016 (
+    name: Add Subscription
+    alias: ADD-SUBSCRIPTION
+    title: Add Subscription
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @subscriptions
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region subscriptions (
+        name: Subscriptions
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ns.ID,
+                       apex_escape.html(n.name || case when r.id is not null then ' for '|| r.release_train ||' '|| r.release end) ||apex_item.hidden(1,n.id) notification,
+                       ns.NOTIFICATION_ID,
+                       apex_item.switch(p_idx => 2, p_value => nvl(ns.opted_in_yn,'N'), 
+                                        p_on_value => 'Y', p_off_value => 'N',
+                                        p_item_label => 'Opted In') opted_in,
+                       ns.CREATED,
+                       ns.CREATED_BY,
+                       ns.UPDATED,
+                       ns.UPDATED_BY
+                  from SP_NOTIFICATION_SUBSCRIPTIONS ns,
+                       SP_NOTIFICATIONS n,
+                       sp_release_trains r
+                where n.id = ns.NOTIFICATION_ID (+)
+                  and ns.id is null 
+                  and n.static_id = 'WEEKLY_SUMMARY'
+                  and ns.release_id = r.id (+)
+                order by 2
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlightOff
+                t-Report--noBorders
+            ]
+        }
+
+        column CREATED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 50
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column NOTIFICATION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Notification
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column NOTIFICATION_ID (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column OPTED_IN (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Opted In
+            }
+            layout {
+                sequence: 30
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: Since
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+    )
+
+    pageItem P16016_FREQUENCY (
+        type: selectList
+        label {
+            label: Frequency
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Weekly;WEEKLY,Weekdays;WEEKDAYS
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 60
+            region: @subscriptions
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P16016_NOTIFICATION_ID (
+        type: selectList
+        label {
+            label: Notification
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select name d, id v
+                  from sp_notifications
+                 where is_active_yn = 'Y'
+                 order by name
+                ```
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 30
+            region: @subscriptions
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P16016_RELEASE_EXCEPTIONS_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @subscriptions
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P16016_RELEASE_ID (
+        type: popupLov
+        label {
+            label: Release
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select release_train ||' '|| release d, id v
+                  from sp_release_trains
+                 where nvl(release_completed,'N') = 'N'
+                 order by 1
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @subscriptions
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P16016_TEAM_MEMBER_ID (
+        type: popupLov
+        label {
+            label: Team Member
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-team-members
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @subscriptions
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    button add (
+        buttonName: ADD
+        label: Add Subscription
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction close (
+        name: close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction hide-show-release (
+        name: hide/show release
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P16016_NOTIFICATION_ID
+        }
+        clientSideCondition {
+            type: item=value
+            item: P16016_NOTIFICATION_ID
+            value: &P16016_RELEASE_EXCEPTIONS_ID.
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P16016_RELEASE_ID
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P16016_RELEASE_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation check-for-dups (
+        name: check for dups
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_notification_subscriptions
+                 where notification_id = :P16016_NOTIFICATION_ID
+                   and team_member_id = :P16016_TEAM_MEMBER_ID
+                   and (release_id = :P16016_RELEASE_ID or :P16016_RELEASE_ID is null)
+                   and opted_in_yn = 'Y'
+                ```
+        }
+        error {
+            errorMessage: This subscription already exists.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @add
+        }
+    )
+
+    validation when-release (
+        name: when release
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P16016_RELEASE_ID
+        }
+        error {
+            errorMessage: Must select a Release.
+            associatedItem: @P16016_RELEASE_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @add
+            type: item=value
+            item: P16016_NOTIFICATION_ID
+            value: &P16016_RELEASE_EXCEPTIONS_ID.
+        }
+    )
+
+    computation p16016-release-exceptions-id (
+        itemName: P16016_RELEASE_EXCEPTIONS_ID
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select id
+                  from sp_notifications
+                 where static_id = 'RELEASE_EXCEPTIONS'
+                ```
+        }
+    )
+
+    process add-subscription (
+        name: Add Subscription
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.notification_opt_in (
+                    p_team_member_id  => :P16016_TEAM_MEMBER_ID,
+                    p_notification_id => :P16016_NOTIFICATION_ID,
+                    p_frequency       => case when :P16016_FREQUENCY = 'Weekly'
+                                              then 'WEEKLY'
+                                              else 'WEEKDAYS' end,
+                    p_release_id      => case when :P16016_NOTIFICATION_ID = :P16016_RELEASE_EXCEPTIONS_ID 
+                                              then :P16016_RELEASE_ID end);
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Subscription added.
+        }
+        advanced {
+            executionMappingIdentifier: 11633512124278822939
+        }
+        serverSideCondition {
+            whenButtonPressed: @add
+        }
+    )
+
+    process close (
+        name: Close
+        type: closeDialog
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 11501712303689050920
+        }
+        serverSideCondition {
+            whenButtonPressed: @add
+        }
+    )
+
+)
+

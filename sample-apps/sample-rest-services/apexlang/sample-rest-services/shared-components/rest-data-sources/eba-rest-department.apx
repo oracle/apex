@@ -1,0 +1,103 @@
+restDataSource eba_rest_department (
+    name: EBA_REST_DEPARTMENT
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: departments/
+    }
+
+    operation delete (
+        label: DELETE - :deptno
+        operation {
+            urlPattern: :deptno
+            httpMethod: delete
+            databaseOperation: delete
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    operation get-2 (
+        label: GET - :deptno
+        operation {
+            urlPattern: :deptno
+            httpMethod: get
+            databaseOperation: fetchSingleRow
+        }
+    )
+
+    operation post (
+        label: POST
+        operation {
+            urlPattern: .
+            httpMethod: post
+            databaseOperation: insert
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation put (
+        label: PUT - :deptno
+        operation {
+            urlPattern: :deptno
+            httpMethod: put
+            databaseOperation: update
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_DEPARTMENT
+        rowSelector: items
+    }
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: deptno
+        }
+    )
+
+    dataProfileColumn dname (
+        columnName: DNAME
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: dname
+        }
+    )
+
+    dataProfileColumn loc (
+        columnName: LOC
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: loc
+        }
+    )
+
+)
+

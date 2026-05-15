@@ -1,0 +1,467 @@
+page 23 (
+    name: Laptop Order Management
+    alias: LAPTOP-ORDER-MANAGEMENT
+    title: Laptop Order Management
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @operations-team
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page allows OPERATIONS department staff (JANE, BO, STEVE, PAT) to enter order date and delivered date for approved laptop requests.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 1
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region laptop-order-management (
+        name: Laptop Order Management
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_APPR_LAPTOP_REQUESTS
+            whereClause: status = 'APPROVED' and (delivered_date is null or :P23_SHOW_DELIVERED='Y')
+            orderByClause: decision_date
+            pageItemsToSubmit: P23_SHOW_DELIVERED
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: update
+        }
+        messages {
+            whenNoDataFound: No approved laptop requests to manage.
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+                excel
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 649632895202372076
+        }
+
+        savedReport 6496333 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ORDER_ID
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @DECISION_DATE
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @APPROVER
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @LAPTOP_TYPE
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @NEED_BY
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @ORDER_DATE
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @DELIVERED_DATE
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    frozen: true
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column APPROVER (
+            type: displayOnly
+            heading {
+                heading: By
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: APPROVER
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column DECISION_DATE (
+            type: displayOnly
+            heading {
+                heading: Approved
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                databaseColumn: DECISION_DATE
+                dataType: date
+            }
+        )
+
+        column DELIVERED_DATE (
+            type: datePicker
+            heading {
+                heading: Delivered Date
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                databaseColumn: DELIVERED_DATE
+                dataType: date
+            }
+        )
+
+        column EMPNO (
+            type: displayOnly
+            heading {
+                heading: For
+            }
+            settings {
+                basedOn: lov
+            }
+            lov {
+                type: sharedComponent
+                lov: @eba-demo-conf-emp-lov
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                queryOnly: true
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column LAPTOP_TYPE (
+            type: displayOnly
+            heading {
+                heading: Laptop Type
+            }
+            settings {
+                basedOn: lov
+            }
+            lov {
+                type: sharedComponent
+                lov: @available-laptop-types
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: LAPTOP_TYPE
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NEED_BY (
+            type: displayOnly
+            heading {
+                heading: Need By
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                databaseColumn: NEED_BY
+                dataType: date
+            }
+        )
+
+        column ORDER_DATE (
+            type: datePicker
+            heading {
+                heading: Order Date
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                databaseColumn: ORDER_DATE
+                dataType: date
+            }
+        )
+
+        column ORDER_ID (
+            type: numberField
+            heading {
+                heading: Order Id
+                alignment: end
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: ORDER_ID
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Laptop Order Management
+        }
+    )
+
+    pageItem P23_SHOW_DELIVERED (
+        type: switch
+        label {
+            label: All
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            slot: body
+            alignment: left
+            startNewRow: false
+            column: 12
+            columnSpan: 1
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+    )
+
+    dynamicAction refresh-list-on-switch-change (
+        name: Refresh List on Switch Change
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P23_SHOW_DELIVERED
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @laptop-order-management
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process laptop-order-management-save-interactive-grid-data (
+        name: Laptop Order Management - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @laptop-order-management
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 615001934424904318
+        }
+    )
+
+)
+

@@ -1,0 +1,662 @@
+customAttribute attribute_01 (
+    apexlangName: mapServerUrl
+    attribute: 1
+    name: Map Server URL
+    validation {
+        required: true
+        maxLength: 200
+    }
+    appearance {
+        sequence: 10
+    }
+    builder {
+        displayWidth: 50
+    }
+    default {
+        value: https://elocation.oracle.com/mapviewer
+    }
+    help {
+        helpText:
+            ```
+            <p>
+            	Enter the URL of the Oracle Maps Server to use. It typically ends with </b>/mapviewer.</b></p>
+            <ul>
+            	<li>
+            		<strong>https://elocation.oracle.com/mapviewer</strong></li>
+            	<li>
+            		<strong>http://mapserver.mydomain.com:8888/mapviewer<br />
+            		</strong></li>
+            </ul>
+            
+            ```
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: mapSizeWidthHeight
+    attribute: 3
+    name: Map Size (width, height)
+    validation {
+        required: true
+        maxLength: 20
+    }
+    appearance {
+        sequence: 30
+    }
+    builder {
+        displayWidth: 20
+    }
+    default {
+        value: 100,500
+    }
+    help {
+        helpText:
+            ```
+            <p>
+            	Enter the size of the map on the screen (width, height). Note the next attribute which controls the interpretation.</p>
+            
+            ```
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: customMapTileLayers
+    attribute: 4
+    name: Custom map tile layers
+    validation {
+        maxLength: 500
+    }
+    appearance {
+        sequence: 40
+    }
+    builder {
+        displayWidth: 100
+    }
+    dependingOn {
+        attribute: @attribute_24/component
+        conditionType: =
+        value: NONE
+    }
+    help {
+        helpText:
+            ```
+            <p>
+            	Enter map tile layers defined within the Oracle Maps server to be added to the map. Separate multiple map tile layers by colons. If more then one map tile layer is being added the plugin adds buttons to switch between the map tile layers. You might use a comma to specify a label for those switch buttons.</p>
+            <p>
+            	Examples:</p>
+            <ul>
+            	<li>
+            		<strong>elocation_mercator.world_map</strong></li>
+            	<li>
+            		<strong>elocation</strong><strong>_mercator</strong><strong>.world_map:geows.free_map</strong></li>
+            	<li>
+            		<strong>elocation</strong><strong>_mercator</strong><strong>.world_map,Dataset One:geows.free_map,Dataset Two</strong></li>
+            </ul>
+            
+            ```
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: mapCenterLonLat
+    attribute: 6
+    name: Map Center (lon, lat)
+    validation {
+        maxLength: 20
+    }
+    appearance {
+        sequence: 60
+    }
+    builder {
+        displayWidth: 20
+    }
+    default {
+        value: 10,50
+    }
+    help {
+        helpText:
+            ```
+            <p>
+            	Enter the map center (longitude, latitude) here. Example:</p>
+            <p>
+            	<strong>10,50</strong></p>
+            <p>
+            	The longitude and latitude value is excpected as a decimal value. So 50&deg;N, 30&#39; is being expressed as 50,5. Southern latitudes and western longitudes are negative.</p>
+            
+            ```
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: initialZoomLevel
+    attribute: 7
+    name: Initial Zoom Level
+    validation {
+        maxLength: 20
+    }
+    appearance {
+        sequence: 70
+    }
+    builder {
+        displayWidth: 20
+    }
+    default {
+        value: 8
+    }
+    help {
+        helpText:
+            ```
+            <p>
+            	Enter the initial zoom level of the map here. The available zoom levels depend on the chosen map tile laver. Zero (0) is the level in which most of the map area is visible. </p>
+            
+            ```
+    }
+)
+
+customAttribute attribute_08 (
+    apexlangName: navigationBar
+    attribute: 8
+    name: Navigation Bar
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 80
+    }
+    default {
+        value: WEST
+    }
+    help {
+        helpText:
+            ```
+            <p>
+            	Choose the position of the map navigation bar.</p>
+            
+            ```
+    }
+
+    entry left (
+        sequence: 20
+        display: Left
+        return: WEST
+    )
+
+    entry none (
+        sequence: 10
+        display: None
+        return: NONE
+    )
+
+    entry right (
+        sequence: 30
+        display: Right
+        return: EAST
+    )
+
+)
+
+customAttribute attribute_09 (
+    apexlangName: navigationBarOptions
+    attribute: 9
+    name: Navigation Bar Options
+    type: selectList
+    appearance {
+        sequence: 90
+    }
+    default {
+        value: 1
+    }
+    dependingOn {
+        attribute: @attribute_08/component
+        conditionType: !=
+        value: NONE
+    }
+    help {
+        helpText: Configure the appearance of the navigation bar.
+    }
+
+    entry complete (
+        sequence: 40
+        display: Complete
+        return: 1
+    )
+
+    entry navigationPanelOnly (
+        sequence: 10
+        display: Navigation Panel only
+        return: 4
+    )
+
+    entry slideBarAndZoomButtons (
+        sequence: 30
+        display: Slide bar and zoom buttons
+        return: 2
+    )
+
+    entry zoomButtonsOnly (
+        sequence: 20
+        display: Zoom buttons only
+        return: 3
+    )
+
+)
+
+customAttribute attribute_13 (
+    apexlangName: additionalMapFeatures
+    attribute: 13
+    name: Additional Map Features
+    type: checkboxes
+    appearance {
+        sequence: 100
+    }
+    help {
+        helpText: Choose additional map features.
+    }
+
+    entry circleTool (
+        sequence: 45
+        display: Circle Tool
+        return: CIRCLE
+        help {
+            helpText: Tool to draw a circle on the map
+        }
+    )
+
+    entry clusterSqlFeatures (
+        sequence: 60
+        display: Cluster SQL Features
+        return: FOICLUSTERS
+        help {
+            helpText: Enable this to automatically cluster colocatred SQL features.
+        }
+    )
+
+    entry distanceTool (
+        sequence: 30
+        display: Distance tool
+        return: DISTANCE
+        help {
+            helpText: Add a tool to measure distances to the map
+        }
+    )
+
+    entry drawPolygons (
+        sequence: 40
+        display: Draw Polygons
+        return: REDLINE
+        help {
+            helpText: Activate the "redlining" tool to draw polygons on the map
+        }
+    )
+
+    entry mousewheelZoom (
+        sequence: 70
+        display: Mousewheel zoom
+        return: MOUSEWHEEL
+        help {
+            helpText: Enable Mousewheel zooming
+        }
+    )
+
+    entry overviewMap (
+        sequence: 10
+        display: Overview Map
+        return: OVER
+        help {
+            helpText: Show an overview map in the lower right corner of the screen
+        }
+    )
+
+    entry rectangleZoom (
+        sequence: 20
+        display: Rectangle Zoom
+        return: MARQUEE
+        help {
+            helpText: Zoom into the map by drawing a rectangle
+        }
+    )
+
+    entry scaleBar (
+        sequence: 50
+        display: Scale bar
+        return: SCALE
+        help {
+            helpText: Add a scale bar to the map
+        }
+    )
+
+)
+
+customAttribute attribute_14 (
+    apexlangName: maximumNumberOfRows
+    attribute: 14
+    name: Maximum number of Rows
+    type: number
+    validation {
+        required: true
+        maxLength: 10
+    }
+    appearance {
+        sequence: 115
+    }
+    builder {
+        displayWidth: 10
+    }
+    default {
+        value: 500
+    }
+    dependingOn {
+        attribute: @attribute_17/component
+        conditionType: =
+        value: Y
+    }
+    help {
+        helpText: Determines the maximum number of objects to fetch by the region source SQL query. Be aware that too many FOI objects slow down the browsers' javascript engine.
+    }
+)
+
+customAttribute attribute_15 (
+    apexlangName: sqlFoiInfoWindowHeightInPixel
+    attribute: 15
+    name: SQL FOI Info Window Height in Pixel
+    type: number
+    validation {
+        maxLength: 10
+    }
+    appearance {
+        sequence: 200
+    }
+    builder {
+        displayWidth: 5
+    }
+    default {
+        value: 150
+    }
+    dependingOn {
+        attribute: @attribute_17/component
+        conditionType: =
+        value: Y
+    }
+    help {
+        helpText: Determines the height of the Marker FOI's information window in pixels.
+    }
+)
+
+customAttribute attribute_16 (
+    apexlangName: sqlFoiInfoWindowWidthInPixel
+    attribute: 16
+    name: SQL FOI Info Window Width in Pixel
+    type: number
+    validation {
+        maxLength: 150
+    }
+    appearance {
+        sequence: 160
+    }
+    builder {
+        displayWidth: 5
+    }
+    default {
+        value: 250
+    }
+    dependingOn {
+        attribute: @attribute_17/component
+        conditionType: =
+        value: Y
+    }
+    help {
+        helpText: Determines the width of the Marker FOI's information window in pixels.
+    }
+)
+
+customAttribute attribute_17 (
+    apexlangName: showSqlFoi
+    attribute: 17
+    name: Show SQL FOI
+    type: yesNo
+    appearance {
+        sequence: 114
+    }
+    default {
+        value: true
+    }
+    help {
+        helpText: Set to <b>Yes</b> to show the Features of Interest provides by the SQL query in the region source.
+    }
+)
+
+customAttribute attribute_18 (
+    apexlangName: saveMapPositionInCookie
+    attribute: 18
+    name: Save map position in Cookie
+    type: yesNo
+    appearance {
+        sequence: 75
+    }
+    default {
+        value: true
+    }
+    help {
+        helpText: If set to <b>Yes</b>, the Maps Plugin will store the current map center and zoom level in a cookie. The map will then initialize with the last position after an APEX page refresh.
+    }
+)
+
+customAttribute attribute_19 (
+    apexlangName: sqlFoiLazyLoading
+    attribute: 19
+    name: SQL FOI Lazy Loading
+    type: yesNo
+    appearance {
+        sequence: 140
+    }
+    dependingOn {
+        attribute: @attribute_17/component
+        conditionType: =
+        value: Y
+    }
+    help {
+        helpText: Setting Lazy Loading to <b>No</b> lets the plugin load all FOI data at initialization time. Choosing <b>Yes</b> will only load the FOI data for the current map window. For large amounts of FOI data distributed over large areas, choose <b>Yes</b>. <i>Note that you need a spatial index on your SDO_GEOMETRY column in the latter case</i>.
+    }
+)
+
+customAttribute attribute_20 (
+    apexlangName: copyrightNotice
+    attribute: 20
+    name: Copyright Notice
+    type: textarea
+    validation {
+        maxLength: 100
+    }
+    appearance {
+        sequence: 105
+    }
+    builder {
+        displayWidth: 50
+    }
+    default {
+        value: (c) 2020 Oracle Corp., (c) 2020 HERE
+    }
+    help {
+        helpText: Enter the copyright notice to be displayed on the map here.
+    }
+)
+
+customAttribute attribute_21 (
+    apexlangName: mapWidthInterpretation
+    attribute: 21
+    name: Map Width Interpretation
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 35
+    }
+    default {
+        value: PERCENT
+    }
+    help {
+        helpText:
+            ```
+            <p>The Map Window size can be specified either in <b>Pixels</b> or in <b>Percent</b>. If specified in Pixel, then the map size will be static on all devices and for all screens. If <b>Percent</b> is chosen, the <b>Width</b> will be interpreted in percent of the region width. The Map height will still be in pixels. </p>
+            <p><b>100,75<b> means that the map will use 100% of the region width, and the height will be 75% of the map width.
+            </p>
+            ```
+    }
+
+    entry percent (
+        sequence: 20
+        display: Percent
+        return: PERCENT
+    )
+
+    entry pixel (
+        sequence: 10
+        display: Pixel
+        return: PIXEL
+    )
+
+)
+
+customAttribute attribute_22 (
+    apexlangName: unitSystem
+    attribute: 22
+    name: Unit System
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 110
+    }
+    default {
+        value: METRIC
+    }
+    dependingOn {
+        attribute: @attribute_13/component
+        conditionType: inList
+        list: [
+            DISTANCE
+            SCALE
+        ]
+    }
+    help {
+        helpText: Specify whether the results of the "Distance tool" should be given in the metric or imperial system. If <b>Item or Substitution</b> is chosen, enter the name of an item or substitution string which contains either <b>METRIC</b> or <b>IMPERIAL</b>.
+    }
+
+    entry derivedFromItemOrSubstitutionString (
+        sequence: 30
+        display: Derived from Item or Substitution String
+        return: ITEM
+    )
+
+    entry imperialSystemMileYardFoot (
+        sequence: 20
+        display: Imperial System (mile,yard,foot)
+        return: IMPERIAL
+    )
+
+    entry metricSystemKmMCm (
+        sequence: 10
+        display: Metric System (km,m,cm)
+        return: METRIC
+    )
+
+)
+
+customAttribute attribute_23 (
+    apexlangName: itemOrSubstitutionContainingUnitSystemTo
+    attribute: 23
+    name: Item or substitution containing unit system to use
+    type: pageItem
+    appearance {
+        sequence: 112
+    }
+    default {
+        value: ORACLEMAPS_UNITSYSTEM
+    }
+    dependingOn {
+        attribute: @attribute_22/component
+        conditionType: =
+        value: ITEM
+    }
+    help {
+        helpText: Enter the name of a page item, application item or substitution string, which contains either <b>METRIC</b> or <b>IMPERIAL</b>.
+    }
+)
+
+customAttribute attribute_24 (
+    apexlangName: externalMapTileLayer
+    attribute: 24
+    name: External map tile layer
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 38
+    }
+    default {
+        value: OSM
+    }
+    help {
+        helpText:
+            ```
+            <p>Choose an external map tile layer as your background map.</p>
+            <p>
+            To use Bing maps as a map tile layer, your usage of the maps must meet the Terms of Service defined by Microsoft(http://www.microsoft.com/maps/product/terms.html). You must create a Bing Maps Developer Account(https://www.bingmapsportal.com/) and create a Bing Maps key for your application before you can display Bing Maps with this class. Please refer to this link(http://msdn.microsoft.com/en-us/library/ee692181.aspx) for more information about creating Bing Maps Developer Account and aquiring Bing Maps key. Note that you need a  Bing developer account in order to use Bing Maps. 
+            </p>
+            ```
+    }
+
+    entry bingAerialDeprecated (
+        sequence: 230
+        display: Bing Aerial (Deprecated)
+        return: BING_AERIAL
+    )
+
+    entry bingAutoDeprecated (
+        sequence: 220
+        display: Bing Auto (Deprecated)
+        return: BING_AUTO
+    )
+
+    entry bingRoadDeprecated (
+        sequence: 240
+        display: Bing Road (Deprecated)
+        return: BING
+    )
+
+    entry noneUseCustom (
+        sequence: 10
+        display: None (Use Custom)
+        return: NONE
+    )
+
+    entry openstreetmapBright (
+        sequence: 40
+        display: OpenStreetMap "Bright"
+        return: OSM_BRIGHT
+    )
+
+    entry openstreetmapDarkMatter (
+        sequence: 50
+        display: OpenStreetMap "Dark Matter"
+        return: OSM_DARK
+    )
+
+    entry openstreetmapPositron (
+        sequence: 30
+        display: OpenStreetMap "Positron"
+        return: OSM
+    )
+
+    entry oracleElocation (
+        sequence: 20
+        display: "Oracle Elocation "
+        return: ELOCATION
+    )
+
+)
+

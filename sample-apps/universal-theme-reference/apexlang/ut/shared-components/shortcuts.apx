@@ -1,0 +1,14 @@
+shortcut DELETE_CONFIRM_MSG (
+    source {
+        type: jsEscapeSingleQuotes
+        text: Would you like to perform this delete action?
+    }
+)
+
+shortcut OK_TO_GET_NEXT_PREV_PK_VALUE (
+    source {
+        type: jsEscapeSingleQuotes
+        text: Are you sure you want to leave this page without saving?
+    }
+)
+

@@ -1,0 +1,471 @@
+page 302 (
+    name: Map Region
+    alias: MAP-REGION
+    title: Map Region
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .u-Processing {
+               display:none !important;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how to integrate the <strong>Map region</strong> with Search Configuration to display search results. To achieve this, you need to use the public <code>Search</code> function to programmatically perform a search using search configurations and display the results on the Map region.</p>
+                <p>Start typing a search query (such as "<strong>madrid</strong>") and the <em>Store Search Configuration</em> will be triggered to display relevant results on the map.</p>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @search-region
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Stores
+        }
+    )
+
+    region search-region (
+        name: Search region
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search-results-map (
+        name: Search Results Map
+        type: map
+        layout {
+            sequence: 10
+            parentRegion: @search-region
+            slot: subRegions
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: search-results-map
+        }
+        map {
+            height: 360
+        }
+        controls {
+            options: [
+                mousewheelZoom
+                rectangleZoom
+                scaleBar
+                infiniteMap
+            ]
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer map (
+            name: Map
+            layout {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select config_label,
+                           primary_key_1,
+                           title,
+                           subtitle,
+                           description,
+                           to_number(custom_01) longitude,
+                           to_number(custom_02) latitude,
+                           icon_type,
+                           icon_value,
+                           case primary_key_1 
+                               when :P302_STORE_ID then 'Pin Circle'
+                               else 'Circle'
+                           end marker_shape ,
+                           case primary_key_1 
+                               when :P302_STORE_ID then '#ff0000'
+                               else '#01601a'
+                           end marker_color  
+                      from table(
+                               apex_search.search(
+                                 p_search_static_ids => apex_t_varchar2( 'store_map' ),
+                                 p_search_expression => :P302_SEARCH,
+                                 p_apply_order_bys => 'N') )
+                    ```
+                pageItemsToSubmit: [
+                    P302_SEARCH
+                    P302_STORE_ID
+                ]
+            }
+            columnMapping {
+                geometryColumnDataType: longitudeLatitude
+                longitudeColumn: LONGITUDE
+                latitudeColumn: LATITUDE
+                primaryKeyColumn: PRIMARY_KEY_1
+            }
+            pointObjects {
+                shape: &MARKER_SHAPE.
+            }
+            appearance {
+                fillColor: &MARKER_COLOR.
+            }
+        )
+
+    )
+
+    region store-details (
+        name: Store Details
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select store_id,
+                       store_name,
+                       physical_address
+                  from eba_demo_search_stores
+                where store_id = :P302_STORE_ID
+                ```
+            pageItemsToSubmit: P302_STORE_ID
+        }
+        layout {
+            sequence: 20
+            parentRegion: @search-region
+            slot: subRegions
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleA
+            ]
+        }
+        readOnly {
+            type: itemIsNotNull
+            item: P302_STORE_ID
+        }
+        componentAppearance {
+            layout: horizontal
+        }
+        card {
+            primaryKeyColumn1: STORE_ID
+        }
+        title {
+            column: STORE_NAME
+        }
+        subtitle {
+            column: PHYSICAL_ADDRESS
+        }
+        iconAndBadge {
+            iconSource: initials
+            iconColumn: STORE_NAME
+        }
+        messages {
+            whenNoDataFound: Select Store To View Details.
+            noDataFoundIcon: fa-info-circle-o
+        }
+    )
+
+    pageItem P302_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            valuePlaceholder: Enter your search term, e.g. 'madrid'
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    pageItem P302_STORE_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            slot: body
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 303
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 301
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction enter-key (
+        name: Enter key
+        execution {
+            sequence: 30
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P302_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.browserEvent.keyCode === 13
+                
+                ```
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction select-store (
+        name: Select Store
+        execution {
+            sequence: 20
+        }
+        when {
+            event: region/map/spatialmapobjectclick
+            selectionType: region
+            region: @search-results-map
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    const { lng, lat } = this.data;
+                    
+                    apex.region("search-results-map").call( "getMapObject" ).flyTo({ 
+                        center: [ lng, lat ],
+                        screenSpeed: 0.8,
+                        zoom:3
+                    });
+                    
+                    ```
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results-map
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @store-details
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.data?.id
+            }
+            affectedElements {
+                selectionType: items
+                items: P302_STORE_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction type (
+        name: Type
+        execution {
+            sequence: 10
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P302_SEARCH
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results-map
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: itemIsNotNull
+                item: P302_SEARCH
+            }
+        )
+
+    )
+
+)
+

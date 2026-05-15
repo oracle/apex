@@ -1,0 +1,192 @@
+page 110 (
+    name: Activity
+    alias: ACTIVITY2
+    title: Activity
+    pageGroup: @activities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                An activity is something that consumes the time.  
+                Typically, but not always, an activity is work relating to a specific &NOMENCLATURE_PROJECT.. 
+                </P>
+                <p>
+                Activity is time bound, activity starts at a given day and is estimated to complete by an end date.
+                </p>
+                <p>
+                    Activity Attributes:
+                    <ul>
+                        <li><strong>Type</strong>: Type of activity performed, see list below for types of activities defined for this application.</li>
+                        <li><strong>Activity</strong>: Is a short description, up to 280 characters, of what activity is intended to occur between two dates.</li>
+                        <li><strong>Start Date</strong>: Date activity started or is planned to start</li>
+                        <li><strong>End Date</strong>: Date activity was completed or is planned to be completed</li>
+                        <li><strong>Optional &NOMENCLATURE_PROJECT.:</strong>: Defines related &NOMENCLATURE_PROJECT. if work is in support of a specific &NOMENCLATURE_PROJECT.</li>
+                        <li><strong>Owner:</strong>: Defines who is doing the activity</li>
+                        <li><strong>Tags</strong>: Comma seperated list of tags to help filter activities.</li>
+                        <li><strong>URL</strong>: Optional URL relating to the activity.</li>
+                    </ul>
+                </p>
+                <p>
+                    Organization of Activities Associated with &NOMENCLATURE_PROJECTS.:
+                    <p>
+                        &NOMENCLATURE_AREA. > &NOMENCLATURE_INITIATIVE. > &NOMENCLATURE_PROJECT. > <strong>Activity</strong>
+                    </p>
+                </p>
+                <p>
+                    Organization of Activities Associated with &NOMENCLATURE_USER. and not a &NOMENCLATURE_PROJECT.:
+                    <p>
+                        &NOMENCLATURE_USER. > <strong>Activity</strong>
+                    </p>
+                </p>
+                <br />
+                <br />
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-container (
+        name: button container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button what-is-a-project (
+        buttonName: what_is_a_project
+        label: About &NOMENCLATURE_PROJECTS.
+        layout {
+            sequence: 30
+            region: @button-container
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 107
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-a-user (
+        buttonName: what_is_a_user
+        label: About &NOMENCLATURE_USERS.
+        layout {
+            sequence: 40
+            region: @button-container
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 109
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-an-area (
+        buttonName: what_is_an_area
+        label: About &NOMENCLATURE_AREAS.
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 105
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-an-initiative (
+        buttonName: what_is_an_initiative
+        label: About &NOMENCLATURE_INITIATIVES.
+        layout {
+            sequence: 20
+            region: @button-container
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 106
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,157 @@
+installScript "Data installation" (
+    execution {
+        sequence: 120
+    }
+    script {
+        contentFile: data-installation.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_DEMO_REST_DATA_PKG
+    )
+
+)
+
+installScript ETLProcess (
+    execution {
+        sequence: 130
+    }
+    script {
+        contentFile: etlprocess.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_DEMO_REST_ETL_PKG
+    )
+
+)
+
+installScript "ORDS Definition" (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: ords-definition.sql
+    }
+)
+
+installScript "Sequences Objects Definition" (
+    execution {
+        sequence: 49
+    }
+    script {
+        contentFile: sequences-objects-definition.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: sequence
+        name: DEPT_SEQ
+    )
+
+)
+
+installScript "Table Definition" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: table-definition.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_ASSIGNEES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_CUSTOMERS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_DEPARTMENT
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_DEPT_LOCAL
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_EMPLOYEE
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_EMPLOYEECUSTOM
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_ORDERITEMS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_ORDERS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_PRODUCTTABLE
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_PURCHASEORDERS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_STOREORDERSUMMARY
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_STORES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_TASKS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_TMDBCREDS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_REST_TODOS
+    )
+
+)
+

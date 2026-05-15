@@ -1,0 +1,17 @@
+classicNavigationBarEntry logout (
+    label: Logout
+    layout {
+        sequence: 20
+    }
+    icon {
+        height: 32
+        width: 32
+    }
+    link {
+        target: {
+            type: url
+            url: &LOGOUT_URL.
+        }
+    }
+)
+

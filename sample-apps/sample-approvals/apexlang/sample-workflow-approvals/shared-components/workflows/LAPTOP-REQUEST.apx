@@ -1,0 +1,795 @@
+workflow LAPTOP_REQUEST (
+    name: Laptop Request
+    title: Request for &P_LAPTOP_TYPE. by emp ID &P_EMPNO.
+    comments {
+        comments: Laptop Request Workflow
+    }
+
+    parameter P_EMPNO (
+        label {
+            label: Employee ID
+        }
+        parameter {
+            dataType: number
+        }
+        validation {
+            required: true
+        }
+        default {
+            value: Y
+        }
+    )
+
+    parameter P_LAPTOP_REQUEST_ID (
+        label {
+            label: Laptop Request ID
+        }
+        parameter {
+            dataType: number
+        }
+        validation {
+            required: true
+        }
+        default {
+            value: Y
+        }
+    )
+
+    parameter P_LAPTOP_TYPE (
+        label {
+            label: Laptop Type
+        }
+        validation {
+            required: true
+        }
+        default {
+            value: Y
+        }
+    )
+
+    version 1.0 (
+        activity ApproveRequest (
+            name: Approve Request
+            type: humanTaskCreate
+            humanTask {
+                definition: @LAPTOP_APPROVAL
+                taskIdItem: V_APPROVAL_TASK_ID
+                detailsPkItem: P_LAPTOP_REQUEST_ID
+            }
+            overrides {
+                initiatorCanComplete: false
+            }
+            result {
+                outcome: V_TASK_OUTCOME
+                owner: V_APPROVER
+            }
+            layout {
+                sequence: 40
+            }
+            advanced {
+                diagram: {"position":{"x":1200,"y":770},"z":-123}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @UpdateRequest
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"13.636%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{},\"vertices\":[],\"z\":5,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity Approved (
+            name: Approved?
+            type: switch
+            switch {
+                type: checkWorkflowVar
+            }
+            compare {
+                compareVar: V_TASK_OUTCOME
+            }
+            layout {
+                sequence: 60
+            }
+            advanced {
+                diagram: {"position":{"x":890,"y":890},"z":-125}
+            }
+
+            connection (
+                name: Rejected
+                execution {
+                    sequence: 10
+                }
+                condition {
+                    operator: =
+                    value: REJECTED
+                }
+                activity {
+                    to: @New_2
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":11,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: Approved
+                execution {
+                    sequence: 10
+                }
+                condition {
+                    operator: =
+                    value: APPROVED
+                }
+                activity {
+                    to: @NotifyApproved
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50.003%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50.003%\",\"dy\":\"66.66%\",\"rotate\":true}},\"vertices\":[],\"z\":13,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity EmailApproved (
+            name: Email Approved
+            type: sendEMail
+            emailHeader {
+                to: &V_EMAIL_TO_NOTIFY.
+            }
+            emailContent {
+                subject: &LAPTOP_TYPE. Laptop for &ENAME. Approved
+                bodyPlainText:
+                    ```
+                    Dear &ENAME.,
+                    
+                    Congratulations, your laptop request for &LAPTOP_TYPE. has been approved.
+                    
+                    Best Regards,
+                      The backoffice team
+                    ```
+            }
+            emailDispatchMode {
+                sendImmediately: true
+            }
+            additionalData {
+                sqlQuery:
+                    ```sql
+                    select ename,
+                           case :P_LAPTOP_TYPE when 'MAC' then 'MacBook Pro'
+                                               when 'WIN' then 'Lenovo T490'
+                           end as laptop_type
+                    from eba_demo_appr_emp
+                    where empno = :P_EMPNO
+                    ```
+            }
+            layout {
+                sequence: 90
+            }
+            advanced {
+                diagram: {"position":{"x":890,"y":1140},"z":-127}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_3
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":15,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity EmailDelivered (
+            name: Email Delivered
+            type: sendEMail
+            emailHeader {
+                to: &V_EMAIL_TO_NOTIFY.
+            }
+            emailTemplate {
+                emailTemplate: @LAPTOP_DELIVERED_NOTIFICATION
+                placeholderValues: {"P_LAPTOP_TYPE":"&LAPTOP_TYPE.","P_ENAME":"&ENAME.","P_DELIVERED_FROM_STOCK":"&V_DELIVERED_FROM_STOCK."}
+            }
+            emailDispatchMode {
+                sendImmediately: true
+            }
+            additionalData {
+                sqlQuery:
+                    ```sql
+                    select ename,
+                           case :P_LAPTOP_TYPE when 'MAC' then 'MacBook Pro'
+                                               when 'WIN' then 'Lenovo T490'
+                           end as laptop_type
+                    from eba_demo_appr_emp
+                    where empno = :P_EMPNO
+                    ```
+            }
+            layout {
+                sequence: 130
+            }
+            advanced {
+                diagram: {"position":{"x":1510,"y":1140},"z":-131}
+            }
+
+            connection (
+                name: Done
+                activity {
+                    to: @New_6
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":\"31.818%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"target\":{\"args\":{\"dx\":\"33.333%\",\"dy\":\"33.333%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[{\"x\":1810,\"y\":1170}],\"z\":19,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity EmailRejected (
+            name: Email Rejected
+            type: sendEMail
+            emailHeader {
+                to: &DEMO_NOTIFICATION_EMAIL.
+            }
+            emailContent {
+                subject: &LAPTOP_TYPE. Laptop for &ENAME. Rejected
+                bodyPlainText:
+                    ```
+                    Dear &ENAME.,
+                    
+                    Sorry, your laptop request for &LAPTOP_TYPE. was not approved.
+                    
+                    Best Regards,
+                      The backoffice team
+                    ```
+            }
+            emailDispatchMode {
+                sendImmediately: true
+            }
+            additionalData {
+                sqlQuery:
+                    ```sql
+                    select ename,
+                           case :P_LAPTOP_TYPE when 'MAC' then 'MacBook Pro'
+                                               when 'WIN' then 'Lenovo T490'
+                           end as laptop_type
+                    from eba_demo_appr_emp
+                    where empno = :P_EMPNO
+                    ```
+            }
+            layout {
+                sequence: 100
+            }
+            advanced {
+                diagram: {"position":{"x":1690,"y":890},"z":-120}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_6
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.091%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[],\"z\":25,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New (
+            name: Start
+            type: workflowStart
+            layout {
+                sequence: 10
+            }
+            advanced {
+                diagram: {"position":{"x":970,"y":670},"z":1}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @RequestPending
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":4,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_1 (
+            name: Notify Rejected?
+            type: switch
+            condition {
+                conditionType: workflowVarIsNotNull
+                workflowVar: V_EMAIL_TO_NOTIFY
+            }
+            layout {
+                sequence: 180
+            }
+            advanced {
+                diagram: {"position":{"x":1380,"y":890},"z":-122}
+            }
+
+            connection (
+                name: Yes
+                condition {
+                    when: true
+                }
+                activity {
+                    to: @EmailRejected
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"args\":{\"dx\":\"90.909%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[],\"z\":34,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: No
+                condition {
+                    when: false
+                }
+                activity {
+                    to: @New_6
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"bottom\",\"args\":{\"dx\":0,\"dy\":-10}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[{\"x\":1490,\"y\":1070}],\"z\":35,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_2 (
+            name: New
+            type: wait
+            timeout {
+                timeoutType: expression
+                plsqlExpression: eba_demo_appr.rejection_delay_until_time
+            }
+            layout {
+                sequence: 150
+            }
+            advanced {
+                diagram: {"position":{"x":1270,"y":890},"z":22}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_1
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"target\":{},\"vertices\":[],\"z\":23,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_3 (
+            name: Procure Laptop
+            type: invokeWorkflow
+            workflow {
+                definition: @LAPTOP_PROCUREMENT
+                detailsPkItem: P_LAPTOP_REQUEST_ID
+            }
+            layout {
+                sequence: 190
+            }
+            advanced {
+                diagram: {"position":{"x":1220,"y":1140},"z":36}
+            }
+
+            connection (
+                name: New_1
+                activity {
+                    to: @NotifyDelivered
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.091%\",\"dy\":\"66.667%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.093%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":38,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter (
+                name: @P_DELIVERED_FROM_STOCK
+                parameter {
+                    ignoreOutput: false
+                }
+                value {
+                    item: V_DELIVERED_FROM_STOCK
+                }
+            )
+
+        )
+
+        activity New_6 (
+            name: End
+            type: workflowEnd
+            layout {
+                sequence: 140
+            }
+            advanced {
+                diagram: {"position":{"x":1790,"y":1040},"z":12}
+            }
+        )
+
+        activity NotifyApproved (
+            name: Notify Approved?
+            type: switch
+            condition {
+                conditionType: workflowVarIsNotNull
+                workflowVar: V_EMAIL_TO_NOTIFY
+            }
+            layout {
+                sequence: 160
+            }
+            advanced {
+                diagram: {"position":{"x":890,"y":1020},"z":-126}
+            }
+
+            connection (
+                name: Yes
+                condition {
+                    when: true
+                }
+                activity {
+                    to: @EmailApproved
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":\"50.003%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"33.333%\",\"rotate\":true}},\"vertices\":[],\"z\":27,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: No
+                condition {
+                    when: false
+                }
+                activity {
+                    to: @New_3
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":\"36.367%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"target\":{\"args\":{\"dx\":\"59.091%\",\"dy\":\"33.333%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[{\"x\":1350,\"y\":1050}],\"z\":28,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity NotifyDelivered (
+            name: Notify Delivered?
+            type: switch
+            condition {
+                conditionType: workflowVarIsNotNull
+                workflowVar: V_EMAIL_TO_NOTIFY
+            }
+            layout {
+                sequence: 170
+            }
+            advanced {
+                diagram: {"position":{"x":1220,"y":1270},"z":-130}
+            }
+
+            connection (
+                name: Yes
+                condition {
+                    when: true
+                }
+                activity {
+                    to: @EmailDelivered
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":-10,\"dy\":0},\"name\":\"right\"},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.091%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[{\"x\":1640,\"y\":1300}],\"z\":31,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: No
+                condition {
+                    when: false
+                }
+                activity {
+                    to: @New_6
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.093%\",\"dy\":\"66.66%\",\"rotate\":true}},\"target\":{\"args\":{\"dx\":\"66.667%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[{\"x\":1350,\"y\":1360},{\"x\":1830,\"y\":1360}],\"z\":32,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity RequestPending (
+            name: Request Pending
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: UPDATE_LAPTOP_REQUEST
+            }
+            layout {
+                sequence: 20
+            }
+            advanced {
+                diagram: {"position":{"x":890,"y":770},"z":-124}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @ApproveRequest
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":7,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_approval_task_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 70
+                }
+            )
+
+            parameter p_approver (
+                parameter {
+                    hasDefault: true
+                }
+                value {
+                    type: null
+                }
+                advanced {
+                    displaySequence: 50
+                }
+            )
+
+            parameter p_decision_date (
+                parameter {
+                    dataType: date
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 60
+                }
+            )
+
+            parameter p_delivery_action_task_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 80
+                }
+            )
+
+            parameter p_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: P_LAPTOP_REQUEST_ID
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_status (
+                parameter {
+                    hasDefault: true
+                }
+                value {
+                    type: staticValue
+                    staticValue: PENDING
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+            parameter p_workflow_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: staticValue
+                    staticValue: &APEX$WORKFLOW_ID.
+                }
+                advanced {
+                    displaySequence: 30
+                }
+            )
+
+        )
+
+        activity UpdateRequest (
+            name: Update Request
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: UPDATE_LAPTOP_REQUEST
+            }
+            layout {
+                sequence: 50
+            }
+            advanced {
+                diagram: {"position":{"x":1480,"y":770},"z":-121}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @Approved
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[{\"x\":1590,\"y\":860},{\"x\":1000,\"y\":860}],\"z\":10,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_approval_task_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: item
+                    item: V_APPROVAL_TASK_ID
+                }
+                advanced {
+                    displaySequence: 70
+                }
+            )
+
+            parameter p_approver (
+                parameter {
+                    hasDefault: true
+                }
+                value {
+                    type: item
+                    item: V_APPROVER
+                }
+                advanced {
+                    displaySequence: 50
+                }
+            )
+
+            parameter p_decision_date (
+                parameter {
+                    dataType: date
+                    hasDefault: true
+                }
+                value {
+                    type: expression
+                    plsqlExpression: sysdate
+                }
+                advanced {
+                    displaySequence: 60
+                }
+            )
+
+            parameter p_delivery_action_task_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 80
+                }
+            )
+
+            parameter p_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: P_LAPTOP_REQUEST_ID
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_status (
+                parameter {
+                    hasDefault: true
+                }
+                value {
+                    type: item
+                    item: V_TASK_OUTCOME
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+            parameter p_workflow_id (
+                parameter {
+                    dataType: number
+                    hasDefault: true
+                }
+                value {
+                    type: apiDefault
+                }
+                advanced {
+                    displaySequence: 30
+                }
+            )
+
+        )
+
+        variable V_APPROVAL_TASK_ID (
+            label {
+                label: Approval Task ID
+            }
+            parameter {
+                dataType: number
+            }
+        )
+
+        variable V_APPROVER (
+            label {
+                label: Laptop Approver
+            }
+        )
+
+        variable V_DELIVERED_FROM_STOCK (
+            label {
+                label: Delivered from Stock
+            }
+        )
+
+        variable V_EMAIL_TO_NOTIFY (
+            label {
+                label: Email to Notify
+            }
+            value {
+                type: expression
+                plsqlExpression: apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL')
+            }
+        )
+
+        variable V_TASK_OUTCOME (
+            label {
+                label: Laptop Approval Outcome
+            }
+        )
+
+        participant (
+            name: Administrator
+            type: admin
+            value {
+                staticValue: PAT
+            }
+        )
+
+        participant (
+            name: Owner
+            value {
+                type: expression
+                plsqlExpression: eba_demo_appr.userlist_for_department('OPERATIONS')
+            }
+        )
+
+    )
+
+)
+

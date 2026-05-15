@@ -1,0 +1,204 @@
+page 600 (
+    name: Project Interactions
+    alias: PROJECT-INTERACTIONS
+    title: &NOMENCLATURE_PROJECT. Interactions
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region button-bar (
+        name: button_bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    region nomenclature-project-interactions (
+        name: &NOMENCLATURE_PROJECT. Interactions
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select app_user, 
+                       count(*) interactions, 
+                       min(page_rendered) first_interaction,
+                       max(page_rendered) last_interaction
+                from   sp_proj_interactions_log
+                where  project_id = :P600_PROJECT_ID
+                group  by app_user
+                order by 4 desc
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column APP_USER (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: User
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FIRST_INTERACTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: First Interaction
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INTERACTIONS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Interactions
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LAST_INTERACTION (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Last Interaction
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P600_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @nomenclature-project-interactions
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button view-details (
+        buttonName: view_details
+        label: Details
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--small
+                t-Button--noUI
+                t-Button--iconLeft
+                t-Button--padTop
+                t-Button--padBottom
+            ]
+            icon: fa-glasses
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 610
+                items: {
+                    P610_PROJECT_ID: &P600_PROJECT_ID.
+                }
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

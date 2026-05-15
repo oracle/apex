@@ -1,0 +1,112 @@
+page 1111 (
+    name: Standard Dialog Page
+    alias: STANDARD-DIALOG-PAGE
+    title: Standard Dialog Page - &APP_TITLE.
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigationMenu {
+        overrideUserInterfaceLevel: true
+        list: @ut-sample-navigation-menu
+        listPosition: top
+        listTemplate: @/top-navigation-menu
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region region-a (
+        name: Region A
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region A</h3>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: dm-Placeholder
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-b (
+        name: Region B
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region B</h3>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: dm-Placeholder
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-c (
+        name: Region C
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region C</h3>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: dm-Placeholder
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

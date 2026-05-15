@@ -1,0 +1,500 @@
+page 107 (
+    name: Account Locations
+    alias: ACCOUNT-LOCATIONS
+    title: Account Locations
+    pageGroup: @accounts
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+        ]
+    }
+    dialog {
+        cssClasses: view-locations-dialog
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline: .t-Dialog-body {padding: 0; overflow: hidden;}
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    config {
+        buildOption: @account-locations
+    }
+
+    region locations (
+        name: Locations
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                	CUSTOMER_LOCATION_NAME location,
+                	CUSTOMER_ADDRESS1||
+                        decode(CUSTOMER_ADDRESS2,null,null,' '|| CUSTOMER_ADDRESS2) address,
+                        CUSTOMER_CITY city,
+                        CUSTOMER_STATE state,
+                	CUSTOMER_COUNTRY country,
+                        CUSTOMER_POSTAL_CODE,
+                        CUSTOMER_DESCRIPTION
+                        CUSTOMER_TERRITORY_ID,
+                        created, 
+                        lower(created_by) created_by, 
+                        updated, 
+                        lower(updated_by) updated_by
+                 from	 "EBA_SALES_CUSTOMER_LOCATIONS"
+                where    CUSTOMER_ID = :P107_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 32
+                items: {
+                    P32_ID: #ID#
+                }
+                clearCache: 32
+                action: resetPagination
+            }
+            linkIcon: <span class="fa fa-edit" aria-hidden="true"></span>
+            linkAttributes: title="Edit #LOCATION#"
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No locations found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2391710316641880642
+        }
+
+        column ADDRESS (
+            type: plainText
+            heading {
+                heading: Address
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column CITY (
+            type: plainText
+            heading {
+                heading: City
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column COUNTRY (
+            type: plainText
+            heading {
+                heading: Country
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Added
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column CUSTOMER_POSTAL_CODE (
+            type: plainText
+            heading {
+                heading: Postal Code
+            }
+            layout {
+                sequence: 19
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column CUSTOMER_TERRITORY_ID (
+            type: hidden
+            heading {
+                heading: Customer Territory Id
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: T
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LOCATION (
+            type: plainText
+            heading {
+                heading: Location
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column STATE (
+            type: plainText
+            heading {
+                heading: State
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 22
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 23
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        savedReport 23917117 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ADDRESS (
+                sequence: 2
+            )
+
+            displayColumn CITY (
+                sequence: 4
+            )
+
+            displayColumn COUNTRY (
+                sequence: 5
+            )
+
+            displayColumn CREATED (
+                sequence: 7
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 8
+            )
+
+            displayColumn CUSTOMER_POSTAL_CODE (
+                sequence: 6
+            )
+
+            displayColumn LOCATION (
+                sequence: 1
+            )
+
+            displayColumn STATE (
+                sequence: 3
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: COMPETITOR
+                sort {
+                    sequence: 3
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P107_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @locations
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-location (
+        buttonName: ADD_LOCATION
+        label: Add Location
+        layout {
+            sequence: 20
+            region: @locations
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 32
+                items: {
+                    P32_CUSTOMER_ID: &P107_ID.
+                }
+                clearCache: 32
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @locations
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 107
+                clearCache: RIR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dialog-closed (
+        name: Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Action Processed.');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @locations
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-page (
+        itemName: LAST_PAGE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 107
+        }
+    )
+
+)
+

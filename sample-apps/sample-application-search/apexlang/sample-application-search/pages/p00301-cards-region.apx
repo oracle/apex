@@ -1,0 +1,366 @@
+page 301 (
+    name: Cards Region
+    alias: CARDS-REGION
+    title: Cards Region
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Setting card icon background to transparent 
+               so that the icon color from the Search Configuration 
+               renders correctly */
+            :root {
+                --a-cv-icon-background-color: transparent;
+            }
+            
+            /* Change card icon size */
+            .a-CardView-icon{
+                font-size: xx-large !important;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page shows you how to use the <em>Cards region</em> to display search results.</p>
+                <p>You can use the <code>search</code> function to connect the Cards region to the Search Configuration to programmatically retrieve search results.</p>
+                <p>This example uses the following <code>search</code> function:</p>
+                <pre style="max-width: 100%; overflow: auto">apex_search.search (
+                      p_search_static_ids      in apex_t_varchar2,
+                      p_search_expression      in varchar2,
+                      p_apply_order_bys        in varchar2           default 'Y',
+                      --
+                      p_return_total_row_count in varchar2           default 'N' )
+                      return apex_search_result_table pipelined;
+                </pre>
+                <p>The <code>search</code> function requires the specification of search configurations to be used for the search, along with the search query. It returns relevant search results which can then be rendered on components such as the Cards region.</p>
+                <p>To test the functionality, type a search query (such as "<strong>red</strong>") and all relevant results from the <em>Customer search configuration</em>, <em>Store search configuration</em>, and <em>Product search configuration</em> will be displayed in the Cards region.</p>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Products, Stores and Customers
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select config_label,
+                       primary_key_1,
+                       title,
+                       subtitle,
+                       description,
+                       icon_type,
+                       'fa ' || icon_value as icon_value,
+                       case config_label 
+                           when 'Store Search Configuration'    then 'Store'
+                           when 'Product Search Configuration'  then 'Product'
+                           when 'Customer Search Configuration' then 'Customer'
+                       end tag
+                  from table(
+                           apex_search.search(
+                               p_search_static_ids => apex_t_varchar2( 'store', 'product', 'customer' ),
+                               p_search_expression => :P301_SEARCH,
+                               p_apply_order_bys   => 'N') )
+                ```
+            pageItemsToSubmit: P301_SEARCH
+        }
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: t-CardsRegion--styleA
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        card {
+            primaryKeyColumn1: PRIMARY_KEY_1
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            column: SUBTITLE
+        }
+        body {
+            column: DESCRIPTION
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_VALUE
+            badgeColumn: TAG
+        }
+        messages {
+            whenNoDataFound: No customers, products or stores found.
+        }
+
+        action action (
+            label: Edit
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 304
+                    items: {
+                        P304_CONFIG: &CONFIG_LABEL.
+                        P304_STORE_ID: &PRIMARY_KEY_1.
+                        P304_CUSTOMER_ID: &PRIMARY_KEY_1.
+                        P304_PRODUCT_ID: &PRIMARY_KEY_1.
+                    }
+                    clearCache: 304
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-edit
+                hot: true
+            }
+        )
+
+    )
+
+    pageItem P301_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            valuePlaceholder: Enter your search term, e.g. 'red'
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 302
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 300
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dialog-closed (
+        name: Dialog Closed
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @search-results
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction enter-key (
+        name: Enter key
+        execution {
+            sequence: 30
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P301_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.browserEvent.keyCode === 13
+                
+                ```
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction search (
+        name: search
+        execution {
+            sequence: 10
+            type: throttle
+            time: 500
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P301_SEARCH
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,470 @@
+page 114 (
+    name: Start Session
+    alias: START-SESSION
+    title: Start Session
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @host
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region p114-session-code-p114-session-name (
+        name: &P114_SESSION_CODE. - &P114_SESSION_NAME.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       OWNER,
+                       SESSION_CODE,
+                       initcap(session_status) status,
+                       closed_on DATE_CLOSED,
+                       CREATED_ON CREATED,
+                       started_on,
+                       CREATED_BY,
+                       PURPOSE,
+                       SESSION_NAME,
+                       (select count(*) from qask_session_questions 
+                         where session_id = s.id) question_count
+                  from QASK_SESSIONS s
+                 where id = :P114_SESSION_ID
+                ```
+            pageItemsToSubmit: P114_SESSION_ID
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column CREATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: fmMonth fmDD, YYYY
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_sessions
+                     where id = :P114_SESSION_ID
+                       and started_on is null
+                    ```
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 180
+            }
+        )
+
+        column DATE_CLOSED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column PURPOSE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Purpose
+            }
+            layout {
+                sequence: 60
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_sessions
+                     where id = :P114_SESSION_ID
+                       and purpose is not null
+                    ```
+            }
+        )
+
+        column QUESTION_COUNT (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Question Count
+                alignment: end
+            }
+            layout {
+                sequence: 210
+                columnAlignment: end
+            }
+        )
+
+        column SESSION_CODE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 30
+            }
+        )
+
+        column SESSION_NAME (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column STARTED_ON (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Started
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                formatMask: fmMonth fmDD, YYYY
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_sessions
+                     where id = :P114_SESSION_ID
+                       and started_on is not null
+                    ```
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 100
+            }
+        )
+
+    )
+
+    pageItem P114_FIRST_QUESTION_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @p114-session-code-p114-session-name
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_SESSION_CODE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @p114-session-code-p114-session-name
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_SESSION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @p114-session-code-p114-session-name
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_SESSION_NAME (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @p114-session-code-p114-session-name
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button start-session (
+        buttonName: start_session
+        label: Start Session
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @host
+        }
+    )
+
+    dynamicAction cancel (
+        name: Cancel
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation check-for-max-open-sessions (
+        name: check for max open sessions
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_max_open_sessions      number := qask_util.get_setting('max_open_sessions');
+                   l_open_session_for_user  number := qask_util.open_session_count_for_user(:APP_USER);
+                begin
+                
+                if l_open_session_for_user >= l_max_open_sessions then 
+                    return 'You have requested more sessions than permitted.  '||
+                        'Maximum permitted is '||l_max_open_sessions||'.  '||
+                        'Please close some of your open sessions before starting a new one.';
+                end if;
+                
+                end;
+                ```
+        }
+        serverSideCondition {
+            whenButtonPressed: @start-session
+        }
+    )
+
+    computation p114-first-question-id (
+        itemName: P114_FIRST_QUESTION_ID
+        execution {
+            sequence: 30
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return qask_util.get_next_question_id (
+                           p_session_id  => :P114_SESSION_ID,
+                           p_question_id => null,
+                           p_status      => 'ANY' );
+                ```
+        }
+    )
+
+    computation p114-session-code (
+        itemName: P114_SESSION_CODE
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return qask_util.get_session_code (
+                    p_session_id => :P114_SESSION_ID );
+                ```
+        }
+    )
+
+    computation p114-session-name (
+        itemName: P114_SESSION_NAME
+        execution {
+            sequence: 20
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return qask_util.get_session_name (
+                    p_session_id => :P114_SESSION_ID );
+                ```
+        }
+    )
+
+    process start-staged-session (
+        name: start staged session
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.start_staged_session (
+                    p_session_id  => :P114_SESSION_ID,
+                    p_app_user    => :APP_USER,
+                    p_question_id => :P114_FIRST_QUESTION_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Session started.
+        }
+        error {
+            errorMessage: Session failed to be started.
+        }
+        advanced {
+            executionMappingIdentifier: 53636782945665070825
+        }
+        serverSideCondition {
+            whenButtonPressed: @start-session
+        }
+    )
+
+    branch (
+        name: branch to question responses
+        execution {
+            sequence: 40
+        }
+        behavior {
+            target: {
+                page: 113
+                items: {
+                    P113_SESSION_ID: &P114_SESSION_ID.
+                    P113_QUESTION_ID: &P114_FIRST_QUESTION_ID.
+                }
+                clearCache: 113
+                action: resetRegions
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @start-session
+        }
+    )
+
+)
+

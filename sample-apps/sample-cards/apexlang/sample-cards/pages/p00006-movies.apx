@@ -1,0 +1,169 @@
+page 6 (
+    name: Embedded Video
+    alias: MOVIES
+    title: &APP_NAME. - Embedded Video
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Cards regions can be sourced by REST Data Sources.  This page uses a <a href="https://developers.google.com/youtube/v3/docs/playlists" title="Playlists Resource" target="_blank">Playlists</a> REST resource in a <a href="https://developers.google.com/youtube/v3/getting-started" title="YouTube Data API" target="_blank">YouTube Data API</a> to display the &PRODUCT_NAME. YouTube channel playlists.</p>
+                
+                <p>This page uses the <strong>Cards Media Advanced Formatting</strong> to add an HTML <code>&lt;iframe&gt;</code> tag which embeds a player inline. Embedding videos can add extra weight to your page.  Click <strong>View All Videos</strong> to see all of the videos in this playlist and view alternative ways of displaying Cards regions with video information.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-video-camera
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region apex-youtube-channel (
+        name: APEX YouTube Channel
+        type: cards
+        source {
+            location: restSource
+            restSource: @APEX_Youtube_Playlists
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+
+        parameter (
+            name: @channelid
+            value {
+                type: staticValue
+                staticValue: UCEpIXFjcQIztReQNLymvYrQ
+            }
+        )
+
+        parameter (
+            name: @maxresults
+            value {
+                type: staticValue
+                staticValue: 25
+            }
+        )
+
+        parameter (
+            name: @part
+            value {
+                type: staticValue
+                staticValue: snippet,contentDetails,player
+            }
+        )
+
+        componentAppearance {
+            gridColumns: 3
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                Total Videos: &ITEMCOUNT. <br />
+                Published: &PUBLISHEDAT.
+                ```
+        }
+        media {
+            advancedFormatting: true
+            htmlExpression: <iframe src="https://www.youtube.com/embed/playlist?list=&ID." title="&TITLE." allowfullscreen></iframe>
+            position: first
+            cssClasses: [
+                a-CardView-media--cover
+                a-CardView-media--widescreen
+            ]
+        }
+        pagination {
+            type: page
+            cardsPerPage: 3
+        }
+
+        action action (
+            label: View All Videos
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 10
+                    items: {
+                        P10_ID: &ID.
+                    }
+                    clearCache: 10
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-file-video-o
+                hot: true
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

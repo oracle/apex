@@ -1,0 +1,287 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry appraisal-history (
+        name: Appraisal History
+        pageNumber: 29
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry email-settings (
+        name: Email Settings
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @setup
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry employees (
+        name: Employees
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry employees-2 (
+        name: Employees
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry laptop-order-management (
+        name: Laptop Order Management
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry manage-laptop-stock (
+        name: Manage Laptop Stock
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @setup
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry manage-vacation-rules (
+        name: Manage Vacation Rules
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry more-information (
+        name: More Information
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry my-requests (
+        name: My Requests
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry my-tasks (
+        name: My Tasks
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry my-tasks-2 (
+        name: My Tasks
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry pending-actions (
+        name: Pending Actions
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry pending-approvals (
+        name: Pending Approvals
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry salary-change-approvers (
+        name: Salary Change Approvers
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @setup
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry setup (
+        name: Setup
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry task-administration (
+        name: Task Administration
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry task-administration-2 (
+        name: Task Administration
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry workflow-dashboard (
+        name: Workflow Dashboard
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry workflow-debug-messages (
+        name: Workflow Debug Messages
+        pageNumber: 27
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry workflow-status (
+        name: Workflow Status
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+)
+

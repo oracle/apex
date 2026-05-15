@@ -1,0 +1,618 @@
+page 52 (
+    name: Tooltips
+    alias: TOOLTIPS
+    title: Tooltips
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-tooltips (
+        name: Overview: Tooltips
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The Interactive Grid grid view can integrate with jQuery UI tooltips. 
+                See the Advanced: Initialization JavaScript Function attribute for details of how this is done.
+                The jQuery UI tooltip options object is passed to the grid view in defaultGridViewOptions.tooltip.
+                The items option is not needed because it is set automatically. The content
+                callback option receives extra arguments to make it easy to access information
+                from the data model. Tooltips are also used to show errors and warnings at the 
+                row and cell level so the content function is not called if there is an error
+                message to display.
+                </p>
+                <p>In this example there is a tip on the row header that tells you if
+                the row has been added, changed, or deleted. On data cells the tip will
+                tell you if the cell has been changed. On the Name cells the hire date
+                is shown. On the Notes column the full text of the note is shown in the tip.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region tooltips (
+        name: Tooltips
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       ONLEAVE,
+                       NOTES,
+                       DEPTNO
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(config) {
+                    config.defaultGridViewOptions = {
+                        tooltip: {
+                            // when the tooltip is integrated with the grid view the content callback
+                            // gets some extra helpful parameters
+                            content: function(callback, model, recordMeta, colMeta, columnDef ) {
+                                var text = null;
+                
+                                // if in/over the row header display a tooltip based on 
+                                // the record edit state metadata
+                                if (recordMeta && $(this).hasClass( "a-GV-rowHeader" ) ) {
+                                    if ( recordMeta.deleted ) {
+                                        text = "This record has been deleted";
+                                    } else if ( recordMeta.inserted ) {
+                                        text = "This record has been added";
+                                    } else if ( recordMeta.updated ) {
+                                        text = "This record has been changed";
+                                    }
+                                } else {
+                                    if ( columnDef && recordMeta) {
+                                        // if in/over the notes column put the notes in a tooltip so more of the notes can be seen
+                                        // if in/over the name column show the hire date
+                                        if ( columnDef.property === "NOTES" ) {
+                                            text = model.getValue( recordMeta.record, "NOTES" );
+                                        } else if ( columnDef.property === "ENAME" ) {
+                                            text = "Hire date: " + model.getValue( recordMeta.record, "HIREDATE" );
+                                        }
+                                    }
+                                    // if in/over any other column display a tooltip based on 
+                                    // the changed state metadata
+                                    if ( colMeta && colMeta.changed ) {
+                                        if ( text !== null) {
+                                            text += "<br>";
+                                        } else {
+                                            text = "";
+                                        }
+                                        text += "This cell has been changed";
+                                    }
+                                }
+                                return text;
+                            }
+                        }
+                    };
+                    return config;
+                }
+                ```
+        }
+        advanced {
+            savedReportMappingIdentifier: 1419645037611743505
+        }
+
+        savedReport 14497 (
+            visibility: primary
+            view {
+                default: grid
+                rowsPerPage: 5
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    width: 110
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 112
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 102
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    width: 73
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 86
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 95
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    width: 201
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    sequence: 11
+                }
+            )
+
+            sort (
+                column: @ENAME
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select DNAME as d, DEPTNO as r from EBA_DEMO_IG_DEPT order by 1
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: hidden
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: fmDay, fmDD fmMonth, YYYY
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+                queryOnly: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column JOB (
+            type: radioGroup
+            heading {
+                heading: Job
+            }
+            lov {
+                type: sharedComponent
+                lov: @emp-jobs
+                displayNullValue: false
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select ENAME as d, EMPNO as r from EBA_DEMO_IG_EMP order by 1
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textarea
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                width: 60
+                height: 8
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ONLEAVE (
+            type: switch
+            heading {
+                heading: On Leave
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: N
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 53
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 51
+                action: resetPagination
+            }
+        }
+    )
+
+    process save-interactive-grid-data (
+        name: " - Save Interactive Grid Data"
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @tooltips
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 723523722675496707
+        }
+    )
+
+)
+

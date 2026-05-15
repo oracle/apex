@@ -1,0 +1,599 @@
+page 46 (
+    name: Sales History Cards
+    alias: SALES-HISTORY-CARDS
+    title: Sales History Cards
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region facets (
+        name: Facets
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+        advanced {
+            htmlDomId: active_facets
+            regionDisplaySelector: true
+        }
+    )
+
+    region sales-history (
+        name: Sales History
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    h.ID            id,
+                    s.store_name    store_name,
+                    r.region_name   region,
+                    i.item_Name     product,
+                    h.DATE_OF_SALE  date_of_sale,
+                    to_char(h.DATE_OF_SALE,'YYYY.MM') the_month,
+                    h.QUANTITY,
+                    h.TRANSACTION_ID,
+                    h.ITEM_PRICE,
+                    h.QUANTITY * h.ITEM_PRICE sale,
+                    i.id product_id,
+                    s.id store_id,
+                    h.id transaction_line_item_id,
+                    null card_text,
+                    null card_subtext,
+                    null card_title
+                from #OWNER#.OOW_DEMO_SALES_HISTORY h,
+                     #OWNER#.OOW_DEMO_REGIONS r,
+                     #OWNER#.OOW_DEMO_STORES s,
+                     #OWNER#.OOW_DEMO_STORE_PRODUCTS p,
+                     #OWNER#.OOW_DEMO_ITEMS i
+                where s.region_id = r.id and
+                      h.store_id = s.id and
+                      p.ITEM_ID = h.PRODUCT_ID and
+                      p.item_id = i.id
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--basic
+                t-Cards--3cols
+                t-Cards--animColorFill
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Card Subtext
+            }
+            layout {
+                sequence: 160
+            }
+            appearance {
+                formatMask: fmDay, fmDD fmMonth, YYYY
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    Store: #STORE_NAME#<br>
+                    Item Price: #ITEM_PRICE#<br>
+                    Quantity: #QUANTITY#<br>
+                    Total Sale: #SALE#<br>
+                    Date of Sale: #DATE_OF_SALE#<br>
+                    Transaction ID: #TRANSACTION_ID#<br>
+                    Transaction Line Item ID: #TRANSACTION_LINE_ITEM_ID#
+                    ```
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Card Text
+            }
+            layout {
+                sequence: 150
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    Region: #REGION#<br>
+                    Store: #STORE_NAME#
+                    ```
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Card Title
+            }
+            layout {
+                sequence: 140
+            }
+            columnFormatting {
+                htmlExpression: #PRODUCT#
+            }
+        )
+
+        column DATE_OF_SALE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Date Of Sale
+            }
+            layout {
+                sequence: 200
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH24:MI:SS
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column ITEM_PRICE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Item Price
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column PRODUCT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 190
+            }
+        )
+
+        column PRODUCT_ID (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column QUANTITY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Quantity
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column REGION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Region
+            }
+            layout {
+                sequence: 180
+            }
+        )
+
+        column SALE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Sale
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column STORE_ID (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column STORE_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Store Name
+            }
+            layout {
+                sequence: 170
+            }
+        )
+
+        column THE_MONTH (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column TRANSACTION_ID (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Transaction ID
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 36
+                    items: {
+                        P36_TRANSACTION_ID: #TRANSACTION_ID#
+                    }
+                    clearCache: 36
+                    action: resetPagination
+                }
+                linkText: #TRANSACTION_ID#
+            }
+        )
+
+        column TRANSACTION_LINE_ITEM_ID (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Transaction Line Item Id
+                alignment: end
+            }
+            layout {
+                sequence: 210
+                columnAlignment: end
+            }
+        )
+
+    )
+
+    region smart-search (
+        name: Smart Search
+        type: smartFilters
+        source {
+            filteredRegion: @sales-history
+        }
+        layout {
+            sequence: 4
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            compactNosThreshold: 10000
+        }
+
+        filter P46_PRODUCT (
+            type: checkboxGroup
+            label {
+                label: Product
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            suggestions {
+                type: dynamic
+            }
+            source {
+                databaseColumn: PRODUCT
+            }
+        )
+
+        filter P46_REGION (
+            type: checkboxGroup
+            label {
+                label: Region
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            suggestions {
+                type: dynamic
+            }
+            source {
+                databaseColumn: REGION
+            }
+        )
+
+        filter P46_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        filter P46_STORE_NAME (
+            type: checkboxGroup
+            label {
+                label: Store
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            suggestions {
+                type: dynamic
+            }
+            source {
+                databaseColumn: STORE_NAME
+            }
+        )
+
+    )
+
+    region timer (
+        name: Timer
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   x clob;
+                begin
+                    x := to_char(oow_demo_timing.get_elap,'99G9990D000')||' seconds';
+                    return x;
+                end;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P46_NAVIGATION (
+        type: selectList
+        label {
+            label: Navigation
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @sales-history-navigation
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    button reset (
+        buttonName: reset
+        label: Reset
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 46
+                clearCache: 46
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction on-report-view-change (
+        name: on report view change
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P46_NAVIGATION
+        }
+
+        action native-submit-page (
+            action: submitPage
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process start-timer (
+        name: start timer
+        type: executeCode
+        source {
+            plsqlCode: oow_demo_timing.START_TIMER;
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 12017285937064730850
+        }
+    )
+
+    branch (
+        name: branch to requested page
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &P46_NAVIGATION.
+                clearCache: &P46_NAVIGATION.
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

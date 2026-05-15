@@ -1,0 +1,71 @@
+page 20 (
+    name: Advanced
+    alias: ADVANCED
+    title: Advanced
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region advanced (
+        name: Advanced
+        type: list
+        source {
+            list: @advanced
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnCssClasses: [
+                col-lg-10
+                col-xl-8
+                col-xxl-8
+            ]
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                t-ContentBlock--lightBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: t-MediaList--showIcons
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 60
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

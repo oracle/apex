@@ -1,0 +1,672 @@
+page 401 (
+    name: REST Synchronization
+    alias: REST-SYNCHRONIZATION
+    title: REST Synchronization
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region api-key-not-provided (
+        name: API key Not  Provided
+        type: staticContent
+        source {
+            htmlCode: This page relies on a REST Data Source. You need to provide your own API key for <strong>themoviedb.org</strong>. Go to administration and set your own api key in the Manage web credentials page
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('TMDB_APIKEY') = 'NO'
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div >
+                  <p>
+                    This page demonstrates the integration of external RESTful data with local database tables, emphasizing the efficiency and flexibility of data synchronization.    The page utilizes a REST Data Source named <strong>EBA_REST_MOVIE_SYNCHRONIZATION</strong> to fetch data from an external movie database API.
+                
+                  </p>
+                  <p>
+                    This data is synchronized into a local table, <strong>EBA_DEMO_REST_MOVIES_SYNC</strong>, ensuring that the application benefits from faster data access and reduced latency.    By configuring the interactive report to use the synchronized table, the application achieves improved performance, especially when handling large datasets.
+                
+                  </p>
+                
+                  <p>
+                    <strong>Note: </strong> The <strong>Synchronize Data</strong> button on the page invokes the <strong>APEX_REST_SOURCE_SYNC.SYNCHRONIZE_DATA</strong> API, allowing users to refresh the local data on-demand.
+                    This approach ensures that the interactive report always displays the most up-to-date information without relying solely on scheduled synchronizations.
+                  </p>
+                </div>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region synchronization-results (
+        name: Synchronization Results
+        type: interactiveReport
+        source {
+            location: restSource
+            restSource: @eba_rest_movie_synchronization
+        }
+        restSynchronization {
+            useLocalTable: true
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                apex_app_setting.get_value('TMDB_APIKEY') =  'YES'
+                and exists (
+                  select 1
+                    from sys.user_tables
+                   where table_name = 'EBA_DEMO_REST_MOVIES_SYNC'
+                );
+                ```
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: Table contains no data yet. Please click the Synchronize Data button.
+        }
+        advanced {
+            savedReportMappingIdentifier: 7668113893224610
+        }
+
+        column ADULT (
+            type: hidden
+            heading {
+                heading: Adult
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column BACKDROP_PATH (
+            type: hidden
+            heading {
+                heading: Backdrop Path
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column GENRE_IDS (
+            type: plainText
+            heading {
+                heading: Genre Ids
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: CLOB
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: F
+            }
+            enableUsersTo {
+                sort: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column ORIGINAL_LANGUAGE (
+            type: plainText
+            heading {
+                heading: Original Language
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ORIGINAL_TITLE (
+            type: hidden
+            heading {
+                heading: Original Title
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column OVERVIEW (
+            type: plainText
+            heading {
+                heading: Overview
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column POPULARITY (
+            type: hidden
+            heading {
+                heading: Popularity
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column POSTER_PATH (
+            type: hidden
+            heading {
+                heading: Poster Path
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column RELEASE_DATE (
+            type: plainText
+            heading {
+                heading: Release Date
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column TITLE (
+            type: plainText
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 30
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column VIDEO (
+            type: plainText
+            heading {
+                heading: Video
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column VOTE_AVERAGE (
+            type: plainText
+            heading {
+                heading: Vote Average
+                alignment: end
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column VOTE_COUNT (
+            type: plainText
+            heading {
+                heading: Vote Count
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 77023 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ADULT (
+                sequence: 2
+            )
+
+            displayColumn BACKDROP_PATH (
+                sequence: 12
+            )
+
+            displayColumn GENRE_IDS (
+                sequence: 6
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn ORIGINAL_LANGUAGE (
+                sequence: 14
+            )
+
+            displayColumn ORIGINAL_TITLE (
+                sequence: 13
+            )
+
+            displayColumn OVERVIEW (
+                sequence: 5
+            )
+
+            displayColumn POPULARITY (
+                sequence: 7
+            )
+
+            displayColumn POSTER_PATH (
+                sequence: 9
+            )
+
+            displayColumn RELEASE_DATE (
+                sequence: 10
+            )
+
+            displayColumn TITLE (
+                sequence: 3
+            )
+
+            displayColumn VIDEO (
+                sequence: 4
+            )
+
+            displayColumn VOTE_AVERAGE (
+                sequence: 11
+            )
+
+            displayColumn VOTE_COUNT (
+                sequence: 8
+            )
+
+        )
+
+    )
+
+    region synchronization-table-doesnt-exists (
+        name: Synchronization Table Doesnt Exists
+        type: staticContent
+        source {
+            htmlCode: REST Synchronization requires a local table to exist, so please click the <strong>Create Table</strong> button to create it.
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Alert--accessibleHeading
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                apex_app_setting.get_value('TMDB_APIKEY') =  'YES'
+                and not exists (
+                  select 1
+                    from sys.user_tables
+                   where table_name = 'EBA_DEMO_REST_MOVIES_SYNC'
+                )
+                ```
+        }
+    )
+
+    button create-table (
+        buttonName: Create_Table
+        label: Create Table
+        layout {
+            sequence: 10
+            region: @synchronization-table-doesnt-exists
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 402
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 400
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button set-api-key (
+        buttonName: Set_API_Key
+        label: Set API Key
+        layout {
+            sequence: 10
+            region: @api-key-not-provided
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 503
+                items: {
+                    P304_SOURCE: 401
+                }
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button synchronize-data (
+        buttonName: Synchronize_Data
+        label: Synchronize Data
+        layout {
+            sequence: 10
+            region: @synchronization-results
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-refresh
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process create-table-synchronization-definiton (
+        name: Create Table Synchronization definiton
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                
+                
+                apex_rest_source_sync.synchronize_table_definition(
+                        p_module_static_id     => 'eba_rest_movie_synchronization',
+                        p_drop_unused_columns  => true 
+                );
+                  
+                
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Table created successfully.
+        }
+        error {
+            errorMessage: Sync table is not created.
+        }
+        advanced {
+            executionMappingIdentifier: 8731459953172133
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-table
+        }
+    )
+
+    process trigger-synchronization (
+        name: Trigger Synchronization
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    apex_rest_source_sync.synchronize_data(
+                        p_module_static_id   => 'eba_rest_movie_synchronization',
+                        p_run_in_background  => false,
+                        p_application_id     => :APP_ID
+                    );
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Data synchronized successfully.
+        }
+        error {
+            errorMessage: Error while triggering synchronization.
+        }
+        advanced {
+            executionMappingIdentifier: 7669847588224627
+        }
+        serverSideCondition {
+            whenButtonPressed: @synchronize-data
+        }
+    )
+
+)
+

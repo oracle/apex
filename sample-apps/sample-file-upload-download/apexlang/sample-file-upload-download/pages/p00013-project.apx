@@ -1,0 +1,1070 @@
+page 13 (
+    name: Project
+    alias: PROJECT
+    title: Project
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            table.uReport,
+            table.uReportContainer {
+              width: 100%;
+            }
+            table.uReportContainer {
+              margin-bottom: 8px;
+            }
+            
+            img.projectIcon {
+            max-width: 100%;
+            border-radius: 3px;
+            display: block;
+            margin-bottom: 16px;
+            }
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region application-features-demonstrated-on-this-page (
+        name: Application features demonstrated on this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><strong>This page shows how to:</strong>
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 80
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region display-a-download-link-in-a-file-browse-page-item (
+        name: Display a "Download" Link in a "File Browse" Page Item
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ul style="margin: 8px 24px;">
+                  <li>Create a "File Browse" page item with a storage type of "BLOB column specified in Item Source attribute" (e.g. P13_PROJECT_ICON)</li>
+                  <li>Ensure the page item's source has it's "Source Type" set to "Database Column" and it's "Source value or expression" value is the column name of the blob column in the table the file resides</li>
+                  <li>Ensure the "Settings" section's "Display Download Link" dropdown value is set to "Yes"</li>
+                  <li>Ensure the "Settings" section's "Download Link Text" text field is populated with text descriptive of the file that will be downloaded when clicked (e.g. "Download File")</li>
+                  <li>Ensure the "Settings" section's "Content Disposition" is set to "Attachment"</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/tabs-container
+            templateOptions: [
+                #DEFAULT#
+                t-TabsRegion-mod--simple
+            ]
+            cssClasses: infoTextRegion
+        }
+    )
+
+    region display-an-image-file-inline (
+        name: Display an Image File Inline
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ul style="margin: 8px 24px;">
+                  <li>Create a "Display Image" page item waith a "Based On" value of "BLOB Column specified in Item Source" (e.g. P13_ICON_IMG)</li>
+                  <li>Ensure the page item's source has it's "Source Type" set to "Database Column" and it's "Source value or expression" value is the column name of the blob column in the table the file resides</li>
+                  <li>Ensure the "Settings" section's "Alternative Text Column" value is column name that holds file comments (e.g. "ICON_COMMENTS")</li>
+                  <li>Ensure the "Settings" section's "Filename Column" value is the column name that holds filename (e.g. "ICON_NAME")</li>
+                  <li>Ensure the "Settings" section's "BLOB Last Updated Column" value is the column name that holds the file's last_updated_on value (e.g. "ICON_LAST_UPDATED")</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/tabs-container
+            templateOptions: [
+                #DEFAULT#
+                t-TabsRegion-mod--simple
+            ]
+            cssClasses: infoTextRegion
+        }
+    )
+
+    region file-upload (
+        name: File Upload
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @project
+            slot: subRegions
+        }
+    )
+
+    region project (
+        name: Project
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region project-attachments (
+        name: Project Attachments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    ID,
+                    FILENAME,
+                    FILE_MIMETYPE,
+                    FILE_CHARSET,
+                    FILE_BLOB,
+                    CREATED,
+                    CREATED_BY,
+                    UPDATED,
+                    UPDATED_BY,
+                    dbms_lob.getlength(file_blob) file_size,
+                    dbms_lob.getlength(file_blob) download
+                from EBA_DEMO_FILES
+                where project_id = :P13_ID
+                order by created desc
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @project
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P13_ID
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            partialPageRefresh: false
+        }
+        performance {
+            maxRowsToProcess: 100
+        }
+        messages {
+            whenNoDataFound: No files are attached to this project.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CREATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 8
+            }
+        )
+
+        column DOWNLOAD (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: downloadBlob
+            heading {
+                heading: Download
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                downloadText: Download
+            }
+            blobAttributes {
+                tableName: EBA_DEMO_FILES
+                blobColumn: FILE_BLOB
+                primaryKeyColumn1: ID
+                mimeTypeColumn: FILE_MIMETYPE
+                filenameColumn: FILENAME
+                lastUpdatedColumn: UPDATED
+                charSetColumn: FILE_CHARSET
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FILENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Filename
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 12
+                    items: {
+                        P12_ID: #ID#
+                    }
+                    clearCache: 12
+                }
+                linkText: #FILENAME#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FILE_BLOB (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column FILE_CHARSET (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column FILE_MIMETYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+        )
+
+        column FILE_SIZE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: File Size
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FILESIZE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 9
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+    )
+
+    region upload-a-file-to-the-wwv-flow-files-table (
+        name: Upload a file to the WWV_FLOW_FILES table
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ul style="margin: 8px 24px;">
+                  <li>Create a "File Browse" page item with a storage type of "Table APEX_APPLICATION_TEMP_FILES" (e.g. P13_FILE).  When APEX_APPLICATION_TEMP_FILES view used, Oracle Application Express automatically deletes the file at the end of the session or at the end of the upload request, depending on what you choose for Purge File At.</li>
+                  <li>If your application's files table has a description (or comments) column, add a textarea page item for capturing this information</li>
+                  <li>To move the file from the APEX_APPLICATION_TEMP_FILES view to your application's "files" table, create a PL/SQL page process.</li>
+                  <li>The process to move the record should select the necessary row from APEX_APPLICATION_TEMP_FILES view, insert that data into the application's "files" table (see "Upload file" process).</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/tabs-container
+            templateOptions: [
+                #DEFAULT#
+                t-TabsRegion-mod--simple
+            ]
+            cssClasses: infoTextRegion
+        }
+    )
+
+    pageItem P13_ASSIGNED_TO (
+        type: textField
+        label {
+            label: Assignee
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ASSIGNED_TO
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_BUDGET (
+        type: numberField
+        label {
+            label: Budget
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 100
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: BUDGET
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_COST (
+        type: numberField
+        label {
+            label: Cost
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 90
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COST
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_END_DATE (
+        type: datePicker
+        label {
+            label: End
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: END_DATE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_FILE (
+        type: fileUpload
+        label {
+            label: Upload File
+            alignment: left
+        }
+        storage {
+            type: appTempFiles
+        }
+        layout {
+            sequence: 130
+            region: @file-upload
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        advanced {
+            postText: <p><em>Attachments must be under 15M in size.</em></p>
+        }
+    )
+
+    pageItem P13_FILE_DESCRIPTION (
+        type: textarea
+        label {
+            label: File Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 140
+            region: @file-upload
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    pageItem P13_ICON_COMMENTS (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @project
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ICON_COMMENTS
+            used: always
+        }
+        default {
+            type: static
+            staticValue: Project Icon
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_ICON_IMG (
+        type: displayImage
+        label {
+            alignment: left
+        }
+        settings {
+            altTextColumn: ICON_COMMENTS
+            filenameColumn: ICON_NAME
+            blobLastUpdatedColumn: ICON_LAST_UPDATED
+        }
+        layout {
+            sequence: 115
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        advanced {
+            customAttributes: class="projectIcon"
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ICON_BLOB
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @project
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_PROJECT (
+        type: textField
+        label {
+            label: Project
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 40
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        advanced {
+            postText: &P13_ICON_IMG.
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PROJECT
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_PROJECT_ICON (
+        type: fileUpload
+        label {
+            label: Project Icon
+            alignment: left
+        }
+        display {
+            downloadLinkText: Download Icon Image
+        }
+        storage {
+            mimeTypeColumn: ICON_MIMETYPE
+            filenameColumn: ICON_NAME
+            charSetColumn: ICON_CHARSET
+            bobLastUpdatedColumn: ICON_LAST_UPDATED
+        }
+        layout {
+            sequence: 110
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        advanced {
+            postText: <p><em>Icons must be under 200K and a valid image file.</em></p>
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ICON_BLOB
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_START_DATE (
+        type: datePicker
+        label {
+            label: Start
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: START_DATE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_STATUS (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select distinct status d, status r from eba_demo_file_projects order by 1
+            displayNullValue: false
+        }
+        layout {
+            sequence: 70
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STATUS
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_TASK_NAME (
+        type: textField
+        label {
+            label: Task
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TASK_NAME
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 2
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Project
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P13_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P13_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P13_ID
+        }
+    )
+
+    process fetch-row-from-eba-demo-file-projects (
+        name: Fetch Row from EBA_DEMO_FILE_PROJECTS
+        type: autoRowFetch
+        source {
+            tableName: EBA_DEMO_FILE_PROJECTS
+            pkColumn: ID
+            pkItem: P13_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3241251503985344946
+        }
+    )
+
+    process process-row-of-eba-demo-file-projects (
+        name: Process Row of EBA_DEMO_FILE_PROJECTS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_DEMO_FILE_PROJECTS
+            pkColumn: ID
+            pkItem: P13_ID
+            returnKeyIntoItem: P13_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 3241251685876344946
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 3241251902589344946
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process upload-file (
+        name: Upload File
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    for c1 in (select *
+                               from apex_application_temp_files
+                               where name = :P13_FILE)
+                    loop
+                        insert into eba_demo_files (
+                            project_id,
+                            filename,
+                            file_blob,
+                            file_comments,
+                            file_mimetype)
+                        values (
+                            :P13_ID,
+                            c1.filename,
+                            c1.blob_content,
+                            :P13_FILE_DESCRIPTION,
+                            c1.mime_type);
+                    end loop;
+                
+                    :P13_FILE_DESCRIPTION := null;
+                    :P13_FILE  := null;
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: File uploaded.
+        }
+        error {
+            errorMessage: There was a problem encountered while uploading the file: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 3241471509176857356
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+            type: itemIsNotNull
+            item: P13_FILE
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+)
+

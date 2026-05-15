@@ -1,0 +1,930 @@
+page 1072 (
+    name: Send Reminders
+    alias: SEND-REMINDERS
+    title: Send Reminders
+    pageGroup: @invite
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region advanced (
+        name: Advanced
+        type: plSqlDynamicContent
+        source {
+            plsqlCode: sys.htp.p('<p>This application''s current FROM address is: <strong>' || apex_escape.html(:P1072_EMAIL_FROM) || '</strong>.  The email from address can be controlled by navigating to application administration.</p>');
+        }
+        layout {
+            sequence: 60
+            parentRegion: @reminder-invitations
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P1072_EMAIL_FROM
+        }
+    )
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region no-email-from (
+        name: No EMAIL_FROM
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                sys.htp.p('<div class="alertMessage  yellow">
+                    <img src="#IMAGE_PREFIX#f_spacer.gif" alt="Warning">
+                    <div class="innerMessage">
+                        <h3>Warning</h3>
+                        <p>Invitations cannot be sent because the EMAIL FROM address has not been defined.  Please contact an administrator.</p>
+                    </div>
+                </div>');
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P1072_EMAIL_FROM
+        }
+    )
+
+    region not-all-users-have-access (
+        name: Not all users have access
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                sys.htp.p('<div class="alertMessage  yellow">
+                    <img src="#IMAGE_PREFIX#f_spacer.gif" alt="Warning">
+                    <div class="innerMessage">
+                        <h3>Error</h3>
+                        <p>The following community members do not have access to the application.  They either need to be added as users or removed from the community before invitations can be sent.</p>
+                        <p><br/><strong>Users without Access</strong>: '|| apex_escape.html(:P1072_USERS_WO_ACCESS) ||'</p>
+                    </div>
+                </div>');
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P1072_USERS_WO_ACCESS
+        }
+    )
+
+    region pending-reponses-from-email-invitations (
+        name: Pending Reponses (from email invitations)
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select nvl(ci.community_name,'Individual Invitation') community_name,
+                       i.respondent_email,
+                       apex_util.get_since(i.created) email_sent,
+                       nvl((select 'Yes'
+                              from eba_qpoll_email_opt_out
+                             where respondent_id = i.respondent_id),'No') opted_out
+                  from eba_qpoll_comm_invites ci,
+                       eba_qpoll_invites i
+                 where ci.poll_id = :P1072_POLL_ID
+                   and ci.id = i.comm_invite_id
+                   and (:P1072_COMMUNITY_ID is null or
+                        nvl(ci.COMMUNITY_ID,0) = :P1072_COMMUNITY_ID)
+                   and i.email_sent = 'YES'
+                   and i.respondent_id not in
+                       (select respondent_id
+                          from eba_qpoll_results r
+                         where r.poll_id = :P1072_POLL_ID
+                           and r.IS_VALID_YN = 'Y')
+                order by ci.community_name, i.respondent_email
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @reminder-invitations
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-expanded
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 1500
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 1500
+        }
+        messages {
+            whenNoDataFound: None pending.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMMUNITY_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Community
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: itemIsNull
+                item: P1072_COMMUNITY_ID
+            }
+        )
+
+        column EMAIL_SENT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Email Sent
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OPTED_OUT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Opted Out
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RESPONDENT_EMAIL (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Invitee
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region reminder-invitations (
+        name: Reminder Invitations
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+        headerAndFooter {
+            headerText: <p>Reminders are only sent for invitations that were emailed.  Manual invitations cannot be sent reminders.</p>
+        }
+    )
+
+    pageItem P1072_COMMUNITY_ID (
+        type: selectList
+        label {
+            label: Community to Remind
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @communities-reminder-p
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        cascadingLov {
+            parentItems: P1072_POLL_ID
+        }
+        layout {
+            sequence: 30
+            region: @reminder-invitations
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        advanced {
+            customAttributes: style="width:300px;"
+        }
+        help {
+            helpText: Select the community of users that you wish to remind to take this poll.  The domain of communities is restricted to invited communities.  The number of non respondents are provided in the select list.
+        }
+    )
+
+    pageItem P1072_EMAIL_FROM (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @reminder-invitations
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P1072_OPTED_OUT (
+        type: hidden
+        layout {
+            sequence: 65
+            region: @reminder-invitations
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P1072_POLL_ID (
+        type: displayOnly
+        label {
+            label: Poll
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+        }
+        lov {
+            type: sharedComponent
+            lov: @active-and-staged-poles
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 20
+            region: @reminder-invitations
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            customAttributes: style="width:300px;"
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P1072_POLL_NAME (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @reminder-invitations
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P1072_PREVIEW_URL (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @reminder-invitations
+            slot: regionBody
+        }
+        source {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                apex_util.prepare_url( p_url => 'f?p='||:APP_ID||':57:'||:APP_SESSION||'::NO:57:P57_METHOD:REMINDER', 
+                                       p_checksum_type => 'SESSION', 
+                                       p_plain_url => TRUE)
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P1072_REMINDER_BODY (
+        type: textarea
+        label {
+            label: Email Body
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @reminder-invitations
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 8
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select nvl(reminder_body,'<p>Please take #POLL_LINK#.</p>
+                '||
+                           case when authentication_req_yn = 'N'
+                                then apex_lang.message('UNAUTH_MSG') end ||
+                '<p>Thanks in advance for your participation!</p>
+                <p>Best Regards,</p>
+                <p>The '||:APPLICATION_TITLE||' Team</p>') default_body
+                  from eba_qpoll_polls
+                 where id = :POLL_ID
+                ```
+        }
+        help {
+            helpText: Include html formatted content to be used as the body of the email reminding people to take your poll or quiz.  Make sure you include #POLL_LINK# in your text.  It will be replaced with a link to take the poll and will include the poll name.
+        }
+    )
+
+    pageItem P1072_REMINDER_COUNT (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @reminder-invitations
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P1072_REMINDER_SUBJECT (
+        type: textField
+        label {
+            label: Email Subject
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @reminder-invitations
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            maxLength: 255
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select nvl(reminder_subject,'Reminder: Please Share Your Opinion on '|| POLL_NAME)
+                  from eba_qpoll_polls
+                 where id = :POLL_ID
+                ```
+        }
+    )
+
+    pageItem P1072_USERS_WO_ACCESS (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @not-all-users-have-access
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button preview (
+        buttonName: PREVIEW
+        label: Preview
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button send (
+        buttonName: SEND
+        label: Send Reminders
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction disable-send-when-no-email-from (
+        name: Disable send when no EMAIL FROM
+        execution {
+            sequence: 30
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P1072_EMAIL_FROM
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: button
+                button: @send
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction preview-button (
+        name: Preview Button
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @preview
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null; -- to save session state
+                itemsToSubmit: [
+                    P1072_REMINDER_SUBJECT
+                    P1072_REMINDER_BODY
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: window.open($v('P1072_PREVIEW_URL'));
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-community-members-report (
+        name: Refresh Community Members Report
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P1072_COMMUNITY_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P1072_COMMUNITY_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @pending-reponses-from-email-invitations
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    validation application-from-address-is-valid (
+        name: Application From Address is valid
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM') = 'N/A' or instr(eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM'),'@example.com') > 0 then
+                    return false;
+                else
+                    return true;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: The "From" address that this application uses to send emails has been improperly configured. It either has not been defined or it is using an invalid domain name (e.g. it ends in "@example.com" when your server's domain name is NOT "example.com"). An application administrator must update the application's FROM address to resolve this problem.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+        }
+    )
+
+    validation email-body-contains-poll-link (
+        name: Email body contains #POLL_LINK#
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: instr(:P1072_REMINDER_BODY,'#POLL_LINK#') > 0
+        }
+        error {
+            errorMessage: You must include #POLL_LINK# in your Email Body.
+            associatedItem: @P1072_REMINDER_BODY
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+        }
+    )
+
+    validation subject-not-null (
+        name: subject not null
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P1072_REMINDER_SUBJECT
+        }
+        error {
+            errorMessage: You must provide a subject for your reminder emails.
+            associatedItem: @P1072_REMINDER_SUBJECT
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+        }
+    )
+
+    computation p1072-email-from (
+        itemName: P1072_EMAIL_FROM
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM')
+        }
+    )
+
+    computation p1072-poll-name (
+        itemName: P1072_POLL_NAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select
+                    poll_name
+                from
+                    eba_qpoll_polls
+                where
+                    id = :P1072_POLL_ID;
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P1072_POLL_ID
+        }
+    )
+
+    process record-and-send-reminders (
+        name: Record and Send Reminders
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_reminder_count   number := 0;
+                   l_opted_out        number := 0;
+                   l_page_link        number := 50;
+                   l_opted_out_yn     varchar2(1);
+                   l_has_responded_yn varchar2(1);
+                   l_just_sent_yn     varchar2(1);
+                   l_email_id         number;
+                
+                   l_poll_url         varchar2(4000);
+                   l_body             clob;
+                begin
+                
+                   -- save new defaults
+                   update eba_qpoll_polls
+                      set reminder_subject = :P1072_REMINDER_SUBJECT,
+                          reminder_body = :P1072_REMINDER_BODY
+                    where id = :POLL_ID;
+                   commit;
+                
+                   apex_collection.create_or_truncate_collection ('EMAILS_SENT');
+                
+                   for c1 in (
+                      select authentication_req_yn
+                        from eba_qpoll_polls
+                       where id = :P1072_POLL_ID
+                   ) loop
+                      if c1.authentication_req_yn = 'Y' then
+                         l_page_link := 500;
+                      else
+                         l_page_link := 50;
+                      end if;
+                   end loop;
+                
+                   for c1 in (
+                      select id comm_invite_id, community_id
+                        from eba_qpoll_comm_invites
+                       where (:P1072_COMMUNITY_ID is null or -- all 
+                              community_id = :P1072_COMMUNITY_ID or  -- selected community
+                              (:P1072_COMMUNITY_ID = 0 and community_id is null) )  -- individual invitees
+                         and poll_id = :P1072_POLL_ID 
+                   ) loop
+                
+                      -- find all invitations
+                      for c2 in (
+                         select i.respondent_id,
+                                r.name,
+                                i.respondent_email email
+                           from eba_qpoll_invites i,
+                                eba_qpoll_respondents r
+                          where i.comm_invite_id = c1.comm_invite_id
+                            and i.respondent_id = r.id
+                      ) loop
+                
+                         -- check if already responded
+                         l_has_responded_yn := 'N';
+                         for c3 in (
+                             select 1
+                               from eba_qpoll_results
+                              where poll_id = :P1072_POLL_ID
+                                and respondent_id = c2.respondent_id
+                         ) loop
+                           l_has_responded_yn := 'Y';
+                         end loop;
+                
+                         if l_has_responded_yn = 'N' then
+                
+                            -- check if opted out
+                            l_opted_out_yn  := 'N';
+                            for c3 in (
+                               select 1
+                                 from eba_qpoll_email_opt_out
+                                where respondent_id = c2.respondent_id
+                            ) loop
+                               l_opted_out_yn := 'Y';
+                            end loop;
+                
+                            -- check if email just sent
+                            l_just_sent_yn  := 'N';
+                            for c3 in (
+                               select 1
+                                 from apex_collections
+                                where collection_name = 'EMAILS_SENT'
+                                  and c001 = lower(c2.email)
+                            ) loop
+                               l_just_sent_yn := 'Y';
+                            end loop;
+                
+                            if l_opted_out_yn = 'N' and l_just_sent_yn = 'N' then
+                
+                               l_poll_url := '<a href="'||:APP_PATH||
+                                               APEX_UTIL.PREPARE_URL(p_url => 'f?p='||:APP_ID||':'||l_page_link||':::::LPOLL_ID,PID:' ||
+                                                                               :P1072_POLL_ID||','||c2.respondent_id,
+                                                                     p_checksum_type => '1',
+                                                                     p_plain_url => TRUE)||'">'|| :POLL_NAME ||'</a>';  -- :POLL_NAME is stored as an escaped value (no need to over-escape it)
+                                                                     
+                              l_body := replace(:P1072_REMINDER_BODY,'#POLL_LINK#',l_poll_url);
+                                  
+                              eba_qpoll_email.send (
+                                  p_app_id             => :APP_ID,
+                                  p_template_static_id => 'INVITE',
+                                  p_placeholders       => '{' || 
+                                                          '    "SUBJECT":'           || apex_json.stringify( :P1072_REMINDER_SUBJECT ) || 
+                                                          '   ,"APPLICATION_TITLE":' || apex_json.stringify( apex_escape.html(:APPLICATION_TITLE) ) || 
+                                                          '   ,"OPT_OUT_TEXT":'      || apex_json.stringify( apex_lang.message('OPT_OUT_TEXT', 
+                                                                                     :APP_PATH ||
+                                                                                     APEX_UTIL.PREPARE_URL(p_url => 'f?p=' ||:APP_ID || ':optout',
+                                                                                                           p_plain_url => TRUE),
+                                                                                     apex_escape.html(:APPLICATION_TITLE)) ) || 
+                                                          '   ,"BODY":'  || apex_json.stringify( l_body ) || 
+                                                          '}' , 
+                                  p_to                  => c2.email,
+                                  p_from                => eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM'),
+                                  p_cc                  => null,
+                                  p_poll_id             => :P1072_POLL_ID,
+                                  p_community_id        => c1.community_id,
+                                  p_respondent_id       => c2.respondent_id,
+                                  p_email_id            => l_email_id);
+                
+                               insert into eba_qpoll_invites
+                                  (comm_invite_id, respondent_id, respondent_email, 
+                                   email_sent, email_id)
+                               values
+                                  (c1.comm_invite_id, c2.respondent_id, lower(c2.email),
+                                   'REMINDER_SENT', l_email_id);
+                
+                               apex_collection.add_member(
+                                    p_collection_name => 'EMAILS_SENT',
+                                    p_c001            => lower(c2.email));
+                
+                               l_reminder_count := l_reminder_count + 1;
+                            else
+                               if l_opted_out_yn = 'Y' then 
+                                 l_opted_out := l_opted_out + 1; 
+                               end if; 
+                            end if;
+                         end if;
+                      end loop;
+                
+                   end loop;
+                
+                   :P1072_REMINDER_COUNT := l_reminder_count;
+                   :P1072_OPTED_OUT      := l_opted_out;
+                
+                   apex_collection.delete_collection (
+                      p_collection_name => 'EMAILS_SENT' );
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: &P1072_REMINDER_COUNT. reminders sent, &P1072_OPTED_OUT. opted out of email.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 14029748593488885350
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &LAST_VIEW.
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+        }
+    )
+
+)
+

@@ -1,0 +1,512 @@
+page 22 (
+    name: Access Requests
+    alias: ACCESS-REQUESTS
+    title: Access Requests
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+            t-Dialog--noPadding
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>Users without access can ask to be added.  Review and approve or decline requests.  Click column headings to filter and sort results. Click the <strong>Purge ></strong> button to purge accepted and declined access requests. Click the <strong>Reset</strong> button to reset the report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the report.</p>
+    }
+
+    region access-requests (
+        name: Access Requests
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    id,
+                    username,
+                    email_address,
+                    justification,
+                    status,
+                    actioned_by,
+                    actioned_reason,
+                    created,
+                    created_by,
+                    updated,
+                    updated_by,
+                    'action request' action_request
+                from EBA_QPOLL_ACCESS_REQUESTS
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No pending access requests found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            pivot: false
+            subscription: false
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        heading {
+            fixedTo: none
+        }
+        advanced {
+            savedReportMappingIdentifier: 907353526446864496
+        }
+
+        column ACTIONED_BY (
+            type: plainText
+            heading {
+                heading: Actioned By
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ACTIONED_REASON (
+            type: plainText
+            heading {
+                heading: Actioned Reason
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ACTION_REQUEST (
+            type: link
+            heading {
+                heading: Action
+            }
+            layout {
+                sequence: 13
+            }
+            link {
+                target: {
+                    page: 37
+                    items: {
+                        P37_ID: #ID#
+                    }
+                    clearCache: 37
+                    action: resetPagination
+                }
+                linkText: <span>Review Request</span>
+                linkAttributes: class="uButton uButtonAlt" style="text-decoration: none;"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: I
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column EMAIL_ADDRESS (
+            type: plainText
+            heading {
+                heading: Email Address
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column JUSTIFICATION (
+            type: plainText
+            heading {
+                heading: Justification
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: K
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column USERNAME (
+            type: plainText
+            heading {
+                heading: Username
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+            enableUsersTo {
+                pivot: false
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: eba_qpoll_fw.get_preference_value('USERNAME_FORMAT') = 'STRING'
+            }
+        )
+
+        savedReport 9073629 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ACTIONED_BY (
+                sequence: 5
+            )
+
+            displayColumn ACTIONED_REASON (
+                sequence: 6
+            )
+
+            displayColumn ACTION_REQUEST (
+                sequence: 1
+            )
+
+            displayColumn CREATED (
+                sequence: 7
+            )
+
+            displayColumn EMAIL_ADDRESS (
+                sequence: 2
+            )
+
+            displayColumn STATUS (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 8
+            )
+
+            displayColumn USERNAME (
+                sequence: 3
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: STATUS
+                value: pending
+            )
+
+        )
+
+    )
+
+    button purge (
+        buttonName: PURGE
+        label: Purge
+        layout {
+            sequence: 20
+            region: @access-requests
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 49
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @access-requests
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    RIR
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-on-edit (
+        name: Refresh on Edit
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @access-requests
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @access-requests
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-purge (
+        name: Refresh on Purge
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @purge
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @access-requests
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

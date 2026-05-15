@@ -1,0 +1,664 @@
+page 5 (
+    name: Add Toolbar Button
+    alias: ADD-TOOLBAR-BUTTON
+    title: Add Toolbar Button
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region add-toolbar-button (
+        name: Add Toolbar Button
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       DEPTNO,
+                       ONLEAVE,
+                       NOTES
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        componentAppearance {
+            showNullValuesAs: -
+            fixedRowHeight: false
+        }
+        pagination {
+            showTotalCount: false
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(config) {
+                    var $ = apex.jQuery,
+                        toolbarData = $.apex.interactiveGrid.copyDefaultToolbar(),
+                        // see the JavaScript API documentation for interactiveGrid widget toolbarData
+                        // type definition for a list of control group ids.
+                        lastToolbarGroup = toolbarData.toolbarFind("actions4"),
+                        createButton = {
+                            type: "BUTTON",
+                            hot: true,
+                            action: "create-employee"
+                        };
+                    lastToolbarGroup.controls.push( createButton );
+                    config.toolbarData = toolbarData;
+                    
+                    // this is how actions are added
+                    config.initActions = function(actions) {
+                        actions.add({
+                            name: "create-employee",
+                            // you could define the label directly as English text
+                            // label: "Create"
+                            // But better to use a message so it can be translated. In shared
+                            // components, text messages create MY_CREATE_BUTTON = Create and 
+                            // set Used in JavaScript: Yes
+                            labelKey: "MY_CREATE_BUTTON",
+                            // Use the URL stored in hidden P5_CREATE_URL to open a dialog.
+                            // This uses apex.theme42.dialog which is a universal theme specific wrapper
+                            // around apex.navigation.dialog. Note that the options are slightly 
+                            // different. You can determine what options to use by looking at what
+                            // APEX_PAGE.GET_URL returns when p_plain_url is false.
+                            action: function(event, focusElement, args) {
+                                apex.theme42.dialog( apex.items.P5_CREATE_URL.value, 
+                                    {
+                                        title:'Employee', // todo if this nees to be translated define a message
+                                        h:'auto',
+                                        w:'720',
+                                        mxw:'960',
+                                        modal:true,
+                                        dialog:null,
+                                        dlgCls:'t-Dialog-page--standard'
+                                    }, "", focusElement );
+                                return true;
+                            }            
+                        });
+                    }
+                    return config;
+                }
+                ```
+        }
+        advanced {
+            savedReportMappingIdentifier: 1948013866419196085
+        }
+
+        savedReport 14441 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 76
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 127
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    width: 123
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 107
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 85
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    width: 87
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    width: 56
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 55
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    width: 165
+                    sequence: 10
+                }
+            )
+
+            sort (
+                column: @ENAME
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Comm
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select dname, deptno 
+                    from eba_demo_ig_dept
+                    ```
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 20
+            }
+            validation {
+                maxLength: 60
+            }
+            link {
+                target: {
+                    page: 400
+                    items: {
+                        P400_EMPNO: &EMPNO.
+                    }
+                    action: resetPagination
+                }
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: textField
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 30
+            }
+            validation {
+                maxLength: 9
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ename, empno 
+                    from eba_demo_ig_emp
+                    ```
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textField
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 100
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ONLEAVE (
+            type: switch
+            heading {
+                heading: On Leave
+            }
+            layout {
+                sequence: 90
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-add-toolbar-button (
+        name: Overview: Add Toolbar Button
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>You may have noticed that with Interactive Grid regions there is no "RIGHT OF INTERACTIVE REPORT SEARCH BAR"
+                    display position to add buttons to. Instead Interactive Grid gives you full control over customizing its toolbar.
+                    However, doing so is a little more complicated. This example will add a Create button to the toolbar,
+                    which is a common pattern for Interactive Reports. The Create button as well as links on the ENAME column will
+                    open an APEX modal page to create, edit, or delete an Employee. This can be useful if you want to take advantage of the
+                    features of Interactive Grid such as frozen columns while keeping the existing editing pattern.
+                </p>
+                <p>Customizing the toolbar is an advanced configuration setting. The attribute Advanced: Initialization JavaScript Function 
+                    is used to specify a function that can add or change configuration options. Take a look at that attribute. 
+                    Interactive Grid uses the toolbar widget which in turn uses actions. These are the same actions that the APEX menu can use
+                    to support keyboard shortcuts. This example adds a Create button to the last toolbar group and associates it with a
+                    new create-employee action. The tricky part about opening an APEX dialog is that the URL must be generated by the server. 
+                    The APEX_PAGE.GET_URL API is used to put the URL in the P5_CREATE_URL hidden item and that is used by the create-employee
+                    action in a call to Universal Theme function apex.theme42.dialog.
+                </p>
+                <p>A few things to note about the Dialog Closed dynamic action: The success message from the dialog is shown
+                    with the apex.message.showPageSuccess API.
+                    Previously this was not possible without refreshing the whole page. It uses the new API to refresh any region,
+                    although the trigger apexrefresh event method also still works.</p>
+                <p>See the APEX JavaScript API reference for details.</p>
+                <p>Note: Versions of this sample app prior to 24.1 used a different techique for the create button action.
+                    With the latest Universal Theme buttons no longer have an onclick attribute.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P5_CREATE_URL (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @add-toolbar-button
+            slot: regionBody
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                begin
+                    return apex_page.get_url (
+                            p_page   => 400,
+                            p_clear_cache  => '400',
+                            p_plain_url => true );
+                end;
+                ```
+            used: always
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 6
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+                action: resetPagination
+            }
+        }
+    )
+
+    dynamicAction dialog-closed (
+        name: Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @add-toolbar-button
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // make sure it is the dialog we are expecting that closed
+                    if ( this.data.dialogPageId  === 400 ) {
+                        if ( this.data.successMessage ) {
+                            // use this API to show the success message if any that came from the dialog
+                            apex.message.showPageSuccess(this.data.successMessage.text);
+                        }
+                        // refresh the region to pick up any changes made by the dialog that just closed
+                        apex.region("emp").refresh();
+                    }
+                    
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

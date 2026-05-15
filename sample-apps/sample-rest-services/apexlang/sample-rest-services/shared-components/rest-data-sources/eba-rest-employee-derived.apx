@@ -1,0 +1,180 @@
+restDataSource eba_rest_employee_derived (
+    name: EBA_REST_EMPLOYEE_DERIVED
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /data/emp
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_EMPLOYEE_DERIVED
+        rowSelector: items
+    }
+
+    dataProfileColumn apex-row-sync-timestamp (
+        columnName: APEX_ROW_SYNC_TIMESTAMP
+        source {
+            sequence: 90
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: "\"apex$row_sync_timestamp\""
+        }
+        advanced {
+            sourceDataType: null
+        }
+    )
+
+    dataProfileColumn apex-sync-step-static-id (
+        columnName: APEX_SYNC_STEP_STATIC_ID
+        source {
+            sequence: 100
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: "\"apex$sync_step_static_id\""
+        }
+        advanced {
+            sourceDataType: null
+        }
+    )
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 40
+            dataType: number
+        }
+        parsing {
+            pathExpression: comm
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 70
+            dataType: number
+        }
+        parsing {
+            pathExpression: deptno
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 50
+            dataType: number
+        }
+        parsing {
+            pathExpression: empno
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 60
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: ename
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn full-salary (
+        columnName: Full Salary
+        source {
+            sequence: 85
+            type: sqlExpression
+            dataType: number
+        }
+        settings {
+            filterable: false
+        }
+        computation {
+            sqlExpression: SAL + COALESCE(COMM, 0)
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 80
+            dataType: timestampWithTimeZone
+        }
+        parsing {
+            pathExpression: hiredate
+            formatMask: YYYY"-"MM"-"DD"T"HH24":"MI:SS.FF9TZR
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 10
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: job
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 20
+            dataType: number
+        }
+        parsing {
+            pathExpression: mgr
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 30
+            dataType: number
+        }
+        parsing {
+            pathExpression: sal
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+)
+

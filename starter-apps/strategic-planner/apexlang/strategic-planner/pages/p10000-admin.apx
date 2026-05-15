@@ -1,0 +1,1171 @@
+page 10000 (
+    name: Administration
+    alias: ADMIN
+    title: Administration
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            <p>The administration page allows application owners (Administrators) to configure the application and maintain common data used across the application.
+            By selecting one of the available settings, administrators can potentially change how the application is displayed and/or features available to the end users.</p>
+            <p>Access to this page should be limited to Administrators only.</p>
+            ```
+    }
+
+    region access-control (
+        name: Access Control
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @access-control-content
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        config {
+            buildOption: @access-control
+        }
+    )
+
+    region access-control-actions (
+        name: Access Control Actions
+        type: list
+        source {
+            list: @admin-access-control
+        }
+        layout {
+            sequence: 20
+            parentRegion: @access-control
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+            ]
+        }
+    )
+
+    region access-control-content (
+        name: Access Control Content
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @column
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region acl-information (
+        name: ACL Information
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_acl_scope varchar2(45);
+                begin
+                    l_acl_scope := apex_app_setting.get_value( p_name => 'ACCESS_CONTROL_SCOPE' );
+                
+                    if l_acl_scope = 'ALL_USERS' then
+                        sys.htp.p( apex_lang.message('APEX.FEATURE.ACL.INFO.ALL_USERS') );
+                    elsif l_acl_scope = 'ACL_ONLY' then
+                        sys.htp.p( apex_lang.message('APEX.FEATURE.ACL.INFO.ACL_ONLY') );
+                    else
+                        sys.htp.p( apex_lang.message('APEX.FEATURE.ACL.INFO.ACL_VALUE_INVALID', l_acl_scope) );
+                    end if;
+                end;
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @access-control
+            slot: regionBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--noIcon
+                t-Alert--warning
+                t-Alert--accessibleHeading
+            ]
+            cssClasses: margin-sm
+        }
+    )
+
+    region administration (
+        name: Administration
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region approval-options (
+        name: Approval Options
+        type: list
+        source {
+            list: @admin-approval-options
+        }
+        layout {
+            sequence: 75
+            parentRegion: @column-2
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        config {
+            buildOption: @approvals
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+            ]
+        }
+    )
+
+    region column (
+        name: Column 1
+        type: staticContent
+        layout {
+            sequence: 180
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region column-2 (
+        name: Column 2
+        type: staticContent
+        layout {
+            sequence: 190
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region configuration (
+        name: Configuration
+        type: list
+        source {
+            list: @admin-configuration
+        }
+        layout {
+            sequence: 85
+            parentRegion: @column-2
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+            ]
+        }
+    )
+
+    region feedback (
+        name: Feedback
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @column
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        config {
+            buildOption: @feedback
+        }
+    )
+
+    region feedback-2 (
+        name: Feedback
+        type: list
+        source {
+            list: @feedback
+        }
+        layout {
+            sequence: 100
+            parentRegion: @feedback
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+            ]
+        }
+    )
+
+    region look-up-values (
+        name: Look Up Values
+        type: list
+        source {
+            list: @admin-lookup-values
+        }
+        layout {
+            sequence: 65
+            parentRegion: @column-2
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+            ]
+        }
+    )
+
+    region monitoring (
+        name: Monitoring
+        type: list
+        source {
+            list: @admin-monitoring
+        }
+        layout {
+            sequence: 80
+            parentRegion: @column
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+            ]
+        }
+    )
+
+    region nomenclature-project-interactions (
+        name: &NOMENCLATURE_PROJECT. Interactions
+        type: list
+        source {
+            list: @admin-project-interactions
+        }
+        layout {
+            sequence: 90
+            parentRegion: @column
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+            ]
+        }
+    )
+
+    region notifications (
+        name: Notifications
+        type: list
+        source {
+            list: @admin-notifications
+        }
+        layout {
+            sequence: 110
+            parentRegion: @column
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+            ]
+        }
+    )
+
+    region report (
+        name: Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select l.display_value feedback_status, 
+                (select count(*) from apex_team_feedback f where f.application_id = :APP_ID and f.feedback_status = l.return_value) feedback_count 
+                from apex_application_lov_entries l
+                where l.application_id = :APP_ID
+                and l.list_of_values_name = 'FEEDBACK_STATUS'
+                order by 2 desc, 1
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @feedback
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+                t-Region--noPadding
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-row
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column FEEDBACK_COUNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Feedback Count
+            }
+            layout {
+                sequence: 2
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FEEDBACK_STATUS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Feedback Status
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region user-counts-report (
+        name: User Counts Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.role_name, (select count(*) from apex_appl_acl_user_roles ur where r.role_id = ur.role_id) user_count, r.role_id
+                from apex_appl_acl_roles r
+                where r.application_id = :APP_ID
+                group by r.role_name, r.role_id
+                order by 2 desc, 1
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @access-control
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+                t-Region--noPadding
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-row
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column ROLE_ID (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Role Id
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROLE_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Role Name
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_COUNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: User Count
+            }
+            layout {
+                sequence: 2
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region utilities (
+        name: Utilities
+        type: list
+        source {
+            list: @admin-utilities
+        }
+        layout {
+            sequence: 100
+            parentRegion: @column
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region warning (
+        name: Warning
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_user_not_people_cnt   number;
+                    l_people_not_users_cnt  number;
+                begin
+                    select count(*) cnt
+                      into l_user_not_people_cnt
+                      from APEX_APPL_ACL_USERS
+                     where APPLICATION_ID = :APP_ID
+                       and user_name_lc not in (select lower(email)
+                                                  from SP_TEAM_MEMBERS);
+                
+                    select count(*) cnt
+                      into l_people_not_users_cnt
+                      from SP_TEAM_MEMBERS
+                     where lower(email) not in (select user_name_lc
+                                                  from APEX_APPL_ACL_USERS
+                                                 where APPLICATION_ID = :APP_ID);
+                
+                    if l_user_not_people_cnt > 0 or l_people_not_users_cnt > 0 then
+                       sys.htp.p('Please note:<br/>');
+                    end if;
+                
+                    if l_user_not_people_cnt > 0 then
+                       sys.htp.p('<a href="'||apex_util.prepare_url(
+                                              p_url => 'f?p='||:APP_ID||':10015:'||:APP_SESSION||'::NO:CIR,RIR',
+                                              p_checksum_type => '3' )||'">'||l_user_not_people_cnt||'</a>');
+                    end if;
+                    if l_user_not_people_cnt = 1 then
+                       sys.htp.p(' User is not registered as a '||:NOMENCLATURE_USER||' within this application');
+                    elsif l_user_not_people_cnt > 1 then
+                       sys.htp.p(' Users are not registered as '||:NOMENCLATURE_USERS||' within this application');
+                    end if;
+                
+                    if l_user_not_people_cnt > 0 and l_people_not_users_cnt > 0 then
+                       sys.htp.p('<br/>');
+                    end if;
+                
+                    if l_people_not_users_cnt > 0 then
+                       sys.htp.p('<a href="'||apex_util.prepare_url(
+                                              p_url => 'f?p='||:APP_ID||':10016:'||:APP_SESSION||'::NO:CIR,RIR',
+                                              p_checksum_type => '3' )||'">'||l_people_not_users_cnt||'</a>');
+                    end if;
+                    if l_people_not_users_cnt = 1 then
+                       sys.htp.p(' '||:NOMENCLATURE_USER ||' is not defined as a User within this application');
+                    elsif l_people_not_users_cnt > 1 then
+                       sys.htp.p(' '||:NOMENCLATURE_USERS || ' are not defined as Users within this application');
+                    end if;
+                end;
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @access-control
+            slot: regionBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--noIcon
+                t-Alert--warning
+                t-Alert--accessibleHeading
+            ]
+            cssClasses: margin-sm
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from APEX_APPL_ACL_USERS
+                 where APPLICATION_ID = :APP_ID
+                   and user_name_lc not in (select lower(email)
+                                              from SP_TEAM_MEMBERS)
+                union all
+                select 1
+                  from SP_TEAM_MEMBERS
+                 where lower(email) not in (select user_name_lc
+                                              from APEX_APPL_ACL_USERS
+                                             where APPLICATION_ID = :APP_ID)
+                ```
+        }
+    )
+
+    pageItem P10000_ACTIVITY_TYPES (
+        type: hidden
+        layout {
+            sequence: 10
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_COMPETENCIES (
+        type: hidden
+        layout {
+            sequence: 30
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_COUNTRIES (
+        type: hidden
+        layout {
+            sequence: 60
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_DEFAULT_TAGS (
+        type: hidden
+        layout {
+            sequence: 130
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_FOCUS_AREAS (
+        type: hidden
+        layout {
+            sequence: 150
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_PROJECT_PRIORITIES (
+        type: hidden
+        layout {
+            sequence: 80
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_PROJECT_SIZES (
+        type: hidden
+        layout {
+            sequence: 90
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_PROJECT_STATUSES (
+        type: hidden
+        layout {
+            sequence: 120
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_PROJECT_STATUS_SCALES (
+        type: hidden
+        layout {
+            sequence: 70
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_REL_MILESTONE_TYPES (
+        type: hidden
+        layout {
+            sequence: 170
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_RESOURCE_TYPES (
+        type: hidden
+        layout {
+            sequence: 40
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_RM_DEFAULT_TAGS (
+        type: hidden
+        layout {
+            sequence: 140
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_SYSTEM_NOTIFICATIONS (
+        type: hidden
+        layout {
+            sequence: 160
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_TASK_STATUSES (
+        type: hidden
+        layout {
+            sequence: 110
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_TASK_TYPES (
+        type: hidden
+        layout {
+            sequence: 100
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_TEAM_MBR_DEFAULT_TAGS (
+        type: hidden
+        layout {
+            sequence: 50
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10000_USER_COUNTS (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @access-control-actions
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button add-user (
+        buttonName: ADD_USER
+        label: Add User
+        layout {
+            sequence: 10
+            region: @access-control
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-user-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10012
+                clearCache: 10012
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @administration
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-report (
+        name: Refresh Report
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @add-user
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @user-counts-report
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p10000-activity-types (
+        itemName: P10000_ACTIVITY_TYPES
+        execution {
+            sequence: 140
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from sp_activity_types
+        }
+    )
+
+    computation p10000-competencies (
+        itemName: P10000_COMPETENCIES
+        execution {
+            sequence: 170
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from SP_COMPETENCIES
+        }
+    )
+
+    computation p10000-countries (
+        itemName: P10000_COUNTRIES
+        execution {
+            sequence: 90
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(distinct country_code) from SP_COUNTRIES
+        }
+    )
+
+    computation p10000-default-tags (
+        itemName: P10000_DEFAULT_TAGS
+        execution {
+            sequence: 60
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from SP_DEFAULT_TAGS
+        }
+    )
+
+    computation p10000-focus-areas (
+        itemName: P10000_FOCUS_AREAS
+        execution {
+            sequence: 80
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from SP_INITIATIVE_FOCUS_AREAS
+        }
+    )
+
+    computation p10000-project-priorities (
+        itemName: P10000_PROJECT_PRIORITIES
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from SP_PROJECT_PRIORITIES
+        }
+    )
+
+    computation p10000-project-sizes (
+        itemName: P10000_PROJECT_SIZES
+        execution {
+            sequence: 130
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) c from SP_PROJECT_SIZES
+        }
+    )
+
+    computation p10000-project-status-scales (
+        itemName: P10000_PROJECT_STATUS_SCALES
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from SP_PROJECT_SCALES
+        }
+    )
+
+    computation p10000-project-statuses (
+        itemName: P10000_PROJECT_STATUSES
+        execution {
+            sequence: 110
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from sp_project_statuses;
+        }
+    )
+
+    computation p10000-rel-milestone-types (
+        itemName: P10000_REL_MILESTONE_TYPES
+        execution {
+            sequence: 160
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from sp_release_milestone_types
+        }
+    )
+
+    computation p10000-resource-types (
+        itemName: P10000_RESOURCE_TYPES
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from SP_RESOURCE_TYPES
+        }
+    )
+
+    computation p10000-rm-default-tags (
+        itemName: P10000_RM_DEFAULT_TAGS
+        execution {
+            sequence: 70
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from sp_release_milestone_default_tags
+        }
+    )
+
+    computation p10000-system-notifications (
+        itemName: P10000_SYSTEM_NOTIFICATIONS
+        execution {
+            sequence: 20
+        }
+        computation {
+            sqlQuery: select count(*) from SP_APPLICATION_NOTIFICATIONS where IS_ACTIVE_YN = 'Y'
+        }
+    )
+
+    computation p10000-task-statuses (
+        itemName: P10000_TASK_STATUSES
+        execution {
+            sequence: 100
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from sp_task_statuses;
+        }
+    )
+
+    computation p10000-task-types (
+        itemName: P10000_TASK_TYPES
+        execution {
+            sequence: 120
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from sp_task_types;
+        }
+    )
+
+    computation p10000-team-mbr-default-tags (
+        itemName: P10000_TEAM_MBR_DEFAULT_TAGS
+        execution {
+            sequence: 30
+        }
+        computation {
+            sqlQuery: select count(*) from SP_DEFAULT_PEOPLE_TAGS
+        }
+    )
+
+    computation p10000-user-counts (
+        itemName: P10000_USER_COUNTS
+        execution {
+            sequence: 180
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                  l_counts  varchar2(4000);
+                begin
+                
+                for c1 in (
+                    select r.role_name, 
+                           (select count(*) from apex_appl_acl_user_roles ur where r.role_id = ur.role_id) user_count
+                      from apex_appl_acl_roles r
+                     where r.application_id = :APP_ID
+                     group by r.role_name, r.role_id
+                     order by 2 desc, 1
+                ) loop
+                    if l_counts is not null then
+                        l_counts := l_counts ||', ';
+                    end if;
+                    l_counts := l_counts || to_char(c1.user_count,'999G999G999G999G999G999G990') ||' '|| c1.role_name ||
+                                case when c1.user_count != 1 
+                                     then 's'
+                                     end;
+                end loop;
+                
+                return l_counts;
+                
+                end;
+                ```
+        }
+    )
+
+)
+

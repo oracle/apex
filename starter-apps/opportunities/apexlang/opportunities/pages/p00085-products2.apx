@@ -1,0 +1,547 @@
+page 85 (
+    name: Products
+    alias: PRODUCTS2
+    title: Products
+    pageGroup: @opportunities
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>
+                To edit a product, click the <strong>Edit</strong> icon (pencil) next to the product. Click the <strong>Add Product</strong> button to assign a new product to the opportunity. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.
+            </p>
+            ```
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region products (
+        name: Products
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    dp.id,
+                    dp.deal_id,
+                    dp.quote_price,
+                    dp.tcv,
+                    dp.term,
+                    dp.close_date,
+                    dp.qtr,
+                    p.product_name product,
+                    dp.DEAL_PROD_DESCRIPTION description,
+                    dp.created, 
+                    lower(dp.created_by) created_by,
+                    p.product_family_id
+                  from EBA_SALES_DEAL_PRODUCTS dp,
+                       EBA_SALES_PRODUCTS p,
+                       EBA_SALES_PRODUCT_FAMILIES f
+                 where dp.deal_id = :P85_ID 
+                   and dp.product_id = p.id
+                   and p.product_family_id = f.id (+)
+                 order by dp.updated desc
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToYOfZ
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2393948711650169884
+        }
+
+        column CLOSE_DATE (
+            type: plainText
+            heading {
+                heading: Close Date
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: N
+            }
+            config {
+                buildOption: @product-level-close-dates
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Added
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column DEAL_ID (
+            type: hidden
+            heading {
+                heading: Deal ID
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ID (
+            type: link
+            heading {
+                heading: Edit
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 108
+                    items: {
+                        P108_ID: #ID#
+                    }
+                    clearCache: 108
+                    action: resetPagination
+                }
+                linkText: <span class="fa fa-edit" aria-hidden="true"></span>
+                linkAttributes: title="Edit #PRODUCT#"
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        column PRODUCT (
+            type: plainText
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PRODUCT_FAMILY_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Family
+            }
+            lov {
+                lov: @product-families
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column QTR (
+            type: plainText
+            heading {
+                heading: Quarter
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+            config {
+                buildOption: @product-level-close-dates
+            }
+        )
+
+        column QUOTE_PRICE (
+            type: plainText
+            heading {
+                heading: Amount/ARR
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column TCV (
+            type: plainText
+            heading {
+                heading: Total Contract Value
+                alignment: end
+            }
+            layout {
+                sequence: 120
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column TERM (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Contract Term
+            }
+            lov {
+                lov: @terms-num-months-return-value
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        savedReport 23939567 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CREATED (
+                sequence: 10
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 9
+            )
+
+            displayColumn DESCRIPTION (
+                sequence: 4
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn PRODUCT (
+                sequence: 2
+            )
+
+            displayColumn PRODUCT_FAMILY_ID (
+                sequence: 3
+            )
+
+            displayColumn QTR (
+                sequence: 8
+            )
+
+            displayColumn QUOTE_PRICE (
+                sequence: 5
+            )
+
+            displayColumn TCV (
+                sequence: 6
+            )
+
+            displayColumn TERM (
+                sequence: 7
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: PRODUCT
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P85_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @products
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-product (
+        buttonName: ADD_PRODUCT
+        label: Add Product
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 108
+                items: {
+                    P108_DEAL_ID: &P85_ID.
+                    P85_ID: &P85_ID.
+                }
+                clearCache: 108
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @products
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 85
+                clearCache: RIR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dialog-closed (
+        name: Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Action Processed.');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @products
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

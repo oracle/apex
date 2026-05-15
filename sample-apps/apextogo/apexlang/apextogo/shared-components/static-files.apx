@@ -1,0 +1,405 @@
+file background.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "category/category-1.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-10.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-2.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-3.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-4.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-5.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-6.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-7.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-8.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "category/category-9.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "css/apextogo.css" (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file "css/apextogo.min.css" (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file "icons/app-icon-144-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-256-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "item/brownie.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/burger.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/chicken.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/coffee.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/dumplin.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/eggs.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/fruits.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/hotcake.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/icecream.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/latte.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/pasta.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/pizza.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/poke.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/salad.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/salmon.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/seafood.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/shrimp.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/soup.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/steak.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/sushi.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/taco.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/vada.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/wrap.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "item/yogurt.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "js/apextogo.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "js/apextogo.min.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "orders/order-progress.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "orders/past-order.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/screenshot-1.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/screenshot-2.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/screenshot-3.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/screenshot-4.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-10.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-30.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-40.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "restaurant/apex-mex-grill.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/apexquisite-delights.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/apextraordinary-fare.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/bytestart-breakfast-nook.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/oracool-cafe.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/oraculicious-cuisine.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-1.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-10.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-11.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-2.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-3.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-4.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-5.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-6.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-7.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-8.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/restaurant-hero-9.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/sql-paradise.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/sql-sushi-grill.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/sqlicious-bistro.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/sqlovely-diner.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "restaurant/sqltastic-grill.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "slides/slide-1.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "slides/slide-2.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "slides/slide-3.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "splash/splash-1.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "splash/splash-2.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "splash/splash-3.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+

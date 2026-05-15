@@ -1,0 +1,1970 @@
+page 100 (
+    name: Opportunities
+    alias: HOME
+    title: Opportunities
+    pageGroup: @home
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <h2>About this Application</h2>
+            <p>
+            	Manage opportunities, track leads, manage accounts and contacts. Opportunities are organized by territory and account. For each opportunity you can track products, competition, team members, and add hypertext links and file attachments. Use interactive reports to slice and dice your pipeline. You can upload leads from spreadsheets and convert leads to opportunities.
+            </p>
+            ```
+    }
+
+    region acl-warning (
+        name: ACL Warning
+        type: plugin/aclWarning
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: EBA_sales_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'N'
+        }
+        settings {
+            administrationPageLink: {
+                page: SETTINGS
+                action: resetPagination
+            }
+        }
+    )
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+    )
+
+    region home (
+        name: Home
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region notifications (
+        name: Notifications
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                decode(lower(NOTIFICATION_TYPE),'yellow','warning','red','danger',lower(NOTIFICATION_TYPE)) as ALERT_TYPE,
+                    NOTIFICATION_NAME as ALERT_TITLE,
+                    NOTIFICATION_DESCRIPTION as ALERT_DESC,
+                    '' alert_action
+                  from EBA_SALES_NOTIFICATIONS
+                 where (DISPLAY_FROM is null or DISPLAY_FROM <= current_date) and
+                       (DISPLAY_UNTIL is null or DISPLAY_UNTIL >= current_date)
+                 order by nvl(DISPLAY_SEQUENCE,0),NOTIFICATION_NAME
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from EBA_SALES_NOTIFICATIONS
+                 where (DISPLAY_FROM is null or DISPLAY_FROM <= current_date) and
+                       (DISPLAY_UNTIL is null or DISPLAY_UNTIL >= current_date)
+                ```
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/alerts
+            templateOptions: #DEFAULT#
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ALERT_ACTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Alert action
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_DESC (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Alert desc
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TITLE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Alert title
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Alert type
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region open-leads-by-status (
+        name: Open Leads by Status
+        type: chart
+        layout {
+            sequence: 110
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: i-h400
+            renderComponents: belowContent
+        }
+        config {
+            buildOption: @leads
+        }
+        chartLayout {
+            height: 330
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showValue: false
+        }
+        legend {
+            show: false
+        }
+
+        series leads-by-status (
+            name: Leads by status
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select slsc.status_code,
+                      slsc.display_order,
+                      count(*) cnt
+                    from eba_sales_leads sl
+                    join eba_sales_lead_status_codes slsc
+                      on sl.lead_status_id = slsc.id
+                    where sl.lead_status_id not in (1, 5)
+                    group by slsc.status_code,
+                      slsc.display_order
+                    order by slsc.display_order
+                    ```
+            }
+            columnMapping {
+                label: STATUS_CODE
+                value: CNT
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region opportunities (
+        name: Opportunities
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in ( select preference_value
+                            from eba_sales_preferences
+                            where preference_name = 'APPLICATION_SUBTITLE'
+                            union all
+                            select 'Manage Opportunities'
+                            from dual
+                            where not exists ( select null
+                                               from eba_sales_preferences
+                                               where preference_name = 'APPLICATION_SUBTITLE')
+                          ) loop
+                    sys.htp.p('<p>'||apex_escape.html(c1.preference_value)||'</p>');
+                end loop;
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                #DEFAULT#
+            ]
+            icon: app-opportunity-tracker
+        }
+    )
+
+    region opportunity-pipeline (
+        name: Opportunity Pipeline
+        type: chart
+        layout {
+            sequence: 130
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: i-h400
+            renderComponents: belowContent
+        }
+        config {
+            buildOption: @show-opportunity-pipeline-on-home-page
+        }
+        chart {
+            type: funnel
+        }
+        chartLayout {
+            height: 330
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        value {
+            format: decimal
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series opportunity-pipeline (
+            name: Opportunity Pipeline
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select sdsc.status_code,
+                      sdsc.corresponding_prob_pct,
+                      count(*) cnt
+                    from eba_sales_deals sd
+                    join eba_sales_deal_status_codes sdsc
+                      on sd.deal_status_code_id = sdsc.id
+                    where sdsc.corresponding_prob_pct != 0
+                    group by sdsc.status_code,
+                      sdsc.corresponding_prob_pct
+                    order by sdsc.corresponding_prob_pct
+                    ```
+            }
+            columnMapping {
+                label: STATUS_CODE
+                value: CNT
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region revenue-by-product-family (
+        name: Revenue By Product Family
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+        chart {
+            type: pie
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series revenue-by-product-family (
+            name: Revenue By Product Family
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select
+                           sum(case 
+                               when :OPP_SET_PROD_LEV_BO = 'Include' then
+                                   case when dp.term is null then nvl(dp.quote_price, 0) else nvl(dp.quote_price, 0) * dp.term/12 end
+                           else
+                                   d.deal_amount
+                           end) as revenue,
+                           pf.product_family
+                      from eba_sales_deal_products dp,
+                           eba_sales_products p,
+                           eba_sales_product_families pf,
+                           eba_sales_deals d
+                     where dp.product_id = p.id
+                       and dp.deal_id = d.id
+                       and p.product_family_id = pf.id
+                       and (
+                               nvl(:P100_FY_PCD, 0) = 0
+                               or
+                               instr(dp.qtr, :P100_FY_PCD) > 0
+                           )
+                       and (
+                               :P100_QUARTER is null
+                               or
+                               instr(:P100_QUARTER, substr(dp.qtr,1,2)) > 0
+                           )
+                       and (
+                               nvl(:P100_SALES_MGR_ID, 0) = 0
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_01 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_02 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_03 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_04 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                           )
+                       and (
+                               :P100_TERRITORY_ID is null
+                               or exists
+                               (select null from eba_sales_customers a, eba_sales_territories t where d.customer_id = a.id and dp.deal_id = d.id and dp.product_id = p.id and p.product_family_id = pf.id and a.customer_territory_id = :P100_TERRITORY_ID)
+                           )
+                     group by pf.product_family
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_FAMILY
+                value: REVENUE
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 135
+                    items: {
+                        IR_PRODUCT_FAMILY_ID: &PRODUCT_FAMILY.
+                        IR_PFYO: &P100_FY_PCD.
+                        IR_SALES_MGR: \&P100_SALES_MGR_NAME.\
+                        IR_TERRITORY_NAME: &P100_TERRITORY_NAME.
+                        IRIN_PQO: \&P100_QTR_NAME.\
+                    }
+                    clearCache: [
+                        135
+                        RIR
+                    ]
+                    action: resetPagination
+                }
+            }
+            label {
+                show: true
+                displayAs: percentage
+            }
+        )
+
+    )
+
+    region revenue-by-product-type (
+        name: Revenue By Product Type
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+        chart {
+            type: pie
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series revenue-by-product-type (
+            name: Revenue By Product Type
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select
+                           sum(case 
+                               when :OPP_SET_PROD_LEV_BO = 'Include' then
+                                   case when dp.term is null then nvl(dp.quote_price, 0) else nvl(dp.quote_price, 0) * dp.term/12 end
+                           else
+                                   d.deal_amount
+                           end) as revenue,
+                           decode(p.sold_as, 'SUBSCRIPTION', 'Cloud Subscription', 'PURCHASE', 'On-Premise Purchase', p.sold_as) as product_type
+                      from eba_sales_deal_products dp,
+                           eba_sales_products p,
+                           eba_sales_deals d
+                     where dp.product_id = p.id
+                       and dp.deal_id = d.id
+                       and (
+                               nvl(:P100_FY_PCD, 0) = 0
+                               or
+                               instr(dp.qtr, :P100_FY_PCD) > 0
+                           )
+                       and (
+                               :P100_QUARTER is null
+                               or
+                               instr(:P100_QUARTER, substr(dp.qtr,1,2)) > 0
+                           )
+                       and (
+                               nvl(:P100_SALES_MGR_ID, 0) = 0
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_01 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_02 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_03 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_04 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                           )
+                       and (
+                               :P100_TERRITORY_ID is null
+                               or exists
+                               (select null from eba_sales_customers a, eba_sales_territories t where d.customer_id = a.id and dp.deal_id = d.id and dp.product_id = p.id and a.customer_territory_id = :P100_TERRITORY_ID)
+                           )
+                     group by decode(p.sold_as, 'SUBSCRIPTION', 'Cloud Subscription', 'PURCHASE', 'On-Premise Purchase', p.sold_as)
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_TYPE
+                value: REVENUE
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 135
+                    items: {
+                        IR_PRODUCT_TYPE: &PRODUCT_TYPE.
+                        IR_PFYO: &P100_FY_PCD.
+                        IR_SALES_MGR: \&P100_SALES_MGR_NAME.\
+                        IR_TERRITORY_NAME: &P100_TERRITORY_NAME.
+                        IRIN_PQO: \&P100_QTR_NAME.\
+                    }
+                    clearCache: [
+                        135
+                        RIR
+                    ]
+                    action: resetPagination
+                }
+            }
+            label {
+                show: true
+                displayAs: percentage
+            }
+        )
+
+    )
+
+    region revenue-by-quarter (
+        name: Revenue By Quarter
+        type: chart
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            show: false
+        }
+
+        series revenue-by-quarter (
+            name: Revenue By Quarter
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    with qtrs as (
+                        select level q
+                        from dual
+                        connect by level <= 4
+                    ), data as (
+                        select sum(case 
+                                when :OPP_SET_PROD_LEV_BO = 'Include' then
+                                    case when dp.term is null then nvl(dp.quote_price, 0) else nvl(dp.quote_price, 0) * dp.term/12 end
+                                else d.deal_amount
+                                end) as revenue,
+                            dp.qtr as fiscal_quarter,
+                            pf.product_family
+                        from eba_sales_deals d
+                            join eba_sales_customers c on c.id = d.customer_id
+                            join eba_sales_deal_products dp on dp.deal_id = d.id
+                            join eba_sales_products p on p.id = dp.product_id
+                            join eba_sales_product_families pf on pf.id = p.product_family_id
+                            left join eba_sales_territories t on t.id = c.customer_territory_id
+                        where dp.qtr is not null
+                            and ( nvl(:P100_FY_PCD, 0) = 0
+                                or instr(dp.qtr, :P100_FY_PCD) > 0
+                            )
+                    /*      -- This doesn't work.
+                            and ( nvl(:P100_QUARTER, 0) = 0
+                                or substr(dp.qtr,1,2) = :P100_QUARTER
+                            )*/
+                    /*      -- This works, but I think we can do better.
+                            and ( :P100_QUARTER is null
+                               or instr(:P100_QUARTER, substr(dp.qtr,1,2)) > 0
+                            )*/
+                            and ( nvl(:P100_SALES_MGR_ID, 0) = 0
+                                or exists ( select null
+                                            from EBA_SALES_SALESREPS r
+                                            where r.id = d.salesrep_id_01
+                                                and r.rep_manager_id = :P100_SALES_MGR_ID )
+                            )
+                            and ( nvl(:P100_TERRITORY_ID, 0) = 0
+                                or t.id = :P100_TERRITORY_ID
+                            )
+                        group by dp.qtr, pf.product_family
+                    ), yrrng as (
+                        select min(substr(data.fiscal_quarter,-2)) start_year, max(substr(data.fiscal_quarter,-2)) end_year
+                        from data
+                    ), yrs as (
+                        select yrrng.start_year + (level - 1) y
+                        from yrrng
+                        connect by level <= 1 + (yrrng.end_year - yrrng.start_year)
+                    ), fyqtr as (
+                        select 'Q'||qtrs.q||'FY'||yrs.y qt, yrs.y, qtrs.q
+                        from qtrs, yrs
+                    ), pf as (
+                        select distinct product_family
+                        from data
+                    )
+                    select nvl(data.revenue,0) revenue,
+                        fyqtr.qt fiscal_quarter,
+                        pf.product_family
+                    from fyqtr, pf, data
+                    where data.fiscal_quarter(+) = fyqtr.qt
+                        and data.product_family(+) = pf.product_family
+                        -- This works, and only displays the selected quarter(s).
+                        and (:P100_QUARTER is null or ':'||:P100_QUARTER||':' like '%:Q'||fyqtr.q||':%')
+                    order by fyqtr.y, fyqtr.q
+                    ```
+            }
+            columnMapping {
+                seriesName: PRODUCT_FAMILY
+                label: FISCAL_QUARTER
+                value: REVENUE
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 135
+                    items: {
+                        IR_PRODUCT_FAMILY_ID: &PRODUCT_FAMILY.
+                        IRIN_PQO: \&P100_QTR_NAME.\
+                        IR_PFYO: &P100_FY_PCD.
+                        IR_TERRITORY_NAME: &P100_TERRITORY_NAME.
+                        IR_SALES_MGR: &P100_SALES_MGR_NAME.
+                        IR_PRODUCT_QTR: &FISCAL_QUARTER.
+                    }
+                    clearCache: [
+                        135
+                        RIR
+                    ]
+                    action: resetPagination
+                }
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region revenue-by-territories (
+        name: Revenue By Territories
+        type: chart
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            show: false
+        }
+
+        series revenue-by-territories (
+            name: Revenue By Territories
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select sum(case 
+                               when :OPP_SET_PROD_LEV_BO = 'Include' then
+                                   case when dp.term is null then nvl(dp.quote_price, 0) else nvl(dp.quote_price, 0) * dp.term/12 end
+                           else
+                                   d.deal_amount
+                           end) as revenue,
+                           t.territory_name as territory
+                      from eba_sales_deals d,
+                           eba_sales_deal_products dp,
+                           eba_sales_territories t
+                     where d.customer_id in (select id from eba_sales_customers c where c.customer_territory_id = t.id)
+                       and dp.deal_id = d.id
+                       and (
+                               nvl(:P100_FY_PCD, 0) = 0
+                               or
+                               instr(dp.qtr, :P100_FY_PCD) > 0
+                           )
+                       and (
+                               :P100_QUARTER is null
+                               or
+                               instr(:P100_QUARTER, substr(dp.qtr,1,2)) > 0
+                           )
+                       and (
+                               nvl(:P100_SALES_MGR_ID, 0) = 0
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_01 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_02 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_03 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                               or exists
+                               (select null from EBA_SALES_SALESREPS r where r.id = d.salesrep_id_04 and r.rep_manager_id = :P100_SALES_MGR_ID)
+                           )
+                       and (
+                               :P100_TERRITORY_ID is null
+                               or
+                               t.id = :P100_TERRITORY_ID
+                           )
+                     group by t.territory_name
+                    ```
+            }
+            columnMapping {
+                label: TERRITORY
+                value: REVENUE
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 135
+                    items: {
+                        IR_TERRITORY_NAME: &TERRITORY.
+                        P1_DISPLAY_AS: GRID
+                        IR_SALES_MGR: &P100_SALES_MGR_NAME.
+                        IRIN_PQO: \&P100_QTR_NAME.\
+                        IR_PFYO: &P100_FY_PCD.
+                    }
+                    clearCache: [
+                        1
+                        RIR
+                    ]
+                    action: resetPagination
+                }
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region select-lead-statuses-to-include (
+        name: Select Lead Statuses to Include
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: select_lead_statuses
+            regionDisplaySelector: true
+        }
+    )
+
+    region time-zone (
+        name: Time Zone
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Dates and Times are displayed in the 
+                <a href="&P100_TIMEZONE_URL.">&P100_TIMEZONE.</a> timezone.</p>
+                ```
+        }
+        layout {
+            sequence: 150
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                #DEFAULT#
+            ]
+        }
+        advanced {
+            customAttributes: style="clear: left; "
+        }
+    )
+
+    region top-open-opportunities (
+        name: Top Open Opportunities
+        type: plugin/html5BarChart
+        source {
+            sqlQuery:
+                ```sql
+                select sd.id,
+                  sd.deal_name || ' - '  || c.customer_name as deal_name,
+                  case when apex_util.get_build_option_status(
+                                p_application_id    => :APP_ID,
+                                p_build_option_name => 'Opportunity Amount Set at Product Level'
+                            ) = 'EXCLUDE' then
+                      nvl(sd.deal_amount,0)
+                  else
+                      nvl((select sum(nvl(dp.quote_price, 0)) from EBA_SALES_DEAL_PRODUCTS dp where dp.deal_id = sd.id and (nvl(:P100_FY_PCD, 0) = 0 or :P100_FY_PCD = substr(dp.qtr, -2))),0)
+                  end as deal_amount
+                from eba_sales_deals sd
+                join eba_sales_customers c
+                  on sd.customer_id = c.id
+                join eba_sales_deal_status_codes sdsc
+                  on sd.deal_status_code_id = sdsc.id
+                where sdsc.corresponding_prob_pct not in (0, 100)
+                  and (
+                          (apex_util.get_build_option_status(
+                                    p_application_id    => :APP_ID,
+                                    p_build_option_name => 'Opportunity Amount Set at Product Level'
+                                ) = 'EXCLUDE'
+                           and 
+                           (nvl(:P100_FY_OCD, 0) = 0 or :P100_FY_OCD = substr(sd.qtr, -2))
+                          )
+                          or 
+                          apex_util.get_build_option_status(
+                                p_application_id    => :APP_ID,
+                                p_build_option_name => 'Opportunity Amount Set at Product Level'
+                          ) = 'INCLUDE'
+                      )
+                order by case when apex_util.get_build_option_status(
+                             p_application_id    => :APP_ID,
+                             p_build_option_name => 'Opportunity Amount Set at Product Level'
+                         ) = 'EXCLUDE' then
+                      nvl(sd.deal_amount,0)
+                  else
+                      nvl((select sum(nvl(dp.quote_price, 0)) from EBA_SALES_DEAL_PRODUCTS dp where dp.deal_id = sd.id and (nvl(:P100_FY_PCD, 0) = 0 or :P100_FY_PCD = substr(dp.qtr, -2))),0)
+                  end desc
+                
+                ```
+        }
+        layout {
+            sequence: 140
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                t-Region--noPadding
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: i-h400
+        }
+        config {
+            buildOption: @show-top-open-opportunities-on-home-page
+        }
+        settings {
+            labelColumn: DEAL_NAME
+            valueColumn: DEAL_AMOUNT
+            formatMask: 999G999G999G999G999G990
+            labelLinkTarget: {
+                page: 80
+                items: {
+                    P80_ID: &ID.
+                }
+                clearCache: 80
+                action: resetPagination
+            }
+            textPosition: above
+            colorScheme: default
+            maximumRows: 50
+        }
+    )
+
+    region total-leads-by-source (
+        name: Total Leads by Source
+        type: chart
+        layout {
+            sequence: 120
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: i-h400
+            renderComponents: belowContent
+        }
+        config {
+            buildOption: @leads
+        }
+        chartLayout {
+            height: 330
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showValue: false
+        }
+        legend {
+            show: false
+        }
+
+        series leads-by-source (
+            name: Leads by source
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select nvl(sls.lead_source, 'Unidentified') lead_source,
+                      count(*) cnt
+                    from eba_sales_leads sl
+                    left join eba_sales_lead_sources sls
+                      on sl.lead_source_id = sls.id
+                    where instr(':' || :P100_LEAD_STATUSES || ':', ':' || sl.lead_status_id || ':') > 0
+                    group by sls.lead_source
+                    order by cnt desc
+                    ```
+                pageItemsToSubmit: P100_LEAD_STATUSES
+            }
+            columnMapping {
+                label: LEAD_SOURCE
+                value: CNT
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    pageItem P100_FY_OCD (
+        type: selectList
+        label {
+            label: Fiscal Year
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @fiscal-years-deal-close-dates
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 20
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: expression
+            plsqlExpression: null
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from eba_sales_deals
+                 where qtr is not null
+                ```
+        }
+        help {
+            helpText: Filter the results displayed on this page by selecting a specific Fiscal Year from this list. This filter only affects the results in the "Revenue By Territories", "Revenue By Quarter", and "Top Open Opportunities" regions.
+        }
+        config {
+            buildOption: !@product-level-close-dates
+        }
+    )
+
+    pageItem P100_FY_PCD (
+        type: selectList
+        label {
+            label: Fiscal Year
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @fiscal-years-product-close-dates
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 10
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: expression
+            plsqlExpression: null
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from eba_sales_deal_products
+                 where qtr is not null
+                ```
+        }
+        help {
+            helpText: Filter the results displayed on this page by selecting a specific Fiscal Year from this list. This filter only affects the results in the "Revenue By Product Family", "Revenue By Product Type", "Revenue By Territories", "Revenue By Quarter", and "Top Open Opportunities" regions.
+        }
+        config {
+            buildOption: @product-level-close-dates
+        }
+    )
+
+    pageItem P100_LEAD_STATUSES (
+        type: checkboxGroup
+        label {
+            label: Statuses included
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select status_code,
+                  id
+                from eba_sales_lead_status_codes
+                order by display_order
+                ```
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 10
+            region: @select-lead-statuses-to-include
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: 2:3:4
+        }
+    )
+
+    pageItem P100_LEAD_STATUSES_DISPLAY (
+        type: displayOnly
+        label {
+            label: Lead Statuses
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 20
+            region: @total-leads-by-source
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P100_QTR_NAME (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @filters
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P100_QUARTER (
+        type: checkboxGroup
+        label {
+            label: Quarter
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @numeric-quarters
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 30
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+        }
+        help {
+            helpText: Select the quarters you want to include in your results. The current calendar year is used if you haven't selected a specific fiscal year in the "Fiscal Year" select list filter (above).
+        }
+    )
+
+    pageItem P100_SALES_MGR_ID (
+        type: selectList
+        label {
+            label: &REP_TITLE. Manager
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select rep_last_name||', '||rep_first_name display_value, ID return_value 
+                from eba_sales_salesreps
+                where rep_manager_id is null
+                union
+                select rep_last_name||', '||rep_first_name display_value, ID return_value 
+                from eba_sales_salesreps
+                where id in (select distinct rep_manager_id from eba_sales_salesreps)
+                order by 1
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 40
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P100_SALES_MGR_NAME (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @filters
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P100_TERRITORY_ID (
+        type: selectList
+        label {
+            label: Territory
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @territory
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 50
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P100_TERRITORY_NAME (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @filters
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P100_TIMEZONE (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @time-zone
+            slot: regionBody
+        }
+        source {
+            type: expression
+            plsqlExpression: nvl(apex_util.get_session_time_zone(),'unknown')
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P100_TIMEZONE_URL (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @time-zone
+            slot: regionBody
+        }
+        source {
+            type: expression
+            plsqlExpression: apex_util.prepare_url('f?p='||:APP_ID||':43:'||:APP_SESSION)
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button create-acct (
+        buttonName: Create_ACCT
+        label: Create Account
+        layout {
+            sequence: 40
+            region: @top-open-opportunities
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+                clearCache: 3
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-statuses (
+        buttonName: EDIT_STATUSES
+        label: Select Lead Statuses
+        layout {
+            sequence: 10
+            region: @total-leads-by-source
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-wrench
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset Filters
+        layout {
+            sequence: 10
+            region: @filters
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapTop
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: &APP_PAGE_ID.
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-accounts (
+        buttonName: VIEW_ACCOUNTS
+        label: View Accounts
+        layout {
+            sequence: 50
+            region: @top-open-opportunities
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 2
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction edit-lead-statuses-clicked (
+        name: Edit lead statuses clicked
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @edit-statuses
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: openModal('select_lead_statuses');
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction lead-status-changed (
+        name: Lead Status changed
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P100_LEAD_STATUSES
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var $leadStatuses = $('#P100_LEAD_STATUSES'),
+                      statuses = '';
+                    
+                    $leadStatuses.find(':checked').each(function(idx) {
+                      if (idx > 0) {
+                        statuses += ', ';
+                      }
+                    
+                      statuses  += $leadStatuses.find('label[for="' + this.id + '"]').text();
+                    });
+                    
+                    $s('P100_LEAD_STATUSES_DISPLAY', statuses || 'None', null, true);
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @total-leads-by-source
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-opportunity-based-regions (
+        name: Refresh Opportunity-Based Regions
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P100_FY_OCD
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P100_FY_OCD
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @top-open-opportunities
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-regions (
+        name: Refresh Regions
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: [
+                P100_FY_PCD
+                P100_SALES_MGR_ID
+                P100_TERRITORY_ID
+                P100_QUARTER
+            ]
+        }
+        config {
+            buildOption: @product-level-close-dates
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: [
+                    P100_FY_PCD
+                    P100_SALES_MGR_ID
+                    P100_TERRITORY_ID
+                    P100_QUARTER
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @revenue-by-product-family
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @revenue-by-product-type
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-3 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @revenue-by-territories
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-4 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @revenue-by-quarter
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-5 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @top-open-opportunities
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-quarter-name (
+        name: Set Quarter Name
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: [
+                P100_QUARTER
+                P100_FY_PCD
+            ]
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P100_QUARTER
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P100_QTR_NAME
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: plsqlFunctionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    declare
+                        l_vc_arr2    apex_application_global.vc_arr2;
+                        l_retval     varchar2(200);
+                    begin
+                        l_vc_arr2 := apex_util.string_to_table(:P100_QUARTER);
+                        for i in 1..l_vc_arr2.count
+                        loop
+                            l_retval := l_retval || l_vc_arr2(i) || ',';
+                        end loop;
+                        l_retval := rtrim(l_retval, ',');
+                        return l_retval;
+                    end;
+                    ```
+                itemsToSubmit: [
+                    P100_QUARTER
+                    P100_FY_PCD
+                ]
+            }
+            affectedElements {
+                selectionType: items
+                items: P100_QTR_NAME
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-sales-manager-name (
+        name: Set Sales Manager Name
+        execution {
+            sequence: 2
+        }
+        when {
+            selectionType: items
+            items: P100_SALES_MGR_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    if :P100_SALES_MGR_ID is null then
+                        :P100_SALES_MGR_NAME := null;
+                    end if;
+                    ```
+                itemsToSubmit: P100_SALES_MGR_NAME
+                itemsToReturn: P100_SALES_MGR_NAME
+                showProcessing: true
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: items
+                items: P100_SALES_MGR_NAME
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select initcap(rep_first_name) || ' ' || initcap(rep_last_name)
+                    from EBA_SALES_SALESREPS
+                    where id = :P100_SALES_MGR_ID
+                    ```
+                itemsToSubmit: P100_SALES_MGR_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P100_SALES_MGR_NAME
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction set-territory-name (
+        name: Set Territory Name
+        execution {
+            sequence: 5
+        }
+        when {
+            selectionType: items
+            items: P100_TERRITORY_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P100_TERRITORY_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P100_TERRITORY_NAME
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery: select TERRITORY_NAME from EBA_SALES_TERRITORIES where id = :P100_TERRITORY_ID
+                itemsToSubmit: P100_TERRITORY_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P100_TERRITORY_NAME
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    computation last-page (
+        itemName: LAST_PAGE
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 100
+        }
+    )
+
+    branch (
+        name: Go To Page 1000
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 1000
+                clearCache: 1000
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sales_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+)
+

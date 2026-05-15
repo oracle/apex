@@ -1,0 +1,191 @@
+restDataSource Employee_ords_rest_source (
+    name: EBA_REST_DATA_EMPLOYEE
+    source {
+        type: http
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: employee/
+    }
+
+    operation delete (
+        label: DELETE - :empno
+        operation {
+            urlPattern: :empno
+            httpMethod: delete
+            databaseOperation: delete
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation fetchone (
+        name: fetchOne
+        label: fetchOne
+        operation {
+            urlPattern: :empname
+            httpMethod: get
+        }
+    )
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    operation get-2 (
+        label: GET - :empno
+        operation {
+            urlPattern: :empno
+            httpMethod: get
+            databaseOperation: fetchSingleRow
+        }
+    )
+
+    operation post (
+        label: POST
+        operation {
+            urlPattern: .
+            httpMethod: post
+            databaseOperation: insert
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation put (
+        label: PUT - :empno
+        operation {
+            urlPattern: :empno
+            httpMethod: put
+            databaseOperation: update
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    parameter empno (
+        name: empno
+        operation: @get-2
+        parameter {
+            type: urlQueryString
+        }
+    )
+
+    parameter query (
+        name: query
+        operation: @get
+        parameter {
+            type: urlQueryString
+        }
+    )
+
+    parameter query-2 (
+        name: query
+        operation: @fetchone
+        parameter {
+            type: urlQueryString
+        }
+    )
+
+    dataProfile {
+        name: NEW
+        rowSelector: items
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: comm
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: deptno
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: empno
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: ename
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 5
+            dataType: date
+        }
+        parsing {
+            pathExpression: hiredate
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: job
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: mgr
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            pathExpression: sal
+        }
+    )
+
+)
+

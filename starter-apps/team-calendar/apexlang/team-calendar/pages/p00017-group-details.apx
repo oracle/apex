@@ -1,0 +1,461 @@
+page 17 (
+    name: Group Details
+    alias: GROUP-DETAILS
+    title: Group Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region audit-information (
+        name: Audit Information
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P17_GROUP_ID
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region group-details (
+        name: Group Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P17_CREATED_BY (
+        type: displayOnly
+        label {
+            label: Created By:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 40
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CREATED_BY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The user who created the record.
+        }
+    )
+
+    pageItem P17_CREATED_ON (
+        type: displayOnly
+        label {
+            label: Created:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CREATED_ON
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The date on which the record was created.
+        }
+    )
+
+    pageItem P17_GROUP_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @group-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: GROUP_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_GROUP_NAME (
+        type: textField
+        label {
+            label: Group Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @group-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: GROUP_NAME
+            used: always
+        }
+        help {
+            helpText: Name of Group.
+        }
+    )
+
+    pageItem P17_LAST_UPDATED_BY (
+        type: displayOnly
+        label {
+            label: Last Updated By:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 60
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LAST_UPDATED_BY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The user who last updated the record.
+        }
+    )
+
+    pageItem P17_LAST_UPDATED_ON (
+        type: displayOnly
+        label {
+            label: Last Updated:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 50
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LAST_UPDATED_ON
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The date on which the record was last updated.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Group
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P17_GROUP_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P17_GROUP_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P17_GROUP_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation p17-group-name-unique (
+        name: P17_GROUP_NAME unique
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from EBA_ca_email_groups
+                 where lower(:P17_GROUP_NAME) = lower(group_name)
+                   and (:P17_GROUP_ID != group_id or :P17_GROUP_ID is null)
+                ```
+        }
+        error {
+            errorMessage: Group already exists.
+            associatedItem: @P17_GROUP_NAME
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 1697232787767463847
+        }
+    )
+
+    process fetch-row-from-eba-ca-email-groups (
+        name: Fetch Row from EBA_CA_EMAIL_GROUPS
+        type: autoRowFetch
+        source {
+            tableName: EBA_CA_EMAIL_GROUPS
+            pkColumn: GROUP_ID
+            pkItem: P17_GROUP_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 8006021972292940960
+        }
+    )
+
+    process process-row-of-eba-ca-email-groups (
+        name: Process Row of EBA_CA_EMAIL_GROUPS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CA_EMAIL_GROUPS
+            pkColumn: GROUP_ID
+            pkItem: P17_GROUP_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_CA_EMAIL_GROUPS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8006022190356940964
+        }
+    )
+
+)
+

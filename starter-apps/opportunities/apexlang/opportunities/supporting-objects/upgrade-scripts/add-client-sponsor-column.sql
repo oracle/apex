@@ -1,0 +1,1 @@
+alter table eba_sales_deals add sponsor_contact_id number references eba_sales_customer_contacts on delete cascade;

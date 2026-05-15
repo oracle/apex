@@ -1,0 +1,540 @@
+page 130 (
+    name: Activity Quick Look
+    alias: ACTIVITY-QUICK-LOOK
+    title: Activity Quick Look
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region activity-content-row (
+        name: Activity Content Row
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ap.id, 
+                       at.activity_type,
+                       ap.comments,
+                       ap.start_date,
+                       ap.end_date,
+                       to_char(ap.end_date,'Day DD-MON-YYYY') end_date_formatted,
+                       to_char(ap.start_date,'Day DD-MON-YYYY')||' to '||to_char(ap.end_date,'Day DD-MON-YYYY') TIMELINE,
+                       ap.end_date - ap.start_date days,
+                       round(ap.end_date - sysdate) days_remaining,
+                       ap.url,
+                       tm.first_name||' '||tm.last_name name,
+                       --
+                       p.project,
+                       p.friendly_identifier,
+                       p.PROJECT_URL_NAME,
+                       apex_util.get_since(ap.updated) last_updated,
+                       --
+                       tm.first_name||' '||tm.last_name owner,
+                       --
+                       -- timeframe
+                       --
+                        decode(
+                           greatest(trunc(sysdate),trunc(ap.end_date)),
+                           trunc(sysdate),
+                           'Past',
+                           decode(
+                               greatest(trunc(sysdate),trunc(ap.start_date)),
+                               trunc(sysdate),
+                               'Current',
+                               'Future')
+                           ) timeframe,
+                       --
+                       -- pie chart icon in 10% chunks that show time percent complete
+                       --
+                       'fa-pie-chart-'||sp_date_range_pct_comp(ap.start_date, ap.end_date) icon
+                from sp_activities ap,
+                     sp_projects p,
+                     sp_activity_types at,
+                     sp_team_members tm
+                where ap.project_id = p.id and
+                      p.id = :P130_PROJECT_ID and
+                      ap.activity_type_id = at.id and
+                      ap.team_member_id = tm.id and
+                      --
+                      --
+                      --
+                      (  
+                         sysdate between ap.start_date and ap.end_date or 
+                         (nvl(:P130_INCLUDE_FUTURE,'N') = 'Y' and ap.start_date >= trunc(sysdate)) or
+                         (nvl(:P130_INCLUDE_PAST,'N') = 'Y' and ap.end_date < trunc(sysdate))
+                      )
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        config {
+            buildOption: @activity-planning
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: <strong>&ACTIVITY_TYPE.</strong>: &TIMELINE.
+            title: &OWNER.
+            description: &COMMENTS.
+            miscellaneous: Updated &LAST_UPDATED.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            shape: noShape
+            size: medium
+        }
+        plugin-badge {
+            label: &NOMENCLATURE_PROJECTS.
+            value: TIMEFRAME
+            columnWidth: large
+        }
+        pagination {
+            entitiesPerPage: 30
+        }
+
+        column ACTIVITY_TYPE (
+            layout {
+                sequence: 190
+            }
+            source {
+                databaseColumn: ACTIVITY_TYPE
+                dataType: varchar2
+            }
+        )
+
+        column COMMENTS (
+            layout {
+                sequence: 200
+            }
+            source {
+                databaseColumn: COMMENTS
+                dataType: varchar2
+            }
+        )
+
+        column DAYS (
+            layout {
+                sequence: 230
+            }
+            source {
+                databaseColumn: DAYS
+                dataType: number
+            }
+        )
+
+        column DAYS_REMAINING (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: DAYS_REMAINING
+                dataType: number
+            }
+        )
+
+        column END_DATE (
+            layout {
+                sequence: 220
+            }
+            source {
+                databaseColumn: END_DATE
+                dataType: date
+            }
+        )
+
+        column END_DATE_FORMATTED (
+            layout {
+                sequence: 310
+            }
+            source {
+                databaseColumn: END_DATE_FORMATTED
+                dataType: varchar2
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            layout {
+                sequence: 270
+            }
+            source {
+                databaseColumn: FRIENDLY_IDENTIFIER
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column LAST_UPDATED (
+            layout {
+                sequence: 300
+            }
+            source {
+                databaseColumn: LAST_UPDATED
+                dataType: varchar2
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 250
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column OWNER (
+            layout {
+                sequence: 330
+            }
+            source {
+                databaseColumn: OWNER
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT (
+            layout {
+                sequence: 260
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            layout {
+                sequence: 290
+            }
+            source {
+                databaseColumn: PROJECT_URL_NAME
+                dataType: varchar2
+            }
+        )
+
+        column START_DATE (
+            layout {
+                sequence: 210
+            }
+            source {
+                databaseColumn: START_DATE
+                dataType: date
+            }
+        )
+
+        column TIMEFRAME (
+            layout {
+                sequence: 340
+            }
+            source {
+                databaseColumn: TIMEFRAME
+                dataType: varchar2
+            }
+        )
+
+        column TIMELINE (
+            layout {
+                sequence: 280
+            }
+            source {
+                databaseColumn: TIMELINE
+                dataType: varchar2
+            }
+        )
+
+        column URL (
+            layout {
+                sequence: 240
+            }
+            source {
+                databaseColumn: URL
+                dataType: varchar2
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu edit-activity (
+                label: Edit Activity
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 101
+                        items: {
+                            P101_ID: &ID.
+                        }
+                        clearCache: 101
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu view-activity-detail (
+                label: View Activity Detail
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 140
+                        items: {
+                            P140_ID: &ID.
+                        }
+                        clearCache: 140
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-glasses
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P130_INCLUDE_FUTURE (
+        type: switch
+        label {
+            label: Include Future
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @activity-content-row
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P130_INCLUDE_PAST (
+        type: switch
+        label {
+            label: Include Past
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @activity-content-row
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P130_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @activity-content-row
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P130_PROJECT_NAME (
+        type: displayOnly
+        label {
+            label: &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @activity-content-row
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    dynamicAction refresh-on-show-past (
+        name: refresh on show past
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P130_INCLUDE_PAST
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: [
+                    P130_INCLUDE_FUTURE
+                    P130_INCLUDE_PAST
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @activity-content-row
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-state-and-refresh (
+        name: set state and refresh
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P130_INCLUDE_FUTURE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: [
+                    P130_INCLUDE_FUTURE
+                    P130_INCLUDE_PAST
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @activity-content-row
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p130-project-name (
+        itemName: P130_PROJECT_NAME
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select project from sp_projects where id = :P130_PROJECT_ID
+        }
+    )
+
+)
+

@@ -1,0 +1,113 @@
+page 13 (
+    name: Star Icons
+    alias: STAR-ICONS
+    title: &APP_NAME. - Star Icons
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .star-shape {
+                margin-right: 20px;
+                width: 100px;
+                height: 100px;
+                background-color: #59d1f2;
+                shape-outside: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                float: left;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>With CSS Styling, you can change the default shape of the icon initials.</p>
+                <p>This page contains <em>star-shape</em> CSS Class defined as page inline CSS Classes.  Icon CSS Classes calls this calss to render star shaped icons.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-star-o
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region star-icons (
+        name: Star Icons
+        type: cards
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CARD_EMP
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        title {
+            column: ENAME
+        }
+        body {
+            column: JOB
+        }
+        iconAndBadge {
+            iconSource: initials
+            iconColumn: ENAME
+            iconCssClasses: star-shape
+        }
+    )
+
+)
+

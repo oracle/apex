@@ -1,0 +1,184 @@
+page 38 (
+    name: Username Format
+    alias: USERNAME-FORMAT
+    title: Username Format
+    pageGroup: @acl
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>Choose a username format and click the <strong>Apply Changes</strong> button to activate the change. Click the <strong>Cancel</strong> button to leave this page.</p>
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region username-format-preference (
+        name: Username Format Preference
+        type: staticContent
+        source {
+            htmlCode: <p>Define whether new users of this application will have an email address username format (e.g. xyz@xyz.com) or a non-email address format (e.g. JOHNDOE)</p>
+        }
+        layout {
+            sequence: 20
+            slot: body-3
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--warning
+                t-Alert--horizontal
+            ]
+            cssClasses: infoTextRegion
+            renderComponents: belowContent
+        }
+    )
+
+    pageItem P38_USERNAME_FORMAT (
+        type: radioGroup
+        label {
+            label: Username Format
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username-format
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @username-format-preference
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: expression
+            plsqlExpression: eba_ca_fw.get_preference_value ('USERNAME_FORMAT')
+            used: always
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process set-username-format-preference (
+        name: Set Username Format Preference
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_ca_fw.set_preference_value (
+                    p_preference_name  => 'USERNAME_FORMAT',
+                    p_preference_value => :P38_USERNAME_FORMAT);
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Username format updated.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 1417765611690754757
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &LAST_VIEW.
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

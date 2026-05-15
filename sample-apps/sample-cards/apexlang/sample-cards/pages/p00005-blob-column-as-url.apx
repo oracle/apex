@@ -1,0 +1,172 @@
+page 5 (
+    name: BLOB Column as URL
+    alias: BLOB-COLUMN-AS-URL
+    title: &APP_NAME. - BLOB Column as URL
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Sometimes, you want to control and customize the display of a BLOB column using an HTML <code>&lt;img&gt;</code> tag.  Since BLOB columns cannot be referenced by column substitutions (e.g. #COLUMN_NAME#), you need to get the BLOB column value as a URL.  Once you have the URL, you can format the display of the image using an HTML <code>&lt;img&gt;</code> tag.  To get the BLOB as a URL, you have these 3 options:</p>
+                
+                <ol>
+                    <li>Define a Media Resource RESTful Service</li>
+                    <li>Define an On-Demand Page or an Application Process to display an Image from a BLOB column</li>
+                    <li>Use the <a href="https://docs.oracle.com/en/database/oracle/application-express/20.2/aeapi/GET_BLOB_FILE_SRC-Function.html#GUID-21F2D33A-A616-48B5-BAF5-A85C0EDC998F" target="_blank">APEX_UTIL.GET_BLOB_FILE_SRC</a> API.  Bear in mind, this API requires a reference to a valid File Browse page item that exists somewhere in the app.</li>
+                </ol>
+                
+                <p>A Media Resource RESTful Service is the preferred implementation method, but to make this app self contained, this page uses method #2 (above).</p>
+                
+                <ul>
+                    <li>Page item <strong>P5_EMPNO</strong> hidden item added</li>
+                    <li>Ajax Callback <strong>GETIMAGE</strong> calls <em>eba_demo_card_pkg.get_profile_image</em></li>
+                    <li>Procedure <em>eba_demo_card_pkg.get_profile_image</em> initiates BLOB column download as inline</li>
+                    <li>The href value of the <code>&lt;img&gt;</code> tag in the Cards Media HTML Expression calls the <strong>GETIMAGE</strong> ajax process while also passing the EMPNO column value</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-file-image-o
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region media-image (
+        name: Media Image
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       DEPTNO,
+                       apex_page.get_url(
+                           p_request     => 'APPLICATION_PROCESS=GETIMAGE',
+                           p_clear_cache => 5,
+                           p_items       => 'P5_EMPNO',
+                           p_values      => EMPNO ) BLOB_URL,
+                       IMAGE_LAST_UPDATE,
+                       TAGS
+                  from EBA_DEMO_CARD_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+            cssClasses: test
+        }
+        componentAppearance {
+            gridColumns: 3
+        }
+        card {
+            primaryKeyColumn1: EMPNO
+        }
+        title {
+            column: ENAME
+        }
+        subtitle {
+            column: JOB
+        }
+        media {
+            advancedFormatting: true
+            htmlExpression: <img src="&BLOB_URL!ATTR." alt="&ENAME!ATTR." style="width:128px;height:128px;">
+            position: first
+        }
+        pagination {
+            showTotalCount: true
+        }
+    )
+
+    pageItem P5_EMPNO (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @media-image
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    process getimage (
+        name: GETIMAGE
+        type: executeCode
+        source {
+            plsqlCode: eba_demo_card_pkg.get_profile_image( p_empno => :P5_EMPNO );
+        }
+        execution {
+            sequence: 10
+            point: ajaxCallback
+        }
+        error {
+            errorMessage: Unable to get employee profile image.
+        }
+        advanced {
+            executionMappingIdentifier: 691708836481978015
+        }
+    )
+
+)
+

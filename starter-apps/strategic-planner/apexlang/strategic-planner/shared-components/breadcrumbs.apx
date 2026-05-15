@@ -1,0 +1,1701 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry about-page-text (
+        name: About Page Text
+        pageNumber: 14000
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14000
+            }
+        }
+    )
+
+    entry activities (
+        name: Activities
+        pageNumber: 102
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+    )
+
+    entry activity-types (
+        name: Activity Types
+        pageNumber: 10700
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10700
+                action: resetPagination
+            }
+        }
+    )
+
+    entry add-project (
+        name: Add Project
+        pageNumber: 104
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 104
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 10000
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10000
+            }
+        }
+    )
+
+    entry ai-prompts (
+        name: AI Prompts
+        pageNumber: 12135
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12135
+            }
+        }
+    )
+
+    entry all-events (
+        name: All Events
+        pageNumber: 710
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 710
+            }
+        }
+    )
+
+    entry all-nomenclature-project-approvals (
+        name: All &NOMENCLATURE_PROJECT. Approvals
+        pageNumber: 134
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 134
+            }
+        }
+    )
+
+    entry all-nomenclature-project-summaries (
+        name: All &NOMENCLATURE_PROJECT. Summaries
+        pageNumber: 37
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry all-release-summaries (
+        name: All Release Summaries
+        pageNumber: 167
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 167
+            }
+        }
+    )
+
+    entry apex-bugs (
+        name: APEX Bugs
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry application-log (
+        name: Application Log
+        pageNumber: 10050
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10050
+            }
+        }
+    )
+
+    entry approval-types (
+        name: Approval Types
+        pageNumber: 4010
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4010
+            }
+        }
+    )
+
+    entry archived-nomenclature-projects (
+        name: Archived &NOMENCLATURE_PROJECTS.
+        pageNumber: 45
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+    )
+
+    entry change-history (
+        name: Change History
+        pageNumber: 64
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 64
+            }
+        }
+    )
+
+    entry change-history-2 (
+        name: Change History
+        pageNumber: 79
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 79
+            }
+        }
+    )
+
+    entry change-history-release-p14-release (
+        name: Change History: Release &P14_RELEASE.
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry comments (
+        name: Comments
+        pageNumber: 158
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 158
+            }
+        }
+    )
+
+    entry comments-2 (
+        name: Comments
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry configure-application-features (
+        name: Configure Application Features
+        pageNumber: 12130
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12130
+            }
+        }
+    )
+
+    entry contributor-roles (
+        name: Contributor Roles
+        pageNumber: 10600
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10600
+            }
+        }
+    )
+
+    entry countries (
+        name: Countries
+        pageNumber: 43
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry cross-release-milestone-calendar (
+        name: Cross-Release Milestone Calendar
+        pageNumber: 55
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 55
+            }
+        }
+    )
+
+    entry default-competencies (
+        name: Default Competencies
+        pageNumber: 154
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 154
+            }
+        }
+    )
+
+    entry delete-sample-data (
+        name: Delete Sample Data
+        pageNumber: 14010
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14010
+            }
+        }
+    )
+
+    entry developer-detail-views-31-days (
+        name: Developer Detail Views (31 Days)
+        pageNumber: 129
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 129
+            }
+        }
+    )
+
+    entry documents (
+        name: Documents
+        pageNumber: 156
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 156
+            }
+        }
+    )
+
+    entry duplicate-nomenclature-projects (
+        name: Duplicate &NOMENCLATURE_PROJECTS.
+        pageNumber: 51
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry duplicate-nomenclature-projects-2 (
+        name: Duplicate &NOMENCLATURE_PROJECTS.
+        pageNumber: 11320
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11320
+            }
+        }
+    )
+
+    entry edit-prompt (
+        name: Edit Prompt
+        pageNumber: 12136
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12136
+            }
+        }
+    )
+
+    entry email-reporting (
+        name: Email Reporting
+        pageNumber: 16020
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16020
+            }
+        }
+    )
+
+    entry error-log (
+        name: Error Log
+        pageNumber: 16000
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16000
+            }
+        }
+    )
+
+    entry external-nomenclature-project-links (
+        name: External &NOMENCLATURE_PROJECT. Links
+        pageNumber: 10750
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10750
+            }
+        }
+    )
+
+    entry favorite-nomenclature-projects (
+        name: Favorite &NOMENCLATURE_PROJECTS.
+        pageNumber: 91
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+    )
+
+    entry favorited-nomenclature-projects-by-user (
+        name: Favorited &NOMENCLATURE_PROJECTS. by User
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry feedback (
+        name: Feedback
+        pageNumber: 12123
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12123
+            }
+        }
+    )
+
+    entry groups (
+        name: Groups
+        pageNumber: 103
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry home-page-messages (
+        name: Home Page Messages
+        pageNumber: 10770
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10770
+            }
+        }
+    )
+
+    entry image-gallery (
+        name: Image Gallery
+        pageNumber: 46
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+    )
+
+    entry images-in-comments (
+        name: Images in Comments
+        pageNumber: 157
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 157
+            }
+        }
+    )
+
+    entry initiative-approval-chain (
+        name: Initiative Approval Chain
+        pageNumber: 4014
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4014
+            }
+        }
+    )
+
+    entry interactive-report-catalog (
+        name: Interactive Report Catalog
+        pageNumber: 10300
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10300
+            }
+        }
+    )
+
+    entry jira-sync-information (
+        name: Jira Sync Information
+        pageNumber: 142
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 142
+            }
+        }
+    )
+
+    entry job-reporting (
+        name: Job Reporting
+        pageNumber: 16010
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16010
+            }
+        }
+    )
+
+    entry kanban-p160-initiative (
+        name: Kanban: &P160_INITIATIVE.
+        pageNumber: 160
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 160
+            }
+        }
+    )
+
+    entry links (
+        name: Links
+        pageNumber: 146
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 146
+            }
+        }
+    )
+
+    entry manage-archived-nomenclature-projects (
+        name: Manage Archived &NOMENCLATURE_PROJECTS.
+        pageNumber: 11300
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11300
+            }
+        }
+    )
+
+    entry manage-my-subscriptions (
+        name: Manage My Subscriptions
+        pageNumber: 149
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 149
+            }
+        }
+    )
+
+    entry most-viewed-projects-90-days (
+        name: Most Viewed Projects (90 Days)
+        pageNumber: 97
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 97
+            }
+        }
+    )
+
+    entry my-nomenclature-projects (
+        name: My &NOMENCLATURE_PROJECTS.
+        pageNumber: 113
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 113
+            }
+        }
+    )
+
+    entry my-subscriptions (
+        name: My Subscriptions
+        pageNumber: 139
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 139
+            }
+        }
+    )
+
+    entry nomenclature (
+        name: Nomenclature
+        pageNumber: 10400
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10400
+            }
+        }
+    )
+
+    entry nomenclature-areas (
+        name: &NOMENCLATURE_AREAS.
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry nomenclature-initiative-approval-types (
+        name: &NOMENCLATURE_INITIATIVE. Approval Types
+        pageNumber: 4012
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4012
+            }
+        }
+    )
+
+    entry nomenclature-initiative-change-history (
+        name: &NOMENCLATURE_INITIATIVE. Change History
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry nomenclature-initiative-focus-areas (
+        name: &NOMENCLATURE_INITIATIVE. Focus Areas
+        pageNumber: 10150
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10150
+            }
+        }
+    )
+
+    entry nomenclature-initiative-p94-initiative (
+        name: &NOMENCLATURE_INITIATIVE.: &P94_INITIATIVE.
+        pageNumber: 94
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 94
+                action: resetPagination
+            }
+        }
+    )
+
+    entry nomenclature-initiative-views-last-90-days (
+        name: &NOMENCLATURE_INITIATIVE. Views (last 90 Days)
+        pageNumber: 81
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 81
+            }
+        }
+    )
+
+    entry nomenclature-initiatives (
+        name: &NOMENCLATURE_INITIATIVES.
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry nomenclature-initiatives-for-nomenclature-area-p66-area (
+        name: &NOMENCLATURE_INITIATIVES. for &NOMENCLATURE_AREA. &P66_AREA.
+        pageNumber: 66
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 66
+                action: resetPagination
+            }
+        }
+    )
+
+    entry nomenclature-project-completeness-scales (
+        name: &NOMENCLATURE_PROJECT. Completeness Scales
+        pageNumber: 10200
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10200
+            }
+        }
+    )
+
+    entry nomenclature-project-contributors (
+        name: &NOMENCLATURE_PROJECT. Contributors
+        pageNumber: 159
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 159
+            }
+        }
+    )
+
+    entry nomenclature-project-default-tags (
+        name: &NOMENCLATURE_PROJECT. Default Tags
+        pageNumber: 10500
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10500
+            }
+        }
+    )
+
+    entry nomenclature-project-exceptions-for-p153-first-name-p153-last-name (
+        name: &NOMENCLATURE_PROJECT. Exceptions for &P153_FIRST_NAME. &P153_LAST_NAME.
+        pageNumber: 153
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 153
+            }
+        }
+    )
+
+    entry nomenclature-project-groups (
+        name: &NOMENCLATURE_PROJECT. Groups
+        pageNumber: 70
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry nomenclature-project-interactions (
+        name: &NOMENCLATURE_PROJECT. Interactions
+        pageNumber: 610
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 610
+            }
+        }
+    )
+
+    entry nomenclature-project-milestones-reviews-and-tasks (
+        name: &NOMENCLATURE_PROJECT. Milestones, Reviews and Tasks
+        pageNumber: 65
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 65
+            }
+        }
+    )
+
+    entry nomenclature-project-priorities (
+        name: &NOMENCLATURE_PROJECT. Priorities
+        pageNumber: 10800
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10800
+            }
+        }
+    )
+
+    entry nomenclature-project-related-current-activity (
+        name: &NOMENCLATURE_PROJECT. Related Current Activity
+        pageNumber: 75
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 75
+            }
+        }
+    )
+
+    entry nomenclature-project-statuses (
+        name: &NOMENCLATURE_PROJECT. Statuses
+        pageNumber: 10110
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10110
+            }
+        }
+    )
+
+    entry nomenclature-project-views-by-user-90-days (
+        name: &NOMENCLATURE_PROJECT. Views by User (90 days)
+        pageNumber: 80
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 80
+            }
+        }
+    )
+
+    entry nomenclature-projects (
+        name: &NOMENCLATURE_PROJECTS.
+        pageNumber: 86
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 86
+            }
+        }
+    )
+
+    entry nomenclature-projects-2 (
+        name: &NOMENCLATURE_PROJECTS.
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry nomenclature-strategic-planner (
+        name: &NOMENCLATURE_STRATEGIC_PLANNER.
+        pageNumber: 10820
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10820
+            }
+        }
+    )
+
+    entry nomenclature-strategic-planner-2 (
+        name: &NOMENCLATURE_STRATEGIC_PLANNER.
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry nomenclature-users (
+        name: &NOMENCLATURE_USERS.
+        pageNumber: 74
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 74
+            }
+        }
+    )
+
+    entry nomenclature-users-details (
+        name: &NOMENCLATURE_USERS. Details
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry nomenclature-users-that-are-not-users (
+        name: &NOMENCLATURE_USERS. that are not Users
+        pageNumber: 10016
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10016
+            }
+        }
+    )
+
+    entry notifications (
+        name: Notifications
+        pageNumber: 10074
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10074
+            }
+        }
+    )
+
+    entry p112-initiative-milestones-report (
+        name: &P112_INITIATIVE. Milestones Report
+        pageNumber: 112
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 112
+                action: resetPagination
+            }
+        }
+    )
+
+    entry p119-project-group-nomenclature-project-group (
+        name: &P119_PROJECT_GROUP. &NOMENCLATURE_PROJECT. Group
+        pageNumber: 119
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 119
+            }
+        }
+    )
+
+    entry p151-group-name (
+        name: &P151_GROUP_NAME.
+        pageNumber: 151
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 151
+            }
+        }
+    )
+
+    entry p29-project-name-images (
+        name: &P29_PROJECT_NAME. - Images
+        pageNumber: 29
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry p3-project-name (
+        name: &P3_PROJECT_NAME.
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry p30-document-name (
+        name: &P30_DOCUMENT_NAME.
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry p300-release-nomenclature-projects (
+        name: &P300_RELEASE. &NOMENCLATURE_PROJECTS.
+        pageNumber: 300
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry p33-initiative-p33-focus-area (
+        name: &P33_INITIATIVE. - &P33_FOCUS_AREA.
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry p42-document-name (
+        name: &P42_DOCUMENT_NAME.
+        pageNumber: 42
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry p5-first-name-p5-last-name (
+        name: &P5_FIRST_NAME. &P5_LAST_NAME.
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry p501-page-name (
+        name: &P501_PAGE_NAME.
+        pageNumber: 501
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 501
+            }
+        }
+    )
+
+    entry p502-task (
+        name: &P502_TASK.
+        pageNumber: 502
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 502
+            }
+        }
+    )
+
+    entry p53-document-name (
+        name: &P53_DOCUMENT_NAME.
+        pageNumber: 53
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry p57-init-focus-area (
+        name: &P57_INIT_FOCUS_AREA.
+        pageNumber: 57
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 57
+            }
+        }
+    )
+
+    entry p59-document-name (
+        name: &P59_DOCUMENT_NAME.
+        pageNumber: 59
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 59
+            }
+        }
+    )
+
+    entry p60-task-name-images (
+        name: &P60_TASK_NAME. - Images
+        pageNumber: 60
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+    )
+
+    entry p62-initiative-name-images (
+        name: &P62_INITIATIVE_NAME. - Images
+        pageNumber: 62
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 62
+            }
+        }
+    )
+
+    entry p68-focus-area-images (
+        name: &P68_FOCUS_AREA. -  Images
+        pageNumber: 68
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 68
+            }
+        }
+    )
+
+    entry p69-release-images (
+        name: &P69_RELEASE. - Images
+        pageNumber: 69
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 69
+            }
+        }
+    )
+
+    entry page-performance (
+        name: Page Performance
+        pageNumber: 71
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+    )
+
+    entry page-views (
+        name: Page Views
+        pageNumber: 39
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry page-views-by-user (
+        name: Page Views by User
+        pageNumber: 72
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 72
+            }
+        }
+    )
+
+    entry past-due-milestones-reviews-and-tasks (
+        name: Past Due Milestones, Reviews and Tasks
+        pageNumber: 99
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 99
+                action: resetPagination
+            }
+        }
+    )
+
+    entry planning-board-p164-initiative (
+        name: Planning Board: &P164_INITIATIVE.
+        pageNumber: 164
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 164
+            }
+        }
+    )
+
+    entry project-milestone-calendar (
+        name: Project Milestone Calendar
+        pageNumber: 111
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+    )
+
+    entry project-size (
+        name: Project Size
+        pageNumber: 10100
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10100
+            }
+        }
+    )
+
+    entry project-views-by-user-by-month (
+        name: Project Views by User by Month
+        pageNumber: 89
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 89
+            }
+        }
+    )
+
+    entry release-calendar-p203-release (
+        name: Release Calendar: &P203_RELEASE.
+        pageNumber: 203
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 203
+            }
+        }
+    )
+
+    entry release-dashboard-p202-release (
+        name: Release Dashboard: &P202_RELEASE.
+        pageNumber: 202
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+    )
+
+    entry release-gantt (
+        name: Release Gantt
+        pageNumber: 133
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 133
+            }
+        }
+    )
+
+    entry release-milestone-default-tags (
+        name: Release Milestone Default Tags
+        pageNumber: 10515
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10515
+            }
+        }
+    )
+
+    entry release-milestone-types (
+        name: Release Milestone Types
+        pageNumber: 10090
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10090
+            }
+        }
+    )
+
+    entry release-p117-release (
+        name: Release: &P117_RELEASE.
+        pageNumber: 117
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 117
+            }
+        }
+    )
+
+    entry release-train-gantt (
+        name: Release Train Gantt
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16
+                action: resetPagination
+            }
+        }
+    )
+
+    entry releases (
+        name: Releases
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry reports (
+        name: Reports
+        pageNumber: 41
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry resource-type-usage (
+        name: Resource Type Usage
+        pageNumber: 10601
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10601
+            }
+        }
+    )
+
+    entry screen-names (
+        name: Screen Names
+        pageNumber: 122
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 122
+            }
+        }
+    )
+
+    entry settings (
+        name: Settings
+        pageNumber: 12150
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12150
+            }
+        }
+    )
+
+    entry subscriptions (
+        name: Subscriptions
+        pageNumber: 16015
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16015
+            }
+        }
+    )
+
+    entry task-change-history (
+        name: Task Change History
+        pageNumber: 507
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 507
+            }
+        }
+    )
+
+    entry task-document-details (
+        name: Task Document Details
+        pageNumber: 505
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 505
+            }
+        }
+    )
+
+    entry task-status (
+        name: Task Status
+        pageNumber: 10062
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10062
+            }
+        }
+    )
+
+    entry task-statuses (
+        name: Task Statuses
+        pageNumber: 10061
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10061
+            }
+        }
+    )
+
+    entry task-types (
+        name: Task Types
+        pageNumber: 10064
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10064
+            }
+        }
+    )
+
+    entry team-member-default-tags (
+        name: Team Member Default Tags
+        pageNumber: 10520
+        execution {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 10520
+            }
+        }
+    )
+
+    entry team-member-notifications (
+        name: Team Member Notifications
+        pageNumber: 10790
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10790
+            }
+        }
+    )
+
+    entry users (
+        name: Users
+        pageNumber: 10011
+        execution {
+            sequence: 10011
+        }
+        link {
+            target: {
+                page: 10011
+            }
+        }
+    )
+
+    entry users-that-are-not-nomenclature-users (
+        name: Users that are not &NOMENCLATURE_USERS.
+        pageNumber: 10015
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10015
+            }
+        }
+    )
+
+    entry weekly-summary-for-p148-first-name-p148-last-name (
+        name: Weekly Summary for &P148_FIRST_NAME. &P148_LAST_NAME.
+        pageNumber: 148
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 148
+            }
+        }
+    )
+
+    entry workflow-console (
+        name: Workflow Console
+        pageNumber: 4000
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4000
+            }
+        }
+    )
+
+)
+

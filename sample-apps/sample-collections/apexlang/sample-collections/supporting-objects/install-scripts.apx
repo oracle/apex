@@ -1,0 +1,27 @@
+installScript "Create EBA_DEMO_CS_EMP table" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: create-eba-demo-cs-emp-table.sql
+    }
+)
+
+installScript "Sample Data" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: sample-data.sql
+    }
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+

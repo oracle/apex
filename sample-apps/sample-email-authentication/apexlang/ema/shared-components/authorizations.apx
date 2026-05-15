@@ -1,0 +1,25 @@
+authorization administrator (
+    name: Administrator
+    type: isInRoleOrGroup
+    settings {
+        names: Administrator
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not an Administrator
+    }
+)
+
+authorization user (
+    name: User
+    type: isInRoleOrGroup
+    settings {
+        names: [
+            Administrator
+            User
+        ]
+    }
+    error {
+        errorMessage: Insufficient privileges, not a valid user
+    }
+)
+

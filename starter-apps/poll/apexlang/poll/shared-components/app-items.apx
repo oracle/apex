@@ -1,0 +1,42 @@
+appItem APPLICATION_TITLE (
+)
+
+appItem APP_PATH (
+)
+
+appItem COMMUNITY_CNT (
+)
+
+appItem LAST_VIEW (
+    security {
+        sessionStateProtection: checksumRequiredAppLevel
+    }
+)
+
+appItem LPOLL_ID (
+    security {
+        sessionStateProtection: checksumRequiredAppLevel
+    }
+)
+
+appItem OUTSTANDING_INVITES (
+)
+
+appItem POLL_AUTHENTICATION_REQ_YN (
+)
+
+appItem POLL_CNT (
+)
+
+appItem POLL_ID (
+)
+
+appItem POLL_NAME (
+)
+
+appItem POLL_OR_QUIZ (
+)
+
+appItem REGION_TITLE (
+)
+

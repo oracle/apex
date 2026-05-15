@@ -1,0 +1,240 @@
+plugin miniCalendar (
+    name: Mini Calendar
+    staticId: COM.ORACLE.APEX.MINICALENDAR
+    type: region
+    component {
+        standardAttributes: [
+            regionSourceIsSqlQuery
+            escapeSpecialCharsRegionAttr
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            procedure render_mini_calendar( p_region in apex_plugin.t_region ) is
+                c_date_col  constant varchar2(255) := p_region.attribute_01;
+                c_label_col constant varchar2(255) := p_region.attribute_02;
+            
+                l_date_col_no  pls_integer;
+                l_label_col_no pls_integer;
+            
+                c_collection constant varchar2(255) := 'APEX$MINICALENDAR$'||rawtohex(sys_guid());
+                l_column_value_list    apex_plugin_util.t_column_value_list2;
+            
+                l_region_source        varchar2(32767) := p_region.source;
+            
+                --
+                l_date  timestamp with local time zone;
+                l_label varchar2(2000);
+                l_found boolean;
+                l_count number;
+            
+                cursor dt_csr is
+                    select c001 label, d001 the_date
+                    from apex_collections
+                    where collection_name = c_collection
+                    order by d001 asc;
+                dt_rec dt_csr%ROWTYPE;
+            
+                -- Variables for knowing what to display.
+                l_startdate  date;
+                l_enddate    date;
+                l_daycount   number;
+                l_month      varchar2(6);
+            
+                l_class      varchar2(512) := '';
+                l_disp       varchar2(255)  := '';
+                l_id         varchar2(512) := p_region.static_id;
+            begin
+                -- get the data to be displayed
+                l_column_value_list := apex_plugin_util.get_data2 (
+                                           p_sql_statement  => l_region_source,
+                                           p_min_columns    => 2,
+                                           p_max_columns    => null,
+                                           p_component_name => p_region.name,
+                                           p_max_rows       => null );
+            
+                -- Get the actual column number for the fields we want.
+                l_date_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Date column',
+                                    p_column_alias      => c_date_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => true,
+                                    p_data_type         => null -- might be date, timestamp, etc.
+                                );
+            
+                l_label_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Label column',
+                                    p_column_alias      => c_label_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => true,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                apex_collection.create_or_truncate_collection( p_collection_name => c_collection );
+                -- Loop through the data and shove it into the collection for ease of access.
+                for l_row_num in 1..l_column_value_list(1).value_list.count loop
+                    l_found := true;
+                    if l_column_value_list(l_date_col_no).value_list(l_row_num).date_value is not null then
+                        l_date := l_column_value_list(l_date_col_no).value_list(l_row_num).date_value;
+                    elsif l_column_value_list(l_date_col_no).value_list(l_row_num).timestamp_value is not null then
+                        l_date := l_column_value_list(l_date_col_no).value_list(l_row_num).timestamp_value;
+                    elsif l_column_value_list(l_date_col_no).value_list(l_row_num).timestamp_tz_value is not null then
+                        l_date := l_column_value_list(l_date_col_no).value_list(l_row_num).timestamp_tz_value;
+                    elsif l_column_value_list(l_date_col_no).value_list(l_row_num).timestamp_ltz_value is not null then
+                        l_date := l_column_value_list(l_date_col_no).value_list(l_row_num).timestamp_ltz_value;
+                    else
+                        -- Couldn't get a usable date value; ignore this row.
+                        l_found := false;
+                    end if;
+                    if l_found then
+                        select count(*) into l_count
+                        from apex_collections
+                        where collection_name = c_collection
+                            and d001 = trunc(l_date);
+            
+                        if l_count = 0 then
+                            l_label := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_label_col_no).data_type,
+                                            p_value     => l_column_value_list(l_label_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                            apex_collection.add_member(
+                                p_collection_name => c_collection,
+                                p_c001            => l_label,
+                                p_d001            => trunc(l_date)
+                            );
+                        end if;
+                    end if;
+                end loop;
+            
+                open dt_csr;
+                fetch dt_csr into dt_rec;
+                if dt_csr%FOUND then
+                    l_date  := dt_rec.the_date;
+                    l_label := dt_rec.label;
+                else
+                    l_date  := trunc(localtimestamp);
+                    l_label := 'Today';
+                end if;
+            
+                -- Print the calendar header.
+                sys.htp.prn('<div class="a-MiniCal">');
+                sys.htp.prn('<h3 class="a-MiniCal-title">'||to_char(l_date, 'Month')||' '||to_char(l_date,'YYYY')||'</h3>');
+                sys.htp.prn('<table class="a-MiniCal-month" summary="Calendar of '||to_char(l_date, 'Month')||' '||to_char(l_date,'YYYY')||'">');
+                sys.htp.prn('<thead>');
+                sys.htp.prn('<tr>');
+                sys.htp.prn('<th class="a-MiniCal-dayOfWeek" scope="col" id="'||l_id||'_SUN" title="Sunday">Su</th>');
+                sys.htp.prn('<th class="a-MiniCal-dayOfWeek" scope="col" id="'||l_id||'_MON" title="Monday">Mo</th>');
+                sys.htp.prn('<th class="a-MiniCal-dayOfWeek" scope="col" id="'||l_id||'_TUE" title="Tuesday">Tu</th>');
+                sys.htp.prn('<th class="a-MiniCal-dayOfWeek" scope="col" id="'||l_id||'_WED" title="Wednesday">We</th>');
+                sys.htp.prn('<th class="a-MiniCal-dayOfWeek" scope="col" id="'||l_id||'_THU" title="Thursday">Th</th>');
+                sys.htp.prn('<th class="a-MiniCal-dayOfWeek" scope="col" id="'||l_id||'_FRI" title="Friday">Fr</th>');
+                sys.htp.prn('<th class="a-MiniCal-dayOfWeek" scope="col" id="'||l_id||'_SAT" title="Saturday">Sa</th>');
+                sys.htp.prn('</tr>');
+                sys.htp.prn('</thead>');
+                -- Print the calendar body.
+                sys.htp.prn('<tbody>');
+                -- Do some quick manipulation to get the day of the week that the first of the month
+                 --  lands on, and then shift our starting date to the first day of that week.
+                l_startdate := trunc(l_date,'MM') - to_char(trunc(l_date,'MM'),'D') + 1;
+                l_enddate := last_day(l_date) + 7-to_char(last_day(l_date),'D');
+                l_month := to_char(l_date,'YYYYMM');
+            
+                for l_daycount in 0..(l_enddate - l_startdate) loop
+                    l_class := '';
+                    l_disp := apex_escape.html(to_char(l_startdate+l_daycount,'fmDD'));
+                    -- If the day isn't part of the month being displayed, grey it out.
+                    if to_char(l_startdate+l_daycount,'YYYYMM') <> l_month then
+                        l_class := 'is-null';
+                        l_disp := '<span class="a-MiniCal-date">'||l_disp||'</span>';
+                    else
+                        if to_char(l_startdate+l_daycount,'D') in ('1','7') then
+                            l_class := l_class || 'is-weekend ';
+                            l_disp := '<span class="a-MiniCal-date">'||l_disp||'</span>';
+                        end if;
+                        if l_month = to_char(localtimestamp,'YYYYMM')
+                                and l_startdate+l_daycount = current_date then
+                            l_class := l_class || 'is-today ';
+                            l_disp := '<span class="a-MiniCal-date">'||l_disp||'</span>';
+                        end if;
+                        if to_char(l_startdate+l_daycount,'YYYYMMDD')
+                                = to_char(l_date,'YYYYMMDD') then
+                            l_class := l_class || 'is-active ';
+                            l_disp := '<span class="a-MiniCal-date" title="'|| apex_escape.html(l_label) ||'">'||l_disp||'</span>';
+                        end if;
+                    end if;
+                    if to_char(l_startdate+l_daycount,'D') = '1' then
+                        sys.htp.prn('<tr>');
+                    end if;
+                    sys.htp.prn('<td class="a-MiniCal-day '||l_class||'" headers="'||l_id||'_'||to_char(l_startdate+l_daycount,'DY')||'">'||l_disp||'</td>');
+                    if to_char(l_startdate+l_daycount,'D') = '7' then
+                        sys.htp.prn('</tr>');
+                    end if;
+                    if to_char(l_startdate+l_daycount,'YYYYMMDD') = to_char(l_date,'YYYYMMDD') then
+                        fetch dt_csr into dt_rec;
+                        if dt_csr%FOUND then
+                            l_date  := dt_rec.the_date;
+                            l_label := dt_rec.label;
+                        end if;
+                    end if;
+                end loop;
+                close dt_csr;
+            
+                -- Clean up after ourselves.
+                apex_collection.delete_collection( p_collection_name => c_collection );
+            
+                sys.htp.prn('</tbody>');
+                sys.htp.prn('</table>');
+                sys.htp.prn('</div>');
+            end render_mini_calendar;
+            
+            function render ( p_region in apex_plugin.t_region,
+                p_plugin in apex_plugin.t_plugin, p_is_printer_friendly in boolean )
+                return apex_plugin.t_region_render_result is
+            begin
+                -- CSS for the Gantt Chart
+                apex_css.add_file (
+                    p_name => 'com_oracle_apex_minicalendar',
+                    p_directory => p_plugin.file_prefix );
+            
+                render_mini_calendar( p_region );
+                return null;
+            end;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    information {
+        version: 5.0.1
+        helpText: This region plug-in displays a small calendar with the specified date highlighted.
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        validation {
+            required: true
+        }
+        sqlQuery {
+            minColumns: 1
+        }
+        examples {
+            examples:
+                ```
+                The query must return at least two columns--a date and its label (other columns will be ignored). The calendar will display for the earliest date returned, highlighting all dates returned within that month.
+                
+                <pre>
+                select date_value, label_value
+                from ...
+                </pre>
+                ```
+        }
+    )
+
+)
+

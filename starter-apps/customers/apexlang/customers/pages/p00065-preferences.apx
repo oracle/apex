@@ -1,0 +1,87 @@
+page 65 (
+    name: Preferences
+    alias: PREFERENCES
+    title: Preferences
+    pageGroup: @home
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region preferences (
+        name: Preferences
+        type: list
+        source {
+            list: @preferences
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

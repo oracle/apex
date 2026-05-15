@@ -1,0 +1,124 @@
+appComputation active-msg (
+    itemName: ACTIVE_MSG
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('ACTIVE');
+    }
+)
+
+appComputation application-title (
+    itemName: APPLICATION_TITLE
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_app_name varchar2(255);
+            begin
+                select nvl(preference_value,:APP_NAME)
+                  into l_app_name
+                  from eba_cust_preferences
+                 where preference_name = 'APPLICATION_TITLE';
+                return l_app_name;
+            exception
+                when others then
+                    return :APP_NAME;
+            end;
+            ```
+    }
+)
+
+appComputation category-help (
+    itemName: CATEGORY_HELP
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('CATEGORY_HELP');
+    }
+)
+
+appComputation contact-types-help (
+    itemName: CONTACT_TYPES_HELP
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('CONTACT_TYPES_HELP');
+    }
+)
+
+appComputation create-msg (
+    itemName: CREATE_MSG
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('CREATE');
+    }
+)
+
+appComputation customer-status-help (
+    itemName: CUSTOMER_STATUS_HELP
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('CUSTOMER_STATUS_HELP');
+    }
+)
+
+appComputation customer-type-help (
+    itemName: CUSTOMER_TYPE_HELP
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('CUSTOMER_TYPE_HELP');
+    }
+)
+
+appComputation customer-use-case-help (
+    itemName: CUSTOMER_USE_CASE_HELP
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('CONTACT_USE_CASE_HELP');
+    }
+)
+
+appComputation inactive-msg (
+    itemName: INACTIVE_MSG
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('INACTIVE');
+    }
+)
+
+appComputation unlink-confirm-msg (
+    itemName: UNLINK_CONFIRM_MSG
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: htmldb_lang.message('UNLINK_CONFIRMATION');
+    }
+)
+

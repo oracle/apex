@@ -1,0 +1,506 @@
+page 35 (
+    name: Pipelined Functions
+    alias: PIPELINED-FUNCTIONS
+    title: Pipelined Functions
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The following use cases highlights PL/SQL Pipelined functions.
+                Pipelined functions are functions which, instead of returning a single value, return data in a tabular format. This allows them to be referenced like a table in the from clause of a SQL statement using the table(...) syntax. Because they are PL/SQL, it is possible to use pipelined functions to collect or generate data which would be difficult or impossible to collect through standard SQL.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region container (
+        name: Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region package-source (
+        name: Package Source
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                sys.htp.p('<p><b>Specification:</b></p>');
+                sys.htp.prn('<pre>');
+                sys.htp.p('create or replace ');
+                for c1 in (
+                    select text
+                    from user_source
+                    where upper(name) = 'EBA_DEMO_IR_PKG'
+                        and type = 'PACKAGE'
+                    order by line
+                    ) loop
+                    sys.htp.prn(apex_escape.html(c1.text));
+                end loop;
+                sys.htp.prn('</pre>');
+                
+                sys.htp.p('<p> </p>');
+                sys.htp.p('<p><b>Body:</b></p>');
+                sys.htp.prn('<pre>');
+                sys.htp.p('create or replace ');
+                for c1 in (
+                    select text
+                    from user_source
+                    where upper(name) = 'EBA_DEMO_IR_PKG'
+                        and type = 'PACKAGE BODY'
+                    order by line
+                    ) loop
+                    sys.htp.prn(apex_escape.html(c1.text));
+                end loop;
+                sys.htp.prn('</pre>');
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @container
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region pipelined-functions (
+        name: Pipelined Functions
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.page_id,
+                    p.page_name page,
+                    t.list_link_count,
+                    t.branch_count,
+                    t.button_count,
+                    t.breadcrumb_count,
+                    t.reportcol_count+t.irepcol_count reportcol_count,
+                    t.ireplink_count,
+                    t.tab_count,
+                    t.total 
+                from table( eba_demo_ir_pkg.incomingPageRefsReport() ) t,
+                    apex_application_pages p
+                where p.application_id = :APP_ID
+                    and p.page_id = t.page_id
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @container
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        advanced {
+            htmlDomId: QUERY
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 657522117757367844
+        }
+
+        column BRANCH_COUNT (
+            type: plainText
+            heading {
+                heading: Incoming Branches
+                alignment: end
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column BREADCRUMB_COUNT (
+            type: plainText
+            heading {
+                heading: Breadcrumbs
+                alignment: end
+            }
+            layout {
+                sequence: 5
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column BUTTON_COUNT (
+            type: plainText
+            heading {
+                heading: Incoming Buttons
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column IREPLINK_COUNT (
+            type: plainText
+            heading {
+                heading: Incoming IR Links
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column LIST_LINK_COUNT (
+            type: plainText
+            heading {
+                heading: List References
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PAGE (
+            type: plainText
+            heading {
+                heading: Page
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column PAGE_ID (
+            type: plainText
+            heading {
+                heading: Page No.
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column REPORTCOL_COUNT (
+            type: plainText
+            heading {
+                heading: Incoming Report Columns
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column TAB_COUNT (
+            type: plainText
+            heading {
+                heading: Tabs
+                alignment: end
+            }
+            layout {
+                sequence: 9
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column TOTAL (
+            type: plainText
+            heading {
+                heading: Total
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        savedReport 6575231 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 5
+            }
+
+            displayColumn BRANCH_COUNT (
+                sequence: 4
+            )
+
+            displayColumn BREADCRUMB_COUNT (
+                sequence: 6
+            )
+
+            displayColumn BUTTON_COUNT (
+                sequence: 5
+            )
+
+            displayColumn IREPLINK_COUNT (
+                sequence: 8
+            )
+
+            displayColumn LIST_LINK_COUNT (
+                sequence: 3
+            )
+
+            displayColumn PAGE (
+                sequence: 2
+            )
+
+            displayColumn PAGE_ID (
+                sequence: 1
+            )
+
+            displayColumn REPORTCOL_COUNT (
+                sequence: 7
+            )
+
+            displayColumn TAB_COUNT (
+                sequence: 9
+            )
+
+            displayColumn TOTAL (
+                sequence: 10
+            )
+
+            sort (
+                column: TOTAL
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: DEPTNO
+                sort {
+                    sequence: 2
+                }
+            )
+
+            aggregate (
+                column: TOTAL_SALARIES
+            )
+
+        )
+
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 20
+            parentRegion: @container
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: QUERY
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @pipelined-functions
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 35
+                clearCache: [
+                    35
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

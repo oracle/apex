@@ -1,0 +1,110 @@
+page 20 (
+    name: Sales by Store by Day
+    title: Sales by Store by Day
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sales-by-store-by-day (
+        name: Sales by Store by Day
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select (select store_name from oow_demo_stores s where s.id = sh.store_id)||' - '||
+                        to_char(sum(sh.item_price * sh.QUANTITY),'$999G999G999G999G990')||
+                       '('||count(*)||')' sales,
+                       sh.store_id,
+                       trunc(sh.date_of_sale) sale_date,
+                       sum(sh.quantity) units_sold
+                from OOW_DEMO_SALES_HISTORY sh
+                group by sh.store_id, trunc(sh.date_of_sale)
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            displayColumn: SALES
+            startDateColumn: SALE_DATE
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+            export: csv
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 19
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

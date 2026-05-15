@@ -1,0 +1,254 @@
+buildOption activities (
+    name: Activities
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This feature allows the tracking of contacts who have attended various events.
+    }
+)
+
+buildOption annual-recurring-revenue-arr (
+    name: Annual Recurring Revenue (ARR)
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: A status of include will expose an Annual Recurring Revenue attribute of customers.  A status of exclude will hide the attribute.
+    }
+)
+
+buildOption competitors (
+    name: Competitors
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This feature allows the tracking of competitors, and which customers they are competing against you on.
+    }
+)
+
+buildOption contacts (
+    name: Contacts
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Use this build option to enable or disable tracking of customer contacts.
+    }
+)
+
+buildOption content-completeness-widget (
+    name: Content Completeness Widget
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This build option controls whether the "Content Completeness" plugin region is displayed on the Customer details page or not.
+    }
+)
+
+buildOption countries (
+    name: Countries
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Including will allow reporting and management of countries by customer. Excluding will not show the country attribute for customers.
+    }
+)
+
+buildOption customer-data-loading (
+    name: Customer Data Loading
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Allow application contributors to load customer data from CSV files or cut and paste via a data loading wizard.
+    }
+)
+
+buildOption customer-referencability (
+    name: Customer Referencability
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Support reference attributes at the customer level.
+    }
+)
+
+buildOption customer-status (
+    name: Customer Status
+    status {
+        status: include
+        defaultOnExport: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Support a status attribute at the customer level.
+    }
+)
+
+buildOption customer-use-case (
+    name: Customer Use Case
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Support a use case status attribute at the customer level (development, test/stage, production, etc...).
+    }
+)
+
+buildOption discount-percentage (
+    name: Discount Percentage
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Include a customer attribute that tracks discount percentage at the customer level.  Including the discount will allow this value to be displayed and edited within the application.  Excluding this attribute will hide this feature from the application.
+    }
+)
+
+buildOption display-row-key (
+    name: Display Row Key
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Row Keys are alphanumeric unique identifiers that can be used to easily identify a specific customer.  If you wish to see these unique identifiers in the application set to Include; if you do not wish to see these unique identifiers in the application set to exclude.
+    }
+)
+
+buildOption feedback (
+    name: Feedback
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This feature allows end-users to submit feedback about the application that can be emailed and viewed by application administrators.
+    }
+)
+
+buildOption geography (
+    name: Geography
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Including will allow reporting and management of geography by customer.  Excluding will not show the geography attribute for customers.
+    }
+)
+
+buildOption issues (
+    name: Issues
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This feature allows end-users to capture and record customer issues.
+    }
+)
+
+buildOption number-of-users (
+    name: Number_of_users
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Expose the number of users attribute
+    }
+)
+
+buildOption partners (
+    name: Partners
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This feature allows the tracking of partners, and which customers they are working with you on.
+    }
+)
+
+buildOption product-referencability (
+    name: Product Referencability
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Support reference attributes at the customer product level.
+    }
+)
+
+buildOption products-and-services (
+    name: Products and Services
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Use this build option to enable or disable products and services application functionality.
+    }
+)
+
+buildOption reports (
+    name: Reports
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Enable or disable the application reporting tab that provides summary reporting of application data.  Disable this option to keep the application more terse and focused, enable this option to enable additional reporting functionality.
+    }
+)
+
+buildOption strategic-customer-program (
+    name: Strategic Customer Program
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Support tracking whether a customer is a "Strategic Customer Program" customer or not.
+    }
+)
+
+buildOption total-contract-value-tcv (
+    name: Total Contract Value (TCV)
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: A status of include will expose an Total Contract Value (TCV) attribute of customers.  A status of exclude will hide the attribute.
+    }
+)
+
+buildOption validations-widget (
+    name: Validations Widget
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This build option controls whether the "Validations" plugin region is displayed on the Customer details page or not.
+    }
+)
+

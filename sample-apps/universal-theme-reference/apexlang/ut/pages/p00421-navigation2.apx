@@ -1,0 +1,274 @@
+page 421 (
+    name: Navigation
+    alias: NAVIGATION2
+    title: Navigation
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .dm-Icon {
+              display: inline-block; }
+            
+            .dm-Icon--page {
+              width: 16rem;
+              height: 10.25rem;
+              display: block;
+              margin: 1.5rem auto; }
+              .dm-Icon--page + .t-Button {
+                display: block;
+                margin: 0 auto; }
+              .apex-theme-vita-dark .dm-Icon--page {
+                filter: invert(0.75); }
+              .u-RTL .dm-Icon--page {
+                transform: scaleX(-1); }
+            
+            .side-nav-one-column {
+              background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20164%22%3E%3Cpath%20fill%3D%22%23C2C2C2%22%20d%3D%22M0%202C0%20.9.9%200%202%200h252c1.1%200%202%20.9%202%202v160c0%201.105-.895%202-2%202H2c-1.1%200-2-.9-2-2V2z%22%2F%3E%3Cg%20fill%3D%22%23EBEBEB%22%3E%3Cpath%20d%3D%22M13%201H2c-.552%200-1%20.448-1%201v11h12V1zM254%201H14v12h241V2c0-.552-.448-1-1-1z%22%2F%3E%3C%2Fg%3E%3Cpath%20fill%3D%22%23EBEBEB%22%20d%3D%22M1%2074h38v89H2c-.552%200-1-.448-1-1V74z%22%2F%3E%3Cpath%20fill%3D%22%23FFF%22%20d%3D%22M40%2014h215v26H40z%22%2F%3E%3Cpath%20fill%3D%22%23C2C2C2%22%20d%3D%22M5%205h4v1H5zM5%208h4v1H5z%22%2F%3E%3Cpath%20fill%3D%22%23EBEBEB%22%20d%3D%22M1%2014h38v11H1zM1%2026h38v11H1zM1%2038h38v11H1zM1%2050h38v11H1zM1%2062h38v11H1z%22%2F%3E%3Cpath%20fill%3D%22%23FAFAFA%22%20d%3D%22M40%2041h215v121c0%20.552-.448%201-1%201H40V41z%22%2F%3E%3C%2Fsvg%3E");
+              background-repeat: no-repeat; }
+            
+            .top-nav-one-column {
+              background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20164%22%3E%3Cpath%20fill%3D%22%23C2C2C2%22%20d%3D%22M0%202C0%20.9.9%200%202%200h252c1.1%200%202%20.9%202%202v160c0%201.105-.895%202-2%202H2c-1.1%200-2-.9-2-2V2z%22%2F%3E%3Cpath%20fill%3D%22%23EBEBEB%22%20d%3D%22M254%201H2c-.552%200-1%20.448-1%201v11h254V2c0-.552-.448-1-1-1z%22%2F%3E%3Cpath%20fill%3D%22%23FFF%22%20d%3D%22M1%2027h254v26H1z%22%2F%3E%3Cpath%20fill%3D%22%23EBEBEB%22%20d%3D%22M1%2014h50v12H1zM52%2014h50v12H52zM103%2014h50v12h-50zM154%2014h50v12h-50zM205%2014h50v12h-50z%22%2F%3E%3Cpath%20fill%3D%22%23FAFAFA%22%20d%3D%22M1%2054h254v108c0%20.552-.448%201-1%201H2c-.552%200-1-.448-1-1V54z%22%2F%3E%3C%2Fsvg%3E");
+              background-repeat: no-repeat; }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><strong>Steps</strong></p>
+                
+                <ul>
+                  <li>Go to Shared Components &rarr; User Interface Attributes &rarr; Edit Desktop</li>
+                  <li>Scroll to Navigation Menu and set <b>Position</b> to Side</li>
+                  <li>Set the <b>List Template</b> to Side Navigation Menu</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @side-menu
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--noIcon
+                t-Alert--info
+                t-Alert--accessibleHeading
+            ]
+        }
+        accessibility {
+            landmarkLabel: Side Menu Instructions
+        }
+    )
+
+    region instructions-2 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><strong>Steps</strong></p>
+                
+                <ul>
+                  <li>Go to Shared Components &rarr; User Interface Attributes &rarr; Edit Desktop</li>
+                  <li>Scroll to Navigation Menu and set <b>Position</b> to Top</li>
+                  <li>Set the <b>List Template</b> to Top Navigation Tabs</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @tab-menu
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--noIcon
+                t-Alert--info
+                t-Alert--accessibleHeading
+            ]
+        }
+        accessibility {
+            landmarkLabel: Tab Menu Instructions
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Navigation within your application is critical to its success. When building applications for mobile, it is important to keep in mind the complexity of the application you are developing and which navigation pattern makes most sense for your specific use case. Here are two of the mobile-friendly navigation patterns available in Universal Theme and when to pick one over the other.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region side-menu (
+        name: Side Menu
+        type: staticContent
+        source {
+            htmlCode: <p>This common navigation pattern is typically referred to as a <b>hamburger menu</b>, drawer menu, or tree navigation and is well suited for applications that have many navigation items, or require nested navigation. On small screens, you simply tap on the hamburger icon near the top left (or top right when using right-to-left languages) corner of your screen and the menu will slide out. You can make a selection and immediately navigate to the selected item.</p>
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region side-menu-sample (
+        name: Side Menu Sample
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="dm-Icon dm-Icon--page side-nav-one-column"></span>
+                <button class="t-Button t-Button--icon t-Button--iconRight" onclick="apex.theme42demo.openMobileSamplePage('f?p=&APP_ID.:1101:&APP_SESSION.','Page with Side Menu')" type="button">View Sample</span>
+                </button>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @side-menu
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+    region tab-menu (
+        name: Tab Menu
+        type: staticContent
+        source {
+            htmlCode: <p>Tabs are another very common navigation pattern for small screen devices.  These tabs will automatically position themselves near the top or bottom of the screen depending on the device screensize.  On small screens, the tabs menu will be displayed at the bottom of the screen allowing for comfortable use with one hand. On larger screens, the tabs will be near the top of the screen.</p>
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            htmlDomId: standard
+            regionDisplaySelector: true
+        }
+    )
+
+    region tab-menu-sample (
+        name: Tab Menu Sample
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="dm-Icon dm-Icon--page top-nav-one-column"></span>
+                <button class="t-Button t-Button--icon t-Button--iconRight" onclick="apex.theme42demo.openMobileSamplePage('f?p=&APP_ID.:1115:&APP_SESSION.','Page with Tabs Menu')" type="button">View Sample</span>
+                </button>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @tab-menu
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+)
+

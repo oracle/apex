@@ -1,0 +1,650 @@
+page 55 (
+    name: "Editing in a Dialog "
+    alias: EDITING-IN-A-DIALOG
+    title: "Editing in a Dialog "
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        width: 80%
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region basic-editing (
+        name: Basic Editing
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select * from eba_demo_ig_emp
+                where deptno =:P55_DEPTNO
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+            ]
+        }
+        enableUsersTo {
+            download: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 4410386657828770529
+        }
+
+        savedReport 14503 (
+            visibility: primary
+            view {
+                default: grid
+                rowsPerPage: 5
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 18
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    sequence: 19
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    sequence: 20
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    sequence: 21
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    sequence: 22
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    sequence: 23
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    sequence: 24
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    sequence: 25
+                }
+            )
+
+            displayColumn (
+                column: @ROWID
+                layout {
+                    sequence: 26
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    sequence: 27
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    sequence: 28
+                }
+            )
+
+            displayColumn (
+                column: @FLEX1
+                layout {
+                    sequence: 29
+                }
+            )
+
+            displayColumn (
+                column: @FLEX2
+                layout {
+                    sequence: 30
+                }
+            )
+
+            displayColumn (
+                column: @FLEX3
+                layout {
+                    sequence: 31
+                }
+            )
+
+            displayColumn (
+                column: @FLEX4
+                layout {
+                    sequence: 32
+                }
+            )
+
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Comm
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Deptno
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select dname, deptno from eba_demo_ig_dept order by dname asc
+                displayNullValue: false
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            default {
+                type: item
+                item: P55_DEPTNO
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            settings {
+                textCase: upper
+            }
+            layout {
+                sequence: 30
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column FLEX1 (
+            type: hidden
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: FLEX1
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column FLEX2 (
+            type: hidden
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: FLEX2
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column FLEX3 (
+            type: hidden
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: FLEX3
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column FLEX4 (
+            type: hidden
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: FLEX4
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+                alignment: center
+            }
+            layout {
+                sequence: 60
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: radioGroup
+            heading {
+                heading: Job
+            }
+            lov {
+                type: sharedComponent
+                lov: @emp-jobs
+                displayNullValue: false
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Mgr
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select ename, empno from eba_demo_ig_emp order by 1
+                displayExtraValues: false
+                nullDisplayValue: - No Manager -
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: hidden
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ONLEAVE (
+            type: checkbox
+            heading {
+                heading: On Leave
+                alignment: center
+            }
+            layout {
+                sequence: 100
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: N
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ROWID (
+            type: hidden
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ROWID
+                dataType: rowid
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Sal
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview-editing-in-a-dialog (
+        name: Overview: Editing in a Dialog
+        type: staticContent
+        source {
+            htmlCode: <p>This page shows the interactive grid within a modal dialog. Note that in a dialog, end users expect the "Save" button to be in the dialog footer, so it has been removed from the interactive grid. After row processing, we don't branch to another page, a <strong>Close Dialog</strong> process is being executed instead.</p>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P55_DEPTNO (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @basic-editing
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: Close Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 1858404635972154965
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    process process-ig-changes (
+        name: Process IG Changes
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @basic-editing
+        execution {
+            sequence: 10
+        }
+        error {
+            errorMessage:
+                ```
+                Error on saving changes: #SQLERRM_TEXT#
+                
+                ```
+        }
+        advanced {
+            executionMappingIdentifier: 1858404543602154964
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

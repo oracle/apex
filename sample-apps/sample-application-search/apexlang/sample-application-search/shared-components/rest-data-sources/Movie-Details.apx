@@ -1,0 +1,270 @@
+restDataSource Movie_Details (
+    name: Movie Details
+    source {
+        type: http
+        remoteServer: @api_themoviedb_org_3
+        urlPathPrefix: movie/{movie_id}
+    }
+    authentication {
+        credentials: @tmdb_api_key
+    }
+    advanced {
+        passEcid: Y
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    parameter movie-id (
+        name: movie_id
+        value {
+            defaultValueType: staticValue
+            staticValue: 503
+        }
+    )
+
+    dataProfile {
+        name: Movie Details
+    }
+
+    dataProfileColumn adult (
+        columnName: ADULT
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: adult
+        }
+    )
+
+    dataProfileColumn backdrop-path (
+        columnName: BACKDROP_PATH
+        source {
+            sequence: 18
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: backdrop_path
+        }
+    )
+
+    dataProfileColumn belongs-to-collection (
+        columnName: BELONGS_TO_COLLECTION
+        source {
+            sequence: 21
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: belongs_to_collection
+        }
+    )
+
+    dataProfileColumn budget (
+        columnName: BUDGET
+        source {
+            sequence: 5
+            dataType: number
+        }
+        parsing {
+            pathExpression: budget
+        }
+    )
+
+    dataProfileColumn homepage (
+        columnName: HOMEPAGE
+        source {
+            sequence: 11
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: homepage
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: number
+        }
+        parsing {
+            pathExpression: id
+        }
+    )
+
+    dataProfileColumn imdb-id (
+        columnName: IMDB_ID
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: imdb_id
+        }
+    )
+
+    dataProfileColumn original-language (
+        columnName: ORIGINAL_LANGUAGE
+        source {
+            sequence: 20
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: original_language
+        }
+    )
+
+    dataProfileColumn original-title (
+        columnName: ORIGINAL_TITLE
+        source {
+            sequence: 19
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: original_title
+        }
+    )
+
+    dataProfileColumn overview (
+        columnName: OVERVIEW
+        source {
+            sequence: 12
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: overview
+        }
+    )
+
+    dataProfileColumn popularity (
+        columnName: POPULARITY
+        source {
+            sequence: 13
+            dataType: number
+        }
+        parsing {
+            pathExpression: popularity
+        }
+    )
+
+    dataProfileColumn poster-path (
+        columnName: POSTER_PATH
+        source {
+            sequence: 15
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: poster_path
+        }
+    )
+
+    dataProfileColumn release-date (
+        columnName: RELEASE_DATE
+        source {
+            sequence: 16
+            dataType: date
+        }
+        parsing {
+            pathExpression: release_date
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn revenue (
+        columnName: REVENUE
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: revenue
+        }
+    )
+
+    dataProfileColumn runtime (
+        columnName: RUNTIME
+        source {
+            sequence: 9
+            dataType: number
+        }
+        parsing {
+            pathExpression: runtime
+        }
+    )
+
+    dataProfileColumn status (
+        columnName: STATUS
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: status
+        }
+    )
+
+    dataProfileColumn tagline (
+        columnName: TAGLINE
+        source {
+            sequence: 10
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: tagline
+        }
+    )
+
+    dataProfileColumn title (
+        columnName: TITLE
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: title
+        }
+    )
+
+    dataProfileColumn video (
+        columnName: VIDEO
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: video
+        }
+    )
+
+    dataProfileColumn vote-average (
+        columnName: VOTE_AVERAGE
+        source {
+            sequence: 17
+            dataType: number
+        }
+        parsing {
+            pathExpression: vote_average
+        }
+    )
+
+    dataProfileColumn vote-count (
+        columnName: VOTE_COUNT
+        source {
+            sequence: 14
+            dataType: number
+        }
+        parsing {
+            pathExpression: vote_count
+        }
+    )
+
+)
+

@@ -1,0 +1,83 @@
+classicReportTemplate kanban-board (
+    name: Kanban Board
+    templateClass: custom1
+    type: namedColumn
+    reportTemplate {
+        top:
+            ```html
+            <div class="kb-Layout">
+              <div class="kb-RowHeader">
+            
+            ```
+        bottom:
+            ```html
+                </div>
+              </div>
+            </div>
+            ```
+    }
+    columnTemplates {
+        heading:
+            ```html
+              <div class="kb-Column">#COLUMN_HEADER#</div>
+            
+            ```
+    }
+    rowTemplate1 {
+        template:
+            ```html
+            </div>
+            <h3 class="kb-Group"><span class="kb-Group-label">#FOCUS_AREA#</span></h3>
+            <div class="kb-Row" id="#FOCUS_AREA_ID#">
+              <div class="#SORTABLE# kb-Cell" ID="#ROWNUM#" data-id="#COLUMN_ID#">
+                <div id="#ID#" class="kb-Card #P_STYLE# #DISPLAY#" onclick="#LINK#">
+                  <h4 class="kb-Card-title" title="#PROJECT#">#PROJECT#</h4>
+                  <div class="kb-Card-attributes">#ATTRS#</div>
+                </div>
+            ```
+        conditionType: plsqlExpression
+        plsqlExpression: #ROWNUM# = 1
+    }
+    rowTemplate2 {
+        template:
+            ```html
+              </div>
+            </div>
+            <h3 class="kb-Group"><span class="kb-Group-label">#FOCUS_AREA#</span></h3>
+            <div class="kb-Row" id="#FOCUS_AREA_ID#">
+              <div class="#SORTABLE# kb-Cell" ID="#ROWNUM#" data-id="#COLUMN_ID#">
+                <div id="#ID#" class="kb-Card #P_STYLE# #DISPLAY#" onclick="#LINK#">
+                  <h4 class="kb-Card-title" title="#PROJECT#">#PROJECT#</h4>
+                  <div class="kb-Card-attributes">#ATTRS#</div>
+                </div>
+            ```
+        conditionType: plsqlExpression
+        plsqlExpression: #ROW_SPLIT# = 1
+    }
+    rowTemplate3 {
+        template:
+            ```html
+              </div>
+              <div class="#SORTABLE# kb-Cell" ID="#ROWNUM#" data-id="#COLUMN_ID#">
+                <div id="#ID#" class="kb-Card #P_STYLE# #DISPLAY#" onclick="#LINK#">
+                  <h4 class="kb-Card-title" title="#PROJECT#">#PROJECT#</h4>
+                  <div class="kb-Card-attributes">#ATTRS#</div>
+                </div>
+            ```
+        conditionType: plsqlExpression
+        plsqlExpression: #COLUMN_SPLIT# = 1
+    }
+    rowTemplate4 {
+        template:
+            ```html
+                <div id="#ID#" class="kb-Card #P_STYLE# #DISPLAY#" onclick="#LINK#">
+                  <h4 class="kb-Card-title" title="#PROJECT#">#PROJECT#</h4>
+                  <div class="kb-Card-attributes">#ATTRS#</div>
+                </div>
+            ```
+    }
+    advanced {
+        identifier: KANBAN_GRID
+    }
+)
+

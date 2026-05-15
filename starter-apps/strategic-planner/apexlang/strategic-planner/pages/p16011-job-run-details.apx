@@ -1,0 +1,529 @@
+page 16011 (
+    name: Job Run Details
+    alias: JOB-RUN-DETAILS
+    title: Job Run Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: <p>This report includes the run details about the jobs selected to be monitored by this application.</p>
+    }
+
+    region job-run-details (
+        name: Job Run Details
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select LOG_ID,
+                       JOB_NAME,
+                       LOG_DATE,
+                       OWNER,
+                       JOB_SUBNAME,
+                       STATUS,
+                       ERROR#,
+                       REQ_START_DATE,
+                       ACTUAL_START_DATE,
+                       RUN_DURATION,
+                       INSTANCE_ID,
+                       SESSION_ID,
+                       SLAVE_PID,
+                       CPU_USED,
+                       CREDENTIAL_OWNER,
+                       CREDENTIAL_NAME,
+                       DESTINATION_OWNER,
+                       DESTINATION,
+                       ADDITIONAL_INFO,
+                       ERRORS,
+                       OUTPUT
+                  from user_scheduler_job_run_details 
+                 where job_name in ('SP_NOTIF_SUBSCRIPTIONS','SP_GENERATE_AI_SUMMARIES_JOB')
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 11093357450141617281
+        }
+
+        column ACTUAL_START_DATE (
+            type: plainText
+            heading {
+                heading: Actual Start Date
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column ADDITIONAL_INFO (
+            type: plainText
+            heading {
+                heading: Additional Information
+            }
+            layout {
+                sequence: 19
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column CPU_USED (
+            type: plainText
+            heading {
+                heading: CPU Used
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: OTHER
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: N
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column CREDENTIAL_NAME (
+            type: plainText
+            heading {
+                heading: Credential Name
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column CREDENTIAL_OWNER (
+            type: plainText
+            heading {
+                heading: Credential Owner
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column DESTINATION (
+            type: plainText
+            heading {
+                heading: Destination
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column DESTINATION_OWNER (
+            type: plainText
+            heading {
+                heading: Destination Owner
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column ERROR# (
+            type: plainText
+            heading {
+                heading: Error Number
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column ERRORS (
+            type: plainText
+            heading {
+                heading: Errors
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column INSTANCE_ID (
+            type: plainText
+            heading {
+                heading: Instance ID
+                alignment: end
+            }
+            layout {
+                sequence: 11
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column JOB_NAME (
+            type: plainText
+            heading {
+                heading: Job Name
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column JOB_SUBNAME (
+            type: plainText
+            heading {
+                heading: Job Subname
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column LOG_DATE (
+            type: plainText
+            heading {
+                heading: Log Date
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column LOG_ID (
+            type: plainText
+            heading {
+                heading: Log ID
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column OUTPUT (
+            type: plainText
+            heading {
+                heading: Output
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column REQ_START_DATE (
+            type: plainText
+            heading {
+                heading: Requested Start Date
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column RUN_DURATION (
+            type: plainText
+            heading {
+                heading: Run Duration
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: OTHER
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column SESSION_ID (
+            type: plainText
+            heading {
+                heading: Session ID
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column SLAVE_PID (
+            type: plainText
+            heading {
+                heading: Slave PID
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Job Run Details
+        }
+
+        savedReport 110933733 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ERROR# (
+                sequence: 4
+            )
+
+            displayColumn ERRORS (
+                sequence: 6
+            )
+
+            displayColumn JOB_NAME (
+                sequence: 1
+            )
+
+            displayColumn LOG_DATE (
+                sequence: 2
+            )
+
+            displayColumn RUN_DURATION (
+                sequence: 5
+            )
+
+            displayColumn STATUS (
+                sequence: 3
+            )
+
+            sort (
+                column: JOB_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: LOG_DATE
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 20
+            region: @job-run-details
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: t-Button--iconLeft
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: &APP_PAGE_ID.
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,568 @@
+page 1915 (
+    name: Inline Popup
+    alias: INLINE-POPUP
+    title: Inline Popup
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region auto-height-popup (
+        name: Auto Height Popup
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: dialog_auto
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region collapsible-content (
+        name: Collapsible Content
+        type: staticContent
+        source {
+            htmlCode: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vel ullamcorper metus. Duis interdum est eu accumsan lobortis. Quisque eu urna a odio feugiat ultrices ac id eros. Donec tristique nulla vitae tortor convallis, in commodo dui fermentum. Donec aliquet odio non lacus hendrerit, id elementum augue vehicula. Quisque tincidunt ex mauris. Duis scelerisque congue libero, quis eleifend est vulputate nec. Suspendisse molestie tortor eget malesuada maximus. Aliquam pharetra sem vitae consectetur rhoncus. Ut pharetra, neque ut elementum sagittis, ex ipsum tempus urna, pharetra ultricies justo nunc vel diam. Ut tristique placerat justo, a ornare diam. Fusce at metus id turpis bibendum ornare. Maecenas gravida nibh eu nibh eleifend, ac sollicitudin ante lobortis. Donec non erat feugiat, auctor nunc sed, laoreet orci.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @auto-height-popup
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region fixed-height-popup (
+        name: Fixed Height Popup
+        type: staticContent
+        source {
+            htmlCode: In its Template Options, uncheck "Auto Height" and pick a dialog size from the select list.
+        }
+        layout {
+            sequence: 70
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-size600x400
+            ]
+        }
+        advanced {
+            htmlDomId: dialog_fixed
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>An <strong>inline popup</strong> displays a region on the current page within a small popup component. It is similar to a dialog, however does not have a header bar, title, or close button. </p>
+                <p class="dm-Hero-steps">Create a region, set its "Position" attribute to Inline Dialogs, and use <strong>Inline Popup</strong> as its Region template.</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region popup-with-callout (
+        name: Popup with Callout
+        type: staticContent
+        source {
+            htmlCode: This popup has a callout arrow that points to the button or element that this popup was opened from.
+        }
+        layout {
+            sequence: 80
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-callout
+                js-dialog-size600x400
+            ]
+        }
+        advanced {
+            htmlDomId: popup_callout
+            customAttributes: data-parent-element="#btn_popup_callout"
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL_1
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @auto-height-popup
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            cssClasses: js-close-button
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button cancel-2 (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @fixed-height-popup
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            cssClasses: js-close-button
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button ok (
+        buttonName: OK_1
+        label: OK
+        layout {
+            sequence: 20
+            region: @auto-height-popup
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            cssClasses: js-close-button
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button ok-2 (
+        buttonName: OK
+        label: OK
+        layout {
+            sequence: 20
+            region: @fixed-height-popup
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            cssClasses: js-close-button
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button ok-3 (
+        buttonName: OK_2
+        label: OK
+        layout {
+            sequence: 20
+            region: @popup-with-callout
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            cssClasses: js-close-button
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button open-auto-size (
+        buttonName: OPEN_AUTO_SIZE
+        label: Inline Popup with Auto Size
+        layout {
+            sequence: 10
+            region: @demo
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button open-callout (
+        buttonName: OPEN_CALLOUT
+        label: Inline Popup with Fixed Size
+        layout {
+            sequence: 30
+            region: @demo
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: btn_popup_callout
+        }
+    )
+
+    button open-fixed (
+        buttonName: OPEN_FIXED
+        label: Inline Popup with Fixed Size
+        layout {
+            sequence: 20
+            region: @demo
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction close-auto-height-popup-on-cancel (
+        name: Close Auto Height Popup on Cancel
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @auto-height-popup
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction close-auto-height-popup-on-ok (
+        name: Close Auto Height Popup on Ok
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @ok
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @auto-height-popup
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction close-callout-popup (
+        name: Close Callout Popup
+        execution {
+            sequence: 80
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @ok-3
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @popup-with-callout
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction close-fixed-popup-on-cancel (
+        name: Close Fixed Popup on Cancel
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel-2
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @fixed-height-popup
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction close-fixed-popup-on-ok (
+        name: Close Fixed Popup on Ok
+        execution {
+            sequence: 60
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @ok-2
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @fixed-height-popup
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction open-auto-size-popup (
+        name: Open Auto Size Popup
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-auto-size
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @auto-height-popup
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction open-fixed-popup (
+        name: Open Fixed Popup
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-fixed
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @fixed-height-popup
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction open-inline-popup-with-callout (
+        name: Open Inline Popup with Callout
+        execution {
+            sequence: 70
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-callout
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @popup-with-callout
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

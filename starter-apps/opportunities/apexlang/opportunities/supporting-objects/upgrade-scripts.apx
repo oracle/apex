@@ -1,0 +1,415 @@
+upgradeScript "AGREEMENT TYPES" (
+    execution {
+        sequence: 90
+    }
+    script {
+        contentFile: agreement-types.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_AGREEMENT_TYPES'
+            ```
+    }
+)
+
+upgradeScript AGREEMENTS (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: agreements.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_AGREEMENTS'
+            ```
+    }
+)
+
+upgradeScript "Access Levels" (
+    execution {
+        sequence: 80
+    }
+    script {
+        contentFile: access-levels.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from eba_sales_access_levels
+            where id = 0;
+            ```
+    }
+)
+
+upgradeScript "Add Client Sponsor Column" (
+    execution {
+        sequence: 150
+    }
+    script {
+        contentFile: add-client-sponsor-column.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select column_name
+            from user_tab_columns
+            where table_name = 'EBA_SALES_DEALS'
+                and column_name = 'SPONSOR_CONTACT_ID'
+            ```
+    }
+)
+
+upgradeScript "Add Contact Title Column" (
+    execution {
+        sequence: 160
+    }
+    script {
+        contentFile: add-contact-title-column.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select column_name
+            from user_tab_columns
+            where table_name = 'EBA_SALES_CUSTOMER_CONTACTS'
+                and column_name = 'CONTACT_TITLE'
+            ```
+    }
+)
+
+upgradeScript "Add Secondary Rep Column to Customers" (
+    execution {
+        sequence: 140
+    }
+    script {
+        contentFile: add-secondary-rep-column-to-customers.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select column_name
+            from user_tab_columns
+            where table_name = 'EBA_SALES_CUSTOMERS'
+                and column_name = 'SECONDARY_REP'
+            ```
+    }
+)
+
+upgradeScript "Add lob_id to product families" (
+    execution {
+        sequence: 120
+    }
+    script {
+        contentFile: add-lob-id-to-product-families.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select column_name
+            from user_tab_columns
+            where table_name = 'EBA_SALES_PRODUCT_FAMILIES'
+                and column_name = 'LOB_ID'
+            ```
+    }
+)
+
+upgradeScript "Customer Agreement Map" (
+    execution {
+        sequence: 130
+    }
+    script {
+        contentFile: customer-agreement-map.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_CUST_AGRMNT_MAP'
+            ```
+    }
+)
+
+upgradeScript "Customer Support Amount Map" (
+    execution {
+        sequence: 190
+    }
+    script {
+        contentFile: customer-support-amount-map.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_CUST_SPT_AMT_MAP'
+            ```
+    }
+)
+
+upgradeScript EBA_SALES_PRODUCT_LOBS (
+    execution {
+        sequence: 110
+    }
+    script {
+        contentFile: eba-sales-product-lobs.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_PRODUCT_LOBS'
+            ```
+    }
+)
+
+upgradeScript "SUPPORT AMOUNT TYPES" (
+    execution {
+        sequence: 170
+    }
+    script {
+        contentFile: support-amount-types.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_SUPRT_AMT_TYPES'
+            ```
+    }
+)
+
+upgradeScript "SUPPORT AMOUNTS" (
+    execution {
+        sequence: 180
+    }
+    script {
+        contentFile: support-amounts.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_SUPPORT_AMTS'
+            ```
+    }
+)
+
+upgradeScript "Set data model version to 2.1.5" (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: set-data-model-version-to-2-1-5.sql
+    }
+    serverSideCondition {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+            
+              l_data_model_version eba_sales_preferences.preference_value%type;
+            
+            begin
+            
+              select preference_value
+              into l_data_model_version
+              from eba_sales_preferences
+              where preference_name = 'DATA_MODEL_VERSION';
+            
+              return false;
+            
+            exception
+            
+              when no_data_found
+              then
+                return true;
+            
+            end;
+            ```
+    }
+)
+
+upgradeScript "Set data model version to 3.0.0" (
+    execution {
+        sequence: 230
+    }
+    script {
+        contentFile: set-data-model-version-to-3-0-0.sql
+    }
+    serverSideCondition {
+        type: expression
+        plsqlExpression: eba_sales_fw.get_preference_value('DATA_MODEL_VERSION') = '2.1.5'
+    }
+)
+
+upgradeScript "Set first run preference" (
+    execution {
+        sequence: 220
+    }
+    script {
+        contentFile: set-first-run-preference.sql
+    }
+    serverSideCondition {
+        type: expression
+        plsqlExpression: eba_sales_fw.get_preference_value('DATA_MODEL_VERSION') = '2.1.5'
+    }
+)
+
+upgradeScript "TIMESTAMP Fix (BUGID: 31352674)" (
+    execution {
+        sequence: 260
+    }
+    script {
+        contentFile: timestamp-fix-bugid-31352674-.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery: select null from all_tab_cols where table_name like 'EBA_SALES_%' and data_type = 'TIMESTAMP(6) WITH LOCAL TIME ZONE'
+    }
+)
+
+upgradeScript "Upgrade data model to 3.0.0" (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: upgrade-data-model-to-3-0-0.sql
+    }
+    serverSideCondition {
+        type: expression
+        plsqlExpression: eba_sales_fw.get_preference_value('DATA_MODEL_VERSION') = '2.1.5'
+    }
+)
+
+upgradeScript "eba_sales_acl_api package body" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: eba-sales-acl-api-package-body.sql
+    }
+)
+
+upgradeScript "eba_sales_acl_api package spec" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: eba-sales-acl-api-package-spec.sql
+    }
+)
+
+upgradeScript "eba_sales_clicks table, indexes, trigger" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: eba-sales-clicks-table-indexes-trigger.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_CLICKS'
+            ```
+    }
+)
+
+upgradeScript "eba_sales_data package body" (
+    execution {
+        sequence: 210
+    }
+    script {
+        contentFile: eba-sales-data-package-body.sql
+    }
+)
+
+upgradeScript "eba_sales_data package spec" (
+    execution {
+        sequence: 200
+    }
+    script {
+        contentFile: eba-sales-data-package-spec.sql
+    }
+)
+
+upgradeScript "eba_sales_fw body" (
+    execution {
+        sequence: 250
+    }
+    script {
+        contentFile: eba-sales-fw-body.sql
+    }
+)
+
+upgradeScript "eba_sales_fw spec" (
+    execution {
+        sequence: 240
+    }
+    script {
+        contentFile: eba-sales-fw-spec.sql
+    }
+)
+
+upgradeScript "eba_sales_territory_acl index" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: eba-sales-territory-acl-index.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_indexes
+            where index_name = 'EBA_SALES_TERRITORY_ACL_N1'
+            ```
+    }
+)
+
+upgradeScript "eba_sales_verifications table, indexes, trigger" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: eba-sales-verifications-table-indexes-trigger.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_SALES_VERIFICATIONS'
+            ```
+    }
+)
+

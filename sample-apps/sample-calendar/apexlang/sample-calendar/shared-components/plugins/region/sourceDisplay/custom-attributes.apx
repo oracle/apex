@@ -1,0 +1,28 @@
+customAttribute attribute_01 (
+    apexlangName: regionStaticId
+    attribute: 1
+    name: Region Static ID
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: Enter the static ID as defined in the target region's attributes section.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: highlightTermPageItem
+    attribute: 2
+    name: Highlight Term Page Item
+    type: pageItem
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: If you wish to have a term in your region source highlighted, create a page item and select it here.
+    }
+)
+

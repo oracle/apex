@@ -1,0 +1,637 @@
+page 29 (
+    name: Lead Details
+    alias: LEAD-DETAILS
+    title: Lead Details
+    pageGroup: @leads
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <script language="JavaScript" type="text/javascript">
+            <!--
+            
+             htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            
+            //-->
+            </script>
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @leads
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region lead (
+        name: Lead
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region lead-classification (
+        name: Lead Classification
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @lead
+            slot: subRegions
+        }
+    )
+
+    region lead-details (
+        name: Lead Details
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @lead
+            slot: subRegions
+        }
+    )
+
+    pageItem P29_ACCOUNT_ID (
+        type: selectList
+        label {
+            label: Account
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select customer_name display, 
+                  id return 
+                from eba_sales_customers
+                order by display
+                ```
+            nullDisplayValue: - Select Account  -
+        }
+        layout {
+            sequence: 30
+            region: @lead-classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCOUNT_ID
+            used: always
+        }
+    )
+
+    pageItem P29_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @lead-classification
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P29_LEAD_DETAILS (
+        type: textarea
+        label {
+            label: Details
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @lead-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+            height: 8
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LEAD_DETAILS
+            used: always
+        }
+    )
+
+    pageItem P29_LEAD_EMAIL_01 (
+        type: textField
+        label {
+            label: Email
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 90
+            region: @lead-classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LEAD_EMAIL_01
+            used: always
+        }
+    )
+
+    pageItem P29_LEAD_NAME_01 (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @lead-classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        validation {
+            valueRequired: true
+            maxLength: 2000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LEAD_NAME_01
+            used: always
+        }
+    )
+
+    pageItem P29_LEAD_PRIORITY (
+        type: selectList
+        label {
+            label: Priority
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:1;1,2;2,3;3,4;4,5;5
+            displayNullValue: false
+        }
+        layout {
+            sequence: 70
+            region: @lead-classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LEAD_PRIORITY
+            used: always
+        }
+        default {
+            type: static
+            staticValue: 5
+        }
+        help {
+            helpText: Enter numeric value for lead priority.  Use 1 for highest priority and 5 for lowest priority and unprioritized.
+        }
+    )
+
+    pageItem P29_LEAD_SOURCE_ID (
+        type: selectList
+        label {
+            label: Source
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select lead_source, id from eba_sales_lead_sources order by 1
+            nullDisplayValue: - Identify Lead Source if known -
+        }
+        layout {
+            sequence: 80
+            region: @lead-classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LEAD_SOURCE_ID
+            used: always
+        }
+    )
+
+    pageItem P29_LEAD_STATUS_ID (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @lead-codes
+            displayExtraValues: false
+            nullDisplayValue: - Select Status -
+        }
+        layout {
+            sequence: 50
+            region: @lead-classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LEAD_STATUS_ID
+            used: always
+        }
+        default {
+            type: static
+            staticValue: 4
+        }
+        help {
+            helpText: Status of this lead
+        }
+    )
+
+    pageItem P29_OPPORTUNITY_ID (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @lead-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: OPPORTUNITY_ID
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P29_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P29_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                from eba_sales_tags_type_sum
+                where content_type = 'LEAD'
+                ```
+        }
+        layout {
+            sequence: 170
+            region: @lead-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Lead
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P29_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P29_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P29_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation valid-tag-characters (
+        name: Valid Tag Characters
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P29_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P29_TAGS
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: SAVE,CREATE
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            itemsToReturn: P29_LEAD_NAME_01
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 6542456233242038159
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: DELETE
+        }
+    )
+
+    process fetch-row-from-eba-sales-leads (
+        name: Fetch Row from EBA_SALES_LEADS
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_LEADS
+            pkColumn: ID
+            pkItem: P29_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 10188644459418119743
+        }
+    )
+
+    process process-row-of-eba-sales-leads (
+        name: Process Row of EBA_SALES_LEADS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_LEADS
+            pkColumn: ID
+            pkItem: P29_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_SALES_LEADS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 10188644670297119744
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 10188644856013119744
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        name: Branch to leads on delete
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 19
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+)
+

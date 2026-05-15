@@ -1,0 +1,18 @@
+installScript "Create Airports Table" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: create-airports-table.sql
+    }
+)
+
+installScript "Create Tables" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-tables.sql
+    }
+)
+

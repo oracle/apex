@@ -1,0 +1,48 @@
+customAttribute attribute_01 (
+    apexlangName: itemForLongitudeValue
+    attribute: 1
+    name: Item for Longitude value
+    type: pageItem
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 5
+    }
+    help {
+        helpText: Specify Item to store the longitude value.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: itemForLatitudeValue
+    attribute: 2
+    name: Item for Latitude value
+    type: pageItem
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: Item to store the longitude value.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: itemForStatusMessage
+    attribute: 3
+    name: Item for Status Message
+    type: pageItem
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 30
+    }
+    help {
+        helpText: Specify the APEX item, in which to store the Status message (Success / Error) here.
+    }
+)
+

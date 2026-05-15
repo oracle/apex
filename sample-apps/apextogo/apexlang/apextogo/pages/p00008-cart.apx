@@ -1,0 +1,842 @@
+page 8 (
+    name: Cart
+    alias: CART
+    title: Cart
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region actions (
+        name: Actions
+        type: staticContent
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--hiddenOverflow
+            ]
+            cssClasses: [
+                t-ButtonRegion--stickToBottom
+                padding-sm
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region cart (
+        name: Cart
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select seq_id item,
+                       p.image_url,
+                       p.id,
+                       p.name,
+                       p.price,
+                       n002 quantity,
+                       p.price * n002 subtotal,
+                       c001 utensils,
+                       c002 note
+                  from apex_collections a,
+                       sample_restaurant_items p
+                 where collection_name = 'ITEMS'
+                   and p.id = a.n001
+                 order by p.id
+                ```
+            pageItemsToSubmit: P8_SHOPPING_CART_ITEMS
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: CartRegion
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &NAME.
+            description:
+                ```html
+                Quantity: &QUANTITY.<br />
+                Subtotal: $&SUBTOTAL.
+                ```
+            displayAvatar: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: url
+                url: #APP_FILES#&IMAGE_URL.
+            }
+            size: medium
+        }
+        messages {
+            whenNoDataFound: Your cart is empty
+            noDataFoundIcon: fa-cart-empty
+        }
+
+        column ID (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column IMAGE_URL (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: IMAGE_URL
+                dataType: varchar2
+            }
+        )
+
+        column ITEM (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ITEM
+                dataType: number
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column NOTE (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: NOTE
+                dataType: varchar2
+            }
+        )
+
+        column PRICE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: PRICE
+                dataType: number
+            }
+        )
+
+        column QUANTITY (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: QUANTITY
+                dataType: number
+            }
+        )
+
+        column SUBTOTAL (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: SUBTOTAL
+                dataType: number
+            }
+        )
+
+        column UTENSILS (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: UTENSILS
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: fullRowLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 7
+                    items: {
+                        P7_ITEM_ID: &ID.
+                        P7_ITEM_NAME: &NAME.
+                    }
+                    clearCache: 7
+                }
+                linkAttributes: aria-label="&NAME."
+            }
+        )
+
+        action decrease-item-quantity (
+            position: primaryActions
+            template: button
+            label: Decrease Item Quantity
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #action$cart?id=&ID.&quantity=&QUANTITY.&utensils=&UTENSILS.&note=&NOTE.&action=minus
+            }
+            appearance {
+                displayType: icon
+                icon: fa-minus
+                cssClasses: padding-sm
+            }
+        )
+
+        action increase-item-quantity (
+            position: primaryActions
+            template: button
+            label: Increase Item Quantity
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #action$cart?id=&ID.&quantity=&QUANTITY.&utensils=&UTENSILS.&note=&NOTE.&action=add
+            }
+            appearance {
+                displayType: icon
+                icon: fa-plus
+                cssClasses: padding-sm
+            }
+        )
+
+    )
+
+    region total (
+        name: Total
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select sum( p.price* n002 ) total
+                  from apex_collections a,
+                       sample_restaurant_items p
+                 where collection_name = 'ITEMS'
+                   and p.id = a.n001
+                 order by p.id
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        advanced {
+            htmlDomId: CartTotal
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections a,
+                       sample_restaurant_items p
+                 where collection_name = 'ITEMS'
+                   and p.id = a.n001
+                ```
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--fixedLabelLarge
+                t-AVPList--rightAligned
+            ]
+        }
+
+        column TOTAL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Total
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            columnFormatting {
+                htmlExpression: <strong>$#TOTAL#</strong>
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+    )
+
+    pageItem P8_ORDER_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P8_SHOPPING_CART_ITEMS (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        security {
+            encryptSessionState: false
+        }
+    )
+
+    button checkout (
+        buttonName: CHECKOUT
+        label: Checkout
+        layout {
+            sequence: 30
+            region: @actions
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--stretch
+            ]
+            icon: fa-cart-empty
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNullAndNotZero
+            item: SHOPPING_CART_ITEMS
+        }
+    )
+
+    button clear (
+        buttonName: CLEAR
+        label: Clear Cart
+        layout {
+            sequence: 20
+            region: @actions
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--link
+                t-Button--stretch
+                t-Button--gapBottom
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        serverSideCondition {
+            type: itemIsNotNullAndNotZero
+            item: SHOPPING_CART_ITEMS
+        }
+    )
+
+    dynamicAction clear-cart (
+        name: Clear Cart
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @clear
+        }
+
+        action native-confirm (
+            action: confirm
+            settings {
+                message: Confirm to clear the cart
+                style: warning
+                confirmLabel: Confirm
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: CLEAR
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction update-shopping-cart (
+        name: Update Shopping Cart
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @cart
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: parseInt( $v( "P8_SHOPPING_CART_ITEMS" ) ) > 0
+        }
+
+        action hide-buttons (
+            name: Hide Buttons
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @actions
+            }
+            execution {
+                sequence: 60
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action hide-total (
+            name: Hide Total
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @total
+            }
+            execution {
+                sequence: 70
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // Update Badge Text
+                    apex.jQuery( '.js-shopping-cart-item .t-Button-badge' ).text( this.data.P7_SHOPPING_CART_ITEMS );
+                    
+                    // Update Icon
+                    apex.jQuery( '.js-shopping-cart-item .t-Icon' ).toggleClass( 'fa-cart-empty fa-cart-full' );
+                    ```
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code-2 (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // Update Badge Text
+                    apex.jQuery( '.js-shopping-cart-item .t-Button-badge' ).text( '' );
+                    
+                    // Update Icon
+                    apex.jQuery( '.js-shopping-cart-item .t-Icon' ).toggleClass( 'fa-cart-full fa-cart-empty' );
+                    ```
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: dialogReturnItem
+                returnItem: P7_SHOPPING_CART_ITEMS
+            }
+            affectedElements {
+                selectionType: items
+                items: P8_SHOPPING_CART_ITEMS
+            }
+            execution {
+                sequence: 90
+                fireOnInit: false
+            }
+        )
+
+        action refresh (
+            name: Refresh
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @cart
+            }
+            execution {
+                sequence: 30
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action refresh-2 (
+            name: Refresh
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @cart
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action refresh-3 (
+            name: Refresh
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @total
+            }
+            execution {
+                sequence: 40
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action refresh-4 (
+            name: Refresh
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @total
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action show-buttons (
+            name: Show Buttons
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @actions
+            }
+            execution {
+                sequence: 70
+                fireOnInit: false
+            }
+        )
+
+        action show-total (
+            name: Show Total
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @total
+            }
+            execution {
+                sequence: 80
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process calculate-shopping-cart-items (
+        name: Calculate Shopping Cart Items
+        type: executeCode
+        source {
+            plsqlCode: :P8_SHOPPING_CART_ITEMS := sample_restaurant_manage_orders.get_quantity;
+        }
+        execution {
+            sequence: 80
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 46606013477349871
+        }
+    )
+
+    process checkout (
+        name: Checkout
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sample_restaurant_manage_orders.create_order( p_order_id =>   :P8_ORDER_ID,
+                                                              p_session_id => :APP_SESSION );
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 46422589395656986
+        }
+        serverSideCondition {
+            whenButtonPressed: @checkout
+        }
+    )
+
+    process clear-shopping-cart (
+        name: Clear Shopping Cart
+        type: executeCode
+        source {
+            plsqlCode: sample_restaurant_manage_orders.clear_cart;
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 46422127008656986
+        }
+        serverSideCondition {
+            whenButtonPressed: @clear
+        }
+    )
+
+    process edit-cart (
+        name: edit_cart
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if sample_restaurant_manage_orders.item_quantity( p_item_id => apex_application.g_x01 ) > 0 then
+                    sample_restaurant_manage_orders.remove_item( p_item_id => apex_application.g_x01 );
+                    sample_restaurant_manage_orders.add_item( p_item_id  => apex_application.g_x01,
+                                                              p_quantity => apex_application.g_x02,
+                                                              p_utensils => apex_application.g_x03,
+                                                              p_note     => apex_application.g_x04 );
+                end if;
+                ```
+        }
+        execution {
+            sequence: 60
+            point: ajaxCallback
+        }
+        advanced {
+            executionMappingIdentifier: 46421377725656985
+        }
+    )
+
+    process push-queue (
+        name: Push Queue
+        type: invokeApi
+        invoke {
+            package: APEX_PWA
+            procedureOrFunction: PUSH_QUEUE
+        }
+        execution {
+            sequence: 70
+        }
+        advanced {
+            executionMappingIdentifier: 46421731314656986
+        }
+        serverSideCondition {
+            whenButtonPressed: @checkout
+            type: expression
+            plsqlExpression: apex_pwa.has_push_subscription
+        }
+    )
+
+    process send-notification (
+        name: Send Notification
+        type: invokeApi
+        invoke {
+            package: APEX_PWA
+            procedureOrFunction: SEND_PUSH_NOTIFICATION
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 46417982591656982
+        }
+        serverSideCondition {
+            whenButtonPressed: @checkout
+            type: expression
+            plsqlExpression: apex_pwa.has_push_subscription
+        }
+
+        parameter p_application_id (
+            parameter {
+                dataType: number
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+        parameter p_body (
+            parameter {
+                hasDefault: true
+            }
+            value {
+                type: staticValue
+                staticValue: Get 5% Off on your next Order!
+            }
+            advanced {
+                displaySequence: 40
+            }
+        )
+
+        parameter p_icon_url (
+            parameter {
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 50
+            }
+        )
+
+        parameter p_target_url (
+            parameter {
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 60
+            }
+        )
+
+        parameter p_title (
+            value {
+                type: staticValue
+                staticValue: We are preparing your order.
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_user_name (
+            value {
+                type: item
+                item: APP_USER
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+    )
+
+    branch (
+        name: Go to Orders
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 9
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @checkout
+        }
+    )
+
+    branch (
+        name: Go to Home
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 4
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @clear
+        }
+    )
+
+)
+

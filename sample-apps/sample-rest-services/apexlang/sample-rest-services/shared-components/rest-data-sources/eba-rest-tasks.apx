@@ -1,0 +1,213 @@
+restDataSource eba_rest_tasks (
+    name: EBA_REST_TASKS
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /tasks/
+    }
+
+    operation delete (
+        label: DELETE - :id
+        operation {
+            urlPattern: :id
+            httpMethod: delete
+            databaseOperation: delete
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    operation get-2 (
+        label: GET - :id
+        operation {
+            urlPattern: :id
+            httpMethod: get
+            databaseOperation: fetchSingleRow
+        }
+    )
+
+    operation post (
+        label: POST
+        operation {
+            urlPattern: .
+            httpMethod: post
+            databaseOperation: insert
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation put (
+        label: PUT - :id
+        operation {
+            urlPattern: :id
+            httpMethod: put
+            databaseOperation: update
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_TASKS
+        rowSelector: items
+    }
+
+    dataProfileColumn assigned-to (
+        columnName: ASSIGNED_TO
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: assigned_to
+        }
+    )
+
+    dataProfileColumn budget (
+        columnName: BUDGET
+        source {
+            sequence: 9
+            dataType: number
+        }
+        parsing {
+            pathExpression: budget
+        }
+    )
+
+    dataProfileColumn cost (
+        columnName: COST
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: cost
+        }
+    )
+
+    dataProfileColumn created (
+        columnName: CREATED
+        source {
+            sequence: 10
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: created
+        }
+    )
+
+    dataProfileColumn created-by (
+        columnName: CREATED_BY
+        source {
+            sequence: 11
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: created_by
+        }
+    )
+
+    dataProfileColumn end-date (
+        columnName: END_DATE
+        source {
+            sequence: 5
+            dataType: date
+        }
+        parsing {
+            pathExpression: end_date
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: id
+        }
+    )
+
+    dataProfileColumn project (
+        columnName: PROJECT
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: project
+        }
+    )
+
+    dataProfileColumn start-date (
+        columnName: START_DATE
+        source {
+            sequence: 4
+            dataType: date
+        }
+        parsing {
+            pathExpression: start_date
+        }
+    )
+
+    dataProfileColumn status (
+        columnName: STATUS
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: status
+        }
+    )
+
+    dataProfileColumn task-name (
+        columnName: TASK_NAME
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: task_name
+        }
+    )
+
+    dataProfileColumn updated (
+        columnName: UPDATED
+        source {
+            sequence: 12
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: updated
+        }
+    )
+
+    dataProfileColumn updated-by (
+        columnName: UPDATED_BY
+        source {
+            sequence: 13
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: updated_by
+        }
+    )
+
+)
+

@@ -1,0 +1,297 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry accepted-service-terms (
+        name: Accepted Service Terms
+        pageNumber: 10014
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10014
+            }
+        }
+    )
+
+    entry account-requests (
+        name: Account Requests
+        pageNumber: 10035
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10035
+            }
+        }
+    )
+
+    entry activity-dashboard (
+        name: Activity Dashboard
+        pageNumber: 10020
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10020
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 10000
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10000
+            }
+        }
+    )
+
+    entry all-sessions (
+        name: All Sessions
+        pageNumber: 10005
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10005
+            }
+        }
+    )
+
+    entry application-error-log (
+        name: Application Error Log
+        pageNumber: 10022
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10022
+            }
+        }
+    )
+
+    entry copy-session (
+        name: Copy Session
+        pageNumber: 115
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @p120-session-code-session-summary
+        }
+        link {
+            target: {
+                page: 115
+            }
+        }
+    )
+
+    entry create-session (
+        name: Create Session
+        pageNumber: 111
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+    )
+
+    entry email-reporting (
+        name: Email Reporting
+        pageNumber: 10050
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10050
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry job-reporting (
+        name: Job Reporting
+        pageNumber: 10051
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10051
+            }
+        }
+    )
+
+    entry logged-messages (
+        name: Logged Messages
+        pageNumber: 10026
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10026
+            }
+        }
+    )
+
+    entry manage-user-access (
+        name: Manage User Access
+        pageNumber: 10031
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10031
+            }
+        }
+    )
+
+    entry p120-session-code-session-summary (
+        name: &P120_SESSION_CODE. Session Summary
+        pageNumber: 120
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 120
+            }
+        }
+    )
+
+    entry page-performance (
+        name: Page Performance
+        pageNumber: 10023
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10023
+            }
+        }
+    )
+
+    entry page-views (
+        name: Page Views
+        pageNumber: 10024
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10024
+            }
+        }
+    )
+
+    entry q-a-sessions (
+        name: Q&A Sessions
+        pageNumber: 100
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry question-summary (
+        name: Question Summary
+        pageNumber: 121
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @p120-session-code-session-summary
+        }
+        link {
+            target: {
+                page: 121
+            }
+        }
+    )
+
+    entry responses-p113-session-name (
+        name: Responses - &P113_SESSION_NAME.
+        pageNumber: 113
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 113
+            }
+        }
+    )
+
+    entry restricted-to-email-domains (
+        name: Restricted To Email Domains
+        pageNumber: 10037
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10037
+            }
+        }
+    )
+
+    entry service-terms (
+        name: Service Terms
+        pageNumber: 10012
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10012
+            }
+        }
+    )
+
+    entry settings (
+        name: Settings
+        pageNumber: 10011
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10011
+            }
+        }
+    )
+
+)
+

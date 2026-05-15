@@ -1,0 +1,178 @@
+restDataSource eba_rest_product_workflows (
+    name: EBA_REST_PRODUCT_WORKFLOWS
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /orders/product/:id
+    }
+
+    operation fetch-single-product (
+        name: fetch single product
+        label: fetch single product
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchSingleRow
+        }
+    )
+
+    parameter id (
+        name: id
+        value {
+            defaultValueType: staticValue
+            staticValue: 1
+        }
+    )
+
+    parameter product-details (
+        name: PRODUCT_DETAILS
+        operation: @fetch-single-product
+        parameter {
+            type: dataProfileColumn
+            direction: out
+        }
+    )
+
+    parameter product-name (
+        name: PRODUCT_NAME
+        operation: @fetch-single-product
+        parameter {
+            type: dataProfileColumn
+            direction: out
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_PRODUCT_WORKFLOWS
+        rowSelector: .
+        containsSingleRow: true
+    }
+
+    dataProfileColumn image-charset (
+        columnName: IMAGE_CHARSET
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: image_charset
+        }
+        advanced {
+            sourceDataType: null
+        }
+    )
+
+    dataProfileColumn image-filename (
+        columnName: IMAGE_FILENAME
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: image_filename
+        }
+        advanced {
+            sourceDataType: null
+        }
+    )
+
+    dataProfileColumn image-last-updated (
+        columnName: IMAGE_LAST_UPDATED
+        source {
+            sequence: 9
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: image_last_updated
+        }
+        advanced {
+            sourceDataType: null
+        }
+    )
+
+    dataProfileColumn image-mime-type (
+        columnName: IMAGE_MIME_TYPE
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: image_mime_type
+        }
+        advanced {
+            sourceDataType: null
+        }
+    )
+
+    dataProfileColumn product-details (
+        columnName: PRODUCT_DETAILS
+        source {
+            sequence: 8
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: product_details
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn product-id (
+        columnName: PRODUCT_ID
+        source {
+            sequence: 1
+            dataType: number
+        }
+        parsing {
+            pathExpression: product_id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn product-image (
+        columnName: PRODUCT_IMAGE
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: product_image
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn product-name (
+        columnName: PRODUCT_NAME
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: product_name
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn unit-price (
+        columnName: UNIT_PRICE
+        source {
+            sequence: 2
+            dataType: number
+        }
+        parsing {
+            pathExpression: unit_price
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+)
+

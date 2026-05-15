@@ -1,0 +1,889 @@
+page 1601 (
+    name: Form Item Types
+    alias: FORM-ITEM-TYPES
+    title: Form Item Types
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .ts-Placeholder {
+            height: 240px;
+            line-height: 240px;
+            text-align: center;
+            background-color: #D0D0D0;
+            color: #404040;
+            border-radius: 2px;
+            margin-bottom: 48px;
+            }
+            .ts-Container {
+            max-width: 1024px;
+            min-height: 50vh;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 790
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--showBreadcrumb
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @region-with-items
+            slot: regionBody
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkLabel: Demo Region Items
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Universal Theme enables easy form design by allowing developers to declaratively control form layout, field templates, and label column widths. This page introduces you to forms, field templates, and template options.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 800
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region region-with-items (
+        name: Region with Items
+        type: staticContent
+        layout {
+            sequence: 45
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 40
+            parentRegion: @region-with-items
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Region Items Template Options
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    pageItem P1601_CHECKBOX (
+        type: checkbox
+        label {
+            label: Single Checkbox
+            alignment: left
+        }
+        layout {
+            sequence: 150
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P1601_CHECKBOX_GROUP (
+        type: checkboxGroup
+        label {
+            label: Checkbox Group
+            alignment: left
+        }
+        lov {
+            type: staticValues
+        }
+        layout {
+            sequence: 160
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P1601_COLOR_PICKER (
+        type: colorPicker
+        label {
+            label: Color Picker
+            alignment: left
+        }
+        layout {
+            sequence: 310
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_COMBOBOX (
+        type: combobox
+        label {
+            label: Combobox
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+            manualEntriesItem: P1601_COMBO_BOX_MANUAL_ENTRIES
+        }
+        lov {
+            type: staticValues
+        }
+        layout {
+            sequence: 200
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_COMBO_BOX_MANUAL_ENTRIES (
+        type: hidden
+        layout {
+            sequence: 210
+            region: @demo
+            slot: regionBody
+        }
+    )
+
+    pageItem P1601_DATE_PICKER (
+        type: datePicker
+        label {
+            label: Date Picker
+            alignment: left
+        }
+        layout {
+            sequence: 240
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_DATE_PICKER_INLINE (
+        type: datePicker
+        label {
+            label: Inline Date Picker
+            alignment: left
+        }
+        settings {
+            displayAs: inline
+        }
+        layout {
+            sequence: 260
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_DATE_PICKER_NATIVE (
+        type: datePicker
+        label {
+            label: Native HTML Date Picker
+            alignment: left
+        }
+        settings {
+            displayAs: nativeHtml
+        }
+        layout {
+            sequence: 250
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD
+            width: 30
+        }
+    )
+
+    pageItem P1601_DISPLAY_MAP (
+        type: displayMap
+        label {
+            label: Display Map
+            alignment: left
+        }
+        layout {
+            sequence: 360
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 12
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: staticValue
+            staticValue: "{\"coordinates\": [-122.26226,37.53087], \"type\": \"point\"}"
+        }
+    )
+
+    pageItem P1601_DISPLAY_ONLY (
+        type: displayOnly
+        label {
+            label: Display Only
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--normalDisplay
+            ]
+        }
+        source {
+            type: staticValue
+            staticValue: Display Only Item
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P1601_FILE_BROWSE (
+        type: fileUpload
+        label {
+            label: File Browse
+            alignment: left
+        }
+        storage {
+            type: appTempFiles
+        }
+        layout {
+            sequence: 270
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_IMAGE_UPLOAD (
+        type: imageUpload
+        label {
+            label: Image Upload
+            alignment: left
+        }
+        storage {
+            type: appTempFiles
+        }
+        layout {
+            sequence: 280
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_LIST_MANAGER (
+        type: listManager
+        label {
+            label: List Manager
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Display1;Return1,Display2;Return2,Display3;Return3,Display4;Return4
+        }
+        layout {
+            sequence: 340
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 12
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: staticValue
+            staticValue: List Manager Item
+        }
+    )
+
+    pageItem P1601_MARKDOWN_EDITOR (
+        type: markdownEditor
+        label {
+            label: Markdown Editor
+            alignment: left
+        }
+        layout {
+            sequence: 350
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 12
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P1601_NUMBER_FIELD (
+        type: numberField
+        label {
+            label: Number Field
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 40
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_PASSWORD (
+        type: password
+        label {
+            label: Password
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_PERCENT_GRAPH (
+        type: percentGraph
+        label {
+            label: Percent Graph
+            alignment: left
+        }
+        layout {
+            sequence: 290
+            region: @demo
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: 33
+        }
+    )
+
+    pageItem P1601_POPUP_LOV (
+        type: popupLov
+        label {
+            label: Popup Lov
+            alignment: left
+        }
+        lov {
+            type: staticValues
+        }
+        layout {
+            sequence: 230
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_QR_CODE (
+        type: qrCode
+        label {
+            label: QR Code
+            alignment: left
+        }
+        qrCode {
+            dataType: url
+            size: small
+        }
+        layout {
+            sequence: 320
+            region: @demo
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: staticValue
+            staticValue: https://apex.oracle.com/en/
+        }
+    )
+
+    pageItem P1601_RADIO_GROUP (
+        type: radioGroup
+        label {
+            label: Radio Group
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 120
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P1601_RADIO_GROUP_AS_BUTTONS (
+        type: radioGroup
+        label {
+            label: Radio Group As Buttons
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 130
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+    )
+
+    pageItem P1601_SELECT_LIST (
+        type: selectList
+        label {
+            label: Select List
+            alignment: left
+        }
+        lov {
+            type: staticValues
+        }
+        layout {
+            sequence: 220
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P1601_SELECT_MANY (
+        type: selectMany
+        label {
+            label: Select One
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Apple;APPLE,Orange;ORANGE,Pear;PEAR,Banana;BANANA,Watermelon;WATERMELON
+        }
+        layout {
+            sequence: 190
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_SELECT_ONE (
+        type: selectOne
+        label {
+            label: Select One
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Apple;APPLE,Orange;ORANGE,Pear;PEAR,Banana;BANANA,Watermelon;WATERMELON
+        }
+        layout {
+            sequence: 180
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_SHUTTLE (
+        type: shuttle
+        label {
+            label: Shuttle
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Display1;Return1,Display2;Return2,Display3;Return3,Display4;Return4
+        }
+        layout {
+            sequence: 330
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 12
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 5
+        }
+    )
+
+    pageItem P1601_STAR_RATING (
+        type: starRating
+        label {
+            label: Star Rating
+            alignment: left
+        }
+        layout {
+            sequence: 300
+            region: @demo
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P1601_SWITCH (
+        type: switch
+        label {
+            label: Switch
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P1601_TEXTAREA (
+        type: textarea
+        label {
+            label: Textarea
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+    )
+
+    pageItem P1601_TEXT_FIELD (
+        type: textField
+        label {
+            label: Text Field
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @demo
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1601_TEXT_FIELD_WITH_AUTOCOMPLETE (
+        type: textFieldWithAutocomplete
+        label {
+            label: Text Field With Autocomplete
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+            maxValuesInList: 7
+        }
+        search {
+            minChars: 1
+        }
+        lov {
+            type: sharedComponent
+            lov: @font-animations
+        }
+        layout {
+            sequence: 30
+            region: @demo
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 30
+        }
+    )
+
+)
+

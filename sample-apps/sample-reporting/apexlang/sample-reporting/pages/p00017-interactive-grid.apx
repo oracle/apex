@@ -1,0 +1,666 @@
+page 17 (
+    name: Interactive Grid
+    alias: INTERACTIVE-GRID
+    title: Interactive Grid
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>This interactive grid was created using the Create Page Wizard. The SQL used to create this report displays in the show/hide region at the bottom of the page. Interactive grids feature built-in search capability in that your search term is used to search across the row. They also allow for the addition of new rows (click the <strong>Add Row</strong> button), deletion of existing rows (select rows, click the top row actions icon, select <strong>Delete Rows</strong>), and editing of cell data in any/all rows (double-click in any cell, change content, click the <strong>Save</strong> button).  You can sort and filter columns by clicking on column headings, click the <strong>Actions</strong> drop down menu to control the columns to display on the report and the order in which they are displayed.  You can also save custom reports, chart data, and perform many other actions.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region projects (
+        name: Projects
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select	ROWID,
+                       ID,
+                       PROJECT,
+                       TASK_NAME,
+                       START_DATE,
+                       END_DATE,
+                       STATUS,
+                       ASSIGNED_TO,
+                       COST,
+                       BUDGET,
+                       budget - cost available_budget
+                from EBA_DEMO_IR_PROJECTS
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: projects_report
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        enableUsersTo {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 1652147890627228028
+        }
+
+        savedReport 14124 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ROWID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    show: false
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @PROJECT
+                layout {
+                    width: 221
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @TASK_NAME
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @START_DATE
+                layout {
+                    width: 133
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @END_DATE
+                layout {
+                    width: 132
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @STATUS
+                layout {
+                    width: 86
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @ASSIGNED_TO
+                layout {
+                    width: 116
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @COST
+                layout {
+                    width: 67
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @BUDGET
+                layout {
+                    width: 91
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @AVAILABLE_BUDGET
+                layout {
+                    width: 128
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+            sort (
+                column: @START_DATE
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+        )
+
+        savedReport Costings (
+            visibility: alternative
+            name: Costings
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+            security {
+                authorizationScheme: mustNotBePublicUser
+            }
+
+            displayColumn (
+                column: @ROWID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    show: false
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @PROJECT
+                layout {
+                    width: 366
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @TASK_NAME
+                layout {
+                    width: 489
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @START_DATE
+                layout {
+                    show: false
+                    width: 133
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @END_DATE
+                layout {
+                    show: false
+                    width: 132
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @STATUS
+                layout {
+                    show: false
+                    width: 86
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @ASSIGNED_TO
+                layout {
+                    show: false
+                    width: 116
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @COST
+                layout {
+                    width: 67
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @BUDGET
+                layout {
+                    width: 91
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @AVAILABLE_BUDGET
+                layout {
+                    width: 128
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column ASSIGNED_TO (
+            type: textField
+            heading {
+                heading: Assigned to
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: ASSIGNED_TO
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column AVAILABLE_BUDGET (
+            type: numberField
+            heading {
+                heading: Available Budget
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 130
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                databaseColumn: AVAILABLE_BUDGET
+                dataType: number
+                queryOnly: true
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column BUDGET (
+            type: numberField
+            heading {
+                heading: Budget
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 120
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                databaseColumn: BUDGET
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column COST (
+            type: numberField
+            heading {
+                heading: Cost
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                databaseColumn: COST
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column END_DATE (
+            type: datePickerJquery
+            heading {
+                heading: End date
+                alignment: center
+            }
+            layout {
+                sequence: 80
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: END_DATE
+                dataType: date
+            }
+        )
+
+        column ID (
+            type: textField
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column PROJECT (
+            type: textField
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ROWID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ROWID
+                dataType: rowid
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column START_DATE (
+            type: datePickerJquery
+            heading {
+                heading: Start date
+                alignment: center
+            }
+            layout {
+                sequence: 70
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: START_DATE
+                dataType: date
+            }
+        )
+
+        column STATUS (
+            type: textField
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column TASK_NAME (
+            type: textarea
+            heading {
+                heading: Task name
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: TASK_NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: none
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 20
+            parentRegion: @projects
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: projects_report
+        }
+    )
+
+    button reset-data (
+        buttonName: RESET_DATA
+        label: Reset
+        layout {
+            sequence: 10
+            region: @projects
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 17
+                clearCache: [
+                    1
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process projects-save-interactive-grid-data (
+        name: Projects - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @projects
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 1654660101588907383
+        }
+    )
+
+)
+

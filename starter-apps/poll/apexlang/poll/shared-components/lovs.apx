@@ -1,0 +1,1157 @@
+lov access-control-scope (
+    name: ACCESS CONTROL SCOPE
+    source {
+        location: staticValues
+    }
+
+    entry contributor-access-for-any-authenticated-user (
+        sequence: 2
+        display: Contributor access for any authenticated user
+        return: PUBLIC_CONTRIBUTE
+    )
+
+    entry reader-access-for-any-authenticated-user (
+        sequence: 1
+        display: Reader access for any authenticated user
+        return: PUBLIC_READONLY
+    )
+
+    entry restricted-to-users-defined-in-access-control-list (
+        sequence: 3
+        display: Restricted to users defined in access control list
+        return: ACL_ONLY
+    )
+
+)
+
+lov access-control-scope-2 (
+    name: ACCESS CONTROL SCOPE1
+    source {
+        location: staticValues
+    }
+
+    entry contributors (
+        sequence: 2
+        display: Contributors
+        return: PUBLIC_CONTRIBUTE
+    )
+
+    entry readers (
+        sequence: 1
+        display: Readers
+        return: PUBLIC_READONLY
+    )
+
+)
+
+lov access-roles (
+    name: ACCESS_ROLES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select role_name d, role_id r
+            from APEX_APPL_ACL_ROLES where application_id = :APP_ID 
+            order by 1
+            ```
+    }
+)
+
+lov active-and-staged-poles (
+    name: ACTIVE AND STAGED POLES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select
+                poll_name dv, 
+                id        rv
+            from
+                eba_qpoll_polls p
+            where
+                status_id > 1
+            order by
+                1
+            ```
+    }
+)
+
+lov active-polls (
+    name: ACTIVE POLLS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select
+                poll_name dv, 
+                id        rv
+            from
+                eba_qpoll_polls p
+            where
+                status_id = 3
+            order by
+                1
+            ```
+    }
+)
+
+lov answer-view-options (
+    name: ANSWER VIEW OPTIONS
+    source {
+        location: staticValues
+    }
+
+    entry detailed-answers (
+        sequence: 10
+        display: Detailed Answers
+        return: DA
+    )
+
+    entry summarized-answers (
+        sequence: 20
+        display: Summarized Answers
+        return: SA
+    )
+
+)
+
+lov auto-refresh (
+    name: AUTO REFRESH
+    source {
+        location: staticValues
+    }
+
+    entry no-manual (
+        sequence: 20
+        display: No, Manual
+        return: N
+    )
+
+    entry yes-every-5-seconds (
+        sequence: 10
+        display: Yes, every 5 seconds
+        return: Y
+    )
+
+)
+
+lov communities (
+    name: COMMUNITIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name, id
+            from EBA_QPOLL_RESP_COMMUNITIES
+            order by 1
+            ```
+    }
+)
+
+lov communities-p (
+    name: COMMUNITIES, P72
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select name || ' (member count: '|| (select count(*) 
+                                                   from eba_qpoll_resp_comm_ref rc
+                                                  where rc.community_id = c.id) ||')' d,
+                   id r
+            from EBA_QPOLL_RESP_COMMUNITIES c
+            where publish_yn = 'Y'
+              and id not in
+                  (select community_id
+                     from eba_qpoll_comm_invites
+                    where poll_id = :P72_POLL_ID
+                      and community_id is not null)
+            union
+            select name ||' (added since last invitation: '|| cnt ||')' d,
+                   id r
+            from
+            (
+            select c.id, c.name, count(*) cnt
+              from eba_qpoll_resp_communities c,
+                   eba_qpoll_resp_comm_ref rc
+             where exists (select 1 from eba_qpoll_comm_invites ci
+                            where ci.poll_id = :P72_POLL_ID
+                              and ci.community_id = c.id)
+               and c.id = rc.community_id
+               and c.publish_yn = 'Y'
+               and rc.respondent_id not in 
+                   (select respondent_id
+                      from eba_qpoll_invites i,
+                           eba_qpoll_comm_invites ci2
+                     where i.comm_invite_id = ci2.id
+                       and ci2.community_id = c.id
+                       and ci2.poll_id = :P72_POLL_ID
+                       and ci2.community_id is not null)
+            group by c.id, c.name
+            )
+            where cnt > 0
+            )
+            order by 1
+            ```
+    }
+)
+
+lov communities-p-2 (
+    name: COMMUNITIES, P90
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select name || ' (member count: '|| (select count(*) 
+                                                   from eba_qpoll_resp_comm_ref rc
+                                                  where rc.community_id = c.id) ||')' d,
+                   id r
+            from EBA_QPOLL_RESP_COMMUNITIES c
+            where publish_yn = 'Y'
+            )
+            order by 1
+            ```
+    }
+)
+
+lov communities-reminder-p (
+    name: COMMUNITIES, REMINDER, P1072
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select name || ' ('|| not_resp || '  not responded)' d,
+                   community_id r
+              from
+            (
+            select nvl(ci.community_id,0) community_id,
+                   nvl(ci.community_name,'Individual Invitations') name,
+                   count(*) not_resp
+              from eba_qpoll_comm_invites ci,
+                   eba_qpoll_invites i
+             where ci.poll_id = :P1072_POLL_ID
+               and ci.id = i.comm_invite_id
+               and i.respondent_id not in
+                   (select respondent_id
+                      from eba_qpoll_results r
+                     where r.poll_id = :P1072_POLL_ID
+                       and r.IS_VALID_YN = 'Y')
+             group by community_id, nvl(community_name,'Individual Invitations')
+            )
+             order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov communities-with-count (
+    name: COMMUNITIES, WITH COUNT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+            from
+            (
+            select name || 
+                   (select count(*) 
+                      from eba_qpoll_resp_comm_ref
+                     where community_id = c.id) d,
+                 id r
+            from EBA_QPOLL_RESP_COMMUNITIES c
+            )
+            order by 1
+            ```
+    }
+)
+
+lov community-actions (
+    name: COMMUNITY ACTIONS
+    source {
+        location: staticValues
+    }
+
+    entry add-existing-member (
+        sequence: 4
+        display: Add existing member
+        return: -3
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from EBA_QPOLL_RESPONDENTS
+                  where id not in (select respondent_id from EBA_QPOLL_RESP_COMM_REF where community_id = nvl(:P70_COMMUNITY_ID_TO,0))
+                and (select count(*) from EBA_QPOLL_RESPONDENTS) > 1
+                ```
+        }
+    )
+
+    entry add-new-member-s-to-an-existing-community (
+        sequence: 3
+        display: Add new member(s) to an existing community
+        return: -4
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from EBA_QPOLL_RESP_COMMUNITIES
+                  where id in (select community_id from EBA_QPOLL_RESP_COMM_REF where respondent_id is not null)
+                ```
+        }
+    )
+
+    entry copy-members-from-one-community-to-a-new-community (
+        sequence: 6
+        display: Copy members from one Community to a new Community
+        return: 0
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_c_cnt  number;
+                begin
+                    select count(*)
+                      into l_c_cnt
+                      from EBA_QPOLL_RESP_COMMUNITIES
+                      where id in (select community_id from EBA_QPOLL_RESP_COMM_REF where respondent_id is not null);
+                    if l_c_cnt >= 2 then
+                        return true;
+                    else
+                        return false;
+                    end if;
+                end;
+                ```
+        }
+    )
+
+    entry copy-members-from-one-community-to-another (
+        sequence: 5
+        display: Copy members from one Community to another
+        return: -1
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_c_cnt  number;
+                begin
+                    select count(*)
+                      into l_c_cnt
+                      from EBA_QPOLL_RESP_COMMUNITIES
+                      where id in (select community_id from EBA_QPOLL_RESP_COMM_REF where respondent_id is not null);
+                    if l_c_cnt >= 2 then
+                        return true;
+                    else
+                        return false;
+                    end if;
+                end;
+                ```
+        }
+    )
+
+    entry create-new-community (
+        sequence: 1
+        display: Create New Community
+        return: -2
+    )
+
+)
+
+lov community-from (
+    name: COMMUNITY FROM
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name, id
+            from EBA_QPOLL_RESP_COMMUNITIES
+            where id <> nvl(:P70_COMMUNITY_ID_TO,-1)
+            order by 1
+            ```
+    }
+)
+
+lov community-to (
+    name: COMMUNITY TO
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name, id
+            from EBA_QPOLL_RESP_COMMUNITIES
+            where id <> nvl(:P70_COMMUNITY_ID,-1)
+            order by 1
+            ```
+    }
+)
+
+lov customized-poll-status (
+    name: CUSTOMIZED POLL STATUS
+    source {
+        location: staticValues
+    }
+
+    entry being-authored (
+        sequence: 14
+        display: Being Authored
+        return: 1
+    )
+
+    entry closed (
+        sequence: 4
+        display: Closed
+        return: 4
+    )
+
+    entry published (
+        sequence: 1
+        display: Published
+        return: 3N
+    )
+
+    entry published-invitees-only (
+        sequence: 2
+        display: Published, Invitees only
+        return: 3Y
+    )
+
+    entry testing-contributors-only (
+        sequence: 3
+        display: Testing, Contributors only
+        return: 2
+    )
+
+)
+
+lov data-load-option (
+    name: DATA_LOAD_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry copy-and-paste (
+        sequence: 20
+        display: Copy and Paste
+        return: PASTE
+    )
+
+    entry upload-file-comma-separated-csv-or-tab-delimited (
+        sequence: 10
+        display: Upload file, comma separated (*.csv) or tab delimited
+        return: UPLOAD
+    )
+
+)
+
+lov dynamic-answer-type (
+    name: DYNAMIC ANSWER TYPE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+            from
+            (
+            select 'Pick one' d, 'RADIO_GROUP' r, 1 sort_order
+            from dual
+            union all
+            select 'Pick many' d, 'CHECKBOX' r, 3 sort_order
+            from dual
+            union all
+            select 'Stack Rank' d, 'STACK' r, 4 sort_order
+            from dual
+            union all
+            select 'Allocate $100' d, 'ALLOCATION' r, 5 sort_order
+            from dual
+            union all
+            select name d, code r, sort_order
+            from   EBA_QPOLL_CANNED_ANSWERS
+            )
+            order by sort_order, d
+            ```
+    }
+)
+
+lov email-sent (
+    name: EMAIL_SENT
+    source {
+        location: staticValues
+    }
+
+    entry opted-out (
+        sequence: 2
+        display: Opted Out
+        return: OPTED_OUT
+    )
+
+    entry previously-sent (
+        sequence: 3
+        display: Previously Sent
+        return: PREVIOUSLY_SENT
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: YES
+    )
+
+)
+
+lov email-username-format (
+    name: EMAIL_USERNAME_FORMAT
+    source {
+        location: staticValues
+    }
+
+    entry email-addresses (
+        sequence: 1
+        display: Email Addresses
+        return: EMAIL
+    )
+
+)
+
+lov first-row-option (
+    name: FIRST_ROW_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+
+lov i-accept (
+    name: I ACCEPT
+    source {
+        location: staticValues
+    }
+
+    entry i-accept (
+        sequence: 10
+        display: " I Accept"
+        return: ACCEPTED
+    )
+
+)
+
+lov invite-method (
+    name: INVITE METHOD
+    source {
+        location: staticValues
+    }
+
+    entry automated-email (
+        sequence: 10
+        display: Automated Email
+        return: EMAIL
+    )
+
+    entry manual (
+        sequence: 20
+        display: Manual
+        return: MANUAL
+    )
+
+)
+
+lov new-actions (
+    name: NEW ACTIONS
+    source {
+        location: staticValues
+    }
+
+    entry create-a-new-community-of-poll-recipients (
+        sequence: 20
+        display: Create a new community of poll recipients
+        return: C
+    )
+
+    entry create-a-new-question-set (
+        sequence: 10
+        display: Create a New Question Set
+        return: QS
+    )
+
+    entry publish-a-question-set-as-a-poll (
+        sequence: 30
+        display: Publish a question set as a Poll
+        return: P
+    )
+
+    entry send-invitations-to-a-community-to-take-a-published-poll (
+        sequence: 40
+        display: Send invitations to a community to take a published poll
+        return: I
+    )
+
+)
+
+lov no-yes-n-y (
+    name: NO YES (N/Y)
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 10
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 20
+        display: Yes
+        return: Y
+    )
+
+)
+
+lov notification-type (
+    name: NOTIFICATION TYPE
+    source {
+        location: staticValues
+    }
+
+    entry red (
+        sequence: 20
+        display: Red
+        return: RED
+    )
+
+    entry yellow (
+        sequence: 10
+        display: Yellow
+        return: YELLOW
+    )
+
+)
+
+lov p1-contrib-reader-view (
+    name: P1_CONTRIB_READER_VIEW
+    source {
+        location: staticValues
+    }
+
+    entry contributor-view (
+        sequence: 1
+        display: Contributor View
+        return: C
+    )
+
+    entry reader-view (
+        sequence: 2
+        display: Reader View
+        return: R
+    )
+
+)
+
+lov p70-available-respondents (
+    name: P70 AVAILABLE RESPONDENTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select nvl(name,email) || ' (' || lower(email) || ')' d, id r
+            from   EBA_QPOLL_RESPONDENTS
+            where id not in (select respondent_id from EBA_QPOLL_RESP_COMM_REF where community_id = :P70_COMMUNITY_ID_TO)
+            order by lower(nvl(name,email))
+            ```
+    }
+)
+
+lov poll-or-quiz (
+    name: POLL OR QUIZ
+    source {
+        location: staticValues
+    }
+
+    entry poll (
+        sequence: 1
+        display: Poll
+        return: P
+    )
+
+    entry quiz (
+        sequence: 2
+        display: Quiz
+        return: Q
+    )
+
+)
+
+lov poll-or-quiz-2 (
+    name: POLL_OR_QUIZ
+    source {
+        location: staticValues
+    }
+
+    entry poll (
+        sequence: 1
+        display: Poll
+        return: P
+    )
+
+    entry quiz (
+        sequence: 2
+        display: Quiz
+        return: Q
+    )
+
+)
+
+lov poll-statuses (
+    name: POLL STATUSES
+    source {
+        location: staticValues
+    }
+
+    entry being-authored (
+        sequence: 1
+        display: Being Authored
+        return: 1
+    )
+
+    entry closed (
+        sequence: 4
+        display: Closed
+        return: 4
+    )
+
+    entry published (
+        sequence: 3
+        display: Published
+        return: 3
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_questions
+                 where poll_id = :POLL_ID
+                ```
+        }
+    )
+
+    entry testing-contributors-only (
+        sequence: 2
+        display: Testing, Contributors only
+        return: 2
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_questions
+                 where poll_id = :POLL_ID
+                ```
+        }
+    )
+
+)
+
+lov poll-statuses-short (
+    name: POLL STATUSES (SHORT)
+    source {
+        location: staticValues
+    }
+
+    entry being-authored (
+        sequence: 1
+        display: Being Authored
+        return: 1
+    )
+
+    entry closed (
+        sequence: 4
+        display: Closed
+        return: 4
+    )
+
+    entry published (
+        sequence: 3
+        display: Published
+        return: 3
+    )
+
+    entry testing (
+        sequence: 2
+        display: Testing
+        return: 2
+    )
+
+)
+
+lov qset-score-type (
+    name: QSET_SCORE_TYPE
+    source {
+        location: staticValues
+    }
+
+    entry average (
+        sequence: 2
+        display: Average
+        return: A
+    )
+
+    entry cumulative (
+        sequence: 3
+        display: Cumulative
+        return: C
+    )
+
+    entry none (
+        sequence: 1
+        display: None
+        return: N
+    )
+
+)
+
+lov question-type (
+    name: QUESTION TYPE
+    source {
+        location: staticValues
+    }
+
+    entry free-form-text (
+        sequence: 10
+        display: Free form text
+        return: TEXTAREA
+    )
+
+    entry pick-many (
+        sequence: 10
+        display: Pick Many
+        return: CHECKBOX
+    )
+
+    entry pick-one (
+        sequence: 10
+        display: Pick One
+        return: RADIO_GROUP
+    )
+
+    entry pick-two-values (
+        sequence: 10
+        display: Pick Two Values
+        return: PICK_TWO
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    entry range-1-complex-to-5-simple (
+        sequence: 10
+        display: Range: 1 = Complex to 5 = Simple
+        return: RANGE_SIMPLE_TO_COMPLEX
+    )
+
+    entry range-1-disagree-to-5-fully-agree (
+        sequence: 10
+        display: Range: 1 = Disagree to 5 = Fully Agree
+        return: RANGE_AGREE_DISAGREE
+    )
+
+    entry range-1-hard-to-5-easy (
+        sequence: 10
+        display: Range: 1 = Hard to 5 = Easy
+        return: RANGE_HARD_TO_EASY
+    )
+
+    entry range-1-hate-it-to-5-love-it (
+        sequence: 10
+        display: Range: 1 = Hate it to 5 = Love it
+        return: RANGE_LOVE_HATE
+    )
+
+    entry range-1-least-likely-to-5-most-likely (
+        sequence: 10
+        display: Range: 1 = Least Likely to 5 = Most Likely
+        return: RANGE_LIKELIHOOD
+    )
+
+    entry range-1-least-valuable-to-5-most-valuable (
+        sequence: 10
+        display: Range: 1 = Least valuable to 5 = Most Valuable
+        return: RANGE_VALUE
+    )
+
+    entry range-1-lowest-to-5-highest (
+        sequence: 10
+        display: Range: 1 = Lowest to 5 = Highest
+        return: RANGE_LOW_TO_HIGH
+    )
+
+    entry range-1-megabytes-or-less-to-5-petabytes-or-more (
+        sequence: 10
+        display: Range: 1 = Megabytes or less to 5 = Petabytes or more
+        return: RANGE_STORAGE
+    )
+
+    entry range-1-never-to-5-all-of-the-time (
+        sequence: 10
+        display: Range: 1 = Never to 5 = All of the time
+        return: RANGE_FREQUENCY
+    )
+
+    entry range-1-not-applicable-to-5-broadly-applicable (
+        sequence: 10
+        display: Range: 1 = Not Applicable to 5 = Broadly Applicable
+        return: RANGE_APPLICABILITY
+    )
+
+    entry range-1-obtuse-to-5-elegant (
+        sequence: 10
+        display: Range: 1 = Obtuse to 5 = Elegant
+        return: RANGE_ELEGANCE
+    )
+
+    entry range-1-poor-to-5-excellent (
+        sequence: 10
+        display: Range: 1 = Poor to 5 = Excellent
+        return: RANGE_POOR_TO_EXCELLENT
+    )
+
+    entry range-1-will-not-use-to-5-will-immediately-use (
+        sequence: 10
+        display: Range: 1 = Will not use to 5 = Will immediately use
+        return: RANGE_TIMEFRAME
+    )
+
+    entry range-1-would-not-consider-using-to-5-will-consider-using (
+        sequence: 10
+        display: Range: 1 = Would not consider using to 5 = Will consider using
+        return: RANGE_CONSIDERATION
+    )
+
+    entry range-1-would-not-endorse-to-5-would-fully-endorse (
+        sequence: 10
+        display: Range: 1 = Would not endorse to 5 = Would fully endorse
+        return: RANGE_ENDORSE
+    )
+
+    entry range-1-would-not-recommend-to-5-would-highly-recommend (
+        sequence: 10
+        display: Range: 1 = Would not recommend to 5 = Would highly recommend
+        return: RANGE_RECOMMENDATION
+    )
+
+    entry yes-no (
+        sequence: 10
+        display: Yes / No
+        return: YES_NO
+    )
+
+)
+
+lov rows (
+    name: ROWS
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 10
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-2 (
+        sequence: 10
+        display: 15
+        return: 15
+    )
+
+    entry lov_data-3 (
+        sequence: 20
+        display: 20
+        return: 20
+    )
+
+    entry lov_data-4 (
+        sequence: 30
+        display: 30
+        return: 30
+    )
+
+    entry lov_data-5 (
+        sequence: 40
+        display: 50
+        return: 50
+    )
+
+    entry lov_data-6 (
+        sequence: 50
+        display: 500
+        return: 500
+    )
+
+    entry lov_data-7 (
+        sequence: 60
+        display: 1000
+        return: 1000
+    )
+
+)
+
+lov score (
+    name: SCORE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select i-1 d, i-1 r
+            from wwv_flow_dual100 
+            where i < 12
+            order by 1
+            ```
+    }
+)
+
+lov take-poll-options (
+    name: TAKE POLL OPTIONS
+    source {
+        location: staticValues
+    }
+
+    entry has-errors (
+        sequence: 3
+        display: Has Errors
+        return: Has Errors
+    )
+
+    entry take-it (
+        sequence: 1
+        display: Take It
+        return: Take It
+    )
+
+    entry update (
+        sequence: 2
+        display: Update
+        return: Update
+    )
+
+)
+
+lov timeframe-2-weeks (
+    name: TIMEFRAME (2 WEEKS)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select wwv_flow_lang.system_message('N_MINUTES','15') d, 
+            trim(to_char(15/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_MINUTES','30') d, 
+            trim(to_char(30/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOUR','1') d, 
+            trim(to_char(1/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_MINUTES','90') d, 
+            trim(to_char(90/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','2') d, 
+            trim(to_char(1/12,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','3') d, 
+            trim(to_char(3/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','4') d, 
+            trim(to_char(4/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','5') d, 
+            trim(to_char(5/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','6') d, 
+            trim(to_char(6/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','8') d, 
+            trim(to_char(8/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','10') d, 
+            trim(to_char(10/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','12') d, 
+            trim(to_char(12/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','16') d, 
+            trim(to_char(16/24,'00000.9999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAY','1') d, trim(to_char(1,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','2') d, trim(to_char(2,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','3') d, trim(to_char(3,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','4') d, trim(to_char(4,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','5') d, trim(to_char(5,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEK','1') d, trim(to_char(7,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEKS','2') d, trim(to_char(14,'00000.9999999999')) t from dual
+            order by 2
+            ```
+    }
+)
+
+lov username-format (
+    name: USERNAME_FORMAT
+    source {
+        location: staticValues
+    }
+
+    entry email-address (
+        sequence: 1
+        display: Email Address
+        return: EMAIL
+    )
+
+    entry non-email-address (
+        sequence: 2
+        display: Non-Email Address
+        return: STRING
+    )
+
+)
+
+lov yes-no-y-n (
+    name: YES NO  (Y/N)
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 20
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+

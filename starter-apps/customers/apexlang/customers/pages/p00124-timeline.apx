@@ -1,0 +1,710 @@
+page 124 (
+    name: Timeline
+    alias: TIMELINE
+    title: Timeline
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            //$x('P10_SEARCH').focus();
+            
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .t-Timeline-type.is-updated {
+                background-color: #cd4411;
+                color: #FFF;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: The "Timeline" page shows a history of application transactions. Use the filter controls on the left to change the results displayed on the right.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 100
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region filter-controls (
+        name: Filter Controls
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region timeline (
+        name: Timeline
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    c.created SORT_COLUMN,
+                    null EVENT_ATTRIBUTES,
+                    null EVENT_MODIFIERS,
+                    'u-color-'|| (ora_hash(c.created_by,44) + 1) USER_COLOR,
+                    upper( decode(instr(replace(c.created_by,'.',' '),' '),
+                                0, 
+                                substr(c.created_by,1,2),
+                                substr(c.created_by,1,1)||substr(c.created_by,instr(replace(c.created_by,'.',' '),' ')+1,1)
+                           ))  USER_AVATAR,
+                    c.created_by as user_name,
+                    c.created EVENT_DATE,
+                    'fa fa-user' EVENT_ICON,
+                    'is-new' EVENT_STATUS,
+                    'Customer Added' EVENT_TYPE,
+                    c.customer_name EVENT_TITLE,
+                    apex_escape.html(c.summary) EVENT_DESC,
+                    apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||c.id) event_link
+                from EBA_CUST_CUSTOMERS c
+                where c.created > (current_timestamp - :P124_TIMEFRAME)
+                    and ( :P124_CUSTOMER is null or c.id = :P124_CUSTOMER )
+                    and ( :P124_UPDATE_BY is null or lower(c.created_by) = lower(:P124_UPDATE_BY) )
+                union all
+                select
+                    n.created SORT_COLUMN,
+                    null EVENT_ATTRIBUTES,
+                    null EVENT_MODIFIERS,
+                    'u-color-'|| (ora_hash(n.created_by,44) + 1) USER_COLOR,
+                    upper( decode(instr(replace(n.created_by,'.',' '),' '),
+                                0, 
+                                substr(n.created_by,1,2),
+                                substr(n.created_by,1,1)||substr(n.created_by,instr(replace(n.created_by,'.',' '),' ')+1,1)
+                           ))  USER_AVATAR,
+                    n.created_by as user_name,
+                    n.created EVENT_DATE,
+                    'fa fa-file' EVENT_ICON,
+                    'is-new' EVENT_STATUS,
+                    'Customer Added Note' EVENT_TYPE,
+                    (select customer_name from eba_cust_customers c where c.id = n.customer_id) EVENT_TITLE,
+                    apex_escape.html(TO_CHAR(dbms_lob.substr(n.note, length(n.note), 1 ))) EVENT_DESC,
+                    apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||n.customer_id) event_link
+                from EBA_CUST_NOTES n
+                where n.created > (current_timestamp - :P124_TIMEFRAME)
+                    and ( :P124_CUSTOMER is null or n.customer_id = :P124_CUSTOMER )
+                    and ( :P124_UPDATE_BY is null or lower(n.created_by) = lower(:P124_UPDATE_BY) )
+                union all
+                select
+                    c.created SORT_COLUMN,
+                    null EVENT_ATTRIBUTES,
+                    null EVENT_MODIFIERS,
+                    'u-color-'|| (ora_hash(c.created_by,44) + 1) USER_COLOR,
+                    upper( decode(instr(replace(c.created_by,'.',' '),' '),
+                                0, 
+                                substr(c.created_by,1,2),
+                                substr(c.created_by,1,1)||substr(c.created_by,instr(replace(c.created_by,'.',' '),' ')+1,1)
+                           ))  USER_AVATAR,
+                    c.created_by as user_name,
+                    c.created EVENT_DATE,
+                    'fa fa-user' EVENT_ICON,
+                    'is-new' EVENT_STATUS,
+                    'Customer Added Contact' EVENT_TYPE,
+                    (select customer_name from eba_cust_customers c where c.id = c.customer_id) EVENT_TITLE,
+                    apex_escape.html(c.name) EVENT_DESC,
+                    apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||c.customer_id) event_link
+                from EBA_CUST_CONTACTS c
+                where c.created > (current_timestamp - :P124_TIMEFRAME)
+                    and ( :P124_CUSTOMER is null or c.customer_id = :P124_CUSTOMER )
+                    and ( :P124_UPDATE_BY is null or lower(c.created_by) = lower(:P124_UPDATE_BY) )
+                union all
+                select f.created SORT_COLUMN,
+                    null EVENT_ATTRIBUTES,
+                    null EVENT_MODIFIERS,
+                    'u-color-'|| (ora_hash(f.created_by,44) + 1) USER_COLOR,
+                    upper( decode(instr(replace(f.created_by,'.',' '),' '),
+                                0, 
+                                substr(f.created_by,1,2),
+                                substr(f.created_by,1,1)||substr(f.created_by,instr(replace(f.created_by,'.',' '),' ')+1,1)
+                           ))  USER_AVATAR,
+                    f.created_by as user_name,
+                    f.created EVENT_DATE,
+                    'fa fa-paperclip' EVENT_ICON,
+                    'is-new' EVENT_STATUS,
+                    'Customer Added Attachment' EVENT_TYPE,
+                    (select customer_name from eba_cust_customers c where c.id = f.customer_id) EVENT_TITLE,
+                    apex_escape.html(substr(f.FILE_NAME,1,255) || ' ' || substr(f.FILE_COMMENTS,1,200)) EVENT_DESC,
+                    apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||f.customer_id) event_link
+                from EBA_CUST_FILES f
+                where f.created > (current_timestamp - :P124_TIMEFRAME)
+                    and ( :P124_CUSTOMER is null or f.customer_id = :P124_CUSTOMER )
+                    and ( :P124_UPDATE_BY is null or lower(f.created_by) = lower(:P124_UPDATE_BY) )
+                union all
+                select l.created SORT_COLUMN,
+                    null EVENT_ATTRIBUTES,
+                    null EVENT_MODIFIERS,
+                    'u-color-'|| (ora_hash(l.created_by,44) + 1) USER_COLOR,
+                    upper( decode(instr(replace(l.created_by,'.',' '),' '),
+                                0, 
+                                substr(l.created_by,1,2),
+                                substr(l.created_by,1,1)||substr(l.created_by,instr(replace(l.created_by,'.',' '),' ')+1,1)
+                           ))  USER_AVATAR,
+                    l.created_by as user_name,
+                    l.created EVENT_DATE,
+                    'fa fa-external-link' EVENT_ICON,
+                    'is-new' EVENT_STATUS,
+                    'Customer Added Link' EVENT_TYPE,
+                    (select customer_name from eba_cust_customers c where c.id = l.customer_id) EVENT_TITLE,
+                    apex_escape.html(substr(nvl(LINK_DESC,LINK),1,255) || ' '||substr(link_comments,1,200)) EVENT_DESC,
+                    apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||l.customer_id) event_link
+                from EBA_CUST_LINKS l
+                where l.created > (current_timestamp - :P124_TIMEFRAME)
+                    and ( :P124_CUSTOMER is null or l.customer_id = :P124_CUSTOMER )
+                    and ( :P124_UPDATE_BY is null or lower(l.created_by) = lower(:P124_UPDATE_BY) )
+                union all
+                select h.change_date SORT_COLUMN,
+                    null EVENT_ATTRIBUTES,
+                    null EVENT_MODIFIERS,
+                    'u-color-'|| (ora_hash(c.updated_by,44) + 1) USER_COLOR,
+                    upper( decode(instr(replace(c.updated_by,'.',' '),' '),
+                                0, 
+                                substr(c.updated_by,1,2),
+                                substr(c.updated_by,1,1)||substr(c.updated_by,instr(replace(c.updated_by,'.',' '),' ')+1,1)
+                           ))  USER_AVATAR,
+                    h.changed_by as user_name,
+                    h.change_date EVENT_DATE,
+                    'fa fa-archive' EVENT_ICON,
+                    'is-updated' EVENT_STATUS,
+                    case when substr(h.table_name,-1) = 'S' then initcap(substr(h.table_name, 1, length(h.table_name) - 1)) else initcap(h.table_name) end || ' Updated ' || initcap(replace(replace(h.column_name,'_ID',null),'_',' ')) EVENT_TYPE,
+                    c.customer_name EVENT_TITLE,
+                    case
+                        when (substr(h.old_value, 3, 1) = '-' and substr(h.old_value, 7, 1) = '-' and length(h.old_value) > 11) or
+                             (substr(h.new_value, 3, 1) = '-' and substr(h.new_value, 7, 1) = '-' and length(h.new_value) > 11) then
+                            'Changed from ' || case when h.old_value is not null then '<span class="t-Comments-text--prevValue">' else null end ||
+                            apex_escape.html(substr(nvl(h.old_value, 'Unassigned'), 1, 11)) || case when h.old_value is not null then '</span>' else null end ||
+                            ' to <span class="t-Comments-text--newValue">'||
+                            apex_escape.html(substr(nvl(h.new_value, 'Unassigned'), 1, 11))||'</span>'
+                        else
+                            'Changed from ' || case when h.old_value is not null then '<span class="t-Comments-text--prevValue">' else null end ||
+                            apex_escape.html(substr(nvl(h.old_value, 'Unassigned'),1,255)) || case when h.old_value is not null then '</span>' else null end ||
+                            ' to <span class="t-Comments-text--newValue">'||
+                            apex_escape.html(substr(nvl(h.new_value, 'Unassigned'),1,255))||'</span>'
+                    end as event_desc,
+                    apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||c.id) event_link
+                from EBA_CUST_HISTORY h, eba_cust_customers c
+                where h.COMPONENT_ID = c.id
+                    and h.change_date > (current_timestamp - :P124_TIMEFRAME)
+                    and ( :P124_CUSTOMER is null or c.id = :P124_CUSTOMER )
+                    and ( :P124_UPDATE_BY is null or lower(h.changed_by) = lower(:P124_UPDATE_BY) )
+                union all
+                select h.change_date SORT_COLUMN,
+                    null EVENT_ATTRIBUTES,
+                    null EVENT_MODIFIERS,
+                    'u-color-'|| (ora_hash(h.changed_by,44) + 1) USER_COLOR,
+                    upper( decode(instr(replace(h.changed_by,'.',' '),' '),
+                                0, 
+                                substr(h.changed_by,1,2),
+                                substr(h.changed_by,1,1)||substr(h.changed_by,instr(replace(h.changed_by,'.',' '),' ')+1,1)
+                           ))  USER_AVATAR,
+                    h.changed_by as user_name,
+                    h.change_date EVENT_DATE,
+                    'fa fa-trash-o' EVENT_ICON,
+                    'is-removed' EVENT_STATUS,
+                    'Customer Removed' EVENT_TYPE,
+                    h.old_value EVENT_TITLE,
+                    'This customer has been removed. The "Customer" link will give a "No Data Found" error.' as event_desc,
+                    apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||h.component_id) event_link
+                from EBA_CUST_HISTORY h
+                where h.column_name = 'CUSTOMER_REMOVED'
+                    and h.change_date > (current_timestamp - :P124_TIMEFRAME)
+                    and ( :P124_CUSTOMER is null or h.component_id = :P124_CUSTOMER )
+                    and ( :P124_UPDATE_BY is null or lower(h.changed_by) = lower(:P124_UPDATE_BY) )
+                order by 7 desc
+                ```
+            pageItemsToSubmit: [
+                P124_CUSTOMER
+                P124_UPDATE_BY
+                P124_TIMEFRAME
+            ]
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-showMaximizeButton
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 250
+        }
+        componentAppearance {
+            template: @/timeline
+            templateOptions: #DEFAULT#
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No changes found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column EVENT_ATTRIBUTES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Event Attributes
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_DATE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Event Date
+            }
+            layout {
+                sequence: 5
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_DESC (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Event Desc
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column EVENT_ICON (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Event Icon
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_LINK (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Event Link
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_MODIFIERS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Event Modifiers
+            }
+            layout {
+                sequence: 13
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_STATUS (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Event Status
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_TITLE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Event Title
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_TYPE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Event Type
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SORT_COLUMN (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Sort Column
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_AVATAR (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: User Avatar
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_COLOR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: User Color
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: User Name
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P124_CUSTOMER (
+        type: selectList
+        label {
+            label: Customer
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @customers
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 10
+            region: @filter-controls
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P124_TIMEFRAME (
+        type: selectList
+        label {
+            label: Timeframe
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Day;1,Week;7,30 Days;30,60 Days;60,Year;365
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @filter-controls
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 7
+        }
+    )
+
+    pageItem P124_UPDATE_BY (
+        type: selectList
+        label {
+            label: Updated by
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select lower(username) d, lower(username) r
+                from eba_cust_users
+                order by lower(username)
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - Anyone -
+        }
+        layout {
+            sequence: 20
+            region: @filter-controls
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    button p124-reset (
+        buttonName: P124_RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @filter-controls
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: t-Button--iconLeft
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 124
+                clearCache: [
+                    RIR
+                    124
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction update-filters (
+        name: Update Filters
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: [
+                P124_CUSTOMER
+                P124_UPDATE_BY
+                P124_TIMEFRAME
+            ]
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @timeline
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation application-title (
+        itemName: APPLICATION_TITLE
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_app_name varchar2(255);
+                begin
+                    select nvl(preference_value,:APP_NAME)
+                      into l_app_name
+                      from eba_cust_preferences
+                     where preference_name = 'APPLICATION_TITLE';
+                    return l_app_name;
+                exception
+                    when others then
+                        return :APP_NAME;
+                end;
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: APPLICATION_TITLE
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 50
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 10
+        }
+    )
+
+    process replace-commas (
+        name: replace commas
+        type: executeCode
+        source {
+            plsqlCode: ":P124_SEARCH := replace(:P124_SEARCH,',','[comma]');"
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 2028307338186286418
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 8
+                items: {
+                    P8_SEARCH: &P10_SEARCH.
+                }
+                clearCache: 10
+                action: resetPagination
+                successMessage: false
+            }
+        }
+        comments {
+            comments: Created 07-OCT-2010 13:32 by MIKE
+        }
+    )
+
+)
+

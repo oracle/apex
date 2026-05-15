@@ -1,0 +1,326 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry advanced (
+        name: Advanced
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry application-static-files (
+        name: Application Static Files
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry background-image (
+        name: Background Image
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry basics (
+        name: Basics
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry blob-column (
+        name: BLOB Column
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry blob-column-as-url (
+        name: BLOB Column as URL
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry card-actions (
+        name: Card Actions
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry charts (
+        name: Charts
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry color-coded-cards (
+        name: Color Coded Cards
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry conditional-actions (
+        name: Conditional Actions
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @card-actions
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+    entry embedded-video (
+        name: Embedded Video
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry faceted-search (
+        name: Faceted Search
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry full-card-action (
+        name: Full Card Action
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @card-actions
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry image-url (
+        name: Image URL
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry images-and-media (
+        name: Images and Media
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry no-data-found (
+        name: No Data Found
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry star-icons (
+        name: Star Icons
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry styles (
+        name: Styles
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry template-directives (
+        name: Template Directives
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry video-images-with-durations (
+        name: Video Images with Durations
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+)
+

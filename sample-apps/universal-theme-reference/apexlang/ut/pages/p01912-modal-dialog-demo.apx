@@ -1,0 +1,74 @@
+page 1912 (
+    name: Modal Dialog Demo
+    alias: MODAL-DIALOG-DEMO
+    title: Auto Sizing Modal Dialog
+    pageGroup: @components
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region collapsible-region (
+        name: Collapsible Region
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ul>
+                  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam dolorum velit eos illum, voluptatem repellat animi dolores! Tempora fugit natus, odio vitae fuga amet commodi, architecto eaque aperiam hic! Illo!</li>
+                  <li>Quidem dolorem totam consectetur, quis esse sequi non in praesentium illum fugit, provident voluptate perspiciatis voluptas a natus magnam sed accusamus omnis? Reiciendis dignissimos doloremque rem blanditiis. Reprehenderit, facere, velit!</li>
+                  <li>Harum, modi eum suscipit numquam, molestiae laudantium. Ratione enim maiores placeat consequatur sed quam repellat, corporis ducimus magnam, aspernatur quas iusto reprehenderit assumenda ut architecto vel nostrum consequuntur velit sit.</li>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+                margin-top-md
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>This dialog will automatically expand to fit its contents.  Try it out by by expanding the region below.</p>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

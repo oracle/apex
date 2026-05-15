@@ -1,0 +1,77 @@
+theme universal-theme (
+    name: Universal Theme
+    themeNumber: 42
+    baseTheme: ut-26.1
+    style {
+        currentThemeStyle: @redwood-light-sp
+    }
+    javaScript {
+        fileUrls: [
+            #APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#
+            #THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#
+        ]
+    }
+    css {
+        fileUrls: #THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#
+    }
+    componentDefaults {
+        page: @/standard
+        navigationBarList: @/navigation-bar
+        navigationMenuListPosition: side
+        navigationMenuListTop: @/top-navigation-menu
+        navigationMenuListSide: @/side-navigation-menu
+        loginPage: @/login
+        errorPage: @/login
+        printerFriendlyPage: @/standard
+        breadcrumb: @/breadcrumb
+        button: @/text
+        defaultLabel: @/optional-floating
+        optionalLabel: @/optional-floating
+        requiredLabel: @/required-floating
+        list: @/links-list
+        region: @/standard
+        classicReport: @/standard
+    }
+    regionDefaults {
+        breadcrumbs: @/title-bar
+        charts: @/standard
+        forms: @/standard
+        lists: @/standard
+        reports: @/standard
+        wizards: @/standard
+        interactiveReports: @/interactive-report
+    }
+    dialogDefaults {
+        dialogContentRegion: @/blank-with-attributes
+        dialogButtonRegion: @/buttons-container
+        dialogPage: @/modal-dialog
+    }
+    icons {
+        library: fontApex
+    }
+    advanced {
+        filePrefix: #APEX_FILES#themes/theme_42/26.1/
+        identifier: UNIVERSAL_THEME
+    }
+
+    style redwood-light-sp (
+        name: Redwood Light SP
+        css {
+            fileUrls: [
+                #APEX_FILES#libraries/oracle-fonts/oraclesans-apex#MIN#.css?v=#APEX_VERSION#
+                #THEME_FILES#css/Redwood#MIN#.css?v=#APEX_VERSION#
+            ]
+            cssClasses: " rw-mode-body-header--dark rw-mode-header--dark rw-pillar--neutral"
+        }
+        themeRollerAttributes {
+            inputParameterFileUrls: #THEME_FILES#less/theme/Redwood-Theme.less
+            outputCssFileUrl: #THEME_DB_FILES#41162705609405630023.css
+            jsonConfig: "{\"classes\":[\"rw-mode-body-header--dark\",\"rw-mode-header--dark\",\"rw-pillar--neutral\"],\"vars\":{},\"customCSS\":\":root {\\n  /* Reduce Redwood Padding */\\n  --ut-footer-padding-x: var(--ut-body-content-padding-x);\\n  --ut-body-content-padding-y: 2rem;\\n  /* Unset badge font family */\\n  --ut-treeview-badge-font-family: unset;\\n  /* Better grid borders when backgrounds set on rows */\\n  --a-gv-cell-border-color: rgba(0, 0, 0, .05);\\n}\\n\\n.header-actions {\\n  margin-inline-start: auto;\\n}\\n\\n.header-actions .t-ContentRow-wrap {\\n  padding: 0;\\n  float: right;\\n}\\n\\n.has-header-actions {\\n  display: inline-flex;\\n}\\n\\n.header-actions .t-ContentRow-wrap button {\\n  --a-button-background-color: transparent;\\n}\\n\\n.t-BreadcrumbRegion--showBreadcrumb .t-BreadcrumbRegion-breadcrumb {\\n  display: flex;\\n  align-items: center;\\n}\\n\\n\\n/* Clear the default fa-user icon for content row regions with the clear-avatar-icons class */\\n.clear-avatar-icons .t-Avatar.t-Avatar--icon.fa-user:before {\\n  display: none;\\n}\\n\\n/* Adding initiative icon to the left of contextual info region */\\n.initiative-icon {\\n  margin: 0 -2rem .5rem 3rem;\\n  max-inline-size: 2.5rem;\\n}\\n\\n.t-PageBody--showLeft .initiative-icon {\\n  margin: 0 0 .5rem 1rem;\\n  max-inline-size: 2.5rem;\\n}\\n\\n/* Setting max height for facets, otherwise it gets too big */\\n.a-FS-bodyInner .apex-item-checkbox {\\n  max-height: 320px;\\n  overflow: auto;\\n}\\n\\n/* Search Clear Button */\\n.sp-ClearButton {\\n  position: absolute;\\n  inline-size: 1.5rem;\\n  block-size: 1.5rem;\\n  cursor: pointer;\\n  inset-inline-end: .25rem;\\n  inset-block-start: 50%;\\n  transform: translateY(-50%);\\n  visibility: visible;\\n  opacity: 1;\\n  transition: opacity .25s ease;\\n  display: flex;\\n  align-items: center;\\n  justify-content: center;\\n  order: 4;\\n}\\n\\n.sp-ClearButton:before {\\n  content: \\\"\\\\e0a2\\\";\\n  font-size: 1rem;\\n  speak: none;\\n  font-style: normal;\\n  font-weight: 400;\\n  font-variant: normal;\\n  text-transform: none;\\n  text-rendering: auto;\\n  line-height: 1;\\n  -webkit-font-smoothing: antialiased;\\n  -moz-osx-font-smoothing: grayscale;\\n  font-family: var(--a-icon-font-family, \\\"apex-5-icon-font\\\");\\n  opacity: .8;\\n}\\n\\n.t-Form-itemWrapper {\\n  position: relative;\\n}\\n\\n.t-Form-fieldContainer:not(.t-Form-fieldContainer--floatingLabel):not(.t-Form-fieldContainer--hiddenLabel) .t-Form-itemWrapper {\\n  display: inline-flex;\\n}\\n\\n.t-Form-itemWrapper:has(:placeholder-shown) .sp-ClearButton {\\n  visibility: hidden;\\n  opacity: 0;\\n}\\n\\n.t-Comments-comment img {max-width: 100%; height: auto;}\",\"useCustomLess\":\"N\"}"
+        }
+        advanced {
+            endUserCanPick: true
+        }
+    )
+
+)
+

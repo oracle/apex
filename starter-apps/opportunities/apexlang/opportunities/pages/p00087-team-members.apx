@@ -1,0 +1,348 @@
+page 87 (
+    name: Team Members
+    alias: TEAM-MEMBERS
+    title: Team Members
+    pageGroup: @opportunities
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>
+                To edit a team member assignment, click the <strong>Edit</strong> icon (pencil) next to the team member assignment. Click the <strong>Add Team Member</strong> button to assign a new team member to this opportunity. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.
+            </p>
+            ```
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region team-members (
+        name: Team Members
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.id,
+                  lower(r.rep_email) team_member,
+                  r2.role_name role,
+                  lower(t.created_by) created_by,
+                  t.created
+                from eba_sales_deal_team t
+                join eba_sales_salesreps r
+                  on r.id = t.rep_id
+                left join eba_sales_salesrep_roles r2
+                  on r2.id = r.rep_role
+                where t.deal_id = :P87_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 30
+                items: {
+                    P30_ID: #ID#
+                }
+                clearCache: 30
+                action: resetPagination
+            }
+            linkIcon: <span class="fa fa-edit" aria-hidden="true"></span>
+            linkAttributes: title="Edit #TEAM_MEMBER#"
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No team members assigned.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2394758823400301135
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Added
+            }
+            layout {
+                sequence: 24
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ROLE (
+            type: plainText
+            heading {
+                heading: Role
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column TEAM_MEMBER (
+            type: plainText
+            heading {
+                heading: Team Member
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        savedReport 23947667 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CREATED (
+                sequence: 3
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 4
+            )
+
+            displayColumn ROLE (
+                sequence: 2
+            )
+
+            displayColumn TEAM_MEMBER (
+                sequence: 1
+            )
+
+            sort (
+                column: TEAM_MEMBER
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P87_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @team-members
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-team-member (
+        buttonName: ADD_TEAM_MEMBER
+        label: Add Team Member
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 30
+                items: {
+                    P30_DEAL_ID: &P87_ID.
+                }
+                clearCache: 30
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @team-members
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dialog-closed (
+        name: Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Action Processed.');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @team-members
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

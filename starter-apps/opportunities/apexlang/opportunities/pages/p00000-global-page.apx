@@ -1,0 +1,1081 @@
+page 0 (
+    name: 0
+
+    region attachments (
+        name: Attachments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                  filename,
+                  apex_util.get_blob_file_src('P99_FILE_BLOB', id) edit_url,
+                  file_mimetype,
+                  file_charset,
+                  apex_util.filesize_mask(dbms_lob.getlength(file_blob)) f_len,
+                  file_comments,
+                  case 
+                    when instr(upper(filename),'.PPT') > 0 
+                      or instr(upper(filename),'.PPTX') > 0 
+                    then 'fa fa-file-powerpoint-o'
+                    when instr(upper(filename),'.XLS') > 0 
+                      or instr(upper(filename),'.XLSX') > 0 
+                    then 'fa fa-file-excel-o'
+                    when instr(upper(filename),'.DOC') > 0 
+                      or instr(upper(filename),'.DOCX') > 0 
+                    then 'fa fa-file-word-o'
+                    when instr(upper(filename),'.PDF') > 0 
+                    then 'fa fa-file-pdf-o'
+                    when instr(upper(filename),'.GIF') > 0 
+                      or instr(upper(filename),'.PNG') > 0 
+                      or instr(upper(filename),'.TIFF') > 0 
+                      or instr(upper(filename),'.JPG') > 0 
+                    then 'fa fa-file-image-o'
+                    else 'fa fa-file-o'
+                  end file_type,
+                  case 
+                    when instr(upper(filename),'.PPT') > 0
+                      or instr(upper(filename),'.PPTX') > 0 
+                    then 'MS Powerpoint File'
+                    when instr(upper(filename),'.XLS') > 0 
+                      or instr(upper(filename),'.XLSX') > 0 
+                    then 'MS Excel File'
+                    when instr(upper(filename),'.DOC') > 0 
+                      or instr(upper(filename),'.DOCX') > 0 
+                    then 'MS Word File'
+                    when instr(upper(filename),'.PDF') > 0 
+                    then 'Adobe PDF File'
+                    when instr(upper(filename),'.GIF') > 0 
+                      or instr(upper(filename),'.PNG') > 0 
+                      or instr(upper(filename),'.TIFF') > 0 
+                      or instr(upper(filename),'.JPG') > 0 
+                    then 'Image File'
+                    else 'Text File'
+                  end file_type_title,
+                  created,
+                  lower(created_by) created_by,
+                  null edit
+                from eba_sales_files f
+                where (
+                  (:APP_PAGE_ID = '80' and deal_id = :P80_ID)
+                    or (:APP_PAGE_ID = '93' and territory_id = :P93_ID)
+                    or (:APP_PAGE_ID = '133' and lead_id = :P133_ID)
+                    or (:APP_PAGE_ID = '94' and account_id = :P94_ID)
+                    or (:APP_PAGE_ID = '24' and contact_id = :P24_ID)
+                    or (:APP_PAGE_ID = '61' and product_id = :P61_ID)
+                )
+                ```
+        }
+        layout {
+            sequence: 1100
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            cssClasses: [
+                js-dynamicHideShowRegion
+                js-attachmentsRegion
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+        comments {
+            comments: Used with marquee page attachments
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No attachments identified, click "+" icon to add a file attachment
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CREATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Added
+            }
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: <span class="u-nowrap">#CREATED# by #CREATED_BY#</span>
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 11
+            }
+        )
+
+        column EDIT (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: link
+            heading {
+                heading: <span class="u-VisuallyHidden">Edit</span>
+                alignment: center
+            }
+            layout {
+                sequence: 1
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 99
+                    items: {
+                        P99_ID: #ID#
+                    }
+                    action: resetPagination
+                }
+                linkText: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">
+            }
+            sorting {
+                sortable: false
+            }
+            advanced {
+                cellWidth: 24
+            }
+        )
+
+        column EDIT_URL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 12
+            }
+        )
+
+        column FILENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Attachment
+            }
+            layout {
+                sequence: 5
+            }
+            columnFormatting {
+                htmlExpression: <a class="u-bold" href="#EDIT_URL#">#FILENAME#</a><br />#FILE_COMMENTS#
+            }
+        )
+
+        column FILE_CHARSET (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+        column FILE_COMMENTS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column FILE_MIMETYPE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column FILE_TYPE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: <span class="u-VisuallyHidden">Type</span>
+                alignment: center
+            }
+            layout {
+                sequence: 4
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression: <span class="u-file-icon #FILE_TYPE#" title="#FILE_TYPE_TITLE#"></span>
+            }
+            sorting {
+                sortable: false
+            }
+            advanced {
+                cellWidth: 24
+            }
+        )
+
+        column FILE_TYPE_TITLE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column F_LEN (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Size
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+        )
+
+    )
+
+    region comments (
+        name: Comments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select '' comment_modifiers, 
+                  'u-color-' || ora_hash(created_by, 29) || ' u-color-' || ora_hash(created_by, 29) || '-bd' icon_modifier,
+                  replace(apex_escape.html(dbms_lob.substr(note,2000,1)), chr(10), '<br />') comment_text,
+                  '' attribute_1,
+                  '' attribute_2,
+                  '' attribute_3,
+                  '' attribute_4,
+                  lower(created_by) user_name,
+                  upper(
+                    case
+                      when instr(replace(created_by,'.',' '),' ') = 0
+                      then substr(created_by,1,2)
+                      else substr(created_by,1,1)||substr(created_by,instr(replace(created_by,'.',' '),' ')+1,1)
+                    end
+                  ) user_icon,
+                  case
+                    when eba_sales_acl_api.get_authorization_level(:APP_USER) = 3
+                    then '<a href="' || apex_page.get_url(p_page => 22, p_items => 'P22_ID', p_values => id) || 
+                      '" class="t-Button t-Button--small t-Button--simple">Edit</a>'
+                  end actions,
+                  id update_id,
+                  case
+                    when to_char(created, 'YYYMMDDHH24MISS') = to_char(updated, 'YYYMMDDHH24MISS')
+                    then apex_util.get_since(created) 
+                    else apex_util.get_since(created) || ' (Updated ' || apex_util.get_since(updated) || ')' 
+                  end comment_date
+                from eba_sales_comments 
+                where (
+                  (:APP_PAGE_ID = '80' and deal_id = :P80_ID)
+                    or (:APP_PAGE_ID = '93' and territory_id = :P93_ID)
+                    or (:APP_PAGE_ID = '133' and lead_id = :P133_ID)
+                    or (:APP_PAGE_ID = '94' and account_id = :P94_ID)
+                    or (:APP_PAGE_ID = '24' and contact_id = :P24_ID)
+                    or (:APP_PAGE_ID = '61' and product_id = :P61_ID)
+                )
+                order by created desc
+                ```
+        }
+        layout {
+            sequence: 1200
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: [
+                js-dynamicHideShowRegion
+                js-commentsRegion
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No updates or status logged, click "+" icon to add a note
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: columnNames
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Actions
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Comment Date
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_MODIFIERS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Comment Modifiers
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Comment Text
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Icon Modifier
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATE_ID (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Update Id
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: User Icon
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: User Name
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region links (
+        name: Links
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id, 
+                  link_text, 
+                  link_target, 
+                  lower(created_by) created_by, 
+                  created, 
+                  link_comments,
+                  null edit
+                from eba_sales_links 
+                where (
+                  (:APP_PAGE_ID = '80' and deal_id = :P80_ID)
+                    or (:APP_PAGE_ID = '93' and territory_id = :P93_ID)
+                    or (:APP_PAGE_ID = '133' and lead_id = :P133_ID)
+                    or (:APP_PAGE_ID = '94' and account_id = :P94_ID)
+                    or (:APP_PAGE_ID = '24' and contact_id = :P24_ID)
+                    or (:APP_PAGE_ID = '61' and product_id = :P61_ID)
+                )
+                ```
+        }
+        layout {
+            sequence: 1000
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            cssClasses: [
+                js-dynamicHideShowRegion
+                js-linksRegion
+            ]
+        }
+        advanced {
+            customAttributes: style="display:none"
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No links provided, click "+" icon to add a URL link
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CREATED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Added
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: <span class="u-nowrap">#CREATED# by #CREATED_BY#</span>
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column EDIT (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: link
+            heading {
+                heading: <span class="u-VisuallyHidden">Edit</span>
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 114
+                    items: {
+                        P114_ID: #ID#
+                    }
+                    clearCache: 114
+                    action: resetPagination
+                }
+                linkText: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">
+            }
+            sorting {
+                sortable: false
+            }
+            advanced {
+                cellWidth: 24
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+        column LINK_COMMENTS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column LINK_TARGET (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column LINK_TEXT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Link
+            }
+            layout {
+                sequence: 3
+            }
+            columnFormatting {
+                htmlExpression: <a href="#LINK_TARGET#" target="_blank" class="u-bold">#LINK_TEXT#</a><br />#LINK_COMMENTS#
+            }
+        )
+
+    )
+
+    dynamicAction marquee-pages-attachment-details-dialog-closed (
+        name: Marquee Pages - Attachment Details dialog closed
+        execution {
+            sequence: 60
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId === 99
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('.js-attachmentsRegion').trigger('apexrefresh');
+                    
+                    if (this.data.REQUEST === 'CREATE') {
+                      apex.message.showPageSuccess('Attachment Added.');
+                    } if (this.data.REQUEST === 'SAVE') {
+                      apex.message.showPageSuccess('Attachment Updated.');
+                    } if (this.data.REQUEST === 'DELETE') {
+                      apex.message.showPageSuccess('Attachment Deleted.');
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction marquee-pages-attachments-dialog-closed (
+        name: Marquee Pages - Attachments dialog closed
+        execution {
+            sequence: 30
+            eventScope: dynamic
+        }
+        when {
+            event: custom
+            customEvent: dialogclose
+            selectionType: jQuerySelector
+            jquerySelector: .view-attachments-dialog
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('.js-attachmentsRegion').trigger('apexrefresh');
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction marquee-pages-comment-details-dialog-closed (
+        name: Marquee Pages - Comment Details dialog closed
+        execution {
+            sequence: 70
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId === 22
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('.js-commentsRegion').trigger('apexrefresh');
+                    
+                    if (this.data.REQUEST === 'CREATE') {
+                      apex.message.showPageSuccess('Comment Added.');
+                    } if (this.data.REQUEST === 'SAVE') {
+                      apex.message.showPageSuccess('Comment Updated.');
+                    } if (this.data.REQUEST === 'DELETE') {
+                      apex.message.showPageSuccess('Comment Deleted.');
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction marquee-pages-comments-dialog-closed (
+        name: Marquee Pages - Comments dialog closed
+        execution {
+            sequence: 40
+            eventScope: dynamic
+        }
+        when {
+            event: custom
+            customEvent: dialogclose
+            selectionType: jQuerySelector
+            jquerySelector: .view-comments-dialog
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('.js-commentsRegion').trigger('apexrefresh');
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction marquee-pages-handle-no-data-found-regions (
+        name: Marquee Pages - Handle No Data Found Regions
+        execution {
+            sequence: 10
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    (function() {
+                        
+                    function toggleRegion() {
+                      var $region = $(this),
+                          noDataFound = $region.find('.nodatafound').length === 1;
+                    
+                        //triggering after hide/show because that what the RDS response to
+                        if (noDataFound) {
+                          $region.hide();
+                          $region.trigger('apexafterhide');
+                        } else {
+                          $region.show();
+                          $region.trigger('apexaftershow');
+                        }
+                    }
+                    
+                    function initHideShowRegions() {
+                      var $regions = $('.js-dynamicHideShowRegion');
+                          $rds = $('.apex-rds');
+                    
+                      $regions
+                        .each(toggleRegion)
+                        .on('apexafterrefresh', toggleRegion);
+                    
+                      //using visiblity over display to avoid DOM movement issues
+                      $rds.css('visibility', 'visible');
+                    } 
+                    
+                    //using load because document.ready here goes before the RDS has added its listeners
+                    $(window).on('theme42ready', initHideShowRegions);
+                     
+                    }())
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction marquee-pages-link-details-dialog-closed (
+        name: Marquee Pages - Link Details dialog closed
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId === 114
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('.js-linksRegion').trigger('apexrefresh');
+                    
+                    if (this.data.REQUEST === 'CREATE') {
+                      apex.message.showPageSuccess('Link Added.');
+                    } if (this.data.REQUEST === 'SAVE') {
+                      apex.message.showPageSuccess('Link Updated.');
+                    } if (this.data.REQUEST === 'DELETE') {
+                      apex.message.showPageSuccess('Link Deleted.');
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction marquee-pages-links-dialog-closed (
+        name: Marquee Pages - Links dialog closed
+        execution {
+            sequence: 20
+            eventScope: dynamic
+        }
+        when {
+            event: custom
+            customEvent: dialogclose
+            selectionType: jQuerySelector
+            jquerySelector: .view-links-dialog
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('.js-linksRegion').trigger('apexrefresh');
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction marquee-pages-validate-dialog-closed (
+        name: Marquee Pages - Validate dialog closed
+        execution {
+            sequence: 80
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId === 146
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                80
+                94
+                133
+                93
+                24
+                61
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('.js-validateRegion').trigger('apexrefresh');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

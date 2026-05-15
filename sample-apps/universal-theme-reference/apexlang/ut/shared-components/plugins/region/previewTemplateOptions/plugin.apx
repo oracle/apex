@@ -1,0 +1,314 @@
+plugin previewTemplateOptions (
+    name: Preview Template Options
+    staticId: COM.ORACLE.APEX.PREVIEW_TEMPLATE_OPTIONS
+    type: region
+    source {
+        plsqlCode:
+            ```plsql
+            c_workspace constant varchar2(100) := apex_util.find_workspace(:workspace_id);
+            
+            subtype t_region_type is varchar2(40);
+            c_region_type_list_region       constant t_region_type := 'NATIVE_LIST';
+            c_region_type_breadcrumb        constant t_region_type := 'NATIVE_BREADCRUMB';
+            c_region_type_sql_report        constant t_region_type := 'NATIVE_SQL_REPORT';
+            c_region_type_tabform           constant t_region_type := 'NATIVE_TABFORM';
+            
+            procedure emit_template_templ_options ( 
+                p_template_id    number,
+                p_template_type  varchar2,
+                p_current_values varchar2 )
+            as
+                l_default varchar2(4000);
+                l_preset varchar2(4000);
+            begin
+                apex_json.open_object;
+            
+                apex_json.open_array( 'groups' );
+                for i in ( select distinct
+                                    g.template_opt_group_id as group_id,
+                                    g.display_name          as group_display_name,
+                                    g.display_sequence      as group_display_sequence,
+                                    g.is_advanced           as group_is_advanced,
+                                    g.help_text             as group_help_text,
+                                    g.null_text             as group_null_text
+                            from apex_appl_template_options o,
+                                    apex_appl_template_opt_groups g
+                            where o.application_id    = :app_id
+                                and o.theme_number      = wwv_flow.g_flow_theme_id
+                                and o.workspace         = c_workspace
+                                and (  
+                                    ( o.virtual_template_id is null and instr( o.virtual_template_type, p_template_type ) > 0 )
+                                    or
+                                    ( o.virtual_template_id = p_template_id and o.virtual_template_type = p_template_type )
+                                    )
+                                and g.template_opt_group_id = o.group_id
+                            order by g.display_sequence, g.template_opt_group_id )
+                loop
+            
+                    apex_json.open_object;
+                    apex_json.write('groupId',    i.group_id );
+                    apex_json.write('title',      i.group_display_name );
+                    apex_json.write('seq',        i.group_display_sequence );
+                    apex_json.write('isAdvanced', i.group_is_advanced = 'Y' );
+                    apex_json.write('helpText',   i.group_help_text );
+                    apex_json.write('nullText',   i.group_null_text );
+            
+                    apex_json.open_array( 'options' );
+                    for j in ( select o.display_name,
+                                      o.display_sequence,
+                                      o.is_advanced,
+                                      o.help_text,
+                                      o.css_classes
+                                 from apex_appl_template_options o
+                                where o.application_id    = :app_id
+                                  and o.theme_number      = wwv_flow.g_flow_theme_id
+                                  and o.workspace         = c_workspace
+                                  and (  
+                                    ( o.virtual_template_id is null and instr( o.virtual_template_type, p_template_type ) > 0 )
+                                    or
+                                    ( o.virtual_template_id = p_template_id and o.virtual_template_type = p_template_type )
+                                    )
+                                  and o.group_id = i.group_id
+                            order by o.display_sequence, o.template_option_id )
+                    loop
+            
+                        apex_json.open_object;
+                        apex_json.write('d',          j.display_name );
+                        apex_json.write('r',          j.css_classes );
+                        apex_json.write('seq',        j.display_sequence );
+                        apex_json.write('isAdvanced', j.is_advanced = 'Y' );
+                        apex_json.write('helpText',   j.help_text );
+                        apex_json.write('groupId',    i.group_id );
+                        apex_json.close_object;
+            
+                    end loop;
+                    apex_json.close_array;
+            
+                    apex_json.close_object;
+            
+                end loop;
+                apex_json.close_array; -- groups
+            
+                apex_json.open_array( 'options' );
+                for i in ( select o.display_name,
+                                         o.display_sequence,
+                                         o.is_advanced,
+                                         o.help_text,
+                                         o.css_classes
+                                    from apex_appl_template_options o
+                                   where o.application_id    = :app_id
+                                     and o.theme_number      = wwv_flow.g_flow_theme_id
+                                     and o.workspace         = c_workspace
+                                     and (  
+                                        ( o.virtual_template_id is null and instr( o.virtual_template_type, p_template_type ) > 0 )
+                                        or
+                                        ( o.virtual_template_id = p_template_id and o.virtual_template_type = p_template_type )
+                                        )
+                                     and o.group_id is null
+                                   order by o.display_sequence, o.template_option_id )
+                loop
+            
+                    apex_json.open_object;
+                    apex_json.write('d',          i.display_name );
+                    apex_json.write('r',          i.css_classes );
+                    apex_json.write('seq',        i.display_sequence );
+                    apex_json.write('isAdvanced', i.is_advanced = 'Y' );
+                    apex_json.write('helpText',   i.help_text );
+                    apex_json.close_object;
+            
+                end loop;
+                apex_json.close_array; -- options
+            
+                execute immediate 'select default_template_options, preset_template_options from ' ||
+                                    case p_template_type
+                                    when 'REGION'     then 'apex_application_temp_region'
+                                    when 'BUTTON'     then 'apex_application_temp_button'
+                                    when 'FIELD'      then 'apex_application_temp_label'
+                                    when 'REPORT'     then 'apex_application_temp_report'
+                                    when 'LIST'       then 'apex_application_temp_list'
+                                    when 'BREADCRUMB' then 'apex_application_temp_bc'
+                                    end ||
+                                ' where ' ||
+                                    case p_template_type
+                                    when 'REGION'     then 'region_template_id'
+                                    when 'BUTTON'     then 'button_template_id'
+                                    when 'FIELD'      then 'label_template_id'
+                                    when 'REPORT'     then 'template_id'
+                                    when 'LIST'       then 'list_template_id'
+                                    when 'BREADCRUMB' then 'breadcrumb_template_id'
+                                    end ||
+                                ' = :p_template_id and application_id = :app_id and workspace = :p_security_group_id'
+                             into l_default,
+                                  l_preset
+                            using p_template_id,
+                                  :app_id,
+                                  c_workspace;
+            
+                apex_json.write(
+                    p_name       => 'currentValues',
+                    p_value      => p_current_values,
+                    p_write_null => true );
+            
+                apex_json.write(
+                    p_name       => 'defaultValues',
+                    p_values     => apex_string.split(
+                                        p_str => l_default,
+                                        p_sep => ':' ),
+                    p_write_null => true );
+            
+                apex_json.write(
+                    p_name       => 'presetValues',
+                    p_values     => apex_string.split(
+                                        p_str => l_preset,
+                                        p_sep => ':' ),
+                    p_write_null => true );
+            
+                apex_json.close_object;
+            
+            end;
+            
+            procedure emit_component_templ_options( 
+                p_component_type      varchar2,
+                p_component_static_id varchar2 )
+            as
+                l_component_id               number;
+                l_primary_template_id        number;
+                l_primary_template_type      varchar2(10);
+                l_primary_template_options   apex_application_page_regions.region_template_options%type;
+                l_secondary_template_id      number;
+                l_secondary_template_type    varchar2(10);
+                l_secondary_template_options apex_application_page_regions.component_template_options%type;
+            begin
+                
+                if p_component_type = 'REGION' then
+            
+                    l_primary_template_type := 'REGION';
+                    select region_id,
+                           template_id,
+                           region_template_options,
+                           case
+                             when source_type_plugin_name = c_region_type_list_region                          then list_template_override_id
+                             when source_type_plugin_name = c_region_type_breadcrumb                           then breadcrumb_template_id
+                             when source_type_plugin_name in (c_region_type_sql_report, c_region_type_tabform) then report_template_id
+                           end,
+                           case
+                             when source_type_plugin_name = c_region_type_list_region                          then 'LIST'
+                             when source_type_plugin_name = c_region_type_breadcrumb                           then 'BREADCRUMB'
+                             when source_type_plugin_name in (c_region_type_sql_report, c_region_type_tabform) then 'REPORT'
+                           end,
+                           component_template_options
+                      into l_component_id,
+                           l_primary_template_id,
+                           l_primary_template_options,
+                           l_secondary_template_id,
+                           l_secondary_template_type,
+                           l_secondary_template_options
+                      from apex_application_page_regions
+                     where static_id         = p_component_static_id
+                       and application_id    = :app_id
+                       and page_id           = :app_page_id
+                       and workspace         = c_workspace;
+                    
+                elsif p_component_type = 'ITEM' then
+            
+                    l_primary_template_type := 'FIELD';
+                    select item_id,
+                           item_label_template_id,
+                           item_template_options
+                      into l_component_id,
+                           l_primary_template_id,
+                           l_primary_template_options
+                      from apex_application_page_items
+                     where item_name        = p_component_static_id
+                       and application_id   = :app_id
+                       and page_id          = :app_page_id
+                       and workspace        = c_workspace;
+            
+                elsif p_component_type = 'BUTTON' then
+            
+                    l_primary_template_type := 'BUTTON';
+                    select button_id,
+                           button_template_id,
+                           button_template_options
+                      into l_component_id,
+                           l_primary_template_id,
+                           l_primary_template_options
+                      from apex_application_page_buttons
+                     where button_static_id = p_component_static_id
+                       and application_id   = :app_id
+                       and page_id          = :app_page_id
+                       and workspace        = c_workspace;
+                           
+                end if;
+                
+                -- if there is a secondary template, get that one
+                if l_secondary_template_id is not null then
+                    emit_template_templ_options (
+                        p_template_id    => l_secondary_template_id,
+                        p_template_type  => l_secondary_template_type,
+                        p_current_values => l_secondary_template_options );
+                else
+                -- if not, get the main template
+                    emit_template_templ_options (
+                        p_template_id    => l_primary_template_id,
+                        p_template_type  => l_primary_template_type,
+                        p_current_values => l_primary_template_options );
+                end if;
+            end;
+            
+            function render (
+                p_region              apex_plugin.t_region,
+                p_plugin              apex_plugin.t_plugin,
+                p_is_printer_friendly boolean )
+            return apex_plugin.t_region_render_result
+            as
+            
+                c_component_type        constant varchar2(1000) := p_region.attribute_01;
+                c_component_static_id   constant varchar2(1000) := p_region.attribute_02;
+            
+                c_region_id             constant varchar2(1000) := p_region.static_id;
+                c_preview_id            constant varchar2(1000) := c_region_id || '_preview';
+            
+            begin
+            
+                if apex_application.g_debug then
+                    apex_plugin_util.debug_region ( 
+                        p_plugin => p_plugin,
+                        p_region => p_region );
+                end if;
+            
+                htp.p('<div id="' || apex_escape.html_attribute(c_preview_id) || '" class="ut-TemplateOptions--preview"></div>');
+            
+                apex_json.initialize_clob_output;
+            
+                emit_component_templ_options( 
+                    p_component_type      => c_component_type,
+                    p_component_static_id => c_component_static_id );
+            
+                apex_javascript.add_onload_code ( 'apex.theme42demo.initPreviewTemplateOptions(' ||
+                    '{' ||
+                    apex_javascript.add_attribute('previewId',          sys.htf.escape_sc(c_preview_id)) ||
+                    apex_javascript.add_attribute('componentType',      sys.htf.escape_sc(c_component_type)) ||
+                    apex_javascript.add_attribute('componentStaticId',  sys.htf.escape_sc(c_component_static_id)) ||
+                    apex_javascript.add_attribute('templateOptions',    apex_json.get_clob_output(p_free => true)) ||
+                    '});' );
+            
+                return null;
+            end;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    javaScript {
+        fileUrls: #PLUGIN_FILES#js/script#MIN#.js
+    }
+    information {
+        version: 1.0
+    }
+)
+

@@ -1,0 +1,228 @@
+page 111 (
+    name: FullCalendar API initialization
+    alias: FULLCALENDAR-API-INITIALIZATION
+    title: FullCalendar API initialization
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This is a standard Oracle APEX calendar region component showing a <b>weekly</b> view on events with a time component. In this example the region attribute <b>Plugin Initialization Javascript</b> is being used to override the standard FullCalendar initialization attributes with custom values. The javascript function, provided by the developer, must accept an Object containing the calendar initialization attributes, as parameter. In the javascript code, modify that object as needed and return. The function will be called by the calendar component automatically.</p>
+                <pre>
+                function ( pOptions) {
+                    pOptions.titleFormat            = function( pDate ) { return "Conference Schedule" };       // custom title
+                    pOptions.slotMinTime            = "07:00:00";                                               // hide slots before minTime
+                    pOptions.slotMaxTime            = "21:00:00";                                               // hide slots after maxTime
+                    pOptions.dayHeaderFormat        = { weekday: 'short', month: 'numeric', day: 'numeric' };   // week view column headings
+                    pOptions.slotDuration           = "00:15:00";                                               // custom slot duration
+                    pOptions.weekNumbers            = true;                                                     // show week numbers
+                    pOptions.weekText               = "CW";                                                     // heading for week numbers
+                    pOptions.weekNumberCalculation  = "ISO";                                                    // use "ISO" week numbers
+                    pOptions.displayEventTime       = true;                                                     // show event time ...
+                    pOptions.displayEventEnd        = false;                                                    // ... but not the end time
+                    pOptions.disableKeyboardSupport = true;                                                     // disable builtin keyboard navigation
+                    pOptions.windowResize           = null;                                                     // suppress automatic switch to list view on small screens
+                    return pOptions;
+                }
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sessions (
+        name: Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   case when speaker is not null then 
+                       title || ' (' || speaker || ')' 
+                       else title
+                   end as title,
+                   speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when status       = 'INACTIVE' then  'apex-cal-gray'
+                      when session_type = 'BREAK'    then  'apex-cal-silver'
+                      when session_type = 'BUSINESS' then  'apex-cal-orange'
+                      when session_type = 'GENERAL'  then  'apex-cal-blue'
+                      when session_type = 'TECHNICAL' then 'apex-cal-green'
+                      when session_type = 'HANDS_ON' then 'apex-cal-lime'
+                   end as css_class
+                from eba_demo_cal_sessions
+                where status='ACTIVE'
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            showTime: true
+            calendarViewsAndNavigation: [
+                week
+                list
+            ]
+            viewEditLink: {
+                page: 301
+                items: {
+                    P301_ID: &ID.
+                }
+                action: resetPagination
+            }
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function ( pOptions) {
+                    pOptions.titleFormat            = function( pDate ) { return "Conference Schedule" };
+                    pOptions.slotMinTime            = "07:00:00";
+                    pOptions.slotMaxTime            = "21:00:00";
+                    pOptions.dayHeaderFormat        = { weekday: 'short', month: 'numeric', day: 'numeric' };
+                    pOptions.slotDuration           = "00:15:00";
+                    pOptions.weekNumbers            = true;
+                    pOptions.weekText               = "CW";
+                    pOptions.weekNumberCalculation  = "ISO";
+                    pOptions.displayEventTime       = true;
+                    pOptions.displayEventEnd        = false;
+                    pOptions.disableKeyboardSupport = true;
+                    pOptions.windowResize           = null;
+                    return pOptions;
+                }
+                
+                ```
+        }
+    )
+
+    dynamicAction change-show-inactive-sessions (
+        name: Change Show Inactive Sessions
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P111_SHOW_INACTIVE
+        }
+        serverSideCondition {
+            type: never
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction dialog-closed-refresh-calendar (
+        name: Dialog Closed: Refresh Calendar
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @sessions
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

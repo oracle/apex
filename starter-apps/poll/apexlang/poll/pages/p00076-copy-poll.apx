@@ -1,0 +1,294 @@
+page 76 (
+    name: Copy Poll
+    alias: COPY-POLL
+    title: Copy Poll
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region select-poll-to-copy (
+        name: Select Poll to Copy
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                Poll details, sections and questions will all be copied into a new poll.  Invitations and responses will not be included.
+                <p/>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P76_NEW_POLL_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @select-poll-to-copy
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P76_POLL_ID (
+        type: selectList
+        label {
+            label: Select Poll to Copy
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select poll_name d, id
+                  from eba_qpoll_polls
+                 order by lower(poll_name)
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @select-poll-to-copy
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 5
+            region: @select-poll-to-copy
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button copy (
+        buttonName: Copy
+        label: Copy Poll
+        layout {
+            sequence: 10
+            region: @select-poll-to-copy
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close (
+        name: close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process copy-poll (
+        name: Copy Poll
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_new_poll_id  number;
+                   l_section_cnt  number := 0;
+                   l_section_id   number;
+                begin
+                
+                for c1 in (
+                   select *
+                     from eba_qpoll_polls
+                    where id = :P76_POLL_ID
+                ) loop
+                   insert into eba_qpoll_polls
+                      (poll_name, poll_details, intro_text, thank_you_text, status_id, poll_or_quiz, score_type, use_sections_yn, 
+                        image_filename, image_mimetype, image_charset, image_blob, image_height, image_width, image_last_updated,
+                        anonymous_yn, can_update_answers_yn, all_view_results_yn, enable_score_yn, invite_only_yn, 
+                        authentication_req_yn)
+                   values
+                      ('COPY OF '|| c1.poll_name, c1.poll_details, c1.intro_text, c1.thank_you_text, 1, c1.poll_or_quiz, c1.score_type, c1.use_sections_yn,
+                        c1.image_filename, c1.image_mimetype, c1.image_charset, c1.image_blob, c1.image_height, c1.image_width, c1.image_last_updated,
+                        c1.anonymous_yn, c1.can_update_answers_yn, c1.all_view_results_yn, c1.enable_score_yn, c1.invite_only_yn, 
+                        c1.authentication_req_yn)
+                   returning id into l_new_poll_id;
+                   
+                   select count(*)
+                     into l_section_cnt
+                     from eba_qpoll_sections
+                    where poll_id = :P76_POLL_ID;
+                    
+                   if l_section_cnt > 0 then
+                   
+                      for c3 in (
+                         select * from eba_qpoll_sections
+                          where poll_id = :P76_POLL_ID
+                      ) loop
+                         insert into eba_qpoll_sections
+                            (poll_id, display_sequence, title, section_text,
+                             image_filename, image_mimetype, image_charset, image_blob, image_height, image_width, image_last_updated)
+                         values
+                            (l_new_poll_id, c3.display_sequence, c3.title, c3.section_text,
+                             c3.image_filename, c3.image_mimetype, c3.image_charset, c3.image_blob, c3.image_height, c3.image_width, c3.image_last_updated)
+                         returning id into l_section_id;
+                         
+                         for c2 in (
+                            select * 
+                              from eba_qpoll_questions
+                             where poll_id = :P76_POLL_ID
+                               and section_id = c3.id
+                         ) loop
+                            insert into eba_qpoll_questions
+                               (poll_id, section_id, display_sequence, question, question_type, mandatory_yn, publish_yn, 
+                                allow_comments_yn, use_custom_answers_yn,
+                                image_filename, image_mimetype, image_charset, image_blob, image_height, image_width, image_last_updated,
+                                answer_01, answer_02, answer_03, answer_04, answer_05, answer_06, 
+                                answer_07, answer_08, answer_09, answer_10, answer_11, answer_12,
+                                correct_answer, enable_score_yn,
+                                answer_01_score, answer_02_score, answer_03_score, answer_04_score, answer_05_score, answer_06_score, 
+                                answer_07_score, answer_08_score, answer_09_score, answer_10_score, answer_11_score, answer_12_score )
+                            values
+                               (l_new_poll_id, l_section_id, c2.display_sequence, c2.question, c2.question_type, c2.mandatory_yn, c2.publish_yn,
+                                c2.allow_comments_yn, c2.use_custom_answers_yn,
+                                c2.image_filename, c2.image_mimetype, c2.image_charset, c2.image_blob, c2.image_height, c2.image_width, c2.image_last_updated,
+                                c2.answer_01, c2.answer_02, c2.answer_03, c2.answer_04, c2.answer_05, c2.answer_06, 
+                                c2.answer_07, c2.answer_08, c2.answer_09, c2.answer_10, c2.answer_11, c2.answer_12,
+                                c2.correct_answer, c2.enable_score_yn,
+                                c2.answer_01_score, c2.answer_02_score, c2.answer_03_score, c2.answer_04_score, c2.answer_05_score, c2.answer_06_score, 
+                                c2.answer_07_score, c2.answer_08_score, c2.answer_09_score, c2.answer_10_score, c2.answer_11_score, c2.answer_12_score );
+                         end loop;
+                
+                      end loop;
+                      
+                   else
+                   
+                      for c2 in (
+                         select * 
+                           from eba_qpoll_questions
+                          where poll_id = :P76_POLL_ID
+                      ) loop
+                         insert into eba_qpoll_questions
+                            (poll_id, display_sequence, question, question_type, mandatory_yn, publish_yn, 
+                             allow_comments_yn, use_custom_answers_yn,
+                             image_filename, image_mimetype, image_charset, image_blob, image_height, image_width, image_last_updated,
+                             answer_01, answer_02, answer_03, answer_04, answer_05, answer_06, 
+                             answer_07, answer_08, answer_09, answer_10, answer_11, answer_12,
+                             correct_answer, enable_score_yn,
+                             answer_01_score, answer_02_score, answer_03_score, answer_04_score, answer_05_score, answer_06_score, 
+                             answer_07_score, answer_08_score, answer_09_score, answer_10_score, answer_11_score, answer_12_score )
+                         values
+                            (l_new_poll_id, c2.display_sequence, c2.question, c2.question_type, c2.mandatory_yn, c2.publish_yn,
+                             c2.allow_comments_yn, c2.use_custom_answers_yn,
+                             c2.image_filename, c2.image_mimetype, c2.image_charset, c2.image_blob, c2.image_height, c2.image_width, c2.image_last_updated,
+                             c2.answer_01, c2.answer_02, c2.answer_03, c2.answer_04, c2.answer_05, c2.answer_06, 
+                             c2.answer_07, c2.answer_08, c2.answer_09, c2.answer_10, c2.answer_11, c2.answer_12,
+                             c2.correct_answer, c2.enable_score_yn,
+                             c2.answer_01_score, c2.answer_02_score, c2.answer_03_score, c2.answer_04_score, c2.answer_05_score, c2.answer_06_score, 
+                             c2.answer_07_score, c2.answer_08_score, c2.answer_09_score, c2.answer_10_score, c2.answer_11_score, c2.answer_12_score );
+                      end loop;
+                      
+                   end if;
+                   
+                end loop;
+                
+                commit;
+                
+                :P76_NEW_POLL_ID := l_new_poll_id;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 4534124497022855883
+        }
+        serverSideCondition {
+            whenButtonPressed: @copy
+        }
+    )
+
+    branch (
+        name: Go To Page 100
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 100
+                items: {
+                    LPOLL_ID: &P76_NEW_POLL_ID.
+                }
+                clearCache: 100
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

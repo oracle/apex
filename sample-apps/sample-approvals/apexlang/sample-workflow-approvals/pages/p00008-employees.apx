@@ -1,0 +1,442 @@
+page 8 (
+    name: Employees
+    alias: EMPLOYEES
+    title: Employees
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            :root {
+               --a-cv-item-width: 24rem;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page shows all employees and allows a user to initiate a request 
+                    for a job change, salary change, or laptop by clicking the appropriate
+                    button on an employee's card. Managers can initiate a request for an
+                    employee appraisal by clicking the (Appraisal) button on any of their
+                    subordinates' cards.
+                </p>
+                <p>    
+                    The respective buttons are hidden on a given employee's card if the
+                    corresponding request is currently pending. In addition, the 
+                    <strong>Appraisal</strong> button only shows for <em>subordinates</em>
+                    of the currently logged-in user. 
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region employees (
+        name: Employees
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with reports as (
+                    select empno
+                        from (
+                            select empno, ename
+                              from eba_demo_appr_emp
+                              start with empno = :CURRENT_USER_EMPNO
+                              connect by prior empno = mgr
+                        )
+                    where empno != :CURRENT_USER_EMPNO
+                )
+                select e.EMPNO,
+                       e.ENAME,
+                       e.JOB,
+                       e.SAL,
+                       CASE WHEN t1.task_id IS NOT NULL THEN 'Y' ELSE 'N' end as pending_sal_approval,
+                       CASE WHEN t2.task_id IS NOT NULL THEN 'Y' ELSE 'N' end as pending_job_approval,
+                       CASE WHEN t3.task_id IS NOT NULL THEN 'Y' ELSE 'N' end as pending_bank_approval,
+                       CASE WHEN lr.status IN ('PENDING','APPROVED') THEN 'Y' ELSE 'N' end as pending_laptop_delivery,
+                       CASE WHEN a.id IS NULL and e.empno in (select empno from reports) THEN 'Y' ELSE 'N' end as is_direct_or_indirect_rep
+                  from EBA_DEMO_APPR_EMP e
+                  left outer join APEX_TASKS T1 
+                    on t1.detail_pk = e.empno 
+                    and t1.application_id = :APP_ID 
+                    and t1.task_def_static_id = 'SALARY_CHANGE'
+                    and t1.state_code in ('UNASSIGNED','ASSIGNED')
+                  left outer join APEX_TASKS T2 
+                    on t2.detail_pk = e.empno 
+                    and t2.application_id = :APP_ID 
+                    and t2.task_def_static_id = 'JOB_CHANGE'
+                    and t2.state_code in ('UNASSIGNED','ASSIGNED')
+                  left outer join APEX_TASKS T3
+                    on t3.detail_pk = e.empno 
+                    and t3.application_id = :APP_ID 
+                    and t3.task_def_static_id = 'BANK_ACCOUNT_CHANGE'
+                    and t3.state_code in ('UNASSIGNED','ASSIGNED')
+                  left outer join EBA_DEMO_APPR_LAPTOP_REQUESTS LR 
+                    on lr.empno = e.empno 
+                    and lr.status in ('PENDING','APPROVED')
+                   left outer join eba_demo_appr_appraisals a
+                    on a.empno = e.empno
+                    and add_months( last_day(sysdate) , -13) + 1 between a.period_start and a.period_end
+                where :P8_SHOW_ONLY_SUBORDINATES = 'N' or e.empno in (select empno from reports)      
+                ```
+            pageItemsToSubmit: P8_SHOW_ONLY_SUBORDINATES
+        }
+        orderBy {
+            type: item
+            item: {
+                itemName: P8_ORDER_BY
+                orderBys: {
+                    ENAME: ENAME
+                    JOB: JOB
+                    SAL: SAL DESC
+                }
+            }
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleC
+            ]
+        }
+        title {
+            column: ENAME
+        }
+        body {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                <strong>Job:</strong> &JOB.<br />
+                <strong>Salary:</strong> $&SAL.
+                ```
+        }
+        iconAndBadge {
+            iconSource: initials
+            iconColumn: ENAME
+            iconPosition: end
+        }
+        messages {
+            whenNoDataFound: No employees to display
+            noDataFoundIcon: fa-user
+        }
+
+        action action (
+            label: Salary
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 4
+                    items: {
+                        P4_EMPNO: &EMPNO.
+                    }
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-edit
+                cssClasses: t-Button--small
+            }
+            serverSideCondition {
+                type: item=value
+                item: PENDING_SAL_APPROVAL
+                value: N
+            }
+        )
+
+        action action-2 (
+            label: Job
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 7
+                    items: {
+                        P7_EMPNO: &EMPNO.
+                    }
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-edit
+                cssClasses: t-Button--small
+            }
+            serverSideCondition {
+                type: item=value
+                item: PENDING_JOB_APPROVAL
+                value: N
+            }
+        )
+
+        action action-3 (
+            label: Bank
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 28
+                    items: {
+                        P28_EMPNO: &EMPNO.
+                    }
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-building
+                cssClasses: t-Button--small
+            }
+            serverSideCondition {
+                type: item=value
+                item: PENDING_BANK_APPROVAL
+                value: N
+            }
+        )
+
+        action action-4 (
+            label: Appraisal
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 16
+                    items: {
+                        P16_EMPNO: &EMPNO.
+                    }
+                    clearCache: 16
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-server-user
+                cssClasses: t-Button--small
+            }
+            serverSideCondition {
+                type: item=value
+                item: IS_DIRECT_OR_INDIRECT_REP
+                value: Y
+            }
+        )
+
+        action action-5 (
+            label: Laptop
+            layout {
+                sequence: 50
+            }
+            behavior {
+                target: {
+                    page: 22
+                    items: {
+                        P22_EMPNO: &EMPNO.
+                    }
+                    clearCache: 22
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-laptop
+                cssClasses: t-Button--small
+            }
+            serverSideCondition {
+                type: item=value
+                item: PENDING_LAPTOP_DELIVERY
+                value: N
+            }
+        )
+
+    )
+
+    region form-region (
+        name: Form Region
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P8_ORDER_BY (
+        type: selectList
+        label {
+            label: Order By
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Name;ENAME,Job;JOB,Salary;SAL
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @employees
+            slot: sortOrder
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            cssClasses: u-pullRight
+            icon: fa-sort-amount-desc
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        advanced {
+            cssClasses: mnw160
+            warnOnUnsavedChanges: ignore
+        }
+        default {
+            type: static
+            staticValue: ENAME
+        }
+    )
+
+    pageItem P8_SHOW_ONLY_SUBORDINATES (
+        type: switch
+        label {
+            label: Show Only Subordinates?
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @employees
+            slot: sortOrder
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            cssClasses: u-align-self-center
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+    )
+
+    dynamicAction on-modal-dialog-closed (
+        name: On Modal Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: document
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @employees
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-subordinates-switched (
+        name: When Subordinates Switched
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P8_SHOW_ONLY_SUBORDINATES
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @employees
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

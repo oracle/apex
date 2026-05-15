@@ -1,0 +1,1754 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb1
+
+    entry customer-details (
+        name: Customer Details
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customers
+        }
+        link {
+            target: {
+                page: 2
+                clearCache: 7
+                action: resetPagination
+                request: HOME_CUSTOMER_DETAILS
+            }
+        }
+    )
+
+    entry customers (
+        name: Customers
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+)
+
+breadcrumb breadcrumb-2 (
+    name: Breadcrumb
+
+    entry access-control-configuration (
+        name: Access Control Configuration
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry access-control-list (
+        name: Access Control List
+        pageNumber: 57
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 57
+            }
+        }
+    )
+
+    entry acl-features (
+        name: ACL Features
+        pageNumber: 123
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 123
+            }
+        }
+    )
+
+    entry activities (
+        name: Activities
+        pageNumber: 55
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 55
+            }
+        }
+    )
+
+    entry activity (
+        name: Activity
+        pageNumber: 45
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+    )
+
+    entry activity-calendar (
+        name: Activity Calendar
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry activity-details (
+        name: Activity Details
+        pageNumber: 56
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @activities
+        }
+        link {
+            target: {
+                page: 56
+            }
+        }
+    )
+
+    entry activity-type (
+        name: Activity Type
+        pageNumber: 54
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @activity-types
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry activity-types (
+        name: Activity Types
+        pageNumber: 53
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry add-multiple-users (
+        name: Add Multiple Users
+        pageNumber: 73
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 73
+            }
+        }
+    )
+
+    entry add-multiple-users-2 (
+        name: Add Multiple Users
+        pageNumber: 74
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 74
+            }
+        }
+    )
+
+    entry administration (
+        name: " Administration"
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry all-customers (
+        name: All Customers
+        pageNumber: 93
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 93
+            }
+        }
+    )
+
+    entry application-activity (
+        name: Application Activity
+        pageNumber: 46
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+    )
+
+    entry application-activity-by-page (
+        name: Application Activity by Page
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry application-error-log (
+        name: Application Error Log
+        pageNumber: 175
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 175
+            }
+        }
+    )
+
+    entry application-settings (
+        name: Application Settings
+        pageNumber: 28
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 70
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry application-timeline (
+        name: Application Timeline
+        pageNumber: 124
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 124
+            }
+        }
+    )
+
+    entry build-options (
+        name: Build Options
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry categories (
+        name: Categories
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry category-details (
+        name: Category Details
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @categories
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry competitor-details (
+        name: Competitor Details
+        pageNumber: 109
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @competitors
+        }
+        link {
+            target: {
+                page: 109
+            }
+        }
+    )
+
+    entry competitors (
+        name: Competitors
+        pageNumber: 108
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 108
+            }
+        }
+    )
+
+    entry competitors-2 (
+        name: Competitors
+        pageNumber: 116
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 116
+            }
+        }
+    )
+
+    entry contact-details (
+        name: " Contact Details"
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @contacts
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry contact-type-details (
+        name: " Contact Type Details"
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @contact-types
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry contact-types (
+        name: Contact Types
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry contacts (
+        name: " Contacts"
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry countries (
+        name: Countries
+        pageNumber: 98
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 98
+            }
+        }
+    )
+
+    entry customer (
+        name: &CUSTOMER.
+        pageNumber: 50
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customers
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry customer-2 (
+        name: Customer
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry customer-activities (
+        name: Customer Activities
+        pageNumber: 149
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 149
+            }
+        }
+    )
+
+    entry customer-activity (
+        name: Customer Activity
+        pageNumber: 150
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-activities
+        }
+        link {
+            target: {
+                page: 150
+            }
+        }
+    )
+
+    entry customer-attachment (
+        name: Customer Attachment
+        pageNumber: 64
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-attachments
+        }
+        link {
+            target: {
+                page: 64
+            }
+        }
+    )
+
+    entry customer-attachments (
+        name: Customer Attachments
+        pageNumber: 52
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry customer-contact (
+        name: Customer Contact
+        pageNumber: 37
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-contacts
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry customer-contacts (
+        name: Customer Contacts
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry customer-issues (
+        name: Customer Issues
+        pageNumber: 131
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 131
+            }
+        }
+    )
+
+    entry customer-links (
+        name: Customer Links
+        pageNumber: 51
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry customer-product-use (
+        name: Customer Product Use
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @products-and-services
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry customer-products (
+        name: Customer Products
+        pageNumber: 67
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 67
+            }
+        }
+    )
+
+    entry customer-statuses (
+        name: Customer Statuses
+        pageNumber: 102
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+    )
+
+    entry customer-type-code (
+        name: Customer Type Code
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-types
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry customer-types (
+        name: Customer Types
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry customer-updates (
+        name: Customer Updates
+        pageNumber: 47
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 47
+            }
+        }
+    )
+
+    entry customer-usage-metrics (
+        name: Customer Usage Metrics
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry customer-use-cases (
+        name: Customer Use Cases
+        pageNumber: 104
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 104
+            }
+        }
+    )
+
+    entry customers (
+        name: Customers
+        pageNumber: 59
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 59
+            }
+        }
+    )
+
+    entry customers-by-category (
+        name: Customers by Category
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry dashboard (
+        name: " Dashboard"
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry data-loading (
+        name: Data Loading
+        pageNumber: 60
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @contacts
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+    )
+
+    entry data-loading-2 (
+        name: Data Loading
+        pageNumber: 61
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @contacts
+        }
+        link {
+            target: {
+                page: 61
+            }
+        }
+    )
+
+    entry data-loading-3 (
+        name: Data Loading
+        pageNumber: 62
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @contacts
+        }
+        link {
+            target: {
+                page: 62
+            }
+        }
+    )
+
+    entry data-loading-4 (
+        name: Data Loading
+        pageNumber: 63
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @contacts
+        }
+        link {
+            target: {
+                page: 63
+            }
+        }
+    )
+
+    entry email-log (
+        name: Email Log
+        pageNumber: 121
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 121
+            }
+        }
+    )
+
+    entry geographies (
+        name: Geographies
+        pageNumber: 85
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customers
+        }
+        link {
+            target: {
+                page: 85
+            }
+        }
+    )
+
+    entry geographies-2 (
+        name: Geographies
+        pageNumber: 48
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+    )
+
+    entry geography (
+        name: Geography
+        pageNumber: 49
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @geographies-2
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry implementation-partner-details (
+        name: Implementation Partner Details
+        pageNumber: 107
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @implementation-partners
+        }
+        link {
+            target: {
+                page: 107
+            }
+        }
+    )
+
+    entry implementation-partners (
+        name: Implementation Partners
+        pageNumber: 106
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 106
+            }
+        }
+    )
+
+    entry industries (
+        name: Industries
+        pageNumber: 27
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry industry (
+        name: Industry
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @industries
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry issue-statuses (
+        name: Issue Statuses
+        pageNumber: 132
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 132
+            }
+        }
+    )
+
+    entry issues (
+        name: Issues
+        pageNumber: 134
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 134
+            }
+        }
+    )
+
+    entry link (
+        name: Link
+        pageNumber: 66
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-links
+        }
+        link {
+            target: {
+                page: 66
+            }
+        }
+    )
+
+    entry maintain-update (
+        name: Maintain Update
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-updates
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 77
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 77
+            }
+        }
+    )
+
+    entry notification (
+        name: Notification
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @notifications
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry notifications (
+        name: Notifications
+        pageNumber: 34
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry p145-activity (
+        name: &P145_ACTIVITY.
+        pageNumber: 145
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @activities
+        }
+        link {
+            target: {
+                page: 145
+            }
+        }
+    )
+
+    entry page-privileges (
+        name: Page Privileges
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry partners (
+        name: Partners
+        pageNumber: 115
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 115
+            }
+        }
+    )
+
+    entry preferences (
+        name: Preferences
+        pageNumber: 65
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 65
+            }
+        }
+    )
+
+    entry product (
+        name: Product
+        pageNumber: 68
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-products
+        }
+        link {
+            target: {
+                page: 68
+            }
+        }
+    )
+
+    entry product-2 (
+        name: Product
+        pageNumber: 43
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @products-2
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry product-families (
+        name: Product Families
+        pageNumber: 112
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+    )
+
+    entry product-family-details (
+        name: Product Family Details
+        pageNumber: 113
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @product-families
+        }
+        link {
+            target: {
+                page: 113
+            }
+        }
+    )
+
+    entry products (
+        name: Products
+        pageNumber: 92
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 92
+            }
+        }
+    )
+
+    entry products-2 (
+        name: Products
+        pageNumber: 42
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry products-and-services (
+        name: Products and Services
+        pageNumber: 44
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 44
+            }
+        }
+    )
+
+    entry recent-updates (
+        name: Recent Updates
+        pageNumber: 29
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry reference-phase (
+        name: Reference Phase
+        pageNumber: 88
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference-phases
+        }
+        link {
+            target: {
+                page: 88
+            }
+        }
+    )
+
+    entry reference-phases (
+        name: Reference Phases
+        pageNumber: 87
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 87
+            }
+        }
+    )
+
+    entry reference-statuses (
+        name: Reference Statuses
+        pageNumber: 94
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 94
+            }
+        }
+    )
+
+    entry reference-type-details (
+        name: Reference Type Details
+        pageNumber: 79
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference-types
+        }
+        link {
+            target: {
+                page: 79
+            }
+        }
+    )
+
+    entry reference-types (
+        name: Reference Types
+        pageNumber: 78
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 78
+            }
+        }
+    )
+
+    entry referenceability (
+        name: Referenceability
+        pageNumber: 86
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customers
+        }
+        link {
+            target: {
+                page: 86
+            }
+        }
+    )
+
+    entry referenceability-2 (
+        name: Referenceability
+        pageNumber: 100
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @products
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry referenceability-report (
+        name: Referenceability Report
+        pageNumber: 91
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @referenceability
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+    )
+
+    entry referenceability-report-2 (
+        name: Referenceability Report
+        pageNumber: 122
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @referenceability-2
+        }
+        link {
+            target: {
+                page: 122
+            }
+        }
+    )
+
+    entry reports (
+        name: Reports
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry review-feedback (
+        name: Review Feedback
+        pageNumber: 119
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 119
+            }
+        }
+    )
+
+    entry sales-channel (
+        name: Sales Channel
+        pageNumber: 90
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 90
+            }
+        }
+    )
+
+    entry sales-channels (
+        name: Sales Channels
+        pageNumber: 89
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 89
+            }
+        }
+    )
+
+    entry status-details (
+        name: Status Details
+        pageNumber: 103
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-statuses
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry tags (
+        name: Tags
+        pageNumber: 40
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+    )
+
+    entry time-zone (
+        name: Time Zone
+        pageNumber: 76
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @preferences
+        }
+        link {
+            target: {
+                page: 76
+            }
+        }
+    )
+
+    entry top-users (
+        name: Top Users
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry updates (
+        name: Updates
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry upload-customers (
+        name: Upload Customers
+        pageNumber: 125
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 125
+            }
+        }
+    )
+
+    entry upload-customers-2 (
+        name: Upload Customers
+        pageNumber: 126
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 126
+            }
+        }
+    )
+
+    entry upload-customers-3 (
+        name: Upload Customers
+        pageNumber: 127
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 127
+            }
+        }
+    )
+
+    entry upload-customers-4 (
+        name: Upload Customers
+        pageNumber: 128
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 128
+            }
+        }
+    )
+
+    entry use-case-details (
+        name: Use Case Details
+        pageNumber: 105
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer-use-cases
+        }
+        link {
+            target: {
+                page: 105
+            }
+        }
+    )
+
+    entry user-details (
+        name: User Details
+        pageNumber: 58
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @access-control-list
+        }
+        link {
+            target: {
+                page: 58
+            }
+        }
+    )
+
+    entry username-format (
+        name: Username Format
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+    entry validate-customer (
+        name: Validate Customer
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customer
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry welcome-text (
+        name: Welcome Text
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+)
+

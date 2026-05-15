@@ -1,0 +1,473 @@
+page 88 (
+    name: Tags
+    alias: TAGS
+    title: &NOMENCLATURE_PROJECT. Tags
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region context (
+        name: Context
+        type: staticContent
+        layout {
+            sequence: 2
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region tag-buttons (
+        name: Tag Buttons
+        type: staticContent
+        layout {
+            sequence: 110
+            parentRegion: @tags
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region tags (
+        name: Tags
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                  with rws as (
+                  select tags str from sp_projects 
+                  where id = :P88_PROJECT_ID and tags is not null
+                )
+                  select action, trim(tag) tag from (
+                  select null action,
+                        regexp_substr (
+                           str,
+                           '[^,]+',
+                           1,
+                           level
+                         ) tag
+                  from   rws
+                  connect by level <= 
+                    length ( str ) - length ( replace ( str, ',' ) ) + 1) x
+                  order by tag
+                ```
+            pageItemsToSubmit: P88_PROJECT_ID
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--noBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        heading {
+            type: none
+        }
+
+        column ACTION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression: <button type="button" title="Remove Tag: #TAG#" aria-label="Remove Tag: #TAG#" class="t-Button t-Button--noLabel t-Button--icon t-Button--small t-Button--danger t-Button--simple js-remove-tag" data-tag="#TAG#"><span aria-hidden="true" class="t-Icon fa fa-trash-o"></span></button>
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column TAG (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P88_ADD_TAG (
+        type: textField
+        label {
+            label: Add Tags
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @tags
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        quickPicks {
+            type: static
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    pageItem P88_PROJECT (
+        type: displayOnly
+        label {
+            label: &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @context
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P88_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @tags
+            slot: regionBody
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P88_TAG_TO_REMOVE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 40
+            region: @tags
+            slot: regionBody
+        }
+    )
+
+    button add-tag (
+        buttonName: add_tag
+        label: Add Tags
+        layout {
+            sequence: 30
+            region: @tags
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapTop
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button view-project (
+        buttonName: View_Project
+        label: View Project
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 36
+                items: {
+                    P36_ID: &P88_PROJECT_ID.
+                }
+                clearCache: 36
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction add-tag (
+        name: Add Tag
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @add-tag
+        }
+
+        action clear-tag (
+            name: clear tag
+            action: setValue
+            affectedElements {
+                selectionType: items
+                items: P88_ADD_TAG
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    sp_util.add_project_tag (
+                        p_project_id => :P88_PROJECT_ID,
+                        p_tag => :P88_ADD_TAG);
+                    :P88_ADD_TAG := null;
+                    ```
+                itemsToSubmit: [
+                    P88_PROJECT_ID
+                    P88_ADD_TAG
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action refresh (
+            name: refresh
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tags
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction close (
+        name: close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction remove-tag (
+        name: Remove Tag
+        execution {
+            sequence: 30
+            eventScope: dynamic
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: .js-remove-tag
+        }
+
+        action clear-tag (
+            name: clear tag
+            action: setValue
+            affectedElements {
+                selectionType: items
+                items: P88_TAG_TO_REMOVE
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    sp_util.remove_project_tag (
+                        p_project_id => :P88_PROJECT_ID,
+                        p_tag => :P88_TAG_TO_REMOVE );
+                    :P88_TAG_TO_REMOVE := null;
+                    ```
+                itemsToSubmit: [
+                    P88_PROJECT_ID
+                    P88_TAG_TO_REMOVE
+                ]
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: $(this.triggeringElement).data('tag');
+            }
+            affectedElements {
+                selectionType: items
+                items: P88_TAG_TO_REMOVE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action refresh (
+            name: refresh
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tags
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p88-project (
+        itemName: P88_PROJECT
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project
+                from SP_PROJECTS p
+                where p.id = :P88_PROJECT_ID
+                ```
+        }
+    )
+
+)
+

@@ -1,0 +1,639 @@
+page 121 (
+    name: Request Approval
+    alias: REQUEST-APPROVAL
+    title: Request Approval
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @approvals
+    }
+
+    region approval-chain (
+        name: Approval Chain
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select rownum, reviewer
+                  from
+                  (
+                select case when c.alternate_team_member_id is not null and   
+                                 (c.alternate_start_date <= sysdate or c.alternate_start_date is null) and 
+                                 (c.alternate_end_date+1 > sysdate or c.alternate_end_date is null)
+                            then 'Alternate - '||
+                                 (select last_name||', '||first_name||' ('||lower(email)||')'
+                                    from sp_team_members
+                                   where id = c.alternate_team_member_id)
+                            else tm.last_name||', '||tm.first_name||' ('||lower(tm.email)||')' 
+                            end reviewer
+                  from sp_initiative_approvals ia,
+                       sp_initiative_approval_chain c,
+                       sp_team_members tm,
+                       sp_projects p
+                 where ia.approval_type_id = :P121_APPROVAL_TYPE_ID
+                   and ia.initiative_id = p.initiative_id
+                   and p.id = :P121_PROJECT_ID
+                   and ia.id = c.initiative_approval_id
+                   and c.team_member_id = tm.id
+                 order by c.approval_seq
+                )
+                ```
+            pageItemsToSubmit: P121_APPROVAL_TYPE_ID
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+        }
+        heading {
+            type: none
+        }
+
+        column REVIEWER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Reviewer
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROWNUM (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Review Order
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region button-container (
+        name: Button Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region request-approval (
+        name: Request Approval
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P121_APPROVAL_TYPE (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @request-approval
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_APPROVAL_TYPE_ID (
+        type: radioGroup
+        label {
+            label: Approval Type
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.approval_type d, t.id r
+                  from sp_approval_types t,
+                       sp_initiative_approvals i,
+                       sp_projects p
+                 where t.id = i.approval_type_id
+                   and i.initiative_id = p.initiative_id
+                   and p.id = :P121_PROJECT_ID
+                   and t.id not in (select approval_type_id    
+                                      from sp_project_approvals
+                                     where project_id = :P121_PROJECT_ID
+                                       and status in ('PENDING','APPROVED'))
+                 order by t.display_seq, t.approval_type
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @request-approval
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                    select t.id r
+                      from sp_approval_types t,
+                           sp_initiative_approvals i,
+                           sp_projects p
+                     where t.id = i.approval_type_id
+                       and i.initiative_id = p.initiative_id
+                       and p.id = :P121_PROJECT_ID
+                       and t.id not in (select approval_type_id    
+                                          from sp_project_approvals
+                                         where project_id = :P121_PROJECT_ID
+                                           and status in ('PENDING','APPROVED'))
+                     order by t.display_seq, t.approval_type
+                ) loop
+                    return c1.r;
+                end loop;
+                ```
+        }
+    )
+
+    pageItem P121_APP_NAME (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @request-approval
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_JUSTIFICATION (
+        type: textarea
+        label {
+            label: Justification
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @request-approval
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+    )
+
+    pageItem P121_PROJECT (
+        type: displayOnly
+        label {
+            label: &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @request-approval
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_PROJECT_APPROVAL_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @request-approval
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P121_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @request-approval
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P121_PROJECT_URL (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @request-approval
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button request-approval (
+        buttonName: request-approval
+        label: Request Approval
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction change-approval-type (
+        name: change approval type
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P121_APPROVAL_TYPE_ID
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @approval-chain
+            }
+            execution {
+                sequence: 20
+            }
+            clientSideCondition {
+                type: itemIsNull
+                item: P121_APPROVAL_TYPE_ID
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @approval-chain
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: itemIsNotNull
+                item: P121_APPROVAL_TYPE_ID
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @approval-chain
+            }
+            execution {
+                sequence: 10
+            }
+            clientSideCondition {
+                type: itemIsNotNull
+                item: P121_APPROVAL_TYPE_ID
+            }
+        )
+
+    )
+
+    dynamicAction close-dialog (
+        name: close dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p121-app-name (
+        itemName: P121_APP_NAME
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody: return sp_util.get_nomenclature('STRATEGIC_PLANNER');
+        }
+    )
+
+    computation p121-approval-type (
+        itemName: P121_APPROVAL_TYPE
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select approval_type
+                  from sp_approval_types
+                 where id = :P121_APPROVAL_TYPE_ID
+                ```
+        }
+    )
+
+    computation p121-project (
+        itemName: P121_PROJECT
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project
+                from sp_projects
+                where id = :P121_PROJECT_ID
+                ```
+        }
+    )
+
+    computation p121-project-url (
+        itemName: P121_PROJECT_URL
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select APEX_UTIL.HOST_URL('SCRIPT') || 'project-details?fi=' || friendly_identifier || '&pn=' || project_url_name
+                  from sp_projects
+                 where id = :P121_PROJECT_ID
+                ```
+        }
+    )
+
+    process create-project-approval (
+        name: Create Project Approval
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_approvals.submit_for_approval (
+                    p_project_id          => :P121_PROJECT_ID,
+                    p_approval_type_id    => :P121_APPROVAL_TYPE_ID,
+                    p_team_member_id      => :APP_USER_ID,
+                    p_justification       => :P121_JUSTIFICATION,
+                    p_project_approval_id => :P121_PROJECT_APPROVAL_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 10528790472408238413
+        }
+        serverSideCondition {
+            whenButtonPressed: @request-approval
+        }
+    )
+
+    process log (
+        name: log
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_log.log_interaction(
+                    p_project_id => :P121_PROJECT_ID);
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeRegions
+        }
+        advanced {
+            executionMappingIdentifier: 9152723251321113199
+        }
+    )
+
+    process start-workflow (
+        name: Start Workflow
+        type: workflow
+        workflow {
+            definition: @PROJECT-REVIEW
+            detailsPkItem: P121_PROJECT_APPROVAL_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Request Submitted.
+        }
+        advanced {
+            executionMappingIdentifier: 8795555917731013605
+        }
+        serverSideCondition {
+            whenButtonPressed: @request-approval
+        }
+
+        parameter (
+            name: @P_SUBMITTER_TM_ID
+            value {
+                item: APP_USER_ID
+            }
+        )
+
+        parameter (
+            name: @P_PROJECT_ID
+            value {
+                item: P121_PROJECT_ID
+            }
+        )
+
+        parameter (
+            name: @P_NOMENCLATURE_PROJECT
+            value {
+                item: NOMENCLATURE_PROJECT
+            }
+        )
+
+        parameter (
+            name: @P_PROJECT_LINK
+            value {
+                item: P121_PROJECT_URL
+            }
+        )
+
+        parameter (
+            name: @P_PROJECT_NAME
+            value {
+                item: P121_PROJECT
+            }
+        )
+
+        parameter (
+            name: @P_APP_NAME
+            value {
+                item: P121_APP_NAME
+            }
+        )
+
+        parameter (
+            name: @P_APPROVAL_TYPE
+            value {
+                item: P121_APPROVAL_TYPE
+            }
+        )
+
+        parameter (
+            name: @P_PROJECT_APPROVAL_ID
+            value {
+                item: P121_PROJECT_APPROVAL_ID
+            }
+        )
+
+        parameter (
+            name: @P_APP_ID
+            value {
+                item: APP_ID
+            }
+        )
+
+    )
+
+    branch (
+        name: Go To Page 3
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 3
+                items: {
+                    P3_PROJECT_ID: &P121_PROJECT_ID.
+                }
+                clearCache: 3
+            }
+        }
+    )
+
+)
+

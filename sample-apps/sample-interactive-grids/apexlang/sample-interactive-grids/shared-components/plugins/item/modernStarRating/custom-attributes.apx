@@ -1,0 +1,278 @@
+customAttribute attribute_01 (
+    apexlangName: clearTooltip
+    attribute: 1
+    name: Clear Tooltip
+    scope: app
+    appearance {
+        sequence: 10
+    }
+    builder {
+        common: false
+        showInWizard: false
+        translatable: true
+        displayWidth: 20
+    }
+    default {
+        value: Clear Rating
+    }
+    help {
+        helpText: Text which should be displayed for the tooltip of the "Clear" icon of the star rating widget. If not specified, the default text "Clear Rating" will be used.
+    }
+)
+
+customAttribute attribute_01 (
+    apexlangName: numberOfStars
+    attribute: 1
+    name: Number of Stars
+    validation {
+        required: true
+        maxLength: 2
+    }
+    appearance {
+        sequence: 10
+    }
+    builder {
+        displayWidth: 2
+    }
+    default {
+        value: 9
+    }
+    supports {
+        components: [
+            pageItems
+            interactiveGridColumns
+        ]
+    }
+    help {
+        helpText: Specify the maximum number of stars.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: activeStarColor
+    attribute: 2
+    name: Active Star Color
+    scope: app
+    type: color
+    appearance {
+        sequence: 20
+    }
+    builder {
+        showInWizard: false
+    }
+    default {
+        value: red
+    }
+    help {
+        helpText: Choose the default color for active stars.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: icon
+    attribute: 2
+    name: Icon
+    type: icon
+    appearance {
+        sequence: 30
+    }
+    builder {
+        showInWizard: false
+    }
+    default {
+        value: fa-star
+    }
+    supports {
+        components: [
+            pageItems
+            interactiveGridColumns
+        ]
+    }
+    dependingOn {
+        attribute: @attribute_03/component
+        conditionType: =
+        value: N
+    }
+    help {
+        helpText: Specify the icon to use.
+    }
+    examples {
+        examples:
+            ```
+            <pre>
+            fa-star
+            fa-database
+            fa-apex
+            </pre>
+            ```
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: inactiveStarColor
+    attribute: 3
+    name: Inactive Star Color
+    scope: app
+    type: color
+    appearance {
+        sequence: 30
+    }
+    builder {
+        showInWizard: false
+    }
+    default {
+        value: lightgray
+    }
+    help {
+        helpText: Choose the default color for inactive stars.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: useComponentDefaults
+    attribute: 3
+    name: Use Component Defaults
+    type: yesNo
+    appearance {
+        sequence: 20
+    }
+    builder {
+        showInWizard: false
+    }
+    default {
+        value: true
+    }
+    supports {
+        components: [
+            pageItems
+            interactiveGridColumns
+        ]
+    }
+    help {
+        helpText: Choose whether to use component defaults or not.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: defaultIcon
+    attribute: 4
+    name: Default icon
+    scope: app
+    type: icon
+    appearance {
+        sequence: 40
+    }
+    builder {
+        showInWizard: false
+    }
+    default {
+        value: fa-star
+    }
+    help {
+        helpText: Choose the default icon to use.
+    }
+    examples {
+        examples:
+            ```
+            <pre>
+            fa-star
+            fa-database
+            fa-apex
+            </pre>
+            ```
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: activeStarColor
+    attribute: 4
+    name: Active Star Color
+    type: color
+    appearance {
+        sequence: 40
+    }
+    builder {
+        showInWizard: false
+    }
+    default {
+        value: red
+    }
+    supports {
+        components: [
+            pageItems
+            interactiveGridColumns
+        ]
+    }
+    dependingOn {
+        attribute: @attribute_03/component
+        conditionType: =
+        value: N
+    }
+    help {
+        helpText: Choose the color for active stars.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: inactiveStarColor
+    attribute: 5
+    name: Inactive Star Color
+    type: color
+    appearance {
+        sequence: 50
+    }
+    builder {
+        showInWizard: false
+    }
+    default {
+        value: lightgray
+    }
+    supports {
+        components: [
+            pageItems
+            interactiveGridColumns
+        ]
+    }
+    dependingOn {
+        attribute: @attribute_03/component
+        conditionType: =
+        value: N
+    }
+    help {
+        helpText: Choose the color for inactive stars.
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: tooltipTemplate
+    attribute: 6
+    name: Tooltip Template
+    validation {
+        maxLength: 50
+    }
+    appearance {
+        sequence: 60
+    }
+    builder {
+        common: false
+        showInWizard: false
+        translatable: true
+        displayWidth: 30
+    }
+    default {
+        value: Rating: #VALUE#
+    }
+    supports {
+        components: [
+            pageItems
+            interactiveGridColumns
+        ]
+    }
+    help {
+        helpText: Specify the template for the tooltip. The #VALUE# substitution is being replaces by the current rating value.
+    }
+    examples {
+        examples: Rating: #VALUE# stars.
+    }
+)
+

@@ -1,0 +1,594 @@
+customAttribute attribute_01 (
+    apexlangName: iconType
+    attribute: 1
+    name: Icon Type
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 100
+    }
+    default {
+        value: INITIALS
+    }
+    dependingOn {
+        attribute: @attribute_15/component
+        conditionType: =
+        value: ICON
+    }
+    help {
+        helpText: Select the icon type to be displayed.
+    }
+
+    entry cssIcon (
+        sequence: 20
+        display: CSS Icon
+        return: ICON
+        help {
+            helpText: Displays an icon with the given CSS class.
+        }
+    )
+
+    entry image (
+        sequence: 10
+        display: Image
+        return: IMAGE
+        help {
+            helpText: Displays an image HTML element on the left side of the chart.
+        }
+    )
+
+    entry initials (
+        sequence: 30
+        display: Initials
+        return: INITIALS
+        help {
+            helpText: Displays a colored circle containing the first two initials for each entry.
+        }
+    )
+
+)
+
+customAttribute attribute_02 (
+    apexlangName: labelColumn
+    attribute: 2
+    name: Label Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the labels for the chart.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: labelLinkTarget
+    attribute: 3
+    name: Label Link Target
+    type: linkToTargetPageUrl
+    appearance {
+        sequence: 30
+    }
+    builder {
+        includeColumnsInItemsPicker: true
+    }
+    help {
+        helpText: <p>Enter a target page to be called when the user clicks a label.</p>
+    }
+    examples {
+        examples:
+            ```
+            <p>Example 1: URL to navigate to page 10 and set P10_EMPNO to the EMPNO value of the clicked entry.
+            <pre>f?p=&amp;APP_ID.:10:&amp;APP_SESSION.::&amp;DEBUG.:RP,10:P10_EMPNO:&amp;EMPNO.</pre>
+            </p>
+            <p>Example 2: Display the EMPNO value of the clicked entry in a JavaScript alert
+            <pre>javascript:alert('current empno: &amp;EMPNO.');</pre>
+            </p>
+            ```
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: valueColumn
+    attribute: 4
+    name: Value Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText:
+            ```
+            <p>Select the column from the region SQL Query that holds the values for the chart.</p>
+            <p>Note: This value is not displayed on the chart items when the chart has been configured to display the bar width percentage instead.</p>
+            ```
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: valueLinkTarget
+    attribute: 5
+    name: Value Link Target
+    type: linkToTargetPageUrl
+    appearance {
+        sequence: 40
+    }
+    builder {
+        includeColumnsInItemsPicker: true
+    }
+    help {
+        helpText: <p>Enter a target page to be called when the user clicks a value.</p>
+    }
+    examples {
+        examples:
+            ```
+            <p>Example 1: URL to navigate to page 10 and set P10_EMPNO to the EMPNO value of the clicked entry.
+            <pre>f?p=&amp;APP_ID.:10:&amp;APP_SESSION.::&amp;DEBUG.:RP,10:P10_EMPNO:&amp;EMPNO.</pre>
+            </p>
+            <p>Example 2: Display the EMPNO value of the clicked entry in a JavaScript alert
+            <pre>javascript:alert('current empno: &amp;EMPNO.');</pre>
+            </p>
+            ```
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: cssClassNames
+    attribute: 6
+    name: CSS Class Names
+    appearance {
+        sequence: 190
+    }
+    help {
+        helpText: <p>Enter CSS class names to be added to the root element of the chart separated with spaces.</p>
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: imageUrl
+    attribute: 7
+    name: Image URL
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 120
+    }
+    dependingOn {
+        attribute: @attribute_01/component
+        conditionType: =
+        value: IMAGE
+    }
+    help {
+        helpText: <p>Enter the Image URL to be displayed as the chart icon. This attribute supports Substitution strings, such as query columns, <strong>&amp;IMAGE_URL.</strong>. Notice that substitutions with no value will be replaced with an empty string.</p>
+    }
+)
+
+customAttribute attribute_08 (
+    apexlangName: iconCssClassName
+    attribute: 8
+    name: Icon CSS Class Name
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 110
+    }
+    dependingOn {
+        attribute: @attribute_01/component
+        conditionType: =
+        value: ICON
+    }
+    help {
+        helpText: <p>Enter the Icon CSS Class Name.</p>
+    }
+)
+
+customAttribute attribute_09 (
+    apexlangName: initialsColumn
+    attribute: 9
+    name: Initials Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 130
+    }
+    dependingOn {
+        attribute: @attribute_01/component
+        conditionType: =
+        value: INITIALS
+    }
+    help {
+        helpText:
+            ```
+            <p>Select the column from the region SQL Query that holds the initials to be displayed as an icon.</p>
+            <p>Note: If the columns has more than two letters than the icon will includes three ellipses (...). Therefore, it is not recommended to use the label column.</p>
+            ```
+    }
+)
+
+customAttribute attribute_10 (
+    apexlangName: customColors
+    attribute: 10
+    name: Custom Colors
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 170
+    }
+    dependingOn {
+        attribute: @attribute_17/component
+        conditionType: inList
+        list: CUSTOM
+    }
+    help {
+        helpText: <p>Enter a list of CSS supported colors separated by colons.</p>
+    }
+)
+
+customAttribute attribute_11 (
+    apexlangName: valueDisplay
+    attribute: 11
+    name: Value Display
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 50
+    }
+    default {
+        value: VALUE
+    }
+    help {
+        helpText: <p>Select whether to display  the item value or the percentage as the right most text in the chart.</p>
+    }
+
+    entry percentage (
+        sequence: 20
+        display: Percentage
+        return: BAR_WIDTH
+    )
+
+    entry value (
+        sequence: 10
+        display: Value
+        return: VALUE
+    )
+
+)
+
+customAttribute attribute_12 (
+    apexlangName: valuePrefix
+    attribute: 12
+    name: Value Prefix
+    appearance {
+        sequence: 60
+    }
+    builder {
+        translatable: true
+    }
+    dependingOn {
+        attribute: @attribute_11/component
+        conditionType: inList
+        list: VALUE
+    }
+    help {
+        helpText: <p>Enter the text that prefixes the value.<p>
+    }
+)
+
+customAttribute attribute_13 (
+    apexlangName: valueSuffix
+    attribute: 13
+    name: Value Suffix
+    appearance {
+        sequence: 70
+    }
+    builder {
+        translatable: true
+    }
+    dependingOn {
+        attribute: @attribute_11/component
+        conditionType: inList
+        list: VALUE
+    }
+    help {
+        helpText: Enter the text that is appended to the value.
+    }
+)
+
+customAttribute attribute_14 (
+    apexlangName: maximumRows
+    attribute: 14
+    name: Maximum Rows
+    type: integer
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 180
+    }
+    default {
+        value: 5
+    }
+    help {
+        helpText:
+            ```
+            <p>Enter the maximum number of items to be displayed inside the region.</p>
+            <p>Note: Bar width calculations are based on the number of items displayed.</p>
+            ```
+    }
+)
+
+customAttribute attribute_15 (
+    apexlangName: displayType
+    attribute: 15
+    name: Display Type
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 90
+    }
+    default {
+        value: TEXT
+    }
+    help {
+        helpText: <p>Select how to display the chart information.</p>
+    }
+
+    entry iconChart (
+        sequence: 10
+        display: Icon Chart
+        return: ICON
+        help {
+            helpText: Displays bars with the label and value above and add an icon on the left.
+        }
+    )
+
+    entry textChart (
+        sequence: 20
+        display: Text Chart
+        return: TEXT
+        help {
+            helpText: Displays bars with the label and value either above or inline with the bar.
+        }
+    )
+
+)
+
+customAttribute attribute_16 (
+    apexlangName: barWidthCalculation
+    attribute: 16
+    name: Bar Width Calculation
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 80
+    }
+    default {
+        value: ABSOLUTE
+    }
+    help {
+        helpText: <p>Select how to calculate the width of the bars in the chart.</p>
+    }
+
+    entry absolute (
+        sequence: 10
+        display: Absolute
+        return: ABSOLUTE
+        help {
+            helpText: 100% bar width is represented by the maximum value displayed.
+        }
+    )
+
+    entry relative (
+        sequence: 20
+        display: Relative
+        return: RELATIVE
+        help {
+            helpText: 100% bar width is represented by the sum of the values of all the displayed chart items.
+        }
+    )
+
+)
+
+customAttribute attribute_17 (
+    apexlangName: colorScheme
+    attribute: 17
+    name: Color Scheme
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 150
+    }
+    default {
+        value: MODERN
+    }
+    help {
+        helpText: <p>Select the color scheme used to render the chart.</p>
+    }
+
+    entry custom (
+        sequence: 50
+        display: Custom
+        return: CUSTOM
+    )
+
+    entry default (
+        sequence: 5
+        display: Default
+        return: DEFAULT
+    )
+
+    entry metro (
+        sequence: 40
+        display: Metro
+        return: METRO
+    )
+
+    entry modern2 (
+        sequence: 20
+        display: Modern 2
+        return: MODERN_2
+    )
+
+    entry solar (
+        sequence: 30
+        display: Solar
+        return: SOLAR
+    )
+
+    entry sqlQueryColumn (
+        sequence: 60
+        display: SQL Query Column
+        return: COLUMN
+    )
+
+    entry themeColors (
+        sequence: 10
+        display: Theme Colors
+        return: MODERN
+    )
+
+)
+
+customAttribute attribute_18 (
+    apexlangName: textPosition
+    attribute: 18
+    name: Text Position
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 140
+    }
+    default {
+        value: AROUND
+    }
+    dependingOn {
+        attribute: @attribute_15/component
+        conditionType: inList
+        list: TEXT
+    }
+    help {
+        helpText: <p>Select where to display the text within the chart.</p>
+    }
+
+    entry above (
+        sequence: 10
+        display: Above
+        return: ABOVE
+        help {
+            helpText: The label and value are displayed above the bar, to the left and right sides of the chart.
+        }
+    )
+
+    entry inline (
+        sequence: 20
+        display: Inline
+        return: AROUND
+        help {
+            helpText: The label, bar, and value are all displayed in a single line.
+        }
+    )
+
+)
+
+customAttribute attribute_19 (
+    apexlangName: colorsColumn
+    attribute: 19
+    name: Colors Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 160
+    }
+    dependingOn {
+        attribute: @attribute_17/component
+        conditionType: inList
+        list: COLUMN
+    }
+    help {
+        helpText:
+            ```
+            <p>Select the column from the region SQL Query that holds the color codes for the chart. The color can be set using hex values or as the name of the color.</p>
+            <p>Note: If no column is entered then the color will automatically be calculated.</p>
+            ```
+    }
+    examples {
+        examples:
+            ```
+            <dl>
+              <dt>Hexadecimal (hex) notation</dt><dd><pre>#FF3377</pre>;</dd>
+              <dt>HTML colors</dt><dd><pre>blue</pre>.</dd>
+            </dl>
+            ```
+    }
+)
+
+customAttribute attribute_20 (
+    apexlangName: messageWhenNoDataFound
+    attribute: 20
+    name: Message When No Data Found
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 200
+    }
+    builder {
+        translatable: true
+    }
+    default {
+        value: No data found.
+    }
+    help {
+        helpText: <p>Enter the message to be displayed when no data is found.</p>
+    }
+)
+
+customAttribute attribute_21 (
+    apexlangName: formatMask
+    attribute: 21
+    name: Format Mask
+    appearance {
+        sequence: 25
+    }
+    builder {
+        showInWizard: false
+        translatable: true
+    }
+    dependingOn {
+        attribute: @attribute_11/component
+        conditionType: =
+        value: VALUE
+    }
+    help {
+        helpText: Enter a numerical format mask to apply to the value column.  You can learn more about format models here: https://docs.oracle.com/cd/B28359_01/server.111/b28286/sql_elements004.htm
+    }
+    examples {
+        examples: 999G999G999G999G999G990
+    }
+)
+

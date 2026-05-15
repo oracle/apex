@@ -1,0 +1,485 @@
+page 10790 (
+    name: Team Member Notifications
+    alias: TEAM-MEMBER-NOTIFICATIONS
+    title: Team Member Notifications
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region team-member-notifications (
+        name: Team Member Notifications
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       TEAM_MEMBER_ID,
+                       (select first_name||' '||last_name
+                          from sp_team_members
+                         where id = n.team_member_id) team_member,
+                       length(EMAIL_CONTENTS) view_email,
+                       PROJECT_ID,
+                       (select project
+                          from sp_projects
+                         where id = n.project_id) project,
+                       DISMISSED_YN,
+                       CREATED,
+                       CREATED_BY,
+                       UPDATED,
+                       UPDATED_BY,
+                       NOTIFICATION_PREF,
+                       TITLE,
+                       RELEASE_ID,
+                       INITIATIVE_ID,
+                       TASK_ID,
+                       NOTIFICATION_TYPE
+                  from SP_TEAM_MEMBER_NOTIFICATIONS n
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 18062404262974832046
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column DISMISSED_YN (
+            type: plainText
+            heading {
+                heading: "Dismissed "
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column INITIATIVE_ID (
+            type: plainText
+            heading {
+                heading: Initiative ID
+                alignment: end
+            }
+            layout {
+                sequence: 55
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column NOTIFICATION_PREF (
+            type: plainText
+            heading {
+                heading: Notification Pref
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column NOTIFICATION_TYPE (
+            type: plainText
+            heading {
+                heading: Notification Type
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column PROJECT (
+            type: plainText
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 85
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column PROJECT_ID (
+            type: plainText
+            heading {
+                heading: Project ID
+                alignment: end
+            }
+            layout {
+                sequence: 35
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column RELEASE_ID (
+            type: plainText
+            heading {
+                heading: Release ID
+                alignment: end
+            }
+            layout {
+                sequence: 45
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column TASK_ID (
+            type: plainText
+            heading {
+                heading: Task Id
+                alignment: end
+            }
+            layout {
+                sequence: 65
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column TEAM_MEMBER (
+            type: plainText
+            heading {
+                heading: Team Member
+            }
+            layout {
+                sequence: 75
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            type: plainText
+            heading {
+                heading: Team Member ID
+                alignment: end
+            }
+            layout {
+                sequence: 25
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column TITLE (
+            type: plainText
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column VIEW_EMAIL (
+            type: link
+            heading {
+                heading: Email Length
+                alignment: end
+            }
+            layout {
+                sequence: 95
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            link {
+                target: {
+                    page: 10791
+                    items: {
+                        P10791_ID: #ID#
+                    }
+                    clearCache: 10791
+                }
+                linkText: #VIEW_EMAIL#
+                linkAttributes: title="View Email"
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Team Member Notifications
+        }
+
+        savedReport 180625607 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DISMISSED_YN (
+                sequence: 7
+            )
+
+            displayColumn NOTIFICATION_PREF (
+                sequence: 2
+            )
+
+            displayColumn NOTIFICATION_TYPE (
+                sequence: 3
+            )
+
+            displayColumn PROJECT (
+                sequence: 5
+            )
+
+            displayColumn TEAM_MEMBER (
+                sequence: 1
+            )
+
+            displayColumn TITLE (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 8
+            )
+
+            displayColumn VIEW_EMAIL (
+                sequence: 6
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,1003 @@
+list administration (
+    name: Administration
+
+    entry application-theme-style (
+        label: Application Theme Style
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry reset-sample-data-tables (
+        label: Reset Sample Data Tables
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry set-ai-provider (
+        label: Set AI Provider
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+)
+
+list ai-generated-data-progress (
+    name: AI Generated Data Progress
+
+    entry confirmation (
+        label: Confirmation
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry enter-prompt (
+        label: Enter Prompt
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry generate-vector-embeddings (
+        label: Generate Vector Embeddings
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry preview-and-upload-data (
+        label: Preview and Upload Data
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+)
+
+list custom-vector-search (
+    name: Custom Vector Search
+
+    entry basic-vector-search (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: "Search data using vectors based on the first 10 columns of your uploaded data. "
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null
+        }
+    )
+
+    entry prepare-data (
+        label: Prepare Data
+        icon {
+            imageIconCssClasses: fa-file-csv-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: Upload your custom data to perform vector search on.
+        }
+    )
+
+    entry vector-and-oracle-text (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Compare</strong> vector based search with traditional Oracle Text search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+)
+
+list home-page-list (
+    name: Home Page List
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+        userDefinedAttributes {
+            1: Configure the AI provider, reset sample data, or change the application appearance.
+        }
+    )
+
+    entry custom-data (
+        label: Custom Data
+        icon {
+            imageIconCssClasses: fa-database-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        userDefinedAttributes {
+            1: Experiment with vector search in APEX by uploading your own custom data.
+        }
+    )
+
+    entry movie-data (
+        label: Movie Data
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Explore vector search concepts with guided examples based on movies data.
+        }
+    )
+
+)
+
+list movie-vector-search (
+    name: Movie Vector Search
+
+    entry basic-vector-search (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Search movie data using vector search based on the TITLE, MOVIEDESCRIPTION, and ACTORS fields.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry mixed-languages (
+        label: Mixed Languages
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+        userDefinedAttributes {
+            1: Apply vector search to find relevant content across different languages, <strong>bridging language barriers</strong> in your data.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry movie-recommendation (
+        label: Movie Recommendation
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+        userDefinedAttributes {
+            1: Use vector search to recommend movies <strong>based on </strong>their<strong> vector similarity</strong>.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry prepare-data (
+        label: Prepare Data
+        icon {
+            imageIconCssClasses: fa-file-code-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Use AI to generate real movie data to perform vector search on.
+        }
+    )
+
+    entry vector-and-oracle-text (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Compare</strong> vector based search with traditional Oracle Text search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 20
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 150
+        }
+        isCurrent {
+            type: pages
+            pages: 50
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry application-theme-style (
+        label: Application Theme Style
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 170
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry basic-vector-search (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-number-2-o
+        }
+        layout {
+            sequence: 200
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 15
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry basic-vector-search-2 (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-number-2-o
+        }
+        layout {
+            sequence: 270
+            parentEntry: @custom-data
+        }
+        isCurrent {
+            type: pages
+            pages: 31
+        }
+        link {
+            target: {
+                page: 31
+                clearCache: 31
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null
+        }
+    )
+
+    entry custom-data (
+        label: Custom Data
+        icon {
+            imageIconCssClasses: fa-database-user
+        }
+        layout {
+            sequence: 12
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry mixed-languages (
+        label: Mixed Languages
+        icon {
+            imageIconCssClasses: fa-number-6-o
+        }
+        layout {
+            sequence: 310
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 42
+        }
+        link {
+            target: {
+                page: 42
+                clearCache: 42
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry movie-data (
+        label: Movie Data
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 11
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry movie-recommendations (
+        label: Movie Recommendations
+        icon {
+            imageIconCssClasses: fa-number-5-o
+        }
+        layout {
+            sequence: 300
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 41
+        }
+        link {
+            target: {
+                page: 41
+                clearCache: 41
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry prepare-data (
+        label: Prepare Data
+        icon {
+            imageIconCssClasses: fa-number-1-o
+        }
+        layout {
+            sequence: 13
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+                clearCache: 11
+            }
+        }
+    )
+
+    entry prepare-data-2 (
+        label: Prepare Data
+        icon {
+            imageIconCssClasses: fa-number-1-o
+        }
+        layout {
+            sequence: 250
+            parentEntry: @custom-data
+        }
+        isCurrent {
+            type: pages
+            pages: 25
+        }
+        link {
+            target: {
+                page: 25
+                clearCache: [
+                    25
+                    26
+                    27
+                ]
+            }
+        }
+    )
+
+    entry reset-sample-data-tables (
+        label: Reset Sample Data Tables
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 160
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry set-ai-provider (
+        label: Set AI Provider
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 150
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry vector-and-oracle-text (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-number-4-o
+        }
+        layout {
+            sequence: 220
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+                clearCache: 17
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+    entry vector-and-oracle-text-2 (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-number-4-o
+        }
+        layout {
+            sequence: 290
+            parentEntry: @custom-data
+        }
+        isCurrent {
+            type: pages
+            pages: 33
+        }
+        link {
+            target: {
+                page: 33
+                clearCache: 33
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-number-3-o
+        }
+        layout {
+            sequence: 210
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 16
+        }
+        link {
+            target: {
+                page: 16
+                clearCache: 16
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text-2 (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-number-3-o
+        }
+        layout {
+            sequence: 280
+            parentEntry: @custom-data
+        }
+        isCurrent {
+            type: pages
+            pages: 32
+        }
+        link {
+            target: {
+                page: 32
+                clearCache: 32
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+)
+
+list upload-data-progress (
+    name: Upload Data Progress
+
+    entry confirmation (
+        label: Confirmation
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry generate-vector-embeddings (
+        label: Generate Vector Embeddings
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry preview-and-load-data (
+        label: Preview and Load Data
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry select-file (
+        label: Select File
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+)
+
+list vector-search-custom-data (
+    name: Vector Search (Custom Data)
+
+    entry basic-vector-search (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: "Search data using vectors based on the first 10 columns of your uploaded data. "
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null
+        }
+    )
+
+    entry vector-and-oracle-text (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Compare</strong> vector based search with traditional Oracle Text search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+)
+
+list vector-search-movie-data (
+    name: Vector Search (Movie Data)
+
+    entry basic-vector-search (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Search movie data using vector search based on the TITLE, MOVIEDESCRIPTION, and ACTORS fields.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry vector-and-oracle-text (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Compare</strong> vector based search with traditional Oracle Text search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+)
+

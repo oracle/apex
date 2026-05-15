@@ -1,0 +1,155 @@
+restDataSource APEX_Youtube_Videos (
+    name: APEX Youtube Videos
+    source {
+        type: http
+        remoteServer: @www_googleapis_com_youtube_v3
+        urlPathPrefix: videos
+    }
+    authentication {
+        credentials: @google_api_key
+    }
+    advanced {
+        passEcid: Y
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+        remoteCache {
+            caching: allUsers
+            timeout: 10080
+        }
+    )
+
+    parameter id (
+        name: id
+        parameter {
+            type: urlQueryString
+        }
+        value {
+            defaultValueType: staticValue
+            staticValue: 77snU7P3ykA
+        }
+    )
+
+    parameter part (
+        name: part
+        parameter {
+            type: urlQueryString
+        }
+        value {
+            defaultValueType: staticValue
+            staticValue: contentDetails
+        }
+    )
+
+    dataProfile {
+        name: APEX Youtube Videos
+        rowSelector: items
+    }
+
+    dataProfileColumn caption (
+        columnName: CAPTION
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: contentDetails.caption
+        }
+    )
+
+    dataProfileColumn definition (
+        columnName: DEFINITION
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: contentDetails.definition
+        }
+    )
+
+    dataProfileColumn dimension (
+        columnName: DIMENSION
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: contentDetails.dimension
+        }
+    )
+
+    dataProfileColumn duration (
+        columnName: DURATION
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: contentDetails.duration
+        }
+    )
+
+    dataProfileColumn etag (
+        columnName: ETAG
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: etag
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: id
+        }
+    )
+
+    dataProfileColumn kind (
+        columnName: KIND
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: kind
+        }
+    )
+
+    dataProfileColumn licensedcontent (
+        columnName: LICENSEDCONTENT
+        source {
+            sequence: 9
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: contentDetails.licensedContent
+        }
+    )
+
+    dataProfileColumn projection (
+        columnName: PROJECTION
+        source {
+            sequence: 8
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: contentDetails.projection
+        }
+    )
+
+)
+

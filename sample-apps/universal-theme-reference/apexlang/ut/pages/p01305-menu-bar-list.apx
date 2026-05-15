@@ -1,0 +1,244 @@
+page 1305 (
+    name: List - Menu Bar
+    alias: MENU-BAR-LIST
+    title: Menu Bar List - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: list
+        source {
+            list: @ut-sample-menu-bar-list
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+        componentAppearance {
+            listTemplate: @/menu-bar
+            templateOptions: [
+                #DEFAULT#
+                js-menu-callout
+            ]
+            cssClasses: dm-TemplateOption-previewTarget2
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region list-attributes (
+        name: List Attributes
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select '#A01#', 'ID of the Menu Item' from dual union all
+                select '#A02#', 'True/False flag for whether or not this Menu Item and its children are disabled. ' from dual union all
+                select '#A03#', 'True/False flag for whether or not this Menu Item and its children should be hidden.' from dual union all
+                select '#A04#', 'The text of the link inside of the Menu item. ' from dual union all
+                select '#A05#', 'Key command and/or shortcut to access this menu without tapping or clicking.' from dual
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-row
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column '#A01#' (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: &#x27;#a01#&#x27;
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column 'IDOFTHEMENUITEM' (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: &#x27;idofthemenuitem&#x27;
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>This list template is used to display a menu bar control and is useful for building pages with advanced interaction.  Note that the region containing the menu bar must be sufficiently tall to accomodate the menus. </p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+)
+

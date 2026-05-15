@@ -1,0 +1,910 @@
+page 41 (
+    name: Results Across Polls
+    alias: RESULTS-ACROSS-POLLS
+    title: Results Across Polls
+    pageGroup: @polls
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region result-details (
+        name: Result Details
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id result_id,
+                      p.id poll_id,
+                      p.poll_name,
+                      p.status_id poll_status,
+                      case when p.poll_or_quiz = 'Q'
+                           then apex_lang.message('QUIZ_INITCAP')
+                           else apex_lang.message('POLL_INITCAP')
+                           end poll_type,
+                      p.row_key poll_row_key,
+                      q.ID question_id,
+                      q.display_sequence question_display_seq,
+                      d.QUESTION,
+                      q.DISPLAY_SEQUENCE,
+                      q.QUESTION_TYPE,
+                      case when p.anonymous_yn = 'Y' then 'anonymous' else lower(r.email) end respondent,
+                      (select c.community_name
+                         from eba_qpoll_comm_invites c,
+                              eba_qpoll_invites i
+                        where p.id = c.poll_id
+                          and c.id = i.comm_invite_id
+                          and r.respondent_id = i.respondent_id) community,
+                      r.updated submission_date,
+                      d.answer_01,
+                      d.answer_02,
+                      d.answer_03,
+                      d.answer_04,
+                      d.answer_05,
+                      d.answer_06,
+                      d.answer_07,
+                      d.answer_08,
+                      d.answer_09,
+                      d.answer_10,
+                      d.answer_11,
+                      d.answer_12,
+                      d.answer_01||
+                        decode(d.answer_02,null,null,', '||d.answer_02)||
+                        decode(d.answer_03,null,null,', '||d.answer_03)||
+                        decode(d.answer_04,null,null,', '||d.answer_04)||
+                        decode(d.answer_05,null,null,', '||d.answer_05)||
+                        decode(d.answer_06,null,null,', '||d.answer_06)||
+                        decode(d.answer_07,null,null,', '||d.answer_07)||
+                        decode(d.answer_08,null,null,', '||d.answer_08)||
+                        decode(d.answer_09,null,null,', '||d.answer_09)||
+                        decode(d.answer_10,null,null,', '||d.answer_10)||
+                        decode(d.answer_11,null,null,', '||d.answer_11)||
+                        decode(d.answer_12,null,null,', '||d.answer_12) answers,
+                      d.answer_correct_yn,
+                      d.score,
+                      case when q.enable_score_yn = 'Y' and p.enable_score_yn = 'Y' 
+                           then nvl(p.score_type,'N')
+                           else 'N' end score_type,
+                       d.id pk,
+                       case when p.use_sections_yn = 'Y' then s.title end section
+                  from eba_qpoll_polls p,
+                       eba_qpoll_sections s,
+                       EBA_QPOLL_QUESTIONS q,
+                       EBA_QPOLL_CANNED_ANSWERS a,
+                       EBA_QPOLL_RESULTS r,
+                       EBA_QPOLL_RESULT_DETAILS d
+                 where p.id = q.poll_id and
+                       q.section_id = s.id (+) and
+                       q.question_type = a.code(+) and
+                       p.id = r.poll_id and
+                       nvl(r.is_valid_yn,'Y') = 'Y' and
+                       r.id = d.result_id and
+                       q.id = d.question_id
+                  and (p.status_id = 4 or p.status_id = 3 or
+                       ( p.status_id = 2 and 
+                         eba_qpoll.get_access_role (
+                             p_app_id   => :APP_ID,
+                             p_username => :APP_USER) in ('CONTRIBUTOR','ADMINISTRATOR') ) )
+                  and (eba_qpoll.get_access_role (
+                             p_app_id   => :APP_ID,
+                             p_username => :APP_USER) != 'NONE'
+                       or 
+                       (p.all_view_results_yn = 'Y' and exists 
+                        (select 1
+                           from eba_qpoll_comm_invites c,
+                                eba_qpoll_invites i
+                          where c.poll_id = p.id
+                            and c.id = i.comm_invite_id
+                            and upper(respondent_email) = :APP_USER) ) )
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            pivot: false
+            subscription: false
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        heading {
+            fixedTo: none
+        }
+        advanced {
+            savedReportMappingIdentifier: 1007607326645162780
+        }
+
+        column ANSWERS (
+            type: plainText
+            heading {
+                heading: Answers
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AD
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_01 (
+            type: plainText
+            heading {
+                heading: Answer 01
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_02 (
+            type: plainText
+            heading {
+                heading: Answer 02
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_03 (
+            type: plainText
+            heading {
+                heading: Answer 03
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_04 (
+            type: plainText
+            heading {
+                heading: Answer 04
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_05 (
+            type: plainText
+            heading {
+                heading: Answer 05
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_06 (
+            type: plainText
+            heading {
+                heading: Answer 06
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_07 (
+            type: plainText
+            heading {
+                heading: Answer 07
+            }
+            layout {
+                sequence: 19
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_08 (
+            type: plainText
+            heading {
+                heading: Answer 08
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_09 (
+            type: plainText
+            heading {
+                heading: Answer 09
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: T
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_10 (
+            type: plainText
+            heading {
+                heading: Answer 10
+            }
+            layout {
+                sequence: 22
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_11 (
+            type: plainText
+            heading {
+                heading: Answer 11
+            }
+            layout {
+                sequence: 23
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_12 (
+            type: plainText
+            heading {
+                heading: Answer 12
+            }
+            layout {
+                sequence: 24
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWER_CORRECT_YN (
+            type: plainText
+            heading {
+                heading: Answer Correct?
+            }
+            layout {
+                sequence: 25
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: X
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column COMMUNITY (
+            type: plainText
+            heading {
+                heading: Community
+                alignment: center
+            }
+            layout {
+                sequence: 33
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AG
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            type: plainText
+            heading {
+                heading: Display Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 31
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AE
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column PK (
+            type: hidden
+            heading {
+                heading: PK
+            }
+            layout {
+                sequence: 28
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AA
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column POLL_ID (
+            type: hidden
+            heading {
+                heading: Selected Poll
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column POLL_NAME (
+            type: plainText
+            heading {
+                heading: Poll Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column POLL_ROW_KEY (
+            type: plainText
+            heading {
+                heading: Poll Row Key
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column POLL_STATUS (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Poll Status
+                alignment: center
+            }
+            lov {
+                lov: @poll-statuses-short
+            }
+            layout {
+                sequence: 53
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column POLL_TYPE (
+            type: plainText
+            heading {
+                heading: Poll Type
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column QUESTION (
+            type: plainText
+            heading {
+                heading: Question
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column QUESTION_DISPLAY_SEQ (
+            type: plainText
+            heading {
+                heading: Question Display Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 9
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column QUESTION_ID (
+            type: plainText
+            heading {
+                heading: Question ID
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column QUESTION_TYPE (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Question Type
+            }
+            lov {
+                lov: @question-type
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column RESPONDENT (
+            type: plainText
+            heading {
+                heading: Respondent
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AB
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column RESULT_ID (
+            type: hidden
+            heading {
+                heading: Result Id
+            }
+            layout {
+                sequence: 43
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AH
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column SCORE (
+            type: plainText
+            heading {
+                heading: Score
+                alignment: end
+            }
+            layout {
+                sequence: 26
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Y
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column SCORE_TYPE (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Score Type
+            }
+            lov {
+                lov: @qset-score-type
+            }
+            layout {
+                sequence: 27
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Z
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column SECTION (
+            type: plainText
+            heading {
+                heading: Section
+            }
+            layout {
+                sequence: 32
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AF
+            }
+        )
+
+        column SUBMISSION_DATE (
+            type: plainText
+            heading {
+                heading: Submission Date
+            }
+            layout {
+                sequence: 29
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: AC
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        savedReport 10076103 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ANSWERS (
+                sequence: 5
+            )
+
+            displayColumn POLL_NAME (
+                sequence: 1
+            )
+
+            displayColumn QUESTION (
+                sequence: 4
+            )
+
+            displayColumn RESPONDENT (
+                sequence: 2
+            )
+
+            displayColumn RESULT_ID (
+                sequence: 6
+            )
+
+            displayColumn SECTION (
+                sequence: 3
+            )
+
+            sort (
+                column: POLL_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: RESPONDENT
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: QUESTION_DISPLAY_SEQ
+                sort {
+                    sequence: 3
+                }
+            )
+
+        )
+
+    )
+
+    button back (
+        buttonName: BACK
+        label: Back
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-angle-double-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 17
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @result-details
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

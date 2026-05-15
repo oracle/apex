@@ -1,0 +1,1 @@
+drop table eba_cust_help_page;

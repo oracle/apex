@@ -1,0 +1,116 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 3520
+        systemPrivileges: [
+            createProcedure
+            createSequence
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            EBA_SALES_ACCESS_LEVELS
+            EBA_SALES_ACCOUNT_STANDING
+            EBA_SALES_ACL_API
+            EBA_SALES_ACTNOTES
+            EBA_SALES_ACT_COMPETITION
+            EBA_SALES_ACT_FILES
+            EBA_SALES_ACT_LINKS
+            EBA_SALES_COMPETITORS
+            EBA_SALES_COMPETITOR_THREATS
+            EBA_SALES_COUNTRIES
+            EBA_SALES_CURRENCIES
+            EBA_SALES_CUSTOMERS
+            EBA_SALES_CUSTOMER_CONTACTS
+            EBA_SALES_CUSTOMER_LOCATIONS
+            EBA_SALES_DATA
+            EBA_SALES_DEALS
+            EBA_SALES_DEAL_COMPETITION
+            EBA_SALES_DEAL_NOTES
+            EBA_SALES_DEAL_PRODUCTS
+            EBA_SALES_DEAL_STAGES
+            EBA_SALES_DEAL_STATUS_CODES
+            EBA_SALES_DEAL_TEAM
+            EBA_SALES_ERRORS
+            EBA_SALES_ERROR_LOOKUP
+            EBA_SALES_FILES
+            EBA_SALES_FIN_ASSESSMENTS
+            EBA_SALES_HISTORY
+            EBA_SALES_INDUSTRIES
+            EBA_SALES_LEADS
+            EBA_SALES_LEAD_SOURCES
+            EBA_SALES_LEAD_STATUS_CODES
+            EBA_SALES_LINKS
+            EBA_SALES_NOTIFICATIONS
+            EBA_SALES_OPPORTUNITIES_V
+            EBA_SALES_OPP_V
+            EBA_SALES_PREFERENCES
+            EBA_SALES_PRODUCTS
+            EBA_SALES_RISK_ASSESSMENTS
+            EBA_SALES_ROWKEY_SEQ
+            EBA_SALES_SALESREPS
+            EBA_SALES_SALESREP_ROLES
+            EBA_SALES_SALES_PERIODS
+            EBA_SALES_SEQUENCE
+            EBA_SALES_SEQUENCE2
+            EBA_SALES_STATES
+            EBA_SALES_STATUS_ASSESSMENTS
+            EBA_SALES_SVPS
+            EBA_SALES_TAGS
+            EBA_SALES_TAGS_SUM
+            EBA_SALES_TAGS_TYPE_SUM
+            EBA_SALES_TERRITORIES
+            EBA_SALES_TERRITORY_ACL
+            EBA_SALES_TERR_MAP
+            EBA_SALES_TZ_INIT
+            EBA_SALES_TZ_PREF
+            EBA_SALES_USERS
+            EBA_SALES_FW
+            EBA_SALES_CLICKS
+            EBA_SALES_VERIFICATIONS
+            EBA_SALES_PRODUCT_FAMILIES
+            EBA_SALES_TERMS
+            EBA_SALES_PRODUCT_LOBS
+            EBA_SALES_CUST_SPT_AMT_MAP
+            EBA_SALES_SUPPORT_AMTS
+            EBA_SALES_SUPRT_AMT_TYPES
+            EBA_SALES_AGREEMENTS
+            EBA_SALES_AGREEMENT_TYPES
+        ]
+    }
+    installationMessages {
+        welcome: This application installer will guide you through the process of creating your database objects and seed data.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+    }
+    upgrade {
+        upgradeWhenSqlQuery:
+            ```sql
+            select object_name
+            from user_objects
+            where object_name like 'EBA_SALES_%'
+            ```
+    }
+    upgradeMessages {
+        welcome: The application installer has detected that this application's supporting objects were previously installed.  This wizard will guide you through the process of upgrading these supporting objects.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+        success: Your application's supporting objects have been installed.
+        failure: Installation of database objects and seed data has failed.
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    deinstallationMessages {
+        postDeinstall: Deinstallation complete.
+    }
+    messages {
+        validations: The following validations will be performed to ensure your system is compatible with this application.
+        appSubstitutions: You can configure the following attributes of your application.
+        buildOptions: You can choose to include the following build options.
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

@@ -1,0 +1,114 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region application-actions (
+        name: Application Actions
+        type: list
+        source {
+            list: @application-actions
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            listTemplate: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--displaySubtitle
+                t-Cards--featured force-fa-lg
+                t-Cards--displayIcons
+                t-Cards--4cols
+                t-Cards--hideBody
+                t-Cards--iconsRounded
+                t-Cards--animColorFill
+            ]
+        }
+    )
+
+    region home (
+        name: Home
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-192.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button about (
+        buttonName: ABOUT
+        label: About this app
+        layout {
+            sequence: 10
+            region: @home
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-info-circle-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 14
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

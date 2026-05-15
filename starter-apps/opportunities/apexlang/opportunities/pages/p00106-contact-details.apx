@@ -1,0 +1,800 @@
+page 106 (
+    name: Contact Details
+    alias: CONTACT-DETAILS
+    title: Contact Details
+    pageGroup: @accounts
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <script language="JavaScript" type="text/javascript">
+            <!--
+            
+             htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            
+            //-->
+            </script>
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @contacts
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region contact-details (
+        name: Contact Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P106_CONTACT_ADDRESS (
+        type: textarea
+        label {
+            label: Address
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 100
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_ADDRESS
+            used: always
+        }
+    )
+
+    pageItem P106_CONTACT_CELL (
+        type: textField
+        label {
+            label: Cell
+            alignment: left
+        }
+        settings {
+            subtype: phone
+            trimSpaces: none
+        }
+        layout {
+            sequence: 70
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-mobile
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_CELL
+            used: always
+        }
+    )
+
+    pageItem P106_CONTACT_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_DESCRIPTION
+            used: always
+        }
+    )
+
+    pageItem P106_CONTACT_EMAIL (
+        type: textField
+        label {
+            label: Email
+            alignment: left
+        }
+        settings {
+            subtype: email
+            trimSpaces: none
+        }
+        layout {
+            sequence: 50
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-envelope
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_EMAIL
+            used: always
+        }
+    )
+
+    pageItem P106_CONTACT_FACEBOOK (
+        type: textField
+        label {
+            label: Facebook
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 90
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-facebook-square
+            width: 64
+            valuePlaceholder: https://www.facebook.com/account-name
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_FACEBOOK
+            used: always
+        }
+    )
+
+    pageItem P106_CONTACT_LINKEDIN (
+        type: textField
+        label {
+            label: LinkedIn
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-linkedin-square
+            width: 64
+            valuePlaceholder: https://www.linkedin.com/company/account-name
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_LINKEDIN
+            used: always
+        }
+    )
+
+    pageItem P106_CONTACT_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_NAME
+            used: always
+        }
+    )
+
+    pageItem P106_CONTACT_PHONE (
+        type: textField
+        label {
+            label: Phone
+            alignment: left
+        }
+        settings {
+            subtype: phone
+            trimSpaces: none
+        }
+        layout {
+            sequence: 60
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-phone
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_PHONE
+            used: always
+        }
+    )
+
+    pageItem P106_CUSTOMER_ID (
+        type: selectList
+        label {
+            label: Account
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select customer_name display_value, 
+                  id return_value 
+                from eba_sales_customers
+                order by 1
+                ```
+            nullDisplayValue: - Select Account -
+        }
+        layout {
+            sequence: 40
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_ID
+            used: always
+        }
+    )
+
+    pageItem P106_DELETE_BRANCH_PAGE_ID (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @contact-details
+            slot: regionBody
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P106_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @contact-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P106_SHOW_ACCOUNT (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @contact-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P106_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                  from eba_sales_tags_type_sum
+                 where content_type = 'CONTACT'
+                
+                ```
+        }
+        layout {
+            sequence: 120
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+    )
+
+    pageItem P106_TITLE (
+        type: textField
+        label {
+            label: Title
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+            valuePlaceholder: Senior Vice President, Regional Sales Manager, etc...
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_TITLE
+            used: always
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Contact
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P106_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P106_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P106_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction p106-show-account (
+        name: P106_SHOW_ACCOUNT
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P106_SHOW_ACCOUNT
+        }
+        clientSideCondition {
+            type: item=value
+            item: P106_SHOW_ACCOUNT
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P106_CUSTOMER_ID
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P106_CUSTOMER_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation fb-must-start-with-http (
+        name: FB must start with http
+        execution {
+            sequence: 30
+        }
+        validation {
+            plsqlExpression: substr(:P106_CONTACT_FACEBOOK, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P106_CONTACT_FACEBOOK
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P106_CONTACT_FACEBOOK
+        }
+    )
+
+    validation linkedin-must-start-with-http (
+        name: LinkedIn must start with http
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: substr(:P106_CONTACT_LINKEDIN, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P106_CONTACT_LINKEDIN
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P106_CONTACT_LINKEDIN
+        }
+    )
+
+    validation valid-tag-characters (
+        name: Valid Tag Characters
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P106_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P106_TAGS
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: SAVE,CREATE
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            itemsToReturn: P106_CONTACT_NAME
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 6563080768736594977
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :REQUEST != 'DELETE'
+                  or :P106_DELETE_BRANCH_PAGE_ID is null
+                ```
+        }
+    )
+
+    process fetch-row-from-eba-sales-customer-contacts (
+        name: Fetch Row from eba_sales_CUSTOMER_CONTACTS
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_CUSTOMER_CONTACTS
+            pkColumn: ID
+            pkItem: P106_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 8901246239890235841
+        }
+    )
+
+    process process-row-of-eba-sales-customer-contacts (
+        name: Process Row of eba_sales_CUSTOMER_CONTACTS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_CUSTOMER_CONTACTS
+            pkColumn: ID
+            pkItem: P106_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table eba_sales_CUSTOMER_CONTACTS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8901246453445235843
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        clear {
+            type: pages
+            pages: 24
+        }
+        execution {
+            sequence: 30
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8901246666970235843
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        name: Branch to P106_DELETE_BRANCH_PAGE_ID on delete
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &P106_DELETE_BRANCH_PAGE_ID.
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

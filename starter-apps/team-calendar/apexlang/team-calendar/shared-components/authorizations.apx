@@ -1,0 +1,84 @@
+authorization administration-rights (
+    name: ADMINISTRATION RIGHTS
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody: return eba_ca.get_authorization_level(:APP_USER) = 3;
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not an Administrator
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+
+authorization application-sentry (
+    name: APPLICATION SENTRY
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            begin
+                if :APP_PAGE_ID = 101 then
+                    return true;
+                else
+                    return (eba_ca.get_authorization_level(:APP_USER) > 0);
+                end if;
+            end;
+            ```
+    }
+    error {
+        errorMessage: You are not authorized to view this application, either because you have not been granted access, or your account has been locked. Please contact the application administrator.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+
+authorization contribution-rights (
+    name: CONTRIBUTION RIGHTS
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody: return eba_ca.get_authorization_level(:APP_USER) >= 2;
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not a Contributor
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+
+authorization is-admin (
+    name: is Admin
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            for c1 in (
+               select admin_username
+                 from EBA_ca_admins
+                where upper(admin_username) = upper(:APP_USER) )
+            loop
+               return true;
+            end loop;
+            
+            for c2 in (
+               select count(*) admin_cnt
+                 from EBA_ca_admins )
+            loop
+               if c2.admin_cnt = 0
+                  then return true;
+               else return false;
+               end if;
+            end loop;
+            ```
+    }
+    error {
+        errorMessage: Only Administrators can access these features.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+

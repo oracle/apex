@@ -1,0 +1,504 @@
+page 120 (
+    name: Airports Faceted Search
+    alias: AIRPORTS
+    title: &APP_NAME. - Airports Faceted Search
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        source {
+            htmlCode: <p>This page demonstrates the <strong>Faceted Search</strong> feature in combination with the <strong>Map Region</strong>. As long as the map is zoomed out, airports are displayed as a <em>Heat Map</em>. Zoom in on the map in order to see clickable <em>Map Markers</em>.
+        }
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region airports-map (
+        name: Airports Map
+        type: map
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       IATA_CODE,
+                       CITY,
+                       airport_type,
+                       airport_name,
+                       STATE_NAME,
+                       ELEVATION,
+                       DIST_CITY_TO_AIRPORT,
+                       LAND_AREA_COVERED,
+                       ACTIVATION_DATE_dt ACTIVATION_DATE,
+                       nvl(COMMERCIAL_OPS,0) COMMERCIAL_OPS,
+                       to_char(COMMERCIAL_OPS,'999G999G999G999') as com_ops_fmtd,
+                       AIR_TAXI_OPS,
+                       to_char(AIR_TAXI_OPS,'999G999G999G999') as air_ops_fmtd,
+                       case when nvl(COMMERCIAL_OPS,0) < 10000 then 'Y' else 'N' end as tiny_airport,
+                       case when COMMERCIAL_OPS < 10000 then 1
+                            when COMMERCIAL_OPS between 10000 and 50000 then 1.5
+                            when COMMERCIAL_OPS between 50000 and 100000 then 2
+                            else 2.5
+                       end marker_size,
+                       GEOMETRY
+                  from EBA_SAMPLE_MAP_AIRPORTS
+                  where commercial_ops is not null
+                 
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: airport-map-region
+            regionDisplaySelector: true
+        }
+        controls {
+            options: [
+                scaleBar
+                infiniteMap
+                rectangleZoom
+            ]
+        }
+        initialPositionAndZoom {
+            type: staticValues
+            longitude: -100
+            latitude: 35
+            zoomLevel: 3
+        }
+        attributes {
+            messagesPosition: below
+        }
+        componentAdvanced {
+            customSvgStyles:
+                ```
+                [
+                    {
+                        "name": "Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M12.942,5.942,11.783,7.1l.655,2.836a.5.5,0,0,1-.317.583.509.509,0,0,1-.171.03.5.5,0,0,1-.445-.273l-.978-1.92-.986.986.123,1.1a.5.5,0,0,1-.972.213L8.354,9.646,7.342,9.308a.5.5,0,0,1-.33-.582.509.509,0,0,1,.543-.39l1.1.123.986-.986L7.723,6.5a.5.5,0,0,1,.34-.933l2.836.655,1.159-1.159a.625.625,0,0,1,.884.884Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Heliport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,19a1.5,1.5,0,0,1-1.106-.487C8.291,17.855,3,11.967,3,8A7,7,0,0,1,17,8c0,3.967-5.291,9.855-5.894,10.514A1.506,1.506,0,0,1,10,19Z",
+                                "fill":"#ffffff"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type": "path",
+                                "d": "M10.454,9.7h1.224a1.008,1.008,0,0,0,.713-1.722A2.663,2.663,0,0,0,10.5,7.2h-.421v-.94h2.194a.314.314,0,0,0,0-.627H10.075V5.523a.314.314,0,0,0-.627,0v.105H7.254a.314.314,0,1,0,0,.627H9.448V7.2H6.418a.418.418,0,0,0,0,.836H7.5a1,1,0,0,1,.707.293l.767.766A2.091,2.091,0,0,0,10.454,9.7Z",
+                                "fill":"#ffffff"
+                            },
+                            {
+                                "type": "path",
+                                "d": "M12.625,11.378a.375.375,0,0,0,0-.75H8.375a.375.375,0,0,0,0,.75Z",
+                                "fill":"#ffffff"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Small Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,19a1.5,1.5,0,0,1-1.106-.487C8.291,17.855,3,11.967,3,8A7,7,0,0,1,17,8c0,3.967-5.291,9.855-5.894,10.514A1.506,1.506,0,0,1,10,19Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M11.94,7.375h-.963L9.435,4.906a.5.5,0,0,0-.9.42L9.2,7.375H8.307l-.693-.866a.508.508,0,0,0-.66-.109.5.5,0,0,0-.177.645L7.29,8.072a1,1,0,0,0,.894.553H9.2l-.666,2.049a.5.5,0,0,0,.122.508.5.5,0,0,0,.778-.088l1.542-2.469h.963a.625.625,0,0,0,0-1.25Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M13.076,9a.2.2,0,0,1-.2-.2V7.2a.2.2,0,1,1,.4,0V8.8A.2.2,0,0,1,13.076,9Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            }
+                        ]
+                    }
+                ]
+                ```
+        }
+
+        layer all-airports (
+            name: All Airports
+            layerType: heatMap
+            label {
+                label: Airport Density
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            appearance {
+                colorScheme: sequential
+                schemeName: sunset
+            }
+            zoomLevels {
+                max: 4
+            }
+            serverSideCondition {
+                type: never
+            }
+        )
+
+        layer larger-airports (
+            name: Larger Airports
+            layout {
+                sequence: 30
+            }
+            source {
+                location: regionSource
+            }
+            rowAssignment {
+                column: TINY_AIRPORT
+                valueForThisLayer: N
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            pointObjects {
+                shape: Airport
+                shapeScale: &MARKER_SIZE.
+            }
+            appearance {
+                fillColor: #ff0000
+                strokeColor: #ffffff
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression: <strong>&AIRPORT_NAME. (&IATA_CODE.)</strong>
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <h3>&AIRPORT_NAME. (&IATA_CODE.)</h3>
+                    <p><strong>&CITY., &STATE_NAME.</strong><br>
+                    {if ACTIVATION_DATE/}
+                    Activation Date: &ACTIVATION_DATE.<br>
+                    {endif/}
+                    {if COMMERCIAL_OPS/}
+                    Commercial Operations: &COM_OPS_FMTD.<br>
+                    {endif/}
+                    {if AIR_TAXI_OPS/}
+                    Taxi Operations: &AIR_OPS_FMTD.<br>
+                    {endif/}
+                    ```
+            }
+        )
+
+        layer smaller-airports (
+            name: Smaller Airports
+            layout {
+                sequence: 20
+            }
+            source {
+                location: regionSource
+            }
+            rowAssignment {
+                column: TINY_AIRPORT
+                valueForThisLayer: Y
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            pointObjects {
+                shape: Flag Pennant
+                shapeScale: 0.9
+            }
+            appearance {
+                fillColor: #392423
+                fillOpacity: .8
+                strokeColor: #ffffff
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression: &AIRPORT_NAME. (&IATA_CODE.)
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <h3>&AIRPORT_NAME. (&IATA_CODE.)</h3>
+                    <p><strong>&CITY., &STATE_NAME.</strong><br>
+                    {if ACTIVATION_DATE/}
+                    Activation Date: &ACTIVATION_DATE.<br>
+                    {endif/}
+                    {if COMMERCIAL_OPS/}
+                    Commercial Operations: &COM_OPS_FMTD.<br>
+                    {endif/}
+                    {if AIR_TAXI_OPS/}
+                    Taxi Operations: &AIR_OPS_FMTD.<br>
+                    {endif/}
+                    ```
+            }
+        )
+
+    )
+
+    region facets (
+        name: Facets
+        type: staticContent
+        source {
+            htmlCode: <div id="current-facets"></div>
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @airports-map
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #current-facets
+            showTotalRowCount: true
+            totalRowCountLabel: Airport Count:
+            displayChartForTopNValues: 10
+        }
+
+        facet P120_ACTIVATION_DATE (
+            type: range
+            label {
+                label: Opened
+            }
+            settings {
+                selectMultiple: true
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC2:before 1950;|19500101000000,1950 - 1970;19500101000000|19700101000000,1970 - 1990;19700101000000|19900101000000,1990 - 2005;19900101000000|20050101000000,since 2005;20050101000000|
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                display: addFilterDialog
+            }
+            listEntries {
+                maxDisplayedEntries: 100
+            }
+            source {
+                databaseColumn: ACTIVATION_DATE
+                dataType: date
+            }
+        )
+
+        facet P120_AIRPORT_TYPE (
+            type: checkboxGroup
+            label {
+                label: Airport Type
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            actionsMenu {
+                filter: false
+            }
+            advanced {
+                collapsible: true
+            }
+            source {
+                databaseColumn: AIRPORT_TYPE
+            }
+        )
+
+        facet P120_COMMERCIAL_OPS (
+            type: range
+            label {
+                label: Operations
+            }
+            settings {
+                selectMultiple: true
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC2:none;|1,less than 1000;1|1000,1000 to 10K;1000|10000,10K to 100K;10000|100000,more than 100K;100000|
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                display: addFilterDialog
+            }
+            listEntries {
+                maxDisplayedEntries: 100
+            }
+            source {
+                databaseColumn: COMMERCIAL_OPS
+                dataType: number
+            }
+        )
+
+        facet P120_STATE (
+            type: checkboxGroup
+            label {
+                label: State
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                sortByTopCounts: false
+                showSelectedFirst: true
+                maxDisplayedEntries: 5
+                displayFilterInitially: true
+            }
+            actionsMenu {
+                filter: false
+            }
+            advanced {
+                collapsible: true
+            }
+            source {
+                databaseColumn: STATE_NAME
+            }
+        )
+
+    )
+
+    dynamicAction on-click-point (
+        name: On Click Point
+        execution {
+            sequence: 10
+        }
+        when {
+            event: region/map/spatialmapobjectclick
+            selectionType: region
+            region: @airports-map
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    const { lng, lat } = this.data;
+                    
+                    apex.region("airport-map-region").call( "getMapObject" ).flyTo({ 
+                        center: [ lng, lat ],
+                        screenSpeed: 0.8
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

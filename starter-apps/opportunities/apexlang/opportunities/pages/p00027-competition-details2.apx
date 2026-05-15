@@ -1,0 +1,405 @@
+page 27 (
+    name: Competition Details
+    alias: COMPETITION-DETAILS2
+    title: Competition Details
+    pageGroup: @opportunities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @competitors
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region competition-details (
+        name: Competition Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P27_COMPETITION_DESC (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @competition-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMPETITION_DESC
+            used: always
+        }
+    )
+
+    pageItem P27_COMPETITOR_ID (
+        type: selectList
+        label {
+            label: Competitor
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select competitor_name d, id r
+                from eba_sales_competitors
+                order by upper(competitor_name)
+                ```
+            nullDisplayValue: - Select Competitor -
+        }
+        layout {
+            sequence: 80
+            region: @competition-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMPETITOR_ID
+            used: always
+        }
+    )
+
+    pageItem P27_COMPETITOR_THREAT_ID (
+        type: selectList
+        label {
+            label: Threat
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select competitor_threat d, id r
+                from eba_sales_competitor_threats
+                order by display_order, upper(competitor_threat)
+                ```
+            nullDisplayValue: - Select Threat -
+        }
+        layout {
+            sequence: 100
+            region: @competition-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMPETITOR_THREAT_ID
+            used: always
+        }
+    )
+
+    pageItem P27_DEAL_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @competition-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P27_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @competition-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Competition
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P27_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P27_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P27_ID
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: Close Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation p27-competitor-id-not-duplicated (
+        name: P27_COMPETITOR_ID not duplicated
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_deal_competition
+                where deal_id = :P27_DEAL_ID
+                    and competitor_id = :P27_COMPETITOR_ID
+                    and (:P27_ID is null or id != :P27_ID)
+                ```
+        }
+        error {
+            errorMessage: Selected competition already exists for this opportunity.
+            associatedItem: @P27_COMPETITOR_ID
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 6542458110941038178
+        }
+    )
+
+    process fetch-row-from-eba-sales-deal-competition (
+        name: Fetch Row from EBA_SALES_DEAL_COMPETITION
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_DEAL_COMPETITION
+            pkColumn: ID
+            pkItem: P27_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 7375731834876639184
+        }
+    )
+
+    process process-row-of-eba-sales-deal-competition (
+        name: Process Row of EBA_SALES_DEAL_COMPETITION
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_DEAL_COMPETITION
+            pkColumn: ID
+            pkItem: P27_ID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 7375732049274639185
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 7375732250025639185
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

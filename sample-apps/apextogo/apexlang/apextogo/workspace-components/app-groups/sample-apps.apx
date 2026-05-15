@@ -1,0 +1,4 @@
+appGroup sample-apps (
+    name: Sample Apps
+)
+

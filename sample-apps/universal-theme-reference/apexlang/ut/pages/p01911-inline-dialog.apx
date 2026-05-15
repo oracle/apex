@@ -1,0 +1,419 @@
+page 1911 (
+    name: Inline Dialog
+    alias: INLINE-DIALOG
+    title: Inline Dialog - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region auto-height (
+        name: Auto Height
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-dialog-size600x400
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region fixed-height (
+        name: Fixed Height
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-size600x400
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>An <strong>inline dialog</strong> displays a region on the current page within a modal dialog. </p>
+                <p class="dm-Hero-steps">Create a region, set its "Position" attribute to Inline Dialogs, and use <strong>Inline Dialog</strong> as its Region template.</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region toggle-region-content (
+        name: Toggle Region Content
+        type: staticContent
+        source {
+            htmlCode: <div class="u-tC padding-lg margin-lg">This dialog automatically resized itself to fit content. To do this, go to Template Options and check "Auto Height".</div>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @auto-height
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region toggle-region-content-2 (
+        name: Toggle Region Content
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="u-tC padding-lg margin-lg">This dialog has a fixed height and does not automatically resize itself to fit content. 
+                    This is the default behavior.</div>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @fixed-height
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL_1
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @auto-height
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            cssClasses: js-cancel-auto-dialog
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button cancel-2 (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @fixed-height
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            cssClasses: js-cancel-fixed-dialog
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:closeModal('dialog_fixed')
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button ok (
+        buttonName: OK
+        label: OK
+        layout {
+            sequence: 10
+            region: @fixed-height
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            cssClasses: js-cancel-fixed-dialog
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:closeModal('dialog_fixed')
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button ok-2 (
+        buttonName: OK_1
+        label: OK
+        layout {
+            sequence: 20
+            region: @auto-height
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            cssClasses: js-cancel-auto-dialog
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:closeModal('dialog_auto')
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button open-auto-size (
+        buttonName: OPEN_AUTO_SIZE
+        label: Inline Dialog with Auto Size
+        layout {
+            sequence: 10
+            region: @demo
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button open-fixed (
+        buttonName: OPEN_FIXED
+        label: Inline Dialog with Fixed Size
+        layout {
+            sequence: 20
+            region: @demo
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction close-auto-height-dialog (
+        name: Close Auto Height Dialog
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: .js-cancel-auto-dialog
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @auto-height
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction close-fixed-height-dialog (
+        name: Close Fixed Height Dialog
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: .js-cancel-fixed-dialog
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @fixed-height
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction open-auto-height-dialog (
+        name: Open Auto Height Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-auto-size
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @auto-height
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction open-fixed-height-dialog (
+        name: Open Fixed Height Dialog
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-fixed
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @fixed-height
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

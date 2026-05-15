@@ -1,0 +1,558 @@
+page 10 (
+    name: Single Row View
+    alias: SINGLE-ROW-VIEW
+    title: Single Row View
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-single-row-view (
+        name: Overview: Single Row View
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>An editable Interactive Grid has a built in menu item in the row Actions menu that leads to the single row view.
+                Single row view is always available even in non-editable grids you just need a way to get there. 
+                </p>
+                <p>One way to access single row view is to add a column with a button in it. This same technique could be used to add a button that does something else.
+                Create a new Column and set the Type to HTML Expression, set the Source Type to None. 
+                The HTML Expression provides the markup for an action button. The data-action 
+                button attribute specifies "single-row-view" which is a built-in action of Interactive Grid.
+                A list of actions can be found in the JavaScript API documentation for interactiveGrid widget.
+                </p>
+                <p>Single row view requires that the Interactive Grid region has a primary key column. 
+                It is a best practice to always define a primary key column.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region single-row-view (
+        name: Single Row View
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       DEPTNO,
+                       ONLEAVE,
+                       NOTES
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            showTotalCount: false
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2605043420999680908
+        }
+
+        savedReport 6237457 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @SRV
+                layout {
+                    width: 50
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 80
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    width: 129
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 94
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 73
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    width: 114
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    width: 78.1
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 81.1
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 72
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    sequence: 11
+                }
+            )
+
+            sort (
+                column: @DEPTNO
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Comm
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select dname, deptno 
+                    from eba_demo_ig_dept
+                    ```
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: textField
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                maxLength: 9
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ename, empno 
+                    from eba_demo_ig_emp
+                    ```
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textField
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 120
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ONLEAVE (
+            type: switch
+            heading {
+                heading: On Leave
+            }
+            layout {
+                sequence: 110
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        column SRV (
+            type: htmlExpression
+            heading {
+                alternativeLabel: Single Row View
+            }
+            settings {
+                htmlExpression:
+                    ```html
+                    <button type="button" class="a-Button a-Button--noLabel a-Button--iconTextButton" data-action="single-row-view">
+                    <span class="fa fa-pencil-square-o"></span>
+                    </button>
+                    ```
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                type: none
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

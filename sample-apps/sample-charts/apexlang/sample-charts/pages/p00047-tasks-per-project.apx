@@ -1,0 +1,487 @@
+page 47 (
+    name: Tasks per Project
+    alias: TASKS-PER-PROJECT
+    title: Tasks per Project
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: "<p>This Interactive Grid page demonstrates linking from charts.  You can link your chart to an Interactive Grid saved report by firstly identifying the saved report by setting the REQUEST to <strong>IG[<i>RegionStaticId</i>]_<i>SavedReportName</i></strong>, secondly clearing any existing Interactive Grid filters using the \"Clear Report\" <strong>CR</strong> clear cache setting in the URL, and lastly by passing Interactive Grid column <strong>IG_</strong> filters.  See the chart pages for details on how to construct the links, and view the URL on this page to see the format of the URL.  The drill down from the chart to this report passes the DEPTNO column.  The <strong>CS</strong> attribute in the URL is a checksum that limits exposure to URL tampering and is automatically computed by the Oracle APEX engine.</p>"
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-layout-grid-3x
+        }
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region tasks-report (
+        name: Tasks  Report
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select b.id,
+                       b.project label,
+                       a.task_name, a.start_date, a.end_date, a.status, a.assigned_to, a.cost, a.budget
+                  from eba_demo_chart_tasks a,
+                       eba_demo_chart_projects b
+                 where a.project = b.id
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: tasksRep
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 1029851565704718104
+        }
+
+        savedReport 14256 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @LABEL
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @TASK_NAME
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @START_DATE
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @END_DATE
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @STATUS
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @ASSIGNED_TO
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COST
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @BUDGET
+                layout {
+                    sequence: 9
+                }
+            )
+
+        )
+
+        savedReport tasks (
+            visibility: alternative
+            name: tasks
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    show: false
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @LABEL
+                layout {
+                    show: false
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @TASK_NAME
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @START_DATE
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @END_DATE
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @STATUS
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @ASSIGNED_TO
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COST
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @BUDGET
+                layout {
+                    sequence: 9
+                }
+            )
+
+            controlBreak (
+                column: @LABEL
+                layout {
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column ASSIGNED_TO (
+            type: textField
+            heading {
+                heading: Assigned To
+            }
+            layout {
+                sequence: 70
+            }
+            validation {
+                maxLength: 30
+            }
+            source {
+                databaseColumn: ASSIGNED_TO
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column BUDGET (
+            type: numberField
+            heading {
+                heading: Budget
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                databaseColumn: BUDGET
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column COST (
+            type: numberField
+            heading {
+                heading: Cost
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                databaseColumn: COST
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column END_DATE (
+            type: datePickerJquery
+            heading {
+                heading: End Date
+                alignment: center
+            }
+            layout {
+                sequence: 50
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: END_DATE
+                dataType: date
+            }
+        )
+
+        column ID (
+            type: numberField
+            heading {
+                heading: Id
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column LABEL (
+            type: textField
+            heading {
+                heading: Label
+            }
+            layout {
+                sequence: 20
+            }
+            validation {
+                valueRequired: true
+                maxLength: 30
+            }
+            source {
+                databaseColumn: LABEL
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column START_DATE (
+            type: datePickerJquery
+            heading {
+                heading: Start Date
+                alignment: center
+            }
+            layout {
+                sequence: 40
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: START_DATE
+                dataType: date
+            }
+        )
+
+        column STATUS (
+            type: textField
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 60
+            }
+            validation {
+                maxLength: 30
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column TASK_NAME (
+            type: textarea
+            heading {
+                heading: Task Name
+            }
+            layout {
+                sequence: 30
+            }
+            validation {
+                maxLength: 255
+            }
+            source {
+                databaseColumn: TASK_NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: none
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+    )
+
+)
+

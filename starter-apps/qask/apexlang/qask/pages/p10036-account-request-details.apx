@@ -1,0 +1,640 @@
+page 10036 (
+    name: Account Request Details
+    alias: ACCOUNT-REQUEST-DETAILS
+    title: Account Request Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administrator
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region account-request-details (
+        name: Account Request Details
+        type: form
+        source {
+            location: localDatabase
+            tableName: QASK_ACCOUNT_REQUESTS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P10036_ACCEPTED_TERMS_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @account-request-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @account-request-details
+            column: ACCEPTED_TERMS_ID
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_CREATED_BY (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @account-request-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @account-request-details
+            column: CREATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The user who created the record.
+        }
+    )
+
+    pageItem P10036_CREATED_ON (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @account-request-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @account-request-details
+            column: CREATED_ON
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_EMAIL (
+        type: displayOnly
+        label {
+            label: Email
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @account-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @account-request-details
+            column: EMAIL
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @account-request-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @account-request-details
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_JUSTIFICATION (
+        type: displayOnly
+        label {
+            label: Justification
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @account-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @account-request-details
+            column: JUSTIFICATION
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_REMOTE_ADDR (
+        type: displayOnly
+        label {
+            label: Remote Addr
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @account-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @account-request-details
+            column: REMOTE_ADDR
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_REQUEST_STATUS (
+        type: displayOnly
+        label {
+            label: Status
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-request-statuses
+        }
+        layout {
+            sequence: 80
+            region: @account-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @account-request-details
+            column: REQUEST_STATUS
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_ROW_VERSION (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @account-request-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @account-request-details
+            column: ROW_VERSION
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_STATUS_REASON (
+        type: textarea
+        label {
+            label: Reason (mandatory if declining)
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @account-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @account-request-details
+            column: STATUS_REASON
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10036_UPDATED_BY (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @account-request-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @account-request-details
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_UPDATED_ON (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @account-request-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @account-request-details
+            column: UPDATED_ON
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_USER_AGENT (
+        type: displayOnly
+        label {
+            label: User Agent
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @account-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @account-request-details
+            column: USER_AGENT
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10036_X_FORWARDED_FOR (
+        type: displayOnly
+        label {
+            label: X Forwarded For
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @account-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @account-request-details
+            column: X_FORWARDED_FOR
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button approve (
+        buttonName: APPROVE
+        label: Approve
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item!=value
+            item: P10036_REQUEST_STATUS
+            value: APPROVED
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button decline (
+        buttonName: DECLINE
+        label: Decline
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item=value
+            item: P10036_REQUEST_STATUS
+            value: REQUESTED
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10036_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation must-have-reason-for-declining (
+        name: must have reason for declining
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P10036_STATUS_REASON
+        }
+        error {
+            errorMessage: Must provide reason for declining.
+            associatedItem: @P10036_STATUS_REASON
+        }
+        serverSideCondition {
+            whenButtonPressed: @decline
+        }
+    )
+
+    process approve (
+        name: Approve
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_pwd_url  varchar2(4000);
+                begin
+                    l_pwd_url := apex_page.get_url(
+                                     p_application => :APP_ID,
+                                     p_page        => 9997,
+                                     p_session     => 0,
+                                     p_items       => 'P9997_EMAIL',
+                                     p_values      => :P10036_EMAIL,
+                                     p_plain_url   => TRUE );
+                    l_pwd_url := rtrim(OWA_UTIL.get_cgi_env('HTTP_REFERER'),'/') || l_pwd_url;    
+                
+                    qask_util.approve_access (
+                        p_access_request_id => :P10036_ID,
+                        p_reason            => :P10036_STATUS_REASON,
+                        p_send_email_yn     => 'Y',
+                        p_app_id            => :APP_ID,
+                        p_app_url           => :APP_URL,
+                        p_pwd_url           => l_pwd_url ); 
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Access Request approved.
+        }
+        error {
+            errorMessage: Access Request failed to be approved.
+        }
+        advanced {
+            executionMappingIdentifier: 71755062519360004049
+        }
+        serverSideCondition {
+            whenButtonPressed: @approve
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 2956931475474536102
+        }
+    )
+
+    process decline (
+        name: Decline
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.decline_access (
+                    p_access_request_id => :P10036_ID,
+                    p_reason            => :P10036_STATUS_REASON,
+                    p_send_email_yn     => 'Y',
+                    p_app_id            => :APP_ID,
+                    p_app_url           => :APP_URL ); 
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Access Request declined.
+        }
+        error {
+            errorMessage: Access Request failed to be declined.
+        }
+        advanced {
+            executionMappingIdentifier: 71755062622519004050
+        }
+        serverSideCondition {
+            whenButtonPressed: @decline
+        }
+    )
+
+    process delete-request (
+        name: Delete Request
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.delete_access_request (
+                    p_access_request_id => :P10036_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Access Request deleted.
+        }
+        error {
+            errorMessage: Access Request failed to be deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 71755062499972004048
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process initialize-form-account-request-details (
+        name: Initialize form Account Request Details
+        type: formInitialization
+        formRegion: @account-request-details
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 2956930610276536102
+        }
+    )
+
+)
+

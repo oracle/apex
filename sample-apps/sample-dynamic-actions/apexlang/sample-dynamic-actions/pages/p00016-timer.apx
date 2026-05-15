@@ -1,0 +1,505 @@
+page 16 (
+    name: Timer
+    alias: TIMER
+    title: Timer
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region auto-refresh (
+        name: Auto Refresh
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region employees (
+        name: Employees
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT e.ROWID
+                ,      e.EMPNO
+                ,      e.ENAME
+                ,      e.JOB
+                ,      m.ename MGR
+                ,      e.HIREDATE
+                ,      e.SAL
+                ,      e.COMM
+                ,      d.dname DEPTNO
+                ,      current_timestamp
+                FROM EBA_DEMO_DA_EMP e
+                ,    EBA_DEMO_DA_EMP m
+                ,    EBA_DEMO_DA_DEPT d
+                WHERE e.mgr = m.empno (+)
+                AND   e.deptno = d.deptno (+)
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        heading {
+            fixedTo: none
+        }
+        advanced {
+            savedReportMappingIdentifier: 2018482503487131873
+        }
+
+        column COMM (
+            type: plainText
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column CURRENT_TIMESTAMP (
+            type: plainText
+            heading {
+                heading: Current Timestamp
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column DEPTNO (
+            type: plainText
+            heading {
+                heading: Department
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column EMPNO (
+            type: plainText
+            heading {
+                heading: Employee #
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ENAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column HIREDATE (
+            type: plainText
+            heading {
+                heading: Hire date
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column JOB (
+            type: plainText
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column MGR (
+            type: plainText
+            heading {
+                heading: Manager
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ROWID (
+            type: hidden
+            heading {
+                heading: Rowid
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: OTHER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column SAL (
+            type: plainText
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        savedReport 20187955 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn COMM (
+                sequence: 8
+            )
+
+            displayColumn CURRENT_TIMESTAMP (
+                sequence: 10
+            )
+
+            displayColumn DEPTNO (
+                sequence: 9
+            )
+
+            displayColumn EMPNO (
+                sequence: 2
+            )
+
+            displayColumn ENAME (
+                sequence: 3
+            )
+
+            displayColumn HIREDATE (
+                sequence: 6
+            )
+
+            displayColumn JOB (
+                sequence: 4
+            )
+
+            displayColumn MGR (
+                sequence: 5
+            )
+
+            displayColumn ROWID (
+                sequence: 1
+            )
+
+            displayColumn SAL (
+                sequence: 7
+            )
+
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page contains two dynamic actions called 'SETUP TIMER' and 'REFRESH REPORT'. The first dynamic action fires whenever the 'Refrsh every 3 seconds' page item changes and invokes a plug-in that either adds or removes a named timer that acts on the employee region. The second dynamic action performs a refresh on the employees region based on the timer executing.</p>
+                <p>If you watch the Current Timestamp column you will notice the value being refreshed when the item is checked.</p>
+                ```
+        }
+        layout {
+            sequence: 4
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        headerAndFooter {
+            headerText:
+                ```html
+                
+                
+                ```
+        }
+    )
+
+    pageItem P16_REFRESH (
+        type: checkboxGroup
+        label {
+            label: Refresh every 3 seconds
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Refresh every 3 seconds;Y
+        }
+        layout {
+            sequence: 10
+            region: @auto-refresh
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @employees
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    RIR
+                    &APP_PAGE_ID.
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-report (
+        name: REFRESH REPORT
+        execution {
+            sequence: 20
+        }
+        when {
+            event: dynamicAction/plugin-timer/timer_expired
+            selectionType: region
+            region: @employees
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @employees
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction setup-timer (
+        name: SETUP TIMER
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P16_REFRESH
+        }
+        clientSideCondition {
+            type: item=value
+            item: P16_REFRESH
+            value: Y
+        }
+
+        action plugin-com-oracle-apex-timer (
+            action: plugin/timer
+            settings {
+                timerName: report_refresh
+                expireInXMilliseconds: 3000
+            }
+            affectedElements {
+                selectionType: region
+                region: @employees
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action plugin-com-oracle-apex-timer-2 (
+            action: plugin/timer
+            settings {
+                action: removeTimer
+                timerName2: report_refresh
+            }
+            affectedElements {
+                selectionType: region
+                region: @employees
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+)
+

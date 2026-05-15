@@ -1,0 +1,1221 @@
+page 20 (
+    name: Contact Details
+    alias: CONTACT-DETAILS
+    title: Contact Details
+    pageGroup: @contacts
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <script language="JavaScript" type="text/javascript">
+            <!--
+            
+             htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            
+            //-->
+            </script>
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @contacts
+    }
+
+    region address-country (
+        name: Address / Country
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @contact-details
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region contact-details (
+        name: Contact Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Form--stretchInputs
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: CONTACTS
+        }
+    )
+
+    region contact-details-2 (
+        name: Contact Details
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region social (
+        name: Social
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @contact-details
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P20_ADDRESS_LINE1 (
+        type: textField
+        label {
+            label: "Address "
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @address-country
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ADDRESS_LINE1
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Address.
+        }
+    )
+
+    pageItem P20_ADDRESS_LINE2 (
+        type: textField
+        label {
+            label: Address Line 2
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 90
+            region: @address-country
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ADDRESS_LINE2
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Address.
+        }
+    )
+
+    pageItem P20_CELL_PHONE (
+        type: textField
+        label {
+            label: Cell Phone
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 160
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CELL_PHONE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Mobile Phone Number.
+        }
+    )
+
+    pageItem P20_CITY (
+        type: textField
+        label {
+            label: City
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 100
+            region: @address-country
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CITY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter City.
+        }
+    )
+
+    pageItem P20_COMPANY (
+        type: textField
+        label {
+            label: Company
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 70
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMPANY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Company name.
+        }
+    )
+
+    pageItem P20_CONTACT_ID (
+        type: hidden
+        layout {
+            sequence: 5
+            region: @contact-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P20_CONTACT_TYPE_ID (
+        type: selectList
+        label {
+            label: &nbsp;&nbsp;&nbsp;Contact Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @active-contact-types-p
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 50
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_TYPE_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Select Contact Type.
+        }
+    )
+
+    pageItem P20_COUNTRY (
+        type: textField
+        label {
+            label: Country
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 120
+            region: @address-country
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COUNTRY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Country.
+        }
+    )
+
+    pageItem P20_CUSTOMER_ID (
+        type: popupLov
+        label {
+            label: Customer
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select customer_name d, id r
+                from   eba_cust_customers
+                order by 1
+                ```
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The customer name
+        }
+    )
+
+    pageItem P20_EMAIL (
+        type: textField
+        label {
+            label: Email
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 140
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 250
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: EMAIL
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Email Address.
+        }
+    )
+
+    pageItem P20_FACEBOOK (
+        type: textField
+        label {
+            label: Facebook
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 310
+            region: @social
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 250
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FACEBOOK
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Email Address.
+        }
+    )
+
+    pageItem P20_FAX (
+        type: textField
+        label {
+            label: Fax
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 170
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FAX
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Fax Number.
+        }
+    )
+
+    pageItem P20_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @contact-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P20_LINKEDIN (
+        type: textField
+        label {
+            label: LinkedIn
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 320
+            region: @social
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 250
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LINKEDIN
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Email Address.
+        }
+    )
+
+    pageItem P20_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NAME
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Contact Name.
+        }
+    )
+
+    pageItem P20_NOTES (
+        type: textarea
+        label {
+            label: Notes
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 190
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NOTES
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter short note about the Contact.
+        }
+    )
+
+    pageItem P20_PHONE (
+        type: textField
+        label {
+            label: Phone
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 150
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PHONE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Phone Number.
+        }
+    )
+
+    pageItem P20_REQUEST (
+        type: hidden
+        layout {
+            sequence: 300
+            region: @contact-details-2
+            slot: regionBody
+        }
+        source {
+            type: item
+            item: P20_REQUEST
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P20_STATE (
+        type: textField
+        label {
+            label: State
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @address-country
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STATE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter State.
+        }
+    )
+
+    pageItem P20_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                  from eba_cust_tags_type_sum
+                 where content_type = 'CONTACT'
+                 order by 1
+                
+                ```
+        }
+        layout {
+            sequence: 192
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: List of tags
+        }
+    )
+
+    pageItem P20_TITLE (
+        type: textField
+        label {
+            label: Title
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 60
+            region: @contact-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TITLE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Title of Contact.
+        }
+    )
+
+    pageItem P20_TWITTER (
+        type: textField
+        label {
+            label: Twitter
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 330
+            region: @social
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 250
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TWITTER
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Email Address.
+        }
+    )
+
+    pageItem P20_ZIP (
+        type: textField
+        label {
+            label: Zip
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 130
+            region: @address-country
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            maxLength: 10
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ZIP
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Zip Code.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @contact-details-2
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 18
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Customer Contact
+        layout {
+            sequence: 40
+            region: @contact-details-2
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P20_ID
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @contact-details-2
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_ID
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @contact-details-2
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_ID
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    validation fb-url-must-start-with-http (
+        name: FB URL must start with http
+        execution {
+            sequence: 30
+        }
+        validation {
+            plsqlExpression: substr(:P20_FACEBOOK, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P20_FACEBOOK
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_FACEBOOK
+        }
+    )
+
+    validation linkedin-url-must-start-with-http (
+        name: LINKEDIN URL must start with http
+        execution {
+            sequence: 40
+        }
+        validation {
+            plsqlExpression: substr(:P20_LINKEDIN, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P20_LINKEDIN
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_LINKEDIN
+        }
+    )
+
+    validation p20-name-not-null (
+        name: P20_NAME Not Null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody: return trim(:P20_NAME) is not null
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P20_NAME
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    validation twitter-url-must-start-with-http (
+        name: Twitter URL must start with http
+        execution {
+            sequence: 50
+        }
+        validation {
+            plsqlExpression: substr(:P20_TWITTER, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P20_TWITTER
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_TWITTER
+        }
+    )
+
+    validation valid-characters-in-tags (
+        name: Valid Characters in Tags
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P20_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P20_TAGS
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    process fetch-row-from-eba-cust-contacts (
+        name: Fetch Row from EBA_CUST_CONTACTS
+        type: autoRowFetch
+        source {
+            tableName: EBA_CUST_CONTACTS
+            pkColumn: ID
+            pkItem: P20_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 17804317739846366580
+        }
+    )
+
+    process load-data (
+        name: Load Data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :REQUEST = 'CONTACTS' then
+                   eba_cust.eba_cust_add_views_log('CON',:P20_ID);
+                end if ;
+                ```
+        }
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 17825911953681978723
+        }
+    )
+
+    process process-row-of-eba-cust-contacts (
+        name: Process Row of EBA_CUST_CONTACTS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CUST_CONTACTS
+            pkColumn: ID
+            pkItem: P20_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_CUST_CONTACTS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 17804317953685366580
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 17804318152872366580
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 18
+            }
+            saveStateBeforeBranching: true
+        }
+    )
+
+)
+

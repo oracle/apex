@@ -1,0 +1,364 @@
+page 42 (
+    name: Sales History Calendar
+    alias: SALES-HISTORY-CALENDAR
+    title: Sales History Calendar
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region facets (
+        name: Facets
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+        advanced {
+            htmlDomId: active_facets
+            regionDisplaySelector: true
+        }
+    )
+
+    region facets-2 (
+        name: Facets
+        type: facetedSearch
+        source {
+            filteredRegion: @sales-history
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            displayChartForTopNValues: 10
+        }
+
+        facet P42_PRODUCT (
+            type: checkboxGroup
+            label {
+                label: Product
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: PRODUCT
+            }
+        )
+
+        facet P42_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        facet P42_THE_MONTH (
+            type: checkboxGroup
+            label {
+                label: Month
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: THE_MONTH
+            }
+        )
+
+    )
+
+    region sales-history (
+        name: Sales History
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    i.item_Name    product,
+                    h.DATE_OF_SALE,
+                    to_char(h.DATE_OF_SALE,'YYYY.MM') the_month,
+                    to_char(sum(h.QUANTITY * h.ITEM_PRICE),'FM999G999G999G999G990D00')  sale,
+                    to_char(sum(h.QUANTITY),'FM999G999G999G999G990') units,
+                    i.id product_id
+                from #OWNER#.OOW_DEMO_SALES_HISTORY h,
+                     #OWNER#.OOW_DEMO_STORE_PRODUCTS p,
+                     #OWNER#.OOW_DEMO_ITEMS i
+                where 
+                      p.ITEM_ID = h.PRODUCT_ID and
+                      p.item_id = i.id
+                group by 
+                         i.item_Name, 
+                         i.id,
+                         h.DATE_OF_SALE, 
+                         to_char(h.DATE_OF_SALE,'YYYY.MM')
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            displayColumn: PRODUCT
+            startDateColumn: DATE_OF_SALE
+            supplementalInfo:
+                ```html
+                Sale: $&SALE.<br>
+                Units: &UNITS.
+                ```
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+            viewEditLink: {
+                page: 18
+                items: {
+                    P18_ID: &PRODUCT_ID.
+                }
+                clearCache: 18
+                action: resetPagination
+            }
+            export: csv
+        }
+    )
+
+    region timer (
+        name: Timer
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   x clob;
+                begin
+                    x := to_char(oow_demo_timing.get_elap,'99G9990D000')||' seconds';
+                    return x;
+                end;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P42_NAVIGATION (
+        type: selectList
+        label {
+            label: Navigation
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @sales-history-navigation
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    button reset (
+        buttonName: reset
+        label: Reset
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 42
+                clearCache: 42
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction on-report-view-change (
+        name: on report view change
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P42_NAVIGATION
+        }
+
+        action native-submit-page (
+            action: submitPage
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process start-timer (
+        name: start timer
+        type: executeCode
+        source {
+            plsqlCode: oow_demo_timing.START_TIMER;
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 12340796519782682033
+        }
+    )
+
+    branch (
+        name: branch to requested page
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &P42_NAVIGATION.
+                clearCache: &P42_NAVIGATION.
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

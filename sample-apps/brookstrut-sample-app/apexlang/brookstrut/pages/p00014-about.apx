@@ -1,0 +1,324 @@
+page 14 (
+    name: About
+    alias: ABOUT
+    title: About
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            div.helpContainer{width:960px;margin:16px auto;zoom:1}
+            div.helpContainer:before,div.helpContainer:after{content:"\0020";display:block;height:0;overflow:hidden}
+            div.helpContainer:after{clear:both}
+            div.helpContainer div.helpSide{float:left;width:300px}
+            div.helpContainer div.helpSide h1.appNameHeader{position:relative;font:bold 22px/36px Arial,sans-serif;color:#404040;padding:0;margin:0}
+            div.helpContainer div.helpSide h1.appNameHeader img{display:block;position:absolute;left:0;top:0}
+            div.helpContainer div.helpMain{float:right;border-left:1px solid #EEE;width:632px;padding-left:16px}
+            div.helpContainer div.helpMain h2{font:bold 20px/32px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h3{font:bold 16px/24px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h4{font:bold 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain p{font:normal 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain ul{list-style:outside disc;margin:0 0 0 24px}
+            div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}
+            div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}
+            img.appIcon.maps {background-image:url(#APP_IMAGES#app_icon.png);}
+            
+            div.helpContainer div.helpMain ol {margin:0 0 0 24px}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This application is a very simplified retail sales analysis app designed to illustrate and highlight various Oracle APEX capabilities.   
+                    Use this application to generate random sales transaction data and visualize the data.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       AUTHENTICATION_SCHEME_TYPE authentication,
+                       BUILD_STATUS,
+                       FRIENDLY_URL FRIENDLY_URLs,
+                       COMPATIBILITY_MODE,
+                       'Oracle' vendor
+                from apex_applications aa
+                where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 1
+            slot: body
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            cssClasses: t-HeroRegion--featured
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-192.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App version
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column AUTHENTICATION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Authentication
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column BUILD_STATUS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Build Status
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column COMPATIBILITY_MODE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Compatibility Mode
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+        column FRIENDLY_URLS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Friendly URLs
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+                alignment: end
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 80
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region features (
+        name: Features
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ul>
+                <li>Random transaction generation and reporting</li>
+                <li>Progressive Web App (PWA) installable</li>
+                <li>Partial Page Refresh</li>
+                <li>Oracle APEX Dynamic Actions</li>
+                <li>Content Rows and Content Row Menus</li>
+                <li>Charting</li>
+                <li>Faceted Search</li>
+                <li>Smart Search</li>
+                <li>Interactive Reports</li>
+                <li>Modal Dialogs</li>
+                <li>Database data entry forms</li>
+                <li>PL/SQL application logic (transaction generation)</li>
+                <li>Universal Theme with Redwood Lite UX design</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region help-container (
+        name: Help Container
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

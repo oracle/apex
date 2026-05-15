@@ -1,0 +1,334 @@
+page 175 (
+    name: Add Initiative - Confirm
+    alias: ADD-INITIATIVE-CONFIRM
+    title: Add Initiative - Confirm
+    pageGroup: @initiatives
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: wizardButtons
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region the-following-nomenclature-initiative-will-be-created (
+        name: The following &NOMENCLATURE_INITIATIVE. will be created
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_clob            clob;
+                   l_status_scale    varchar2(60);
+                   l_default_tasks   number;
+                   l_focus_areas     number;
+                begin
+                
+                    select scale_name
+                      into l_status_scale
+                      from sp_project_scales
+                     where scale_letter = :P171_STATUS_SCALE;
+                
+                    select count(*)
+                      into l_default_tasks
+                      from apex_collections
+                     where collection_name = 'INITIATIVE_DEFAULT_TASKS';
+                
+                    select count(*)
+                      into l_focus_areas
+                      from apex_collections
+                     where collection_name = 'INITIATIVE_FOCUS_AREAS';
+                
+                    l_clob := 'Name: <strong>'|| apex_escape.html(:P170_INITIATIVE) ||'</strong><br/>'||
+                              'Default Completeness Scale: '||l_status_scale||'<br/>'||
+                              'Default Tasks: '||l_default_tasks||'<br/>'||
+                              'Focus Areas: '||l_focus_areas;
+                
+                    return l_clob;
+                end;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: wizardBody
+        }
+        appearance {
+            template: @/wizard-container
+            templateOptions: [
+                #DEFAULT#
+                t-Wizard--showTitle
+                t-Wizard--hideStepsXSmall
+                margin-left-lg
+                margin-right-lg
+            ]
+        }
+    )
+
+    pageItem P175_NEW_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @the-following-nomenclature-initiative-will-be-created
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-left
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-status-scale-report (
+        name: refresh status scale report
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P175_STATUS_SCALE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P175_STATUS_SCALE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process clean-up (
+        name: clean up
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.delete_collection (
+                    p_collection_name => 'INITIATIVE_DEFAULT_TASKS');
+                
+                apex_collection.delete_collection (
+                    p_collection_name => 'INITIATIVE_FOCUS_AREAS');
+                
+                if :P170_IMAGE_SELECTED is not null then
+                    delete from apex_application_temp_files
+                     where application_id = :APP_ID
+                       and name = :P170_IMAGE_SELECTED;
+                end if;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 13147942806712775950
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process create-initiative (
+        name: create initiative
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_initiative_id  number;
+                begin
+                    insert into sp_initiatives
+                        (area_id, initiative, objective,
+                         sponsor_id, tags, hidden_by_default_yn,
+                         status_scale)
+                    values
+                        (:P170_FOCUS_AREA_ID, :P170_INITIATIVE, :P170_OBJECTIVE,
+                         :P170_SPONSOR_ID, :P170_TAGS, 'N',
+                         :P171_STATUS_SCALE)
+                    returning id into l_initiative_id;
+                
+                    if :P170_IMAGE_SELECTED is not null then
+                        for c1 in (
+                            select * from apex_application_temp_files
+                             where application_id = :APP_ID
+                               and name = :P170_IMAGE_SELECTED
+                        ) loop
+                            update sp_initiatives
+                               set image = c1.blob_content,
+                                   image_name = c1.filename,
+                                   image_mimetype = c1.mime_type,
+                                   image_last_updated = c1.created_on
+                             where id = l_initiative_id;
+                        end loop;
+                    end if;
+                
+                    insert into sp_initiative_default_tasks 
+                        (initiative_id, type_id)
+                    select l_initiative_id, n001
+                      from apex_collections
+                     where collection_name = 'INITIATIVE_DEFAULT_TASKS';
+                
+                    insert into sp_initiative_focus_areas
+                        (initiative_id, focus_area, development_owner_id, description, display_sequence)
+                    select l_initiative_id, c001, n001, c002, seq_id
+                      from apex_collections
+                     where collection_name = 'INITIATIVE_FOCUS_AREAS'
+                       and c001 is not null;
+                
+                    :P175_NEW_INITIATIVE_ID := l_initiative_id;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Initiative created.
+        }
+        advanced {
+            executionMappingIdentifier: 13231296687181623811
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    branch (
+        name: previous
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: 174
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @previous
+        }
+    )
+
+    branch (
+        name: CREATE
+        execution {
+            sequence: 40
+        }
+        behavior {
+            target: {
+                page: 94
+                items: {
+                    P94_INITIATIVE_ID: &P175_NEW_INITIATIVE_ID.
+                }
+                clearCache: 94
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+)
+

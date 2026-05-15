@@ -1,0 +1,210 @@
+page 1908 (
+    name: Dynamic Content Region
+    alias: DYNAMIC-CONTENT-REGION
+    title: Dynamic Content Region- &APP_TITLE.
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region demo-2 (
+        name: Demo
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                
+                 cursor c_tasks is
+                   select task_name, assigned_to
+                     from eba_ut_chart_tasks
+                    where rownum < 5;
+                 
+                begin
+                  sys.htp.p('<ul>');
+                  for a in c_tasks
+                  loop
+                    sys.htp.p('<li>' || apex_escape.html(a.task_name) || ' (' || apex_escape.html(a.assigned_to) || ')</li>' );
+                  end loop;
+                  sys.htp.p('</ul>');
+                end;
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><strong>Dynamic Content</strong> region is based on PL/SQL enable you to render any HTML or text using the PL/SQL Web Toolkit, with Dynamic Content Region you can control the region performance and contains support for MLE.</p>
+                <p class="dm-Hero-steps">Set <strong>Dynamic Content</strong> as the Region type.</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-code (
+        name: Sample Code
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 60
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            regionStaticId: Demo1
+        }
+    )
+
+)
+

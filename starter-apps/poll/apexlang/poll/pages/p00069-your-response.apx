@@ -1,0 +1,117 @@
+page 69 (
+    name: Your Response
+    alias: YOUR-RESPONSE
+    title: Your Response
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @can-view-your-response
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body-3
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region your-response (
+        name: Your Response
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                -- CHANGES HERE ALSO NEED TO BE MADE ON PAGE 73
+                sys.htp.p('<h2>'||:POLL_NAME||'</h2>');
+                
+                for c1 in (
+                select r.id, round(r.grade,1) grade, nvl(r.is_valid_yn,'Y') is_valid, 
+                       r.validation_errors, r.updated
+                from EBA_QPOLL_POLLS p,
+                     EBA_QPOLL_RESULTS r
+                where p.id = :POLL_ID
+                  and p.id = r.poll_id 
+                  and ( (p.anonymous_yn = 'Y' and r.APEX_SESSION_ID = :APP_SESSION)
+                        or
+                        (p.anonymous_yn = 'N' and r.apex_user = :APP_USER) )
+                ) loop
+                sys.htp.p('<p>Submitted: '||apex_util.get_since(c1.updated)||'</p>');
+                
+                if :POLL_OR_QUIZ = 'Q' then
+                   sys.htp.p('<p>Score: '||apex_escape.html(c1.grade)||' %</p>');
+                end if;
+                
+                if c1.is_valid = 'N' then
+                   sys.htp.p('<p>Errors with Submission: '||apex_escape.html(c1.validation_errors)||'</p>');
+                end if;
+                
+                for c2 in (
+                select id, QUESTION, display_sequence, 
+                     ANSWER_01, 
+                     answer_02, 
+                     answer_03, 
+                     answer_04, 
+                     answer_05,
+                     answer_correct_yn
+                from EBA_QPOLL_RESULT_DETAILS
+                where result_id = c1.id
+                ) loop
+                sys.htp.p('<p>');
+                if :POLL_OR_QUIZ = 'Q' and c2.answer_correct_yn = 'N' then
+                   sys.htp.p('<img src="#IMAGE_PREFIX#menu/inline_error_16x16.gif" alt="Wrong Answer" /> ');
+                end if;
+                sys.htp.p('Question: '||c2.display_sequence||': <strong>'|| apex_escape.html(c2.question)||'</strong></p>');
+                sys.htp.p('<p>Answer: ');
+                sys.htp.p(apex_escape.html(c2.answer_01));
+                sys.htp.p(apex_escape.html(c2.answer_02));
+                sys.htp.p(apex_escape.html(c2.answer_03));
+                sys.htp.p(apex_escape.html(c2.answer_04));
+                sys.htp.p(apex_escape.html(c2.answer_05));
+                -- need to add to 10 answers
+                sys.htp.p('</p>');
+                end loop;
+                
+                end loop;
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body-3
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+)
+

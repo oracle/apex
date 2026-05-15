@@ -1,0 +1,134 @@
+page 10 (
+    name: Manage Example Data
+    alias: MANAGE-EXAMPLE-DATA
+    title: Manage Example Data
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region manage-sample-data (
+        name: Manage Sample Data
+        type: staticContent
+        source {
+            htmlCode: <span class="infoTextRegion"><p>Manage the sample data that ships with this application for demonstration purposes.</p></span>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 7
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button recreate (
+        buttonName: recreate
+        label: Recreate
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process recreate-data (
+        name: recreate data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                EBA_DEMO_FILE_DATA.remove_data;
+                EBA_DEMO_FILE_DATA.load_data;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Sample data re-created.
+        }
+        advanced {
+            executionMappingIdentifier: 3241222206390073954
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 7
+            }
+        }
+        comments {
+            comments: Created 27-APR-2012 07:42 by MIKE
+        }
+    )
+
+)
+

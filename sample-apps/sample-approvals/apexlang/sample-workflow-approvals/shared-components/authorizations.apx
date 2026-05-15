@@ -1,0 +1,17 @@
+authorization operations-team (
+    name: Operations Team
+    type: existsSqlQuery
+    settings {
+        sqlQuery:
+            ```sql
+            select null
+            from eba_demo_appr_emp
+            where ename = :APP_USER
+            and deptno  = 40 /* OPERATIONS */
+            ```
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not on the Operations team
+    }
+)
+

@@ -1,0 +1,283 @@
+page 75 (
+    name: Confirm Enabling Access
+    alias: CONFIRM-ENABLING-ACCESS
+    title: Confirm Enabling Access
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .acl-Info {
+              display: block;
+              overflow: hidden;
+            }
+            .acl-Info-statusBox,
+            .acl-Info-usersBox {
+              display: block;
+              float: left;
+              width: 50%;
+            }
+            .acl-Info-statusBox {
+              text-align: center;
+            }
+            .acl-Info-heading {
+              display: block;
+              font-size: 16px;
+              margin: 16px 16px 8px 16px;
+              font-weight: bold;
+              color: #404040;
+            }
+            .acl-Info-heading span {
+              color: #707070;
+              font-weight: normal;
+            }
+            .acl-Info-status {
+              display: block;
+              width: 50%;
+              margin: 0 auto 8px auto;
+              padding: 12px 0;
+              border: 1px solid #D0D0D0;
+              border-radius: 2px;
+              font-size: 20px;
+              line-height: 20px;
+              color: #404040;
+              font-weight: bold;
+              background-color: #F0F0F0;
+            }
+            .authScheme .acl-Info-status {
+              font-size: 16px;
+              width: 70%
+            }
+            .acl-Info-status.is-enabled {
+              background-color: #40C230;
+              border-color: #37A62A;
+              color: #FFF;
+              text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+            }
+            .acl-Info-status.is-disabled {
+              background-color: #DE3038;
+              border-color: #A0242A;
+              color: #FFF;
+              text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+            }
+            .acl-Info-changeStatusLink {
+              display: inline-block;
+              padding: 8px 0;
+              color: #404040;
+              text-decoration: none;
+              font-size: 11px;
+              background-color: #F0F0F0;
+              border: 1px solid #D0D0D0;
+              margin: 0 16px 16px 16px;
+              border-radius: 2px;
+              width: 50%;
+            }
+            .acl-Info-changeStatusLink:hover {
+              background-color: #fff;
+              border-color: #C0C0C0;
+              box-shadow: 0 1px 1px rgba(0,0,0,.15);
+            }
+            .acl-Info-changeStatusLink:active {
+              background-color: #E0E0E0;
+              border-color: #C0C0C0;
+              box-shadow: 0 1px 1px rgba(0,0,0,.25) inset;
+            }
+            .acl-Info-users {
+              margin: 0;
+              list-style: none;
+              padding: 0;
+              margin: 0;
+              border-left: 1px solid #F0F0F0;
+            }
+            .acl-Info-user {
+              border-top: 1px solid #F0F0F0;
+            }
+            .acl-Info-userLink {
+              text-decoration: none;
+              display: block;
+              padding: 8px;
+            }
+            .acl-Info-userLink:hover {
+              background-color: #689AD8;
+            }
+            .acl-Info-user:first-child {
+              border-top: none;
+            }
+            .acl-Info-userType,
+            .acl-Info-userCount {
+              display: block;
+              font-size: 14px;
+            }
+            .acl-Info-userType {
+              font-weight: bold;
+              float: left;
+              margin-right: 8px;
+              line-height: 32px;
+            }
+            .acl-Info-userLink:hover .acl-Info-userType {
+              color: #FFF;
+            }
+            .acl-Info-userCount {
+              display: block;
+              overflow: hidden;
+              text-align: right;
+            }
+            .acl-Info-userCount span {
+              display: inline-block;
+              padding: 8px;
+              background-color: #F8F8F8;
+              color: #404040;
+              line-height: 16px;
+              min-width: 36px;
+              text-decoration: none;
+              text-align: right;
+              border-radius: 2px;
+            }
+            .acl-Info-desc {
+                padding: 16px;
+                border-top: 1px solid #E0E0E0;
+                border-bottom: 1px solid #E0E0E0;
+                background: #F8F8F8;
+                font-size: 14px;
+                clear: both;
+            }
+            .acl-Info-desc>p:last-child {
+              margin-bottom: 0;
+            }
+            
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region confirm-enabling-access-control (
+        name: Confirm Enabling Access Control
+        type: staticContent
+        source {
+            htmlCode: <p>Enabling Access Control allows access to the application and its features to be controlled by an Access Control List (ACL).  Until access control is enabled all authenticated users are administrators.</p>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/wizard-container
+            templateOptions: [
+                #DEFAULT#
+                t-Wizard--hideStepsSmall
+            ]
+        }
+        advanced {
+            htmlDomId: confirmEnableACL
+        }
+    )
+
+    button enable-access-control (
+        buttonName: ENABLE_ACCESS_CONTROL
+        label: Enable Access Control
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process close-modal (
+        name: CLose Modal
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 14371171379351458566
+        }
+    )
+
+    process enable-access-control (
+        name: ENABLE_ACCESS_CONTROL
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                -- Set AC flag
+                eba_cust_fw.set_preference_value('ACCESS_CONTROL_ENABLED','Y');
+                
+                -- Seed user table with current user as an administrator or set the current user as administrator
+                declare
+                   l_count number;
+                begin
+                    select count(*)
+                      into l_count
+                      from eba_cust_users
+                     where username = :APP_USER
+                       and access_level_id = 3;
+                    if l_count = 0 then
+                        insert into eba_cust_users(username, access_level_id) values (:APP_USER, 3);
+                    end if;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: "Access Control enabled and the current user '&APP_USER.' has been set to be an Administrator. "
+        }
+        error {
+            errorMessage: Error
+        }
+        advanced {
+            executionMappingIdentifier: 14371171210556458565
+        }
+        serverSideCondition {
+            whenButtonPressed: @enable-access-control
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

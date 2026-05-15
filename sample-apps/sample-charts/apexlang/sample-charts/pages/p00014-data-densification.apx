@@ -1,0 +1,510 @@
+page 14 (
+    name: Data Densification
+    alias: DATA-DENSIFICATION
+    title: Data Densification
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            ul.barGraph{margin:12px !important;list-style:none;white-space:nowrap}
+            ul.barGraph li{display:inline-block;width:48px}
+            ul.barGraph li:hover big small{background-color:#4A6D98}
+            ul.barGraph li.barHeaders{width:128px}
+            ul.barGraph li.barHeaders > span{text-align:left}
+            ul.barGraph li > label{display:block;font:normal 11px/12px Arial,sans-serif;color:#444;text-align:center}
+            ul.barGraph li > label span{display:block;font:normal 11px/12px Arial,sans-serif;color:#767676}
+            ul.barGraph li > big{height:120px;margin:8px;position:relative;display:block}
+            ul.barGraph li > big > small{display:block;position:absolute;bottom:0;width:30px;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;background-color:#6A9CDA;-moz-box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;-webkit-box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;border:1px solid #4A6D98}
+            ul.barGraph li > span{display:block;text-align:center;font:normal 11px/16px Arial,sans-serif;color:#444;border-top:1px solid #F0F0F0;padding:8px}
+            ul.barGraph li > span.noBorder{border-top:none;padding-top:0}
+            ul.barGraph li > span a{color:##405580}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>&PRODUCT_NAME. 5.1.3 introduced data densification logic, to automatically handle injecting missing data points in multi-series charts.  
+                
+                With &PRODUCT_NAME. 5.1.3, we introduced data densification logic, to automatically handle the injection of missing data points in a multi-series query.  Any ORDER BY defined in the query will not be respected.  Prior to 5.1.3, numerous customers got caught out by having missing data points in the chart JSON, thus resulting in data elements being rendered incorrectly on their charts.  With patch releases we cannot introduce any UI changes, so the data densificiation logic is automatically applied to charts with multiples series of data.  With our new release, 18.1, we have introduced a new 'Fill Gaps in Chart Data' chart-level option, that will allow you to opt out of having the densification logic applied to your chart, if you wish.  By default, the new option will be set to 'Yes'.  When set to Yes, we will apply data densification logic and default ordering by label, ascending.  This corresponds with the behaviour you currently experience with 5.1.3 & 5.1.4.  We have introduced an associated item, 'Sort Order', to allow you to define the ordering of the chart data - value-ascending, value-descending, label-ascending, label-descending. That 'Sort Order' option will only be available when 'Fill Gaps in Chart Data' is set to 'Yes'.  When set to No, our data densification logic will not be applied to the chart.  In that case, the customer will have to ensure that their chart query correctly handles the generation of a multi-series chart with a data point for every x-axis label. For a single series chart, customers must use an ORDER BY clause in the chart query, to control the ordering of data elements.
+                
+                We have included a number of examples on this page to demonstrate the new options.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-code-group
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region multi-series-chart-densified-sorted-by-label-desc (
+        name: Multi-Series Chart - Densified, Sorted By Label, desc
+        type: chart
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: The <strong>Fill Gaps in Chart Data</strong> chart-level attribute is set to <strong>On</strong>, and associated attribute <strong>Sort Order</strong> is set to <strong>Label-Descending</strong>, meaning that densification logic is applied, and we will automatically inject any missing data points in the chart series JSON.  The Sort Order setting controls the ordering of the chart data.
+        }
+        title {
+            title: Jobs By Department
+        }
+        chartLayout {
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        multiSeriesChartData {
+            sortOrder: labelDesc
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series jobs-by-department (
+            name: Jobs By Department
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select job, deptno, avg(sal) avg_sal 
+                      from eba_demo_chart_emp 
+                     group by job, deptno 
+                     order by deptno
+                    ```
+            }
+            columnMapping {
+                seriesName: JOB
+                label: DEPTNO
+                value: AVG_SAL
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 29
+                    items: {
+                        P29_DEPTNO: &DEPTNO.
+                    }
+                    action: resetPagination
+                }
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region multi-series-chart-stacked-with-stack-label (
+        name: Multi-Series Chart - Stacked, with Stack Label
+        type: chart
+        layout {
+            sequence: 90
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: The <strong>Fill Gaps in Chart Data</strong> chart-level attribute is set to <strong>On</strong>, and associated attribute <strong>Sort Order</strong> is set to <strong>Label-Descending</strong>, and <strong>Render Gap as Zero</strong> is set to <strong>On</strong>, meaning that densification logic is applied, and we will automatically inject any missing data points in the chart series JSON. Those injected data points will have a value of zero.  The Sort Order setting controls the ordering of the chart data.
+        }
+        title {
+            title: Average Salary By Department
+        }
+        chartAppearance {
+            stack: true
+            stackLabel: true
+        }
+        chartLayout {
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        multiSeriesChartData {
+            sortOrder: labelDesc
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series jobs-by-department (
+            name: Jobs By Department
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select job, deptno, avg(sal) avg_sal 
+                      from eba_demo_chart_emp 
+                     group by job, deptno 
+                     order by deptno
+                    ```
+            }
+            columnMapping {
+                seriesName: JOB
+                label: DEPTNO
+                value: AVG_SAL
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 29
+                    items: {
+                        P29_DEPTNO: &DEPTNO.
+                    }
+                    action: resetPagination
+                }
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region multi-series-chart-using-order-by (
+        name: Multi-Series Chart - using ORDER BY
+        type: chart
+        layout {
+            sequence: 100
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: The <strong>Fill Gaps in Chart Data</strong> chart-level attribute is set to <strong>No</strong>, meaning that no densification logic is applied, and the customer's query is responsible for fully populating the chart series JSON.  The query ORDER BY clause is respected, controlling the ordering of the chart data.
+        }
+        title {
+            title: Jobs By Department
+        }
+        chartLayout {
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series jobs-by-department (
+            name: Jobs By Department
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select d.deptno, 
+                            e.job, 
+                            avg( e.sal ) avg_sal   
+                       from eba_demo_chart_dept d  
+                            left outer join 
+                            eba_demo_chart_emp e 
+                            partition by ( e.job )  
+                            on d.deptno = e.deptno  
+                      group by d.deptno, e.job   
+                      order by d.deptno, e.job
+                    ```
+            }
+            columnMapping {
+                seriesName: JOB
+                label: DEPTNO
+                value: AVG_SAL
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 29
+                    items: {
+                        P29_DEPTNO: &DEPTNO.
+                    }
+                    action: resetPagination
+                }
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region single-series-chart-using-order-by-value-asc (
+        name: Single Series Chart - using ORDER BY (Value, asc)
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: bar_1
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: The <strong>Fill Gaps in Chart Data</strong> chart-level attribute is ignored for a single-series chart.  The chart series ORDER BY is respected, controlling the ordering of the chart data.
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        chartLayout {
+            height: 340
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        animation {
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            show: false
+        }
+
+        series fruit-sales (
+            name: Fruit Sales
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    order by b.quantity asc
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+                baselineScaling: min
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

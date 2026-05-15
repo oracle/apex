@@ -1,0 +1,669 @@
+page 60 (
+    name: Task Images
+    alias: TASK-IMAGES
+    title: &P60_TASK_NAME. - Images
+    pageGroup: @projects
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region facets (
+        name: Facets
+        type: facetedSearch
+        source {
+            filteredRegion: @images
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P60_AUTHOR (
+            type: checkboxGroup
+            label {
+                label: Contributor
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: AUTHOR
+            }
+        )
+
+        facet P60_FILE_EXTENSION (
+            type: checkboxGroup
+            label {
+                label: File Extension
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: FILE_EXTENSION
+            }
+        )
+
+        facet P60_MONTH_CREATED (
+            type: checkboxGroup
+            label {
+                label: Month Created
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: MONTH_CREATED
+            }
+        )
+
+        facet P60_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        facet P60_TAGS (
+            type: checkboxGroup
+            label {
+                label: Tags
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: TAGS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+    )
+
+    region images (
+        name: Images
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.ID,
+                       d.DOCUMENT_FILENAME,
+                       d.document_mimetype,
+                       d.document_lastupd,
+                       UPDATED,
+                       d.created,
+                       d.tags,
+                       case when length(d.doc_description) > 200
+                            then substr(d.doc_description,1,200)||'...'
+                            else d.doc_description
+                            end doc_description,
+                       d.DOCUMENT_BLOB,
+                       lower(created_by) author,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) doc_size,
+                       apex_util.get_since(created) created_since,
+                       d.created date_created,
+                       lower(substr(DOCUMENT_FILENAME,instr(DOCUMENT_FILENAME,'.',-1)+1,length(DOCUMENT_FILENAME)-instr(DOCUMENT_FILENAME,'.',-1))) file_extension,
+                       to_char(d.created,'YYYY.MM') month_created
+                  from SP_TASK_DOCUMENTS d
+                 where task_id = :P60_TASK_ID and 
+                       (
+                           lower(DOCUMENT_FILENAME) like '%.png' or 
+                           lower(DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(DOCUMENT_FILENAME) like '%.avif' or 
+                           lower(DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                order by created desc
+                
+                ```
+            pageItemsToSubmit: P60_TASK_ID
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: DOCUMENT_FILENAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: &AUTHOR. - &CREATED_SINCE.
+        }
+        secondaryBody {
+            advancedFormatting: true
+            htmlExpression: &DOC_DESCRIPTION.
+        }
+        media {
+            source: blobColumn
+            blobColumn: DOCUMENT_BLOB
+        }
+        blobAttributes {
+            mimeTypeColumn: DOCUMENT_MIMETYPE
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 505
+                    items: {
+                        P505_ID: &ID.
+                        P505_PREV_PAGE: 60
+                    }
+                    clearCache: 505
+                }
+            }
+        )
+
+    )
+
+    region task (
+        name: Task
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with today as (select trunc(sysdate) day from dual)
+                select r.ID,
+                       p.INITIATIVE_ID,
+                       i.initiative,
+                       f.area focus_area,
+                       f.id focus_area_id,
+                       (select project from sp_projects where id = r.project_id) project,
+                       r.project_id,
+                       (select case when first_name is not null or last_name is not null
+                                    then first_name||' '||last_name
+                                    else email
+                                    end
+                               from sp_team_members t where t.id = r.owner_id) the_owner,
+                       r.owner_id,
+                       s.status,
+                       r.start_date,
+                       r.target_complete,
+                       case when s.indicates_complete_yn = 'N' and
+                                 r.target_complete is not null
+                            then least(5, trunc(r.target_complete) - trunc(r.target_complete, 'iw') + 1)
+                                 - least(5, today.day - trunc(today.day, 'iw') + 1)
+                                 + (trunc(r.target_complete, 'iw') - trunc(today.day, 'iw')) * 5 / 7
+                       end weekdays_left,
+                       r.updated
+                  from sp_tasks r,
+                       sp_task_statuses s,
+                       today,
+                       SP_PROJECTS p, 
+                       SP_INITIATIVES i,
+                       SP_AREAS f
+                 where r.id = :P60_TASK_ID
+                   and r.status_id = s.id
+                   and r.project_id = p.id
+                   and p.initiative_id = i.id
+                   and i.area_id = f.id
+                ```
+            pageItemsToSubmit: P60_TASK_ID
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 150
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_FOCUS_AREA: #FOCUS_AREA#
+                    }
+                    clearCache: 23
+                }
+                linkText: #FOCUS_AREA#
+            }
+        )
+
+        column FOCUS_AREA_ID (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 280
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Initiative
+            }
+            layout {
+                sequence: 160
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_INITIATIVE_ID: #INITIATIVE_ID#
+                    }
+                    clearCache: 94
+                }
+                linkText: #INITIATIVE#
+            }
+        )
+
+        column INITIATIVE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 260
+            }
+        )
+
+        column OWNER_ID (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 240
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 170
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        P3_PROJECT_ID: #PROJECT_ID#
+                    }
+                    clearCache: 3
+                }
+                linkText: #PROJECT#
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 250
+            }
+        )
+
+        column START_DATE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 200
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 190
+            }
+        )
+
+        column TARGET_COMPLETE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 210
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+        )
+
+        column THE_OWNER (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 180
+            }
+            link {
+                target: {
+                    page: 5
+                    items: {
+                        P5_ID: #OWNER_ID#
+                    }
+                    clearCache: 5
+                }
+                linkText: #THE_OWNER#
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 230
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column WEEKDAYS_LEFT (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Weekdays Left
+                alignment: end
+            }
+            layout {
+                sequence: 220
+                columnAlignment: end
+            }
+        )
+
+    )
+
+    pageItem P60_TASK_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @images
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P60_TASK_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @images
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-document (
+        buttonName: add_document
+        label: Add Document
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 504
+                items: {
+                    P504_TASK_ID: &P60_TASK_ID.
+                }
+                clearCache: 504
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 502
+                items: {
+                    P502_TASK_ID: &P60_TASK_ID.
+                }
+                clearCache: 502
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dc (
+        name: DC
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @images
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @facets
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p60-task-name (
+        itemName: P60_TASK_NAME
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select (select task_type from sp_task_types rt where rt.id = task_type_id)||
+                           case when task_sub_type_id is not null then ': ' end ||
+                           (select task_type from sp_task_types rt where rt.id = task_sub_type_id) ||
+                       case when task is not null then ' - '||task end type
+                  from sp_tasks
+                 where id = :P60_TASK_ID
+                ```
+        }
+    )
+
+)
+

@@ -1,0 +1,362 @@
+page 105 (
+    name: Company Details
+    alias: COMPANY-DETAILS
+    title: Company Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .company-details h1{
+                margin-top: 0;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region company-details (
+        name: Company Details
+        type: form
+        source {
+            location: restSource
+            restSource: @Company_Details
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       name,
+                       homepage,
+                       nvl2( logo_path,   'https://image.tmdb.org/t/p/w500' || logo_path,V('APP_IMAGES') || 'image_not_found.png') as logo_path,
+                       nvl(  description, 'Unavailable!')                                                                  as description,
+                       headquarters,
+                       origin_country,
+                       parent_company
+                  from #APEX$SOURCE_DATA#
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+
+        parameter (
+            name: @company-id
+            value {
+                type: item
+                item: P105_ID
+            }
+        )
+
+    )
+
+    region details (
+        name: Details
+        type: cards
+        source {
+            location: restSource
+            restSource: @Company_Details
+            pageItemsToSubmit: P105_ID
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+            cssClasses: company-details
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+
+        parameter (
+            name: @company-id
+            value {
+                type: item
+                item: P105_ID
+            }
+        )
+
+        componentAppearance {
+            layout: horizontal
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        body {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                <h1>&P105_NAME.{if P105_ORIGIN_COUNTRY/}<sup>[&P105_ORIGIN_COUNTRY.]</sup>{endif/}</h1>
+                <p><span class="fa fa-globe"></span> Homepage : {if P105_HOMEPAGE/}<a href="&P105_HOMEPAGE.">&P105_HOMEPAGE.</a>{else/}Unavailable!{endif/}</p>
+                <p><span class="fa fa-building-o"></span> Headquarters : {if P105_HEADQUARTERS/}&P105_HEADQUARTERS.{else/}Unavailable!{endif/}</p>
+                ```
+        }
+        media {
+            advancedFormatting: true
+            htmlExpression: <img src="&P105_LOGO_PATH!ATTR." alt="" width="200px" height="auto">
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: &P105_DESCRIPTION.
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P105_DESCRIPTION (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @company-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @company-details
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P105_HEADQUARTERS (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @company-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @company-details
+            column: HEADQUARTERS
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P105_HOMEPAGE (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @company-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @company-details
+            column: HOMEPAGE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P105_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @company-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @company-details
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P105_LOGO_PATH (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @company-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @company-details
+            column: LOGO_PATH
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P105_NAME (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @company-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @company-details
+            column: NAME
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P105_ORIGIN_COUNTRY (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @company-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @company-details
+            column: ORIGIN_COUNTRY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P105_PARENT_COMPANY (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @company-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @company-details
+            column: PARENT_COMPANY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 4100973742514684868
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-company-details (
+        name: Initialize form Company Details
+        type: formInitialization
+        formRegion: @company-details
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 4100973373147684868
+        }
+    )
+
+)
+

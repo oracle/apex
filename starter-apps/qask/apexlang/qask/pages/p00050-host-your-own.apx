@@ -1,0 +1,377 @@
+page 50 (
+    name: Host Your Own Sessions
+    alias: HOST-YOUR-OWN
+    title: Host Your Own Sessions
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @allow-user-requests
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region host-your-own-sessions (
+        name: Host Your Own Sessions
+        type: form
+        source {
+            location: localDatabase
+            tableName: QASK_ACCOUNT_REQUESTS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        headerAndFooter {
+            headerText: You are requesting access to host your own sessions.
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P50_ACCEPTED_TERMS_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @host-your-own-sessions
+            slot: regionBody
+        }
+        source {
+            formRegion: @host-your-own-sessions
+            column: ACCEPTED_TERMS_ID
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P50_EMAIL (
+        type: textField
+        label {
+            label: Your Email
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @host-your-own-sessions
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @host-your-own-sessions
+            column: EMAIL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P50_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @host-your-own-sessions
+            slot: regionBody
+        }
+        source {
+            formRegion: @host-your-own-sessions
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P50_JUSTIFICATION (
+        type: textarea
+        label {
+            label: Justification
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @host-your-own-sessions
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @host-your-own-sessions
+            column: JUSTIFICATION
+            dataType: varchar2
+        }
+    )
+
+    pageItem P50_TERMS (
+        type: displayOnly
+        label {
+            label: Terms of Use
+            alignment: left
+        }
+        settings {
+            format: html
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 70
+            region: @host-your-own-sessions
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--normalDisplay
+            ]
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select service_terms
+                  from qask_service_terms
+                 where id = :P50_ACCEPTED_TERMS_ID
+                ```
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P50_ACCEPTED_TERMS_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button submit (
+        buttonName: SUBMIT
+        label: Submit
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation email-valid (
+        name: email valid
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P50_EMAIL
+            regexp: "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+        }
+        error {
+            errorMessage: Email is not valid
+            associatedItem: @P50_EMAIL
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit
+        }
+    )
+
+    validation in-domains-if-restriction-enabled (
+        name: in domains (if restriction enabled)
+        execution {
+            sequence: 20
+        }
+        validation {
+            language: sql
+            sqlExpression: qask_util.in_restricted_domains_yn (p_email => :P50_EMAIL) = 'Y'
+        }
+        error {
+            errorMessage: Email domain not allowed
+            associatedItem: @P50_EMAIL
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                qask_util.get_setting('restrict_requests_to_email_domains_yn') = 'Y' or
+                qask_util.get_setting('restrict_users_to_email_domains_yn') = 'Y'
+                ```
+        }
+    )
+
+    computation p50-accepted-terms-id (
+        itemName: P50_ACCEPTED_TERMS_ID
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody: return qask_util.get_latest_service_terms_id;
+        }
+    )
+
+    computation p50-email (
+        itemName: P50_EMAIL
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            language: sql
+            sqlExpression: lower(:P50_EMAIL)
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 2303985358004298891
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit
+        }
+    )
+
+    process request-access (
+        name: request_access
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.request_access (
+                    p_email         => lower(:P50_EMAIL),
+                    p_justification => :P50_JUSTIFICATION,
+                    p_app_id        => :APP_ID,
+                    p_app_url       => :APP_URL,
+                    p_service_terms_id => :P50_ACCEPTED_TERMS_ID );
+                ```
+        }
+        execution {
+            sequence: 5
+        }
+        successMessage {
+            successMessage: Request Submitted.
+        }
+        error {
+            errorMessage: Request failed to be submitted.
+        }
+        advanced {
+            executionMappingIdentifier: 71755061614737004040
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit
+        }
+    )
+
+)
+

@@ -1,0 +1,6237 @@
+page 94 (
+    name: Initiative
+    alias: INITIATIVE
+    title: &NOMENCLATURE_INITIATIVE.: &P94_INITIATIVE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            
+            .resize-region {
+              resize: vertical;
+              overflow: auto;
+            }
+            
+            .a-CardView-iconWrap,
+            .a-CardView-badge { align-self: flex-start; }
+            
+            .project-rds-region {
+                background-color: rgb(219 204 175 / 20%);
+            }
+            .t-Body-title {
+                --ut-palette-warning-shade: rgba(var(--oj-palette-neutral-rgb-160));
+                --ut-component-background-color: rgba(var(--oj-palette-neutral-rgb-170)); 
+                --ut-alert-horizontal-border-radius: 0;
+            }
+            ```
+    }
+    security {
+        formAutoComplete: false
+    }
+
+    region activities (
+        name: Activities
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ap.id, 
+                       at.activity_type,
+                       ap.comments,
+                       ap.start_date,
+                       ap.end_date,
+                       to_char(ap.end_date,'Day DD-MON-YYYY') end_date_formatted,
+                       to_char(ap.start_date,'Day DD-MON-YYYY')||' to '||to_char(ap.end_date,'Day DD-MON-YYYY') TIMELINE,
+                       ap.end_date - ap.start_date days,
+                       round(ap.end_date - sysdate) days_remaining,
+                       ap.url,
+                       --
+                       i.initiative,
+                       i.id initiative_id,
+                       --
+                       tm.first_name||' '||tm.last_name owner,
+                       --
+                       -- timeframe
+                       --
+                        decode(
+                           greatest(trunc(sysdate),trunc(ap.end_date)),
+                           trunc(sysdate),
+                           'Past',
+                           decode(
+                               greatest(trunc(sysdate),trunc(ap.start_date)),
+                               trunc(sysdate),
+                               'Current',
+                               'Future')
+                           ) timeframe,
+                       --
+                       -- pie chart icon in 10% chunks that show time percent complete
+                       --
+                       'fa-pie-chart-'||sp_date_range_pct_comp(ap.start_date, ap.end_date) icon
+                from sp_activities ap,
+                     sp_initiatives i,
+                     sp_activity_types at,
+                     sp_team_members tm
+                where ap.initiative_id = i.id and
+                      i.id = :P94_INITIATIVE_ID and
+                      ap.activity_type_id = at.id and
+                      ap.team_member_id = tm.id 
+                order by ap.updated desc
+                ```
+        }
+        layout {
+            sequence: 120
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 101
+                items: {
+                    P101_ID: #ID#
+                }
+                clearCache: 101
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        download {
+            authorization: @contribution-rights
+        }
+        advanced {
+            savedReportMappingIdentifier: 4722244388436485329
+        }
+
+        column ACTIVITY_TYPE (
+            type: plainText
+            heading {
+                heading: Activity Type
+            }
+            layout {
+                sequence: 380
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AL
+            }
+        )
+
+        column COMMENTS (
+            type: link
+            heading {
+                heading: Details
+            }
+            layout {
+                sequence: 50
+            }
+            link {
+                target: {
+                    page: 140
+                    items: {
+                        P140_ID: #ID#
+                    }
+                    clearCache: 140
+                    action: resetPagination
+                }
+                linkText: #COMMENTS#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column DAYS (
+            type: plainText
+            heading {
+                heading: Days
+                alignment: end
+            }
+            layout {
+                sequence: 420
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AP
+            }
+        )
+
+        column DAYS_REMAINING (
+            type: plainText
+            heading {
+                heading: Days Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 430
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AQ
+            }
+        )
+
+        column END_DATE (
+            type: plainText
+            heading {
+                heading: End
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: FMDD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column END_DATE_FORMATTED (
+            type: plainText
+            heading {
+                heading: End Date Formatted
+            }
+            layout {
+                sequence: 400
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AN
+            }
+        )
+
+        column ICON (
+            type: plainText
+            heading {
+                heading: Icon
+            }
+            layout {
+                sequence: 450
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AS
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: Id
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column INITIATIVE (
+            type: plainText
+            heading {
+                heading: Initiative
+            }
+            layout {
+                sequence: 440
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AR
+            }
+        )
+
+        column INITIATIVE_ID (
+            type: plainText
+            heading {
+                heading: Initiative Id
+                alignment: end
+            }
+            layout {
+                sequence: 320
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AF
+            }
+        )
+
+        column OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 370
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AK
+            }
+        )
+
+        column START_DATE (
+            type: plainText
+            heading {
+                heading: Start
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: FMDD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column TIMEFRAME (
+            type: plainText
+            heading {
+                heading: Timeframe
+            }
+            layout {
+                sequence: 390
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AM
+            }
+        )
+
+        column TIMELINE (
+            type: plainText
+            heading {
+                heading: Timeline
+            }
+            layout {
+                sequence: 410
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AO
+            }
+        )
+
+        column URL (
+            type: plainText
+            heading {
+                heading: Url
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Activities
+        }
+
+        savedReport 47262616 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIVITY_TYPE (
+                sequence: 3
+            )
+
+            displayColumn COMMENTS (
+                sequence: 4
+            )
+
+            displayColumn END_DATE (
+                sequence: 6
+            )
+
+            displayColumn OWNER (
+                sequence: 2
+            )
+
+            displayColumn START_DATE (
+                sequence: 5
+            )
+
+            displayColumn TIMEFRAME (
+                sequence: 1
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: TIMEFRAME
+                value: Current
+            )
+
+        )
+
+    )
+
+    region additional-attriubtes (
+        name: Additional Attriubtes
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select lower(i.created_by) created_by,
+                       i.created,
+                       lower(i.updated_by) last_updated_by,
+                       i.updated
+                  from SP_INITIATIVES i
+                where i.id = :P94_INITIATIVE_ID
+                
+                     
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 180
+            slot: footer
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column CREATED (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column LAST_UPDATED_BY (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Last Updated By
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
+    region approval-type-content (
+        name: approval type content
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       approval_type,
+                       status,
+                       approval_type_for_link,
+                       created_by,
+                       updated,
+                       approvers,
+                       approvers approvers_for_link,
+                       display_seq
+                  from (
+                select a.ID,
+                       t.approval_type,
+                       case when a.active_yn = 'Y' then 'Active' else 'Inactive' end status,
+                       t.approval_type approval_type_for_link,
+                       lower(a.CREATED_BY) created_by,
+                       a.UPDATED,
+                       nvl((select listagg(case when c.alternate_team_member_id is not null and   
+                                                    (c.alternate_start_date <= sysdate or c.alternate_start_date is null) and 
+                                                    (c.alternate_end_date+1 > sysdate or c.alternate_end_date is null)
+                                                then 'Alternate - '||
+                                                     (select first_name||' '||last_name
+                                                        from sp_team_members
+                                                       where id = c.alternate_team_member_id)
+                                                else t.first_name||' '||t.last_name
+                                                end ,', ')
+                                   within group (order by approval_seq)
+                              from sp_initiative_approval_chain c,
+                                   sp_team_members t
+                             where c.initiative_approval_id = a.id
+                               and c.team_member_id = t.id
+                               and c.active_yn = 'Y'
+                              group by c.initiative_approval_id),'None Yet') approvers,
+                       t.display_seq
+                  from SP_INITIATIVE_APPROVALS a,
+                       sp_approval_types t,
+                       sp_initiatives i
+                 where a.initiative_id = i.id
+                   and a.approval_type_id = t.id
+                   and t.active_yn = 'Y'
+                   and a.initiative_id = :P94_INITIATIVE_ID
+                )
+                 order by approval_type
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @approval-workflow-p94-approval-type-cnt
+            slot: regionBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        config {
+            buildOption: @approvals
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No Approval Types
+        }
+        advanced {
+            savedReportMappingIdentifier: 13147937916665775901
+        }
+
+        column APPROVAL_TYPE (
+            type: plainText
+            heading {
+                heading: Approval Type
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+            security {
+                authorizationScheme: !@contribution-rights
+            }
+        )
+
+        column APPROVAL_TYPE_FOR_LINK (
+            type: link
+            heading {
+                heading: Approval Type
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 4013
+                    items: {
+                        P4013_ID: #ID#
+                    }
+                    clearCache: 4013
+                }
+                linkText: #APPROVAL_TYPE_FOR_LINK#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        column APPROVERS (
+            type: plainText
+            heading {
+                heading: Approvers
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            security {
+                authorizationScheme: !@contribution-rights
+            }
+        )
+
+        column APPROVERS_FOR_LINK (
+            type: link
+            heading {
+                heading: Approvers
+            }
+            layout {
+                sequence: 60
+            }
+            link {
+                target: {
+                    page: 4016
+                    items: {
+                        P4016_INITIATIVE_APPROVAL_ID: #ID#
+                    }
+                    clearCache: 4016
+                }
+                linkText: #APPROVERS_FOR_LINK#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column DISPLAY_SEQ (
+            type: plainText
+            heading {
+                heading: Display Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 131479725 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn APPROVAL_TYPE (
+                sequence: 2
+            )
+
+            displayColumn APPROVAL_TYPE_FOR_LINK (
+                sequence: 1
+            )
+
+            displayColumn APPROVERS (
+                sequence: 5
+            )
+
+            displayColumn APPROVERS_FOR_LINK (
+                sequence: 4
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 6
+            )
+
+            displayColumn STATUS (
+                sequence: 3
+            )
+
+            displayColumn UPDATED (
+                sequence: 7
+            )
+
+            sort (
+                column: DISPLAY_SEQ
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region approval-workflow-p94-approval-type-cnt (
+        name: "Approval Workflow [&P94_APPROVAL_TYPE_CNT.]"
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @configuration
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+    region associated-releases (
+        name: Associated Releases
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select rt.id,
+                       release_train||' '||release release,
+                       RELEASE_TARGET_DATE,
+                       RELEASE_OPEN_DATE,
+                       decode(nvl(rt.RELEASE_COMPLETED,'N'),'Y','Yes','N','No',RELEASE_COMPLETED) COMPLETED,
+                       (select count(*) from sp_projects p where nvl(p.ARCHIVED_YN,'N') = 'N' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.initiative_id = :P94_INITIATIVE_ID and
+                      p.release_id is not null and 
+                      p.release_id = rt.id) project_count
+                from   sp_release_trains rt
+                where rt.id in (
+                select distinct p.release_id
+                from  SP_PROJECTS p
+                where nvl(p.ARCHIVED_YN,'N') = 'N' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.initiative_id = :P94_INITIATIVE_ID and
+                      p.release_id is not null)
+                
+                
+                
+                ```
+        }
+        layout {
+            sequence: 130
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            footerText: <p>This reports lists releases that have one or more associated &NOMENCLATURE_PROJECTS. that corresponds to the selected &NOMENCLATURE_INITIATIVE..</p>
+        }
+        config {
+            buildOption: @releases
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 4666050220019034325
+        }
+
+        column COMPLETED (
+            type: plainText
+            heading {
+                heading: Completed
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PROJECT_COUNT (
+            type: plainText
+            heading {
+                heading: Project Count
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column RELEASE (
+            type: link
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 117
+                    items: {
+                        P117_RELEASE_ID: #ID#
+                    }
+                }
+                linkText: #RELEASE#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column RELEASE_OPEN_DATE (
+            type: plainText
+            heading {
+                heading: Release Open Date
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: FMDD Month YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column RELEASE_TARGET_DATE (
+            type: plainText
+            heading {
+                heading: Release Target Date
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: FMDD Month YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Associated Releases
+        }
+
+        savedReport 46977781 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn COMPLETED (
+                sequence: 4
+            )
+
+            displayColumn PROJECT_COUNT (
+                sequence: 5
+            )
+
+            displayColumn RELEASE (
+                sequence: 1
+            )
+
+            displayColumn RELEASE_OPEN_DATE (
+                sequence: 3
+            )
+
+            displayColumn RELEASE_TARGET_DATE (
+                sequence: 2
+            )
+
+            sort (
+                column: RELEASE_OPEN_DATE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region comments (
+        name: Comments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ic.ID,
+                       -- Display Columns
+                       tm.initials user_icon,
+                       to_char(ic.created,'fmDay, fmDD fmMonth, YYYY') date_full,
+                       null comment_date,
+                       tm.first_name || ' ' || tm.last_name user_name,
+                       --
+                       ic.body_html comment_text,
+                       case when lower(ic.created_by) = lower(:app_user)
+                            then '<a href="'||apex_util.prepare_URL(
+                                 p_url => 'f?p='||:APP_ID||':87:'||:APP_SESSION||'::NO:87:P87_ID:'||ic.id,
+                                 p_checksum_type => '3'
+                                 )||'">edit</a>' 
+                            end actions,
+                       ' ' attribute_1,
+                       ' ' attribute_2,
+                       ' ' attribute_3,
+                       ' ' attribute_4,
+                       'u-color-'||ora_hash(ic.created_by,45) icon_modifier,
+                       --
+                       --
+                       --
+                       decode(ic.private_yn,null,null,'N',null,'Y',' Private Comment') private_comment_label,
+                       --
+                       -- Data Columns
+                       --
+                       ic.BODY,
+                       ic.BODY_HTML,
+                       ic.AUTHOR_ID,
+                       --
+                       ic.CREATED,
+                       ic.CREATED_BY,
+                       ic.UPDATED,
+                       ic.UPDATED_BY,
+                       tm.id team_member_id
+                  from sp_initiative_comments_v ic, 
+                       sp_team_members tm
+                where ic.author_id = tm.id and
+                      ic.initiative_id = :P94_INITIATIVE_ID and  
+                      (nvl(ic.private_yn,'N') = 'N' or lower(ic.created_by) = lower(:app_user) )
+                order by ic.created desc
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 110
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: COMMENTS
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No Comments
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Actions
+                alignment: center
+            }
+            layout {
+                sequence: 190
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                authorizationScheme: @contribution-rights
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Attribute 1
+                alignment: center
+            }
+            layout {
+                sequence: 200
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Attribute 2
+                alignment: center
+            }
+            layout {
+                sequence: 210
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Attribute 3
+                alignment: center
+            }
+            layout {
+                sequence: 220
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Attribute 4
+                alignment: center
+            }
+            layout {
+                sequence: 230
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column AUTHOR_ID (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Author Id
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BODY (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Body
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BODY_HTML (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Body Html
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Comment Date
+                alignment: center
+            }
+            layout {
+                sequence: 160
+            }
+            columnFormatting {
+                htmlExpression: <span title="added #DATE_FULL#">#CREATED#</span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Comment Text
+                alignment: center
+            }
+            layout {
+                sequence: 180
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
+                    #COMMENT_TEXT#
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            heading {
+                heading: Created By
+                alignment: center
+            }
+            layout {
+                sequence: 120
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DATE_FULL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Date Full
+            }
+            layout {
+                sequence: 270
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Icon Modifier
+                alignment: center
+            }
+            layout {
+                sequence: 240
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRIVATE_COMMENT_LABEL (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Private Comment Label
+            }
+            layout {
+                sequence: 260
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            reportColumnQueryId: 21
+            derivedColumn: N
+            heading {
+                heading: User ID
+            }
+            layout {
+                sequence: 250
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: Updated By
+                alignment: center
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: User Icon
+                alignment: center
+            }
+            layout {
+                sequence: 150
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: User Name
+                alignment: center
+            }
+            layout {
+                sequence: 170
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region configuration (
+        name: Configuration
+        type: staticContent
+        layout {
+            sequence: 185
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region default-completeness-scale-p94-status-scale (
+        name: "Default Completeness Scale [&P94_STATUS_SCALE.]"
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @configuration
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region default-tasks-p94-default-task-cnt (
+        name: "Default Tasks [&P94_DEFAULT_TASK_CNT.]"
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @configuration
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region documents (
+        name: Documents
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select case doc_type 
+                            when 'Initiative'
+                            then :NOMENCLATURE_INITIATIVE 
+                            when 'Initiative Focus Area'
+                            then :NOMENCLATURE_INITIATIVE||' Focus Area'
+                            end type,
+                       case doc_type
+                            when 'Initiative'
+                            then '13' 
+                            else '56'
+                            end edit_page, 
+                       case doc_type
+                            when 'Initiative'
+                            then '53'
+                            else '59'
+                            end display_page,
+                       document_id ID,
+                       DOCUMENT_FILENAME,
+                       UPDATED,
+                       created,
+                       doc_description,
+                       tags,
+                       added_by created_by,
+                       filesize doc_size,
+                       created date_created,
+                       file_extension,
+                       important,
+                       filesize document,
+                       document_id
+                  from SP_DOCUMENTS_V
+                 where initiative_id = :P94_INITIATIVE_ID
+                   and doc_type in ('Initiative', 'Initiative Focus Area')
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 175
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: DOCUMENTS
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: #EDIT_PAGE#
+                items: {
+                    "P#EDIT_PAGE#_ID": #ID#
+                }
+                clearCache: #EDIT_PAGE#
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 16843140317611651510
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column DATE_CREATED (
+            type: plainText
+            heading {
+                heading: Created On
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column DISPLAY_PAGE (
+            type: hidden
+            heading {
+                heading: Display Page
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column DOCUMENT (
+            type: downloadBlob
+            heading {
+                heading: Document
+            }
+            layout {
+                sequence: 160
+            }
+            blobAttributes {
+                tableName: SP_DOCUMENTS_V
+                blobColumn: DOCUMENT_BLOB
+                primaryKeyColumn1: DOCUMENT_ID
+                mimeTypeColumn: DOCUMENT_MIMETYPE
+                filenameColumn: DOCUMENT_FILENAME
+                lastUpdatedColumn: DOCUMENT_LASTUPD
+                charSetColumn: DOCUMENT_LASTUPD
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column DOCUMENT_FILENAME (
+            type: link
+            heading {
+                heading: Filename
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: #DISPLAY_PAGE#
+                    items: {
+                        "P#DISPLAY_PAGE#_ID": #ID#
+                        "P#DISPLAY_PAGE#_PREV_PAGE": 94
+                    }
+                    clearCache: #DISPLAY_PAGE#
+                }
+                linkText: #DOCUMENT_FILENAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column DOCUMENT_ID (
+            type: hidden
+            heading {
+                heading: Document Id
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column DOC_DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column DOC_SIZE (
+            type: plainText
+            heading {
+                heading: Size
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FILESIZE
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column EDIT_PAGE (
+            type: hidden
+            heading {
+                heading: Edit Page
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column FILE_EXTENSION (
+            type: plainText
+            heading {
+                heading: File Extension
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IMPORTANT (
+            type: plainText
+            heading {
+                heading: Important
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+                alignment: center
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column TYPE (
+            type: plainText
+            heading {
+                heading: Belongs to
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from SP_INIT_FOCUS_AREA_DOCUMENTS d,
+                           SP_INITIATIVE_FOCUS_AREAS fa
+                     where fa.initiative_id = :P94_INITIATIVE_ID
+                       and fa.id = d.init_focus_area_id
+                    ```
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Documents
+        }
+
+        savedReport 8109551 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CREATED_BY (
+                sequence: 4
+            )
+
+            displayColumn DOCUMENT (
+                sequence: 6
+            )
+
+            displayColumn DOCUMENT_FILENAME (
+                sequence: 2
+            )
+
+            displayColumn DOC_DESCRIPTION (
+                sequence: 3
+            )
+
+            displayColumn DOC_SIZE (
+                sequence: 7
+            )
+
+            displayColumn IMPORTANT (
+                sequence: 5
+            )
+
+            displayColumn TYPE (
+                sequence: 1
+            )
+
+            displayColumn UPDATED (
+                sequence: 8
+            )
+
+            sort (
+                column: IMPORTANT
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+            aggregate (
+                column: DOC_SIZE
+            )
+
+        )
+
+    )
+
+    region focus-area-content (
+        name: focus area content
+        title: Focus Areas
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       focus_area,
+                       focus_area focus_area_for_link,
+                       decode(active_yn,'Y','Yes','No') active,
+                       updated last_update,
+                       display_sequence,
+                       (select count(*) from sp_projects
+                         where initiative_id = a.initiative_id
+                           and focus_area_id = a.id
+                           and duplicate_of_project_id is null
+                           and archived_yn = 'N') projects,
+                       (select count(*) from sp_projects
+                         where initiative_id = a.initiative_id
+                           and focus_area_id = a.id
+                           and duplicate_of_project_id is null
+                           and archived_yn = 'N'
+                           and pct_complete >= 20 and pct_complete <= 90) in_process_projects,
+                       (select count(*) from sp_projects
+                         where initiative_id = a.initiative_id
+                           and focus_area_id = a.id
+                           and duplicate_of_project_id is null
+                           and archived_yn = 'N'
+                           and pct_complete = 100) complete_projects
+                  from sp_initiative_focus_areas a
+                 where initiative_id = :P94_INITIATIVE_ID
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 20
+            parentRegion: @focus-areas-p94-focus-area-cnt
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        headerAndFooter {
+            headerText: Only these focus areas will be available to be associated with the &NOMENCLATURE_PROJECTS. added to this &NOMENCLATURE_INITIATIVE..
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No Focus Areas
+        }
+        advanced {
+            savedReportMappingIdentifier: 13054996184264486328
+        }
+
+        column ACTIVE (
+            type: plainText
+            heading {
+                heading: Active
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column COMPLETE_PROJECTS (
+            type: plainText
+            heading {
+                heading: Complete Projects
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            type: plainText
+            heading {
+                heading: Display Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column FOCUS_AREA (
+            type: plainText
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+            security {
+                authorizationScheme: !@contribution-rights
+            }
+        )
+
+        column FOCUS_AREA_FOR_LINK (
+            type: link
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 10151
+                    items: {
+                        P10151_ID: #ID#
+                    }
+                    clearCache: 10151
+                }
+                linkText: #FOCUS_AREA_FOR_LINK#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IN_PROCESS_PROJECTS (
+            type: plainText
+            heading {
+                heading: In Process Projects (20-90% complete)
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column LAST_UPDATE (
+            type: plainText
+            heading {
+                heading: Last Update
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column PROJECTS (
+            type: plainText
+            heading {
+                heading: Total Projects
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Focus Areas
+        }
+
+        savedReport 131239176 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIVE (
+                sequence: 2
+            )
+
+            displayColumn FOCUS_AREA_FOR_LINK (
+                sequence: 1
+            )
+
+            displayColumn LAST_UPDATE (
+                sequence: 4
+            )
+
+            displayColumn PROJECTS (
+                sequence: 3
+            )
+
+            sort (
+                column: DISPLAY_SEQUENCE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: ACTIVE
+                value: Yes
+            )
+
+        )
+
+    )
+
+    region focus-areas (
+        name: Focus Areas
+        title: Focus Areas
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       focus_area,
+                       description,
+                       (select first_name||' '||last_name
+                          from sp_team_members
+                         where a.development_owner_id = id) owner,
+                       display_sequence,
+                       (select count(*) from sp_projects where focus_area_id = a.id) cnt,
+                       greatest(a.updated,nvl((select max(updated) from sp_projects where focus_area_id = a.id),a.updated)) last_update
+                  from sp_initiative_focus_areas a
+                 where initiative_id = :P94_INITIATIVE_ID
+                   and active_yn = 'Y'
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 135
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: Focus Areas not set for this &NOMENCLATURE_INITIATIVE..  These are set by an Administrator of this application.
+        }
+        advanced {
+            savedReportMappingIdentifier: 13054995104125486318
+        }
+
+        column CNT (
+            type: plainText
+            heading {
+                heading: &NOMENCLATURE_PROJECT. Count
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            type: plainText
+            heading {
+                heading: Display Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column FOCUS_AREA (
+            type: link
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 33
+                    items: {
+                        P33_INIT_FOCUS_AREA_ID: #ID#
+                    }
+                    clearCache: 33
+                }
+                linkText: #FOCUS_AREA#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column LAST_UPDATE (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Focus Areas
+        }
+
+        savedReport 131239166 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CNT (
+                sequence: 3
+            )
+
+            displayColumn FOCUS_AREA (
+                sequence: 1
+            )
+
+            displayColumn LAST_UPDATE (
+                sequence: 4
+            )
+
+            displayColumn OWNER (
+                sequence: 2
+            )
+
+            sort (
+                column: DISPLAY_SEQUENCE
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region focus-areas-p94-focus-area-cnt (
+        name: "Focus Areas [&P94_FOCUS_AREA_CNT.]"
+        type: staticContent
+        layout {
+            sequence: 70
+            parentRegion: @configuration
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region initiative-details (
+        name: Initiative Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--noPadding
+                margin-left-md
+            ]
+            cssClasses: u-flex
+        }
+    )
+
+    region initiative-icon (
+        name: Initiative Icon
+        type: themeTemplateComponent/avatar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select i.id, 
+                       case when i.image is not null then i.image else f.image end image,
+                       case when i.image is not null then i.image_name else f.image_name end alt_text, 
+                       case when i.image is not null then i.image_name else f.image_name end image_name, 
+                       case when i.image is not null then i.image_mimetype else f.image_mimetype end image_mimetype 
+                  from SP_INITIATIVES i,
+                       sp_areas f
+                 where i.id = :P94_INITIATIVE_ID
+                   and i.area_id = f.id
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @initiative-details
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_INITIATIVES i,
+                       sp_areas f
+                 where i.id = :P94_INITIATIVE_ID
+                   and i.area_id = f.id
+                   and (i.image is not null or f.image is not null)
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            type: image
+            image: {
+                type: blobColumn
+                blobColumn: IMAGE
+                filenameColumn: IMAGE_NAME
+                mimeTypeColumn: IMAGE_MIMETYPE
+            }
+            size: extraSmall
+        }
+
+        column ALT_TEXT (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: ALT_TEXT
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column IMAGE (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: IMAGE
+                dataType: blob
+            }
+        )
+
+        column IMAGE_MIMETYPE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: IMAGE_MIMETYPE
+                dataType: varchar2
+            }
+        )
+
+        column IMAGE_NAME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: IMAGE_NAME
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region links (
+        name: Links
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select l.ID,
+                       77 edit_page,
+                       :NOMENCLATURE_INITIATIVE belongs_to,
+                       LINK_NAME,
+                       LINK_URL,
+                       case when lower(link_url) not like 'http%'
+                            then 'http://'||link_url
+                            else link_url
+                            end for_link,
+                       decode(IMPORTANT_YN,'Y','Yes','N','No',IMPORTANT_YN) IMPORTANT,
+                       CREATED,
+                       lower(CREATED_BY) created_by,
+                       UPDATED,
+                       UPDATED_BY
+                from SP_INITIATIVE_LINKS l
+                where  initiative_id = :P94_INITIATIVE_ID
+                union all
+                select l.ID,
+                       40 edit_page,
+                       'Focus Area: '||a.focus_area belongs_to,
+                       l.LINK_NAME,
+                       l.LINK_URL,
+                       case when lower(link_url) not like 'http%'
+                            then 'http://'||link_url
+                            else link_url
+                            end for_link,
+                       decode(l.IMPORTANT_YN,'Y','Yes','N','No',l.IMPORTANT_YN) IMPORTANT,
+                       l.CREATED,
+                       lower(l.CREATED_BY) created_by,
+                       l.UPDATED,
+                       l.UPDATED_BY
+                from SP_INIT_FOCUS_AREA_LINKS l,
+                     SP_INITIATIVE_FOCUS_AREAS a
+                where a.initiative_id = :P94_INITIATIVE_ID
+                  and a.id = l.init_focus_area_id
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 165
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: #EDIT_PAGE#
+                items: {
+                    "P#EDIT_PAGE#_ID": #ID#
+                }
+                clearCache: #EDIT_PAGE#
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 9447867888073744725
+        }
+
+        column BELONGS_TO (
+            type: plainText
+            heading {
+                heading: Belongs To
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column EDIT_PAGE (
+            type: hidden
+            heading {
+                heading: Edit Page
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column FOR_LINK (
+            type: hidden
+            heading {
+                heading: For Link
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: Id
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IMPORTANT (
+            type: plainText
+            heading {
+                heading: Important
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column LINK_NAME (
+            type: plainText
+            heading {
+                heading: Link
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                htmlExpression: <a href="#FOR_LINK#" target="_blank">#LINK_NAME#</a>
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column LINK_URL (
+            type: plainText
+            heading {
+                heading: URL
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Links
+        }
+
+        savedReport 47246263 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn BELONGS_TO (
+                sequence: 1
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 6
+            )
+
+            displayColumn IMPORTANT (
+                sequence: 4
+            )
+
+            displayColumn LINK_NAME (
+                sequence: 2
+            )
+
+            displayColumn LINK_URL (
+                sequence: 3
+            )
+
+            displayColumn UPDATED (
+                sequence: 5
+            )
+
+            sort (
+                column: IMPORTANT
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu about-nomenclature-initiatives (
+                label: About &NOMENCLATURE_INITIATIVES.
+                layout {
+                    sequence: 70
+                }
+                behavior {
+                    target: {
+                        page: 106
+                    }
+                }
+                appearance {
+                    icon: fa-info
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 80
+                }
+            )
+
+            menu comp_menu_entry-2 (
+                type: separator
+                layout {
+                    sequence: 40
+                }
+            )
+
+            menu comp_menu_entry-3 (
+                type: separator
+                layout {
+                    sequence: 60
+                }
+            )
+
+            menu kanban (
+                label: Kanban
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 160
+                        items: {
+                            P160_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                        }
+                    }
+                }
+                appearance {
+                    icon: fa-columns
+                }
+                config {
+                    buildOption: @kanban
+                }
+            )
+
+            menu milestones-report (
+                label: Milestones Report
+                layout {
+                    sequence: 30
+                }
+                behavior {
+                    target: {
+                        page: 112
+                        items: {
+                            P112_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-file-text-o
+                }
+            )
+
+            menu nomenclature-projects (
+                label: &NOMENCLATURE_PROJECTS.
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 23
+                        items: {
+                            P23_FOCUS_AREA: &P94_AREA.
+                            P23_INITIATIVE: &P94_INITIATIVE.
+                            P23_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                            P23_FOCUS_AREA_ID: &P94_AREA_ID.
+                        }
+                        clearCache: 23
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 100
+                }
+                behavior {
+                    target: {
+                        page: 94
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 90
+                }
+                behavior {
+                    target: {
+                        page: 94
+                        items: {
+                            P94_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                        }
+                        clearCache: 94
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+            menu view-history (
+                label: View History
+                layout {
+                    sequence: 50
+                }
+                behavior {
+                    target: {
+                        page: 11
+                        items: {
+                            P11_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                        }
+                        clearCache: 11
+                    }
+                }
+                appearance {
+                    icon: fa-clock-o
+                }
+            )
+
+        )
+
+        action edit (
+            position: primaryActions
+            template: button
+            label: Edit
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 22
+                    items: {
+                        P22_ID: &P94_INITIATIVE_ID.
+                    }
+                    clearCache: 22
+                    action: resetPagination
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-edit
+                hot: true
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+    )
+
+    region nomenclature-initiative (
+        name: &NOMENCLATURE_INITIATIVE.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select f.area focus_area, 
+                       i.initiative, 
+                       '<button type="button" title="Copy Permalink" aria-label="Copy Permalink" data-clipboard-source="'||:P94_PERMALINK_PREFIX||apex_escape.html(i.friendly_identifier)||'&pn='||apex_escape.html(i.initiative_url_name)||'" class="t-Button t-Button--noLabel t-Button--icon t-Button--link padding-none">'||i.friendly_identifier||'</button>' perma_link,
+                       --
+                       -- projects
+                       --
+                       (select count(*) 
+                        from sp_projects p 
+                        where p.initiative_id = i.id and 
+                              p.ARCHIVED_YN = 'N' and
+                              p.DUPLICATE_OF_PROJECT_ID is null) projects,
+                       --
+                       -- projects
+                       --
+                       (select count(*) 
+                        from sp_projects p 
+                        where p.initiative_id = i.id and 
+                              p.ARCHIVED_YN = 'N' and
+                              p.pct_complete = 100 and
+                              p.DUPLICATE_OF_PROJECT_ID is null) projects_resolved,
+                       --
+                       -- owner
+                       --
+                       (select first_name||' '||last_name 
+                        from sp_team_members tm 
+                        where tm.id = i.SPONSOR_ID) the_owner,
+                       --
+                       i.sponsor_id owner_id,
+                       --
+                       i.updated,
+                       --
+                       i.id
+                  from SP_INITIATIVES i,
+                       SP_AREAS f
+                where i.area_id = f.id and
+                      i.id = :P94_INITIATIVE_ID
+                
+                     
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 30
+            parentRegion: @initiative-details
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: &NOMENCLATURE_AREA.
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_FOCUS_AREA: #FOCUS_AREA#
+                    }
+                    clearCache: 23
+                }
+                linkText: #FOCUS_AREA#
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_INITIATIVE.
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column OWNER_ID (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column PERMA_LINK (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Permalink
+            }
+            layout {
+                sequence: 40
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECTS.
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column PROJECTS_RESOLVED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Projects Resolved
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+        )
+
+        column THE_OWNER (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 100
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: #OWNER_ID#
+                    }
+                    clearCache: 73
+                    action: resetPagination
+                }
+                linkText: #THE_OWNER#
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+    )
+
+    region nomenclature-projects (
+        name: "&NOMENCLATURE_PROJECTS. "
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       p.PROJECT,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = p.OWNER_ID) the_owner,
+                       (select 'P'||PRIORITY from SP_PROJECT_PRIORITIES x where x.ID = p.PRIORITY_ID) priority,
+                       p.PCT_COMPLETE pct_complete,
+                       case when p.pct_complete >= s.min_pc_for_status 
+                             and p.pct_complete != 100
+                            then nvl((select status from sp_project_statuses
+                                       where id = p.status_id),'Not Set')
+                            else 'NA'
+                            end status,
+                       (select decode(greatest(length(initiative),15),15,initiative,substr(initiative,1,12)||'...') initiative 
+                        from sp_initiatives i 
+                        where i.id = p.initiative_id) initiative,
+                       --
+                       -- release
+                       --
+                       case when p.release_id is not null
+                            then (select RELEASE_TRAIN||' '||release from SP_RELEASE_TRAINS r where r.id = p.RELEASE_ID) 
+                            else 'Not Targeted'
+                            end release,
+                       to_char(p.target_complete,'DD-Mon-YYYY') target_complete,
+                       --
+                       p.PROJECT_SIZE,
+                       p.UPDATED,
+                       p.owner_id,
+                       p.friendly_identifier,
+                       p.project_url_name,
+                       nvl((select first_name||' '||last_name from SP_TEAM_MEMBERS tm where tm.email = lower(p.updated_by)),lower(p.updated_by)) updated_by,
+                       null actions,
+                       p.tags
+                 from  SP_PROJECTS p,
+                       sp_initiatives i,
+                       sp_project_scales s
+                where p.initiative_id = i.id and
+                      i.status_scale = s.scale_letter and
+                      nvl(p.ARCHIVED_YN,'N') = 'N' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.initiative_id = :P94_INITIATIVE_ID
+                order by p.updated desc nulls last
+                
+                
+                
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+            icon: " "
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            footerText: Click the &NOMENCLATURE_PROJECT. name to view details.
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 24
+                items: {
+                    P24_ID: #ID#
+                }
+                clearCache: 24
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        actionsMenu {
+            subscription: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 4666052594290034348
+        }
+
+        column ACTIONS (
+            type: link
+            heading {
+                heading: Quick Look
+                alignment: center
+            }
+            layout {
+                sequence: 150
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 36
+                    items: {
+                        P36_ID: #ID#
+                    }
+                    clearCache: 36
+                    action: resetPagination
+                }
+                linkText: <span class="fa fa-align-justify" aria-hidden="true"></span>
+                linkAttributes: View &NOMENCLATURE_PROJECTS. Details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            type: hidden
+            heading {
+                heading: Friendly Identifier
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column INITIATIVE (
+            type: plainText
+            heading {
+                heading: Initiative
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column OWNER_ID (
+            type: hidden
+            heading {
+                heading: Owner Id
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column PCT_COMPLETE (
+            type: plainText
+            heading {
+                heading: Completeness
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column PROJECT (
+            type: link
+            heading {
+                heading: &NOMENCLATURE_PROJECT. Name
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PROJECT_SIZE (
+            type: plainText
+            heading {
+                heading: Size
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            type: hidden
+            heading {
+                heading: Project Url Name
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column TARGET_COMPLETE (
+            type: plainText
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column THE_OWNER (
+            type: link
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: #OWNER_ID#
+                    }
+                    clearCache: 73
+                    action: resetPagination
+                }
+                linkText: #THE_OWNER#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: "&NOMENCLATURE_PROJECTS. "
+        }
+
+        savedReport 46976301 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIONS (
+                sequence: 10
+            )
+
+            displayColumn PCT_COMPLETE (
+                sequence: 4
+            )
+
+            displayColumn PRIORITY (
+                sequence: 3
+            )
+
+            displayColumn PROJECT (
+                sequence: 1
+            )
+
+            displayColumn PROJECT_SIZE (
+                sequence: 8
+            )
+
+            displayColumn RELEASE (
+                sequence: 6
+            )
+
+            displayColumn STATUS (
+                sequence: 5
+            )
+
+            displayColumn TARGET_COMPLETE (
+                sequence: 7
+            )
+
+            displayColumn THE_OWNER (
+                sequence: 2
+            )
+
+            displayColumn UPDATED (
+                sequence: 9
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: PCT_COMPLETE
+                sort {
+                    sequence: 2
+                }
+            )
+
+            filter ir-condition (
+                column: PCT_COMPLETE
+                operator: !=
+                value: 100
+            )
+
+        )
+
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 10
+            slot: fullWidthContent
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                u-padding-inline-dynamic
+                project-rds-region
+            ]
+        }
+        settings {
+            includeShowAll: false
+        }
+    )
+
+    region status-scale-content (
+        name: Status Scale content
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select '0%' pct_complete, pc0_label project_status, pc0_desc description, :P94_STATUS_SCALE selected_scale,
+                       0 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '10%' pct_complete, pc10_label, pc10_desc, :P94_STATUS_SCALE selected_scale,
+                       10 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '20%' pct_complete, pc20_label, pc20_desc, :P94_STATUS_SCALE selected_scale,
+                       20 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '30%' pct_complete, pc30_label, pc30_desc, :P94_STATUS_SCALE selected_scale,
+                       30 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '40%' pct_complete, pc40_label, pc40_desc, :P94_STATUS_SCALE selected_scale,
+                       40 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '50%' pct_complete, pc50_label, pc50_desc, :P94_STATUS_SCALE selected_scale,
+                       50 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '60%' pct_complete, pc60_label, pc60_desc, :P94_STATUS_SCALE selected_scale,
+                       60 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '70%' pct_complete, pc70_label, pc70_desc, :P94_STATUS_SCALE selected_scale,
+                       70 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '80%' pct_complete, pc80_label, pc80_desc, :P94_STATUS_SCALE selected_scale,
+                       80 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '90%' pct_complete, pc90_label, pc90_desc, :P94_STATUS_SCALE selected_scale,
+                       90 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                union all
+                select '100%' pct_complete, pc100_label, pc100_desc, :P94_STATUS_SCALE selected_scale,
+                       100 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P94_STATUS_SCALE_LETTER,'A')
+                order by r
+                ```
+            pageItemsToSubmit: [
+                P94_STATUS_SCALE_LETTER
+                P94_STATUS_SCALE
+            ]
+        }
+        layout {
+            sequence: 40
+            parentRegion: @default-completeness-scale-p94-status-scale
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Completeness
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_STATUS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column R (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column SELECTED_SCALE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+    )
+
+    region task-content (
+        name: task content
+        title: Default Tasks
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select case when t.parent_type_id is not null
+                            then t2.task_type||': '
+                            end ||
+                           t.task_type task
+                  from sp_task_types t,
+                       sp_task_types t2,
+                       sp_initiative_default_tasks i
+                 where t.parent_type_id = t2.id (+)
+                   and t.id = i.type_id
+                   and t.include_yn = 'Y'
+                   and i.initiative_id = :P94_INITIATIVE_ID
+                 order by nvl(t2.display_seq,t.display_seq), t.display_seq nulls first
+                ```
+            pageItemsToSubmit: P94_INITIATIVE_ID
+        }
+        layout {
+            sequence: 30
+            parentRegion: @default-tasks-p94-default-task-cnt
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        headerAndFooter {
+            headerText: These tasks will be pre-created for all &NOMENCLATURE_PROJECTS. added to this &NOMENCLATURE_INITIATIVE..
+        }
+        reportLayout {
+            numberOfRows: 1000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: rowRangesXToYNoPagination
+        }
+        heading {
+            type: none
+        }
+
+        column TASK (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Task
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region this-week (
+        name: This Week
+        type: staticContent
+        layout {
+            sequence: 155
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region this-week-content (
+        name: This Week Content
+        title: This Week
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with d as (select trunc(sysdate,'IW') monday, trunc(sysdate) today, to_char(sysdate,'YYYY') year from dual)
+                select p.id project_id, 
+                       p.project, 
+                       t.id task_id,
+                       tt.task_type||': '||tt2.task_type task_type, 
+                       tm.first_name||' '||tm.last_name task_owner,
+                       tm.photo, tm.photo_filename, tm.photo_mimetype, tm.photo_lastupd,
+                       s.status,
+                       case when to_char(t.target_complete,'YYYY') != d.year 
+                            then to_char(t.target_complete,'Mon DDfm, YYYY')
+                            else to_char(t.target_complete, 'Mon DDfm')
+                            end target_complete,
+                       case when s.indicates_complete_yn = 'N' and t.target_complete < d.today then 'Overdue'
+                            when s.indicates_complete_yn = 'N' and trunc(t.target_complete) >= d.today then 'Pending'
+                            else 'Complete'
+                            end icon,
+                       case when s.indicates_complete_yn = 'N' and t.target_complete < d.today then 'danger'
+                            when s.indicates_complete_yn = 'N' and trunc(t.target_complete) >= d.today then 'warning'
+                            else 'success'
+                            end icon_class,
+                       case when s.indicates_complete_yn = 'N' then 'notdone' else null end notdone_ind
+                  from sp_projects p,
+                       sp_tasks t,
+                       sp_task_types tt,
+                       sp_task_types tt2,
+                       sp_team_members tm,
+                       sp_task_statuses s,
+                       d
+                 where p.id = t.project_id
+                   and p.archived_yn != 'Y'
+                   and p.duplicate_of_project_id is null
+                   and t.task_type_id = tt.id
+                   and tt.static_id in ('MILESTONE', 'REVIEW')
+                   and (:P94_THIS_WEEK_type = 'ALL' or :P94_THIS_WEEK_type = tt.static_id)
+                   and t.task_sub_type_id = tt2.id
+                   and t.owner_id = tm.id (+)
+                   and (trunc(t.target_complete) between d.monday and d.monday+6 or
+                         (t.target_complete < d.monday and s.indicates_complete_yn = 'N')) -- to get overdue
+                   and p.initiative_id = :P94_INITIATIVE_ID
+                   and t.status_id = s.id
+                   and (:P94_THIS_WEEK_EXCLUDE is null or 
+                        (((instr(:P94_THIS_WEEK_EXCLUDE,'COMPLETE') > 0 and s.indicates_complete_yn = 'N') or instr(:P94_THIS_WEEK_EXCLUDE,'COMPLETE') = 0) and
+                         ((instr(:P94_THIS_WEEK_EXCLUDE,'PREVIOUS') > 0 and t.target_complete > d.monday) or instr(:P94_THIS_WEEK_EXCLUDE,'PREVIOUS') = 0)) )
+                ```
+            pageItemsToSubmit: [
+                P94_INITIATIVE_ID
+                P94_THIS_WEEK_TYPE
+                P94_THIS_WEEK_EXCLUDE
+            ]
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: target_complete
+        }
+        layout {
+            sequence: 145
+            parentRegion: @this-week
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            icon: fa-check-circle-o
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &PROJECT.
+            title: &TASK_TYPE.
+            description: &TASK_OWNER.
+            miscellaneous:
+                ```html
+                &STATUS.<br/>
+                {if NOTDONE_IND/}due {endif/}&TARGET_COMPLETE.
+                ```
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: blobColumn
+                blobColumn: PHOTO
+                filenameColumn: PHOTO_FILENAME
+                mimeTypeColumn: PHOTO_MIMETYPE
+                lastUpdatedColumn: PHOTO_LASTUPD
+            }
+        }
+        plugin-badge {
+            label: &ICON.
+            value: ICON
+            state: ICON_CLASS
+            shape: rounded
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            type: scroll
+            initialEntitiesCount: 15
+        }
+
+        column ICON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column NOTDONE_IND (
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: NOTDONE_IND
+                dataType: varchar2
+            }
+        )
+
+        column PHOTO (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: PHOTO
+                dataType: blob
+            }
+        )
+
+        column PHOTO_FILENAME (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: PHOTO_FILENAME
+                dataType: varchar2
+            }
+        )
+
+        column PHOTO_LASTUPD (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: PHOTO_LASTUPD
+                dataType: date
+            }
+        )
+
+        column PHOTO_MIMETYPE (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: PHOTO_MIMETYPE
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: PROJECT_ID
+                dataType: number
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        column TARGET_COMPLETE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: TARGET_COMPLETE
+                dataType: varchar2
+            }
+        )
+
+        column TASK_ID (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: TASK_ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column TASK_OWNER (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: TASK_OWNER
+                dataType: varchar2
+            }
+        )
+
+        column TASK_TYPE (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: TASK_TYPE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 98
+                    items: {
+                        P98_TASK_ID: &TASK_ID.
+                        P98_PROJECT_ID: &PROJECT_ID.
+                    }
+                    clearCache: 98
+                }
+            }
+        )
+
+    )
+
+    pageItem IFI (
+        type: hidden
+        layout {
+            sequence: 50
+            slot: body
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem INN (
+        type: hidden
+        layout {
+            sequence: 60
+            slot: body
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P94_APPROVAL_TYPE_CNT (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @initiative-details
+            slot: regionBody
+        }
+    )
+
+    pageItem P94_AREA (
+        type: hidden
+        layout {
+            sequence: 100
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P94_AREA_ID (
+        type: hidden
+        layout {
+            sequence: 90
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P94_COMMENT (
+        type: richTextEditor
+        label {
+            label: " "
+            alignment: left
+        }
+        settings {
+            minHeight: 180
+            allowCustomHtml: true
+        }
+        layout {
+            sequence: 10
+            region: @comments
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                    return spCommentImageSupport.markdown.configEditor(options, {
+                        apexUpload: {
+                            // Application process name that that will handle the POST request when an image is dropped into
+                            // text box
+                            uploadApplicationProcess: 'POST_COMMENT_IMAGE',
+                            // Pass in any data that you want in the POST process 
+                            // Will be passed in as a JSON object and available in apex_application.g_x01
+                            data: {
+                                imageRefId: apex.item('P94_IMAGE_REF_ID').getValue()
+                            }
+                        }
+                    });
+                }
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    pageItem P94_DEFAULT_TASK_CNT (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @initiative-details
+            slot: regionBody
+        }
+    )
+
+    pageItem P94_FOCUS_AREA_CNT (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @initiative-details
+            slot: regionBody
+        }
+    )
+
+    pageItem P94_IMAGE_REF_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @comments
+            slot: regionBody
+        }
+        default {
+            type: expression
+            plsqlExpression: to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+        }
+    )
+
+    pageItem P94_INITIATIVE (
+        type: hidden
+        layout {
+            sequence: 80
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P94_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P94_LINK (
+        type: textField
+        label {
+            label: Link URL
+            alignment: left
+        }
+        settings {
+            subtype: url
+        }
+        layout {
+            sequence: 20
+            region: @links
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    pageItem P94_LINK_NAME (
+        type: textField
+        label {
+            label: Link Name
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @links
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    pageItem P94_MIN_PC_FOR_STATUS (
+        type: displayOnly
+        label {
+            label: Minimum % Complete for Status
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @default-completeness-scale-p94-status-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P94_PERMALINK_PREFIX (
+        type: hidden
+        layout {
+            sequence: 70
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P94_PRIVATE_YN (
+        type: checkbox
+        label {
+            label: This is a private comment
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @comments
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                margin-left-md
+            ]
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+    )
+
+    pageItem P94_STATUS_SCALE (
+        type: displayOnly
+        label {
+            label: Default Completeness Scale
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @default-completeness-scale-p94-status-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: A
+        }
+    )
+
+    pageItem P94_STATUS_SCALE_LETTER (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @default-completeness-scale-p94-status-scale
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: A
+        }
+    )
+
+    pageItem P94_THIS_WEEK_EXCLUDE (
+        type: checkboxGroup
+        label {
+            label: Exclude
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Complete;COMPLETE,Prior Weeks Overdue;PREVIOUS
+        }
+        layout {
+            sequence: 20
+            region: @this-week
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    pageItem P94_THIS_WEEK_TYPE (
+        type: radioGroup
+        label {
+            label: Type
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:All;ALL,Milestones;MILESTONE,Reviews;REVIEW
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @this-week
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+        default {
+            type: static
+            staticValue: ALL
+        }
+    )
+
+    button add-activity (
+        buttonName: add_activity
+        label: Add Activity
+        layout {
+            sequence: 10
+            region: @activities
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 101
+                items: {
+                    P101_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                    P101_TEAM_MEMBER_ID: &APP_USER_ID.
+                }
+                clearCache: 101
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button add-approval-type (
+        buttonName: ADD_APPROVAL_TYPE
+        label: Associated New Type
+        layout {
+            sequence: 10
+            region: @approval-workflow-p94-approval-type-cnt
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4013
+                items: {
+                    P4013_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                }
+                clearCache: 4013
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1  
+                  from sp_approval_types
+                 where id not in (select approval_type_id
+                                    from sp_initiative_approvals
+                                   where initiative_id = :P94_INITIATIVE_ID)
+                   and active_yn = 'Y'
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+    button add-document (
+        buttonName: add_document
+        label: Add Document
+        layout {
+            sequence: 30
+            region: @documents
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                items: {
+                    P13_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                }
+                clearCache: 13
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button add-focus-area (
+        buttonName: add_focus_area
+        label: Add Focus Area
+        layout {
+            sequence: 10
+            region: @focus-areas-p94-focus-area-cnt
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10151
+                items: {
+                    P10151_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                }
+                clearCache: 10151
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    button add-link (
+        buttonName: add_link
+        label: Add Link
+        layout {
+            sequence: 40
+            region: @links
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--gapTop
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button add-project (
+        buttonName: Add_project
+        label: Add Project
+        layout {
+            sequence: 20
+            region: @nomenclature-projects
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 24
+                items: {
+                    P24_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                }
+                clearCache: 24
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button edit-default-project-type (
+        buttonName: edit_default_project_type
+        label: Select Different Completeness Scale
+        layout {
+            sequence: 20
+            region: @default-completeness-scale-p94-status-scale
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 127
+                items: {
+                    P127_ID: &P94_INITIATIVE_ID.
+                }
+                clearCache: 127
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-tasks (
+        buttonName: edit_tasks
+        label: Edit Default Tasks
+        layout {
+            sequence: 10
+            region: @default-tasks-p94-default-task-cnt
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 95
+                items: {
+                    P95_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                }
+                clearCache: 95
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button post-comment (
+        buttonName: POST_COMMENT
+        label: Post Comment
+        layout {
+            sequence: 20
+            region: @comments
+            slot: regionBody
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+                margin-bottom-md
+            ]
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 66
+                items: {
+                    P66_AREA_ID: &P94_AREA_ID.
+                }
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-images (
+        buttonName: view_images
+        label: Image Gallery
+        layout {
+            sequence: 10
+            region: @documents
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 62
+                items: {
+                    P62_INITIATIVE_ID: &P94_INITIATIVE_ID.
+                }
+                clearCache: 62
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where initiative_id = :P94_INITIATIVE_ID and 
+                       (
+                           lower(DOCUMENT_FILENAME) like '%.png' or 
+                           lower(DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                union all
+                select 1 
+                  from SP_INIT_focus_area_DOCUMENTS d,
+                       SP_INITIATIVE_FOCUS_AREAS f
+                   where f.initiative_id = :P94_INITIATIVE_ID and 
+                         f.id = d.init_focus_area_id and
+                       (
+                           lower(d.DOCUMENT_FILENAME) like '%.png' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                ```
+        }
+    )
+
+    dynamicAction add-initiative-link (
+        name: add initiative link
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @add-link
+        }
+
+        action native-alert (
+            action: alert
+            settings {
+                title: Missing Link Details
+                message: Please supply a Link URL and a Link Name.
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: jsExpression
+                javaScriptExpression: $v('P94_LINK') === '' || $v('P94_LINK_NAME') === ''
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    if :P94_LINK_NAME is not null and :P94_LINK is not null then
+                    insert into SP_INITIATIVE_LINKS (
+                        initiative_id, link_name, link_url)
+                    values (
+                        :P94_INITIATIVE_ID, :P94_LINK_NAME, :P94_LINK);
+                    :P94_LINK_NAME := null;
+                    :P94_LINK := null;
+                    end if;
+                    ```
+                itemsToSubmit: [
+                    P94_INITIATIVE_ID
+                    P94_LINK_NAME
+                    P94_LINK
+                ]
+                itemsToReturn: [
+                    P94_LINK_NAME
+                    P94_LINK
+                ]
+                showProcessing: true
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @links
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @nomenclature-initiative
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction after-approval-type-action (
+        name: After Approval Type action
+        execution {
+            sequence: 220
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @approval-workflow-p94-approval-type-cnt
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @approval-workflow-p94-approval-type-cnt
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @approval-type-content
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select count(*)
+                      from SP_INITIATIVE_APPROVALS a,
+                           sp_approval_types t,
+                           sp_initiatives i
+                     where a.initiative_id = i.id
+                       and a.approval_type_id = t.id
+                       and a.initiative_id = :P94_INITIATIVE_ID
+                       and a.active_yn = 'Y'
+                    ```
+                itemsToSubmit: P94_INITIATIVE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P94_APPROVAL_TYPE_CNT
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction after-approval-type-content-change (
+        name: After Approval Type content change
+        execution {
+            sequence: 230
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @approval-type-content
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @approval-workflow-p94-approval-type-cnt
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @approval-type-content
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select count(*)
+                      from SP_INITIATIVE_APPROVALS a,
+                           sp_approval_types t,
+                           sp_initiatives i
+                     where a.initiative_id = i.id
+                       and a.approval_type_id = t.id
+                       and a.initiative_id = :P94_INITIATIVE_ID
+                       and a.active_yn = 'Y'
+                    ```
+                itemsToSubmit: P94_INITIATIVE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P94_APPROVAL_TYPE_CNT
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction after-default-task-action (
+        name: After Default Task action
+        execution {
+            sequence: 240
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @default-tasks-p94-default-task-cnt
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @default-tasks-p94-default-task-cnt
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @task-content
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select count(*)
+                      from sp_task_types t,
+                           sp_task_types t2,
+                           sp_initiative_default_tasks i
+                     where t.parent_type_id = t2.id (+)
+                       and t.id = i.type_id
+                       and t.include_yn = 'Y'
+                       and i.initiative_id = :P94_INITIATIVE_ID
+                    
+                    ```
+                itemsToSubmit: P94_INITIATIVE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P94_DEFAULT_TASK_CNT
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction after-status-scale-change (
+        name: after Status Scale change
+        execution {
+            sequence: 250
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @edit-default-project-type
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @default-completeness-scale-p94-status-scale
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @status-scale-content
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select s.scale_name
+                      from sp_initiatives i,
+                           sp_project_scales s
+                     where i.id = :P94_INITIATIVE_ID
+                       and i.status_scale = s.scale_letter
+                    ```
+                itemsToSubmit: P94_INITIATIVE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P94_STATUS_SCALE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select status_scale
+                      from sp_initiatives
+                     where id = :P94_INITIATIVE_ID
+                    ```
+                itemsToSubmit: P94_INITIATIVE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P94_STATUS_SCALE_LETTER
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction contextual-info-dialog-close-refresh (
+        name: contextual info dialog close refresh
+        execution {
+            sequence: 80
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @nomenclature-initiative
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction links-in-comments-in-new-tab (
+        name: links in comments in new tab
+        execution {
+            sequence: 280
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#COMMENTS a').attr('target','_blank');
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction on-comments-dialog-closed (
+        name: on comments dialog closed
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @comments
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @comments
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @nomenclature-initiative
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction on-links-region-dc (
+        name: on links region dc
+        execution {
+            sequence: 90
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @links
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @nomenclature-initiative
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @links
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction post-comment (
+        name: post comment
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @post-comment
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: button
+                button: @post-comment
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-enable (
+            action: enable
+            affectedElements {
+                selectionType: button
+                button: @post-comment
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    sp_comment_util.add_initiative_comment (
+                        p_app_user_id   => :APP_USER_ID,
+                        p_comment       => :P94_COMMENT,
+                        p_private_yn    => nvl(:P94_PRIVATE_YN,'N'),
+                        p_initiative_id => :P94_INITIATIVE_ID,
+                        p_image_ref_id  => :P94_IMAGE_REF_ID );
+                    :P94_COMMENT := null;
+                    :P94_PRIVATE_YN := null;
+                    :P94_IMAGE_REF_ID := to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+                    ```
+                itemsToSubmit: [
+                    P94_INITIATIVE_ID
+                    P94_COMMENT
+                    APP_USER_ID
+                    P94_PRIVATE_YN
+                    P94_IMAGE_REF_ID
+                ]
+                itemsToReturn: [
+                    P94_COMMENT
+                    P94_IMAGE_REF_ID
+                ]
+                showProcessing: true
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.ariaAlertMessage("Comment Added Successfully");
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @comments
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction projects-tab-refresh-on-dialog-closed (
+        name: projects tab refresh on dialog closed
+        execution {
+            sequence: 100
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @nomenclature-projects
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @nomenclature-projects
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-activity-dc (
+        name: refresh on activity dc
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @activities
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @activities
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-documents (
+        name: refresh on documents
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @documents
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @documents
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-focus-area-content (
+        name: refresh on focus area content
+        execution {
+            sequence: 210
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @focus-area-content
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @focus-areas-p94-focus-area-cnt
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @focus-area-content
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select count(*)
+                      from sp_initiative_focus_areas a
+                     where initiative_id = :P94_INITIATIVE_ID
+                       and active_yn = 'Y'
+                    
+                    ```
+                itemsToSubmit: P94_INITIATIVE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P94_FOCUS_AREA_CNT
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-focus-areas (
+        name: refresh on focus areas
+        execution {
+            sequence: 200
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @focus-areas-p94-focus-area-cnt
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @focus-areas-p94-focus-area-cnt
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @focus-area-content
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select count(*)
+                      from sp_initiative_focus_areas a
+                     where initiative_id = :P94_INITIATIVE_ID
+                       and active_yn = 'Y'
+                    
+                    ```
+                itemsToSubmit: P94_INITIATIVE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P94_FOCUS_AREA_CNT
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction when-change-p94-this-week-exclude (
+        name: when change P94_THIS_WEEK_EXCLUDE
+        execution {
+            sequence: 270
+        }
+        when {
+            selectionType: items
+            items: P94_THIS_WEEK_EXCLUDE
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @this-week-content
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-change-p94-this-week-type (
+        name: when change P94_THIS_WEEK_type
+        execution {
+            sequence: 260
+        }
+        when {
+            selectionType: items
+            items: P94_THIS_WEEK_TYPE
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @this-week-content
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-project-view (
+        itemName: LAST_PROJECT_VIEW
+        execution {
+            sequence: 60
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 94
+        }
+    )
+
+    computation p94-approval-type-cnt (
+        itemName: P94_APPROVAL_TYPE_CNT
+        execution {
+            sequence: 30
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from SP_INITIATIVE_APPROVALS a,
+                       sp_approval_types t,
+                       sp_initiatives i
+                 where a.initiative_id = i.id
+                   and a.approval_type_id = t.id
+                   and a.initiative_id = :P94_INITIATIVE_ID
+                   and a.active_yn = 'Y'
+                ```
+        }
+    )
+
+    computation p94-area (
+        itemName: P94_AREA
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select area 
+                from sp_areas a  
+                where a.id = (
+                    select area_id
+                    from   sp_initiatives i
+                    where  id = :P94_INITIATIVE_ID)
+                ```
+        }
+    )
+
+    computation p94-area-id (
+        itemName: P94_AREA_ID
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select area_id
+                from   sp_initiatives i
+                where  id = :P94_INITIATIVE_ID
+                ```
+        }
+    )
+
+    computation p94-default-task-cnt (
+        itemName: P94_DEFAULT_TASK_CNT
+        execution {
+            sequence: 20
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from sp_task_types t,
+                       sp_task_types t2,
+                       sp_initiative_default_tasks i
+                 where t.parent_type_id = t2.id (+)
+                   and t.id = i.type_id
+                   and t.include_yn = 'Y'
+                   and i.initiative_id = :P94_INITIATIVE_ID
+                ```
+        }
+    )
+
+    computation p94-focus-area-cnt (
+        itemName: P94_FOCUS_AREA_CNT
+        execution {
+            sequence: 10
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from sp_initiative_focus_areas a
+                 where initiative_id = :P94_INITIATIVE_ID
+                   and active_yn = 'Y'
+                ```
+        }
+    )
+
+    computation p94-initiative (
+        itemName: P94_INITIATIVE
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select INITIATIVE
+                from   sp_initiatives i
+                where  id = :P94_INITIATIVE_ID
+                ```
+        }
+    )
+
+    computation p94-initiative-id (
+        itemName: P94_INITIATIVE_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return sp_util.get_initiative_id (
+                    p_friendly_identifier => :IFI,
+                    p_initiative_url_name => :INN);
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P94_INITIATIVE_ID
+        }
+    )
+
+    computation p94-min-pc-for-status (
+        itemName: P94_MIN_PC_FOR_STATUS
+        execution {
+            sequence: 50
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select s.min_pc_for_status||'%'
+                  from sp_initiatives i,
+                       sp_project_scales s
+                 where i.id = :P94_INITIATIVE_ID
+                   and i.status_scale = s.scale_letter
+                ```
+        }
+    )
+
+    computation p94-permalink-prefix (
+        itemName: P94_PERMALINK_PREFIX
+        execution {
+            sequence: 50
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody: return APEX_UTIL.HOST_URL('SCRIPT') || 'initiative?ifi=';
+        }
+    )
+
+    computation p94-status-scale (
+        itemName: P94_STATUS_SCALE
+        execution {
+            sequence: 40
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select s.scale_name
+                  from sp_initiatives i,
+                       sp_project_scales s
+                 where i.id = :P94_INITIATIVE_ID
+                   and i.status_scale = s.scale_letter
+                ```
+        }
+    )
+
+    computation p94-status-scale-letter (
+        itemName: P94_STATUS_SCALE_LETTER
+        execution {
+            sequence: 60
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select status_scale
+                  from sp_initiatives
+                 where id = :P94_INITIATIVE_ID
+                ```
+        }
+    )
+
+)
+

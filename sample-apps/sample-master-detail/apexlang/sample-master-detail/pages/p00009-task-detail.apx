@@ -1,0 +1,745 @@
+page 9 (
+    name: Task Detail
+    alias: TASK-DETAIL
+    title: Task Detail
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region audit-details (
+        name: Audit Details
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @edit-eba-demo-md-tasks
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P9_ID
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region edit-eba-demo-md-tasks (
+        name: Edit EBA_DEMO_MD_TASKS
+        type: form
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_MD_TASKS
+            includeRowidColumn: true
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P9_ASSIGNEE (
+        type: selectList
+        label {
+            label: Assignee
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @team-members
+            displayExtraValues: false
+            nullDisplayValue: - Select Assignee -
+        }
+        layout {
+            sequence: 70
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: ASSIGNEE
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_CREATED (
+        type: displayOnly
+        label {
+            label: Created
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: CREATED
+            dataType: timestampWithTimeZone
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_CREATED_BY (
+        type: selectList
+        label {
+            label: Created By
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username
+        }
+        layout {
+            sequence: 120
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: CREATED_BY
+            dataType: varchar2
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 70
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P9_END_DATE (
+        type: datePicker
+        label {
+            label: End Date
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: END_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P9_IS_COMPLETE_YN (
+        type: switch
+        label {
+            label: Completed?
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: IS_COMPLETE_YN
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_MILESTONE_DUE_DATE (
+        type: displayOnly
+        label {
+            label: Due Date
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 40
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P9_MILESTONE_ID (
+        type: selectList
+        label {
+            label: Milestone
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select name as display
+                , id as return
+                from eba_demo_md_milestones
+                where project_id = :P9_PROJECT_ID
+                order by 1
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - Select Milestone -
+        }
+        cascadingLov {
+            parentItems: P9_PROJECT_ID
+        }
+        layout {
+            sequence: 30
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: MILESTONE_ID
+            dataType: number
+        }
+    )
+
+    pageItem P9_NAME (
+        type: textField
+        label {
+            label: Task
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: NAME
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_PROJECT_ID (
+        type: selectList
+        label {
+            label: Project
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @projects
+            displayExtraValues: false
+            nullDisplayValue: - Select Project -
+        }
+        layout {
+            sequence: 20
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: PROJECT_ID
+            dataType: number
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_START_DATE (
+        type: datePicker
+        label {
+            label: Start Date
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @edit-eba-demo-md-tasks
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: START_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_UPDATED (
+        type: displayOnly
+        label {
+            label: Updated
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: UPDATED
+            dataType: timestampWithTimeZone
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P9_UPDATED_BY (
+        type: selectList
+        label {
+            label: Updated By
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username
+        }
+        layout {
+            sequence: 140
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @edit-eba-demo-md-tasks
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Task
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P9_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P9_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Save
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P9_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction get-due-date (
+        name: Get Due Date
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P9_MILESTONE_ID
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select due_date
+                    from eba_demo_md_milestones
+                    where id = :P9_MILESTONE_ID
+                    ```
+                itemsToSubmit: P9_MILESTONE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P9_MILESTONE_DUE_DATE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 11
+        }
+        advanced {
+            executionMappingIdentifier: 1919911457766017367
+        }
+    )
+
+    process fetch-row-from-eba-demo-md-tasks (
+        name: Fetch Row from EBA_DEMO_MD_TASKS
+        type: formInitialization
+        formRegion: @edit-eba-demo-md-tasks
+        execution {
+            sequence: 1
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 48358408665036029230
+        }
+    )
+
+    process process-row-of-eba-demo-md-tasks (
+        name: Process Row of EBA_DEMO_MD_TASKS
+        type: formAutoRowProcessing
+        formRegion: @edit-eba-demo-md-tasks
+        target {
+            returnPksAfterInsert: false
+        }
+        execution {
+            sequence: 1
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 48358408801394029232
+        }
+    )
+
+)
+

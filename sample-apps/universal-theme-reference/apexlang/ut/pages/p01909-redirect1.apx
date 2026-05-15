@@ -1,0 +1,36 @@
+page 1909 (
+    name: Redirect
+    alias: REDIRECT1
+    title: Redirect
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    branch (
+        name: Go To Page 2000
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 2000
+                successMessage: false
+            }
+        }
+        comments {
+            comments: This is an legacy page that was referenced in the docs. We keep it so that older doc versions can still work.
+        }
+    )
+
+)
+

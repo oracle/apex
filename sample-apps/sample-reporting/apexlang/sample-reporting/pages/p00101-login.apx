@@ -1,0 +1,223 @@
+page 101 (
+    name: Login
+    alias: LOGIN
+    title: Sign In | &APP_NAME.
+    appearance {
+        pageTemplate: @/login
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: noArgumentsSupported
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region sample-reporting (
+        name: Sample Reporting
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/login
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    pageItem P101_PASSWORD (
+        type: password
+        label {
+            label: Password
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @sample-reporting
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-key
+            width: 64
+            valuePlaceholder: password
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        advanced {
+            postText: <span class="t-Login-iconValidation a-Icon icon-check"></span>
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    pageItem P101_USERNAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 10
+            region: @sample-reporting
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-user
+            width: 64
+            valuePlaceholder: username
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        advanced {
+            postText: <span class="t-Login-iconValidation a-Icon icon-check"></span>
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button login (
+        buttonName: LOGIN
+        label: Sign In
+        layout {
+            sequence: 10
+            region: @sample-reporting
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction set-focus (
+        name: Set Focus
+        execution {
+            sequence: 10
+        }
+        when {
+            event: ready
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: ( $v( "P101_USERNAME" ) === "" )
+        }
+
+        action native-set-focus (
+            action: setFocus
+            affectedElements {
+                selectionType: items
+                items: P101_USERNAME
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-focus-2 (
+            action: setFocus
+            affectedElements {
+                selectionType: items
+                items: P101_PASSWORD
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    process clear-page-s-cache (
+        name: Clear Page(s) Cache
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 6272077182838456980
+        }
+    )
+
+    process get-username-cookie (
+        name: Get Username Cookie
+        type: executeCode
+        source {
+            plsqlCode: :P101_USERNAME := apex_authentication.get_login_username_cookie;
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 6272077078520456980
+        }
+    )
+
+    process login (
+        name: Login
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_authentication.login(
+                    p_username => :P101_USERNAME,
+                    p_password => :P101_PASSWORD );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 6272076887918456979
+        }
+    )
+
+    process set-username-cookie (
+        name: Set Username Cookie
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_authentication.send_login_username_cookie (
+                    p_username => lower(:P101_USERNAME) );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 6272076981014456980
+        }
+    )
+
+)
+

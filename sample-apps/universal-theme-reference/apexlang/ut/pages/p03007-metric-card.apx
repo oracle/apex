@@ -1,0 +1,739 @@
+page 3007 (
+    name: Components: Metric Card
+    alias: METRIC-CARD
+    title: Metric Card
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .class, .class-value, .class-desc {
+              display: inline-block;
+              font-size: 12px;
+              font-family: 'Menlo', 'Consolas', monospace;
+            }
+            .class {
+              color: #9C27B0;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region MetricCardDemo (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                t-ContentBlock--shadowBG
+            ]
+        }
+        advanced {
+            htmlDomId: METRIC_CARD
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: MetricCardDemo
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region configuration (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <b>Type</b>: Metric Card<br>
+                <br>
+                <h4>Settings</h4>
+                Utilizes Title, Metric and Meta with the 3 Column Layout. Metric CSS Classes set with <span class="class">u-bold</span> utility class.<br>
+                <br>
+                <h4>Avatar</h4>
+                <b>Type</b>: Icon<br>
+                <b>Position</b>: Inline<br>
+                <br>
+                <h4>Badge</h4>
+                Utilizes State and Icon with the Subtle Style set.<br>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @inline-avatar-and-3-column-layout
+            slot: subRegions
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+                margin-bottom-lg
+            ]
+        }
+    )
+
+    region configuration_1 (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <b>Type</b>: Metric Card<br>
+                <br>
+                <h4>Settings</h4>
+                Utilizes Title, Metric and Meta with the Default Layout.<br>
+                <br>
+                <h4>Avatar</h4>
+                <b>Type</b>: Icon<br>
+                <b>Position</b>: Top<br>
+                <b>Shape</b>: Circular<br>
+                <br>
+                <h4>Badge</h4>
+                Utilizes State and Icon with the Outline Style set.<br>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @default-layout
+            slot: subRegions
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region configuration_2 (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <b>Type</b>: Metric Card<br>
+                <br>
+                <h4>Settings</h4>
+                Utilizes Title, Metric and Meta with the Stacked Layout. Metric CSS Classes set with <span class="class">u-text-title-5</span> utility class<br>
+                <br>
+                <h4>Avatar</h4>
+                <b>Type</b>: Icon<br>
+                <b>Position</b>: Top<br>
+                <b>Alignment</b>: Center<br>
+                <br>
+                <h4>Badge</h4>
+                Utilizes State and Icon with the Default Style set.<br>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @stacked-layout
+            slot: subRegions
+            startNewRow: false
+            column: 10
+            columnSpan: 3
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+                margin-bottom-lg
+            ]
+        }
+    )
+
+    region default-layout (
+        name: Default Layout with Avatar and Badge
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region demo (
+        name: Demo
+        title: Demo
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region inline-avatar-and-3-column-layout (
+        name: Inline Avatar and 3 Column Layout
+        type: staticContent
+        layout {
+            sequence: 70
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region new (
+        name: Metric Card
+        title: Demo
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT                                                         
+                      company_name,                                                         
+                      ticker,
+                      '$' || TO_CHAR(current_price, 'FM999,990.00')       AS     
+                  stock_price,          
+                      TO_CHAR(ABS(pct_change), 'FM990.00') || '%'         AS
+                  stock_change,
+                      CASE
+                          WHEN pct_change > 0  THEN 'success'
+                          WHEN pct_change < 0  THEN 'danger'
+                      END                                                  AS
+                  state,
+                      CASE
+                          WHEN pct_change > 0  THEN 'fa-arrow-up'
+                          WHEN pct_change < 0  THEN 'fa-arrow-down'
+                      END                                                  AS
+                  icon_class
+                  FROM (
+                      SELECT 'Apple'     AS company_name, 'AAPL'  AS ticker,
+                  189.45 AS current_price,  2.34 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Microsoft' AS company_name, 'MSFT'  AS ticker,
+                  415.80 AS current_price, -0.87 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Google'    AS company_name, 'GOOGL' AS ticker,
+                  175.20 AS current_price,  1.12 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Amazon'    AS company_name, 'AMZN'  AS ticker,
+                  198.60 AS current_price, -3.45 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Tesla'     AS company_name, 'TSLA'  AS ticker,
+                  245.10 AS current_price,  1.00 AS pct_change FROM dual
+                  )
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @stacked-layout
+            slot: subRegions
+            columnSpan: 4
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: MetricCardDemo
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TICKER.
+            metric: &STOCK_PRICE.
+            metricCssClasses: u-text-title-5
+            meta: &COMPANY_NAME.
+            layout: stacked
+        }
+        plugin-avatar {
+            displayAvatar: true
+            style: subtle
+            shape: square
+            position: inline
+            alignment: center
+        }
+        plugin-badge {
+            displayBadge: true
+            label: &VALUE_DESCRIPTION.
+            value: STOCK_CHANGE
+            state: STATE
+            icon: &ICON_CLASS.
+            size: large
+        }
+        pagination {
+            entitiesPerPage: 50
+        }
+
+        column COMPANY_NAME (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: COMPANY_NAME
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column STATE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: STATE
+                dataType: varchar2
+            }
+        )
+
+        column STOCK_CHANGE (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: STOCK_CHANGE
+                dataType: varchar2
+            }
+        )
+
+        column STOCK_PRICE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: STOCK_PRICE
+                dataType: varchar2
+            }
+        )
+
+        column TICKER (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: TICKER
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region new_1 (
+        name: Metric Card
+        title: Demo
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT                                                         
+                      company_name,                                                         
+                      ticker,
+                      '$' || TO_CHAR(current_price, 'FM999,990.00')       AS     
+                  stock_price,          
+                      TO_CHAR(ABS(pct_change), 'FM990.00') || '%'         AS
+                  stock_change,
+                      CASE
+                          WHEN pct_change > 0  THEN 'success'
+                          WHEN pct_change < 0  THEN 'danger'
+                      END                                                  AS
+                  state,
+                      CASE
+                          WHEN pct_change > 0  THEN 'fa-arrow-up'
+                          WHEN pct_change < 0  THEN 'fa-arrow-down'
+                      END                                                  AS
+                  icon_class
+                  FROM (
+                      SELECT 'Apple'     AS company_name, 'AAPL'  AS ticker,
+                  189.45 AS current_price,  2.34 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Microsoft' AS company_name, 'MSFT'  AS ticker,
+                  415.80 AS current_price, -0.87 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Google'    AS company_name, 'GOOGL' AS ticker,
+                  175.20 AS current_price,  1.12 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Amazon'    AS company_name, 'AMZN'  AS ticker,
+                  198.60 AS current_price, -3.45 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Tesla'     AS company_name, 'TSLA'  AS ticker,
+                  245.10 AS current_price,  1.00 AS pct_change FROM dual
+                  )
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @default-layout
+            slot: subRegions
+            columnSpan: 9
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TICKER.
+            metric: &STOCK_PRICE.
+            meta: &COMPANY_NAME.
+        }
+        plugin-avatar {
+            displayAvatar: true
+            shape: circular
+        }
+        plugin-badge {
+            displayBadge: true
+            label: &VALUE_DESCRIPTION.
+            value: STOCK_CHANGE
+            state: STATE
+            icon: &ICON_CLASS.
+            style: outline
+            shape: square
+        }
+        pagination {
+            entitiesPerPage: 50
+        }
+
+        column COMPANY_NAME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: COMPANY_NAME
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column STATE (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: STATE
+                dataType: varchar2
+            }
+        )
+
+        column STOCK_CHANGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: STOCK_CHANGE
+                dataType: varchar2
+            }
+        )
+
+        column STOCK_PRICE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: STOCK_PRICE
+                dataType: varchar2
+            }
+        )
+
+        column TICKER (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TICKER
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region new_2 (
+        name: Metric Card
+        title: Demo
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT                                                         
+                      company_name,                                                         
+                      ticker,
+                      '$' || TO_CHAR(current_price, 'FM999,990.00')       AS     
+                  stock_price,          
+                      TO_CHAR(ABS(pct_change), 'FM990.00') || '%'         AS
+                  stock_change,
+                      CASE
+                          WHEN pct_change > 0  THEN 'success'
+                          WHEN pct_change < 0  THEN 'danger'
+                      END                                                  AS
+                  state,
+                      CASE
+                          WHEN pct_change > 0  THEN 'fa-arrow-up'
+                          WHEN pct_change < 0  THEN 'fa-arrow-down'
+                      END                                                  AS
+                  icon_class
+                  FROM (
+                      SELECT 'Apple'     AS company_name, 'AAPL'  AS ticker,
+                  189.45 AS current_price,  2.34 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Microsoft' AS company_name, 'MSFT'  AS ticker,
+                  415.80 AS current_price, -0.87 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Google'    AS company_name, 'GOOGL' AS ticker,
+                  175.20 AS current_price,  1.12 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Amazon'    AS company_name, 'AMZN'  AS ticker,
+                  198.60 AS current_price, -3.45 AS pct_change FROM dual UNION
+                  ALL
+                      SELECT 'Tesla'     AS company_name, 'TSLA'  AS ticker,
+                  245.10 AS current_price,  1.00 AS pct_change FROM dual
+                  )
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @inline-avatar-and-3-column-layout
+            slot: subRegions
+            columnSpan: 9
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TICKER.
+            metric: &STOCK_PRICE.
+            metricCssClasses: u-text-bold
+            meta: &COMPANY_NAME.
+            layout: 3Columns
+        }
+        plugin-avatar {
+            displayAvatar: true
+            position: inline
+        }
+        plugin-badge {
+            displayBadge: true
+            label: &VALUE_DESCRIPTION.
+            value: STOCK_CHANGE
+            state: STATE
+            icon: &ICON_CLASS.
+            style: subtle
+        }
+        pagination {
+            entitiesPerPage: 50
+        }
+
+        column COMPANY_NAME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: COMPANY_NAME
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column STATE (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: STATE
+                dataType: varchar2
+            }
+        )
+
+        column STOCK_CHANGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: STOCK_CHANGE
+                dataType: varchar2
+            }
+        )
+
+        column STOCK_PRICE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: STOCK_PRICE
+                dataType: varchar2
+            }
+        )
+
+        column TICKER (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TICKER
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Metric Card</strong> is a compact card used to display a single key value alongside a label and supporting details, ideal for presenting KPIs, stats, or at-a-glance data points in a dashboard. </p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region stacked-layout (
+        name: Stacked Layout
+        type: staticContent
+        layout {
+            sequence: 80
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+)
+

@@ -1,0 +1,744 @@
+page 4 (
+    name: Report and Marquee - Report
+    alias: REPORT-AND-MARQUEE-REPORT
+    title: Report and Marquee - Report
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Remove duplicate borders on hover */
+            .a-IconList-item:hover {
+              box-shadow: none;
+              background: transparent;
+            }
+            
+            .t-Cards {
+              margin: 8px;
+            }
+            
+            .t-Cards-item.a-IconList-item {
+              margin: 0;
+              padding: 0;
+            }
+            
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-report-and-marquee (
+        name: Overview: Report and Marquee
+        type: staticContent
+        source {
+            htmlCode: This example consists of a report page that drills down to a marquee page. On the marquee page each of the detail tables are shown using a classic report. Separate modal popups are used to edit the master and detail tables.
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: comments
+        }
+    )
+
+    region projects (
+        name: Projects
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                "ID",
+                "NAME",
+                "DESCRIPTION",
+                "PROJECT_LEAD",
+                "COMPLETED_DATE",
+                "STATUS_CD",
+                'fa-folder-o' card_icon,
+                apex_string.get_initials(project_lead) card_initials,
+                apex_util.prepare_url('f?p='||:APP_ID||':11:'||:APP_SESSION||':::11:P11_PROJECT_ID:'||id) card_link,
+                (select count('x')
+                 from eba_demo_md_milestones m
+                 where m.project_id = p.id
+                ) milestones,
+                (select count('x')
+                 from eba_demo_md_tasks t
+                 where t.project_id = p.id
+                ) tasks,
+                (select count('x')
+                 from eba_demo_md_task_todos t
+                 where t.project_id = p.id
+                ) todos,
+                (select count('x')
+                 from eba_demo_md_task_links l
+                 where l.project_id = p.id
+                ) links,
+                (select count('x')
+                 from eba_demo_md_comments c
+                 where c.project_id = p.id
+                ) comments
+                from eba_demo_md_projects p
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: projects
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        enableUsersTo {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        iconView {
+            show: true
+            custom: true
+            customIcon:
+                ```html
+                <li data-id="&APEX$ROW_ID." class="t-Cards-item">
+                  <div class="t-Card">
+                    <div class="t-Card-wrap">
+                      <div class="t-Card-icon u-color &CARD_COLOR."><span class="t-Icon fa &CARD_ICON."><span class="t-Card-initials" role="presentation">&CARD_INITIALS.</span></span></div>
+                      <div class="t-Card-titleWrap"><h3 class="t-Card-title"><a href=" &APEX$ROW_URL!ATTR.">&NAME.</a></h3></div>
+                      <div class="t-Card-body">
+                        <div class="t-Card-desc">&STATUS_CD.</div>
+                        <div class="t-Card-info">&MILESTONES_LABEL.: &MILESTONES., &TASKS_LABEL.: &TASKS., &TODOS_LABEL.: &TODOS., &LINKS_LABEL.: &LINKS., &COMMENTS_LABEL.: &COMMENTS.</div>
+                      </div>
+                      <span class="t-Card-colorFill u-color &CARD_COLOR."></span>
+                    </div>
+                  </div>
+                </li>
+                ```
+            linkTarget: {
+                page: 11
+                items: {
+                    P11_PROJECT_ID: &ID.
+                }
+                clearCache: 11
+                action: resetPagination
+            }
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(config) {
+                    config.defaultGridViewOptions = {
+                        rowHeader: "sequence"
+                    };
+                    config.defaultIconViewOptions = {
+                        collectionClasses: "t-Cards t-Cards--basic t-Cards--displayIcons u-colors t-Cards--desc-2ln t-Cards--4cols"
+                    };
+                    return config; // don't forget to return this!
+                }
+                
+                ```
+        }
+        advanced {
+            savedReportMappingIdentifier: 502062671965151808
+        }
+
+        savedReport 14339 (
+            visibility: primary
+            view {
+                default: icon
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @TODOS
+                layout {
+                    width: 67
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    frozen: true
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @NAME
+                layout {
+                    frozen: true
+                    width: 245
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @DESCRIPTION
+                layout {
+                    width: 594
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @PROJECT_LEAD
+                layout {
+                    width: 127
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @STATUS_CD
+                layout {
+                    width: 94
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @COMPLETED_DATE
+                layout {
+                    width: 122
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @MILESTONES
+                layout {
+                    width: 81
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @TASKS
+                layout {
+                    width: 58
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @LINKS
+                layout {
+                    width: 55
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @COMMENTS
+                layout {
+                    width: 83
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @CARD_ICON
+                layout {
+                    sequence: 12
+                }
+            )
+
+            displayColumn (
+                column: @CARD_INITIALS
+                layout {
+                    sequence: 13
+                }
+            )
+
+            displayColumn (
+                column: @CARD_LINK
+                layout {
+                    sequence: 14
+                }
+            )
+
+            sort (
+                column: @COMPLETED_DATE
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+        )
+
+        columnGroup associated-records (
+            heading: Associated Records
+        )
+
+        columnGroup progress (
+            heading: Progress
+        )
+
+        columnGroup project-details (
+            heading: Project Details
+        )
+
+        column CARD_ICON (
+            type: hidden
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: CARD_ICON
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column CARD_INITIALS (
+            type: hidden
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: CARD_INITIALS
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column CARD_LINK (
+            type: hidden
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: CARD_LINK
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column COMMENTS (
+            type: displayOnly
+            heading {
+                heading: Comments
+                alignment: end
+            }
+            layout {
+                sequence: 120
+                columnAlignment: end
+                group: @associated-records
+            }
+            source {
+                databaseColumn: COMMENTS
+                dataType: number
+                queryOnly: true
+            }
+        )
+
+        column COMPLETED_DATE (
+            type: datePickerJquery
+            heading {
+                heading: Completed Date
+            }
+            layout {
+                sequence: 70
+                group: @progress
+            }
+            source {
+                databaseColumn: COMPLETED_DATE
+                dataType: date
+            }
+        )
+
+        column DESCRIPTION (
+            type: textarea
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 50
+                group: @project-details
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column LINKS (
+            type: displayOnly
+            heading {
+                heading: Links
+                alignment: end
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+                group: @associated-records
+            }
+            source {
+                databaseColumn: LINKS
+                dataType: number
+                queryOnly: true
+            }
+        )
+
+        column MILESTONES (
+            type: displayOnly
+            heading {
+                heading: Milestones
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+                group: @associated-records
+            }
+            source {
+                databaseColumn: MILESTONES
+                dataType: number
+                queryOnly: true
+            }
+        )
+
+        column NAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 30
+                group: @project-details
+            }
+            validation {
+                valueRequired: true
+                maxLength: 255
+            }
+            link {
+                target: {
+                    page: 11
+                    items: {
+                        P11_PROJECT_ID: &ID.
+                    }
+                    clearCache: 11
+                    action: resetPagination
+                }
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column PROJECT_LEAD (
+            type: selectList
+            heading {
+                heading: Project Lead
+            }
+            lov {
+                type: sharedComponent
+                lov: @team-members
+                displayExtraValues: false
+                nullDisplayValue: - Select Project Lead -
+            }
+            layout {
+                sequence: 40
+                group: @project-details
+            }
+            source {
+                databaseColumn: PROJECT_LEAD
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column STATUS_CD (
+            type: selectList
+            heading {
+                heading: Status
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select description d, cd r
+                    from eba_demo_md_status
+                    order by 1
+                    ```
+                displayExtraValues: false
+                nullDisplayValue: - Status -
+            }
+            layout {
+                sequence: 60
+                group: @progress
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: STATUS_CD
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column TASKS (
+            type: displayOnly
+            heading {
+                heading: Tasks
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+                group: @associated-records
+            }
+            source {
+                databaseColumn: TASKS
+                dataType: number
+                queryOnly: true
+            }
+        )
+
+        column TODOS (
+            type: displayOnly
+            heading {
+                heading: To Dos
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+                group: @associated-records
+            }
+            source {
+                databaseColumn: TODOS
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Project
+        layout {
+            sequence: 10
+            region: @breadcrumbs
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 5
+                clearCache: 5
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction create-button-dialog-closed (
+        name: Create Button - Dialog Closed
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @create
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @projects
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @projects
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @projects
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: item
+            itemName: APP_PAGE_ID
+        }
+    )
+
+)
+

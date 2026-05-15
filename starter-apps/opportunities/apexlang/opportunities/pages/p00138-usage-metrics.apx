@@ -1,0 +1,425 @@
+page 138 (
+    name: Usage Metrics
+    alias: USAGE-METRICS
+    title: Usage Metrics
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .t-Dialog-body {padding: 0; overflow: hidden;}
+            .fc-month-button {display: none !important;}
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @usage-metrics
+    }
+
+    region calendar (
+        name: Calendar
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select null id,
+                    view_timestamp,
+                  trim(to_char(views,'999G999G999G990')) || 
+                    case views
+                      when 1 then ' view'
+                      else ' views'
+                    end || 
+                    ' - ' ||
+                    trim(to_char(users,'999G999G999G990')) || 
+                    case users
+                      when 1 then ' user'
+                      else ' users'
+                    end d
+                from (
+                  select trunc(view_timestamp) view_timestamp,
+                    count(*) views,
+                    count(distinct app_username) users
+                  from eba_sales_clicks
+                  where (
+                    (:P138_ENTITY_TYPE = 'OPPORTUNITY' and opp_id = :P138_ENTITY_ID)
+                      or (:P138_ENTITY_TYPE = 'TERRITORY' and territory_id = :P138_ENTITY_ID)
+                      or (:P138_ENTITY_TYPE = 'LEAD' and lead_id = :P138_ENTITY_ID)
+                      or (:P138_ENTITY_TYPE = 'ACCOUNT' and cust_id = :P138_ENTITY_ID)
+                      or (:P138_ENTITY_TYPE = 'CONTACT' and contact_id = :P138_ENTITY_ID)
+                      or (:P138_ENTITY_TYPE = 'PRODUCT' and product_id = :P138_ENTITY_ID)
+                  )
+                    and view_timestamp > sysdate - 90
+                    and :P138_DISPLAY_AS = 'CALENDAR'
+                  group by trunc(view_timestamp) 
+                )
+                ```
+            pageItemsToSubmit: P138_DISPLAY_AS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: calendar_region
+            regionDisplaySelector: true
+        }
+        settings {
+            displayColumn: D
+            startDateColumn: VIEW_TIMESTAMP
+            endDateColumn: VIEW_TIMESTAMP
+            additionalCalendarViews: navigation
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    region region-toggle (
+        name: Region toggle
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--slimPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region report (
+        name: Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.view_timestamp timestamp,
+                  c.view_timestamp viewed,
+                  lower(c.app_username) app_username
+                from eba_sales_clicks c
+                where (
+                  (:P138_ENTITY_TYPE = 'OPPORTUNITY' and opp_id = :P138_ENTITY_ID)
+                    or (:P138_ENTITY_TYPE = 'TERRITORY' and territory_id = :P138_ENTITY_ID)
+                    or (:P138_ENTITY_TYPE = 'LEAD' and lead_id = :P138_ENTITY_ID)
+                    or (:P138_ENTITY_TYPE = 'ACCOUNT' and cust_id = :P138_ENTITY_ID)
+                    or (:P138_ENTITY_TYPE = 'CONTACT' and contact_id = :P138_ENTITY_ID)
+                    or (:P138_ENTITY_TYPE = 'PRODUCT' and product_id = :P138_ENTITY_ID)
+                )
+                  and c.view_timestamp > sysdate - 90
+                  and :P138_DISPLAY_AS = 'REPORT'
+                ```
+            pageItemsToSubmit: P138_DISPLAY_AS
+        }
+        layout {
+            sequence: 1210
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: report_region
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 766148777413253949
+        }
+
+        column APP_USERNAME (
+            type: plainText
+            heading {
+                heading: User
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column TIMESTAMP (
+            type: hidden
+            heading {
+                heading: Timestamp
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: C
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column VIEWED (
+            type: plainText
+            heading {
+                heading: Viewed
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            width: 8.5
+            height: 11
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 7901724 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn APP_USERNAME (
+                sequence: 1
+            )
+
+            displayColumn TIMESTAMP (
+                sequence: 3
+            )
+
+            displayColumn VIEWED (
+                sequence: 2
+            )
+
+            sort (
+                column: TIMESTAMP
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P138_DISPLAY_AS (
+        type: radioGroup
+        label {
+            label: Display as
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:<span class="t-Icon fa fa-reorder" title="Report View"></span><span class="u-VisuallyHidden">Report</span>;REPORT
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @region-toggle
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: CALENDAR
+        }
+        security {
+            escapeSpecialChars: false
+        }
+    )
+
+    pageItem P138_ENTITY_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @region-toggle
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P138_ENTITY_TYPE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @region-toggle
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    dynamicAction display-as-changed (
+        name: Display As changed
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P138_DISPLAY_AS
+        }
+        clientSideCondition {
+            type: item=value
+            item: P138_DISPLAY_AS
+            value: CALENDAR
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @report
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-hide-2 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @calendar
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#calendar_region').trigger('apexrefresh');
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code-2 (
+            action: executeJsCode
+            settings {
+                jsCode: $('#report_region').trigger('apexrefresh');
+            }
+            execution {
+                sequence: 30
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @calendar
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show-2 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @report
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+)
+

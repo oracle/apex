@@ -1,0 +1,589 @@
+page 116 (
+    name: Search Results
+    alias: SEARCH-RESULTS
+    title: Search Results
+    pageGroup: @home
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            (function() {
+             
+            // search items
+            var $search = $('#P116_SEARCH');
+            var $include = $('#P116_INCLUDE');
+            var $searchBtn = $('#search_btn');
+            var $resetBtn = $('#reset_btn');
+              
+            // regions
+            var $searchResultsReg = $('#search_results_reg');
+              
+            var timeout = 0; // used for debounce on search
+              
+            function applyFilters() {
+              $searchResultsReg.trigger('apexrefresh');
+            }
+              
+            function debounceSearch(e) {
+                /*
+                 * Prevent search for following keys:
+                 * TAB:     9
+                 * SHIFT:   16
+                 * LEFT:    37
+                 * RIGHT:   39
+                 */
+                if ( e.which === 9 || e.which === 16 || e.which === 37 || e.which === 39 ) {
+                    return false;
+                }
+                clearTimeout(timeout);
+                timeout = setTimeout(applyFilters, 250);
+            }
+              
+            function preventSubmitOnEnter(e) {
+              if (e.which === 13) {
+                return false;
+              }
+            }
+              
+            function resetFilters() {
+              $search.val(null);
+              $include.find('input').prop('checked', true);
+              
+              $searchResultsReg.trigger('apexrefresh');
+            }
+            
+            $search.keydown(preventSubmitOnEnter);
+            $search.keyup(debounceSearch);
+            $include.change(applyFilters);
+            $searchBtn.click(applyFilters);
+            $resetBtn.click(resetFilters);
+              
+            })();
+            ```
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            ul.sSearchResultsReport span.title span.highlight {
+              background-color: #FFEA87;
+              text-decoration: underline
+              }
+            ul.sSearchResultsReport span.highlight {
+              background-color: #FFEA87;
+              }
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This page displays all of the opportunities that match the search term(s) entered in the app's search page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--showBreadcrumb
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select search_link,
+                  substr(search_title,1,200) search_title,
+                  search_desc,
+                  'Source' label_01,
+                  source value_01,
+                  'Key' label_02,
+                  row_key value_02,
+                  'Last Modified' label_03,
+                  apex_util.get_since(updated) value_03,
+                  secondary_link
+                from (
+                  select 'Lead' source,
+                    1 sort_order,
+                    l.lead_name_01 search_title,
+                    nvl(l.lead_details, '*** no details provided ***') search_desc,
+                    l.updated,
+                    apex_util.prepare_url('f?p=' || :APP_ID || ':133:' || :APP_SESSION || ':::RP,133:P133_ID:' || l.id) search_link,
+                    '' secondary_link,
+                    l.row_key
+                  from eba_sales_leads l
+                  where (
+                      instr(:P116_INCLUDE,'LEADS') > 0 
+                        and (
+                          instr(upper(l.lead_name_01), upper(:P116_SEARCH)) > 0
+                            or instr(upper(l.row_key), upper(:P116_SEARCH)) > 0
+                            or instr(upper(l.lead_details), upper(:P116_SEARCH)) > 0
+                            or instr(upper(l.tags), upper(:P116_SEARCH)) > 0
+                        )
+                    )
+                  union
+                  select 'Opportunity' source,
+                    2 sort_order,
+                    o.deal_name search_title,
+                    nvl(o.deal_summary, '*** no summary provided ***') search_desc,
+                    o.updated,
+                    apex_util.prepare_url('f?p=' || :APP_ID || ':80:' || :APP_SESSION || ':::RP,80:P80_ID:' || o.id) search_link,
+                    '' secondary_link,
+                    o.row_key
+                  from eba_sales_deals o
+                  where (
+                      instr(:P116_INCLUDE,'OPPORTUNITIES') > 0 
+                        and (
+                          instr(upper(o.deal_name), upper(:P116_SEARCH)) > 0
+                            or instr(upper(o.row_key), upper(:P116_SEARCH)) > 0
+                            or instr(upper(o.deal_summary), upper(:P116_SEARCH)) > 0
+                            or instr(upper(o.tags), upper(:P116_SEARCH)) > 0
+                        )
+                    )
+                  union
+                  select 'Territory' source,
+                    3 sort_order,
+                    t.territory_name search_title,
+                    nvl(t.territory_description, '*** no description provided ***') search_desc,
+                    t.updated,
+                    apex_util.prepare_url('f?p=' || :APP_ID || ':93:' || :APP_SESSION || ':::RP,93:P93_ID:' || t.id) search_link,
+                    '' secondary_link,
+                    t.row_key
+                  from eba_sales_territories t
+                  where (
+                      instr(:P116_INCLUDE,'TERRITORIES') > 0 
+                        and (
+                          instr(upper(t.territory_name), upper(:P116_SEARCH)) > 0
+                            or instr(upper(t.row_key), upper(:P116_SEARCH)) > 0
+                            or instr(upper(t.territory_description), upper(:P116_SEARCH)) > 0
+                            or instr(upper(t.tags), upper(:P116_SEARCH)) > 0
+                        )
+                    )
+                  union
+                  select 'Account' source,
+                    4 sort_order,
+                    c.customer_name search_title,
+                    nvl(c.customer_description, '*** no description provided ***') search_desc,
+                    c.updated,
+                    apex_util.prepare_url('f?p=' || :APP_ID || ':94:' || :APP_SESSION || ':::RP,94:P94_ID:' || c.id) search_link,
+                    '' secondary_link,
+                    c.row_key
+                  from eba_sales_customers c
+                  where (
+                      instr(:P116_INCLUDE,'ACCOUNTS') > 0 
+                        and (
+                          instr(upper(c.customer_name), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.row_key), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.customer_description), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.tags), upper(:P116_SEARCH)) > 0
+                        )
+                    )
+                  union
+                  select 'Contact' source,
+                    5 sort_order,
+                    c.contact_name search_title,
+                    nvl(c.contact_description, '*** no description provided ***') search_desc,
+                    c.updated,
+                    apex_util.prepare_url('f?p=' || :APP_ID || ':94:' || :APP_SESSION || ':::RP,94:P94_ID:' || c.id) search_link,
+                    '' secondary_link,
+                    c.row_key
+                  from eba_sales_customer_contacts c
+                  where (
+                      instr(:P116_INCLUDE,'CONTACTS') > 0 
+                        and (
+                          instr(upper(c.contact_name), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.contact_description), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.tags), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.contact_email), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.contact_phone), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.contact_cell), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.contact_address), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.contact_linkedin), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.contact_facebook), upper(:P116_SEARCH)) > 0
+                            or instr(upper(c.contact_twitter), upper(:P116_SEARCH)) > 0
+                        )
+                    )
+                  union
+                  select 'Product' source,
+                    6 sort_order,
+                    p.product_name search_title,
+                    nvl(p.product_description, '*** no description provided ***') search_desc,
+                    p.updated,
+                    apex_util.prepare_url('f?p=' || :APP_ID || ':94:' || :APP_SESSION || ':::RP,94:P94_ID:' || p.id) search_link,
+                    '' secondary_link,
+                    p.row_key
+                  from eba_sales_products p
+                  where (
+                      instr(:P116_INCLUDE,'PRODUCTS') > 0 
+                        and (
+                          instr(upper(p.product_name), upper(:P116_SEARCH)) > 0
+                            or instr(upper(p.row_key), upper(:P116_SEARCH)) > 0
+                            or instr(upper(p.product_description), upper(:P116_SEARCH)) > 0
+                            or instr(upper(p.tags), upper(:P116_SEARCH)) > 0
+                        )
+                    )
+                )
+                order by sort_order
+                ```
+            pageItemsToSubmit: [
+                P116_SEARCH
+                P116_INCLUDE
+            ]
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: search_results_reg
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/search-results
+            templateOptions: #DEFAULT#
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No match found
+        }
+
+        column LABEL_01 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Label 01
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LABEL_02 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Label 02
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LABEL_03 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Label 03
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SEARCH_DESC (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Search desc
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SEARCH_LINK (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Search link
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SEARCH_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Search title
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SECONDARY_LINK (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Secondary link
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VALUE_01 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Value 01
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VALUE_02 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Value 02
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VALUE_03 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Value 03
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P116_INCLUDE (
+        type: checkboxGroup
+        label {
+            label: Include
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @search-page-include-options
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 20
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if apex_util.get_build_option_status(
+                  p_application_id    => :APP_ID,
+                  p_build_option_name => 'Territories'
+                ) = 'INCLUDE'
+                then
+                  return 'LEADS:OPPORTUNITIES:TERRITORIES:ACCOUNTS:CONTACTS:PRODUCTS';
+                else
+                  return 'LEADS:OPPORTUNITIES:ACCOUNTS:CONTACTS:PRODUCTS';
+                end if;
+                ```
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P116_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            width: 64
+            valuePlaceholder: Search
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 20
+            region: @filters
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: reset_btn
+        }
+    )
+
+    button search (
+        buttonName: SEARCH
+        label: Search
+        layout {
+            sequence: 10
+            region: @filters
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: search_btn
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 116
+                successMessage: false
+            }
+        }
+        comments {
+            comments: Created 14-DEC-2011 09:16 by SHAKEEB
+        }
+    )
+
+)
+

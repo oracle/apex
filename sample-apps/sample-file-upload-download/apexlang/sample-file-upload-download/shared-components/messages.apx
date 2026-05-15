@@ -1,0 +1,50 @@
+textMessage AC_CONFIGURATION_INFO (
+    message {
+        text:
+            ```
+            <p><b>Enabling Access Control</b> means that access to the application and its features are controlled by the current <b>Access Control List</b>, as defined by the application administrator. There are 3 access levels available that can be granted to a user; Administrator, Contributor and Reader. Please see the Manager User pages for further details on what each level provides.</p>
+            <p>In addition, if you don't want to have to define every 'Reader' of your application, you can select <b>Any Authenticated User</b> from the <b>Reader Access</b> configuration option. This opens read-only access to any user who can authenticate into your application.</p>
+            <br />
+            <p><b>Disabling Access Control</b> means that access to the application and all of its features including Administration are open to any user who can authenticate to the application.</p>
+            <br />
+            <p>Note: Irrespective of whether Access Control is enabled or disabled, a user still has to authenticate successfully into the application.</p>
+            ```
+        language: en
+    }
+)
+
+textMessage ADMINISTRATION (
+    message {
+        text: Administration
+        language: en
+    }
+)
+
+textMessage HELP (
+    message {
+        text: Help
+        language: en
+    }
+)
+
+textMessage LOGOUT (
+    message {
+        text: Logout
+        language: en
+    }
+)
+
+textMessage MOBILE (
+    message {
+        text: Mobile
+        language: en
+    }
+)
+
+textMessage USER (
+    message {
+        text: User
+        language: en
+    }
+)
+

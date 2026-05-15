@@ -1,0 +1,6 @@
+appItem REMOTE_SERVER (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+    }
+)
+

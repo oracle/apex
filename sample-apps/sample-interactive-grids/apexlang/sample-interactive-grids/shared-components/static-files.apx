@@ -1,0 +1,30 @@
+file eba_demo_ig_people.json (
+    mimeType: application/json
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file sample-interactive-grid.css (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file sample-interactive-grid.min.css (
+    mimeType: text/css
+    charSet: utf-8
+)
+

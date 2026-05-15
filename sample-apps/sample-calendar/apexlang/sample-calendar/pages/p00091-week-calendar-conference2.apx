@@ -1,0 +1,241 @@
+page 91 (
+    name: Week Calendar: Conference
+    alias: WEEK-CALENDAR-CONFERENCE2
+    title: Week Calendar: Conference
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .fc-event .fc-content div.fc-time { display: none;}
+            
+            .fc-event.my-cal-blue {
+                background-color: lightblue;
+                border: 0.5pt solid black;
+                opacity: 0.7;
+            }
+            
+            .fc-event.my-cal-blue .fc-event-title {
+                color: darkblue;
+                font-weight: bold;
+            }
+            
+            .fc-event.my-cal-orange {
+                background-color: orange;
+                border: 0.5pt solid black;
+                opacity: 0.7;
+            }
+            
+            .fc-event.my-cal-orange .fc-title {
+                color: darkred;
+                font-weight: bold;
+            }
+            
+            .fc-event.my-cal-dark-orange {
+                background-color: #8B5A00;
+                border: 0.5pt solid black;
+                opacity: 0.7;
+            }
+            
+            .fc-event.my-cal-dark-orange .fc-title {
+                color: white;
+                font-weight: bold;
+            }
+            
+            .fc-event.my-cal-white {
+                background-color: white;
+                border: 0.5pt solid black;
+                opacity: 0.7;
+            }
+            
+            .fc-event.my-cal-white .fc-title {
+                color: black;
+                font-weight: bold;
+            }
+            
+            .fc-event.my-cal-green {
+                background-color: lightgreen;
+                border: 0.5pt solid black;
+                opacity: 0.7;
+            }
+            
+            .fc-event.my-cal-green .fc-title {
+                color: darkgreen;
+                font-weight: bold;
+            }
+            
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page shows custom styling of calendar events using own CSS classes. Define your CSS classes (e.g. in the page attribute <b>CSS - Inline</b>) and use them as the <b>CSS_CLASS</b> column in your SQL query. An example CSS class definition (setting a light-blue background with black border and a dark-blue, bold font) looks as follows.</p>
+                <pre>
+                .fc-event.my-cal-blue {
+                    background-color: lightblue;
+                    border: 0.5pt solid black;
+                    opacity: 0.7;
+                }
+                
+                .fc-event.my-cal-blue .fc-event-title {
+                    color: darkblue;
+                    font-weight: bold;
+                }
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sessions (
+        name: Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   case when speaker is not null then 
+                       title || ' (' || speaker || ')' 
+                       else title
+                   end as title,
+                   speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when session_type = 'BREAK'    then 'my-cal-green'
+                      when session_type = 'BUSINESS' then 'my-cal-blue'
+                      when session_type = 'GENERAL'  then 'my-cal-white'
+                      when session_type = 'TECHNICAL' then 'my-cal-orange'
+                      when session_type = 'HANDS_ON' then 'my-cal-dark-orange'
+                   end as css_class
+                from eba_demo_cal_sessions
+                where status='ACTIVE'
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            showTime: true
+            calendarViewsAndNavigation: [
+                week
+                day
+                list
+                navigation
+            ]
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function ( pOptions) {
+                    pOptions.slotMinTime      = "07:00:00";                               // hide slots before minTime
+                    pOptions.slotMaxTime      = "18:00:00";                               // hide slots after maxTime
+                    pOptions.slotDuration     = "00:15:00";                               // custom slot duration
+                    return pOptions;
+                }
+                
+                ```
+        }
+    )
+
+    dynamicAction change-project-refresh-calendar (
+        name: Change Project - Refresh Calendar
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P91_PROJECTS
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

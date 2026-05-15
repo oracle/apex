@@ -1,0 +1,991 @@
+list application-actions (
+    name: Application Actions
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Run reports to analyze sales history data.
+        }
+    )
+
+    entry analysis-reports (
+        label: Analysis Reports
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        userDefinedAttributes {
+            1: Run reports to analyze sales history data.
+        }
+    )
+
+    entry generate-transactions (
+        label: Generate Transactions
+        icon {
+            imageIconCssClasses: fa-gears
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+        userDefinedAttributes {
+            1: Generate sale transactions
+        }
+    )
+
+    entry products (
+        label: Products
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 11
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Identify product items available for sale at one or more stores
+        }
+    )
+
+    entry regions (
+        label: Regions
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 8
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Each store is mapped to a geographic region
+        }
+    )
+
+    entry sales-dashboard (
+        label: Sales Dashboard
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Analysis dashboard of sales data.
+        }
+    )
+
+    entry sales-history (
+        label: Sales History
+        icon {
+            imageIconCssClasses: fa-credit-card
+        }
+        layout {
+            sequence: 56
+        }
+        link {
+            target: {
+                page: 2
+                clearCache: 2
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Identify product items available for sale at one or more stores
+        }
+    )
+
+    entry store-locations-map (
+        label: Store Locations Map
+        icon {
+            imageIconCssClasses: fa-map-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10
+                clearCache: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Set production promotions by store using map interface.
+        }
+        config {
+            buildOption: @maps
+        }
+    )
+
+    entry stores (
+        label: Stores
+        icon {
+            imageIconCssClasses: fa-shopping-bag
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Identify attributes, products sold, discounts and geographic region
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: a-Icon icon-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry install-app (
+        label: Install App
+        icon {
+            imageIconCssClasses: fa-cloud-download
+        }
+        layout {
+            sequence: 1
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #action$a-pwa-install
+            }
+        }
+        userDefinedAttributes {
+            2: a-pwaInstall
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                8
+                9
+                13
+                15
+                16
+                17
+                24
+                21
+                40
+                41
+                42
+                45
+                23
+                39
+            ]
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry dashboard (
+        label: Dashboard
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                14
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry products-products (
+        label: "Products [&PRODUCTS.]"
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                11
+                12
+            ]
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry reports (
+        label: Reports
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                19
+                20
+                22
+                25
+                20
+                26
+                27
+                32
+                36
+                37
+                38
+                2
+                23
+                42
+            ]
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry stores-stores (
+        label: "Stores [&STORES.]"
+        icon {
+            imageIconCssClasses: fa-cart-full
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6
+                7
+                3
+                43
+            ]
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry transactions (
+        label: Transactions
+        icon {
+            imageIconCssClasses: fa-credit-card
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                28
+                29
+                30
+                31
+                33
+                34
+                35
+            ]
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+)
+
+list reports (
+    name: reports
+
+    entry products-available-by-store (
+        label: Products Available by Store
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 27
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View percentages of products available at each store
+            2: reportIcon
+        }
+    )
+
+    entry sales-by-product-and-region-by-week (
+        label: Sales by Product and Region by Week
+        icon {
+            imageIconCssClasses: fa-dollar
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 25
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report of weekly sales metrics by product by region
+            2: reportIcon
+        }
+    )
+
+    entry sales-by-region-by-week (
+        label: Sales by Region by Week
+        icon {
+            imageIconCssClasses: fa-dollar
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Weekly sales metrics by region
+            2: reportIcon
+        }
+    )
+
+    entry sales-by-store-by-day (
+        label: Sales by Store by Day
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 20
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View monthly calendar of sales by store by day
+            2: calendarIcon
+        }
+    )
+
+    entry table-row-counts (
+        label: Table Row Counts
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 32
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View a list of the database tables used by this demonstration system and the current row counts.
+            2: reportIcon
+        }
+    )
+
+)
+
+list reset-sample-data-list (
+    name: reset sample data LIST
+
+    entry reset-data-to-2xl (
+        label: Reset Data to 2XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:$s('P40_SIZE','XXL');apex.submit({showWait:true});
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 50,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-3xl (
+        label: Reset Data to 3XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:$s('P40_SIZE','XXXL');apex.submit({showWait:true});
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 100,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-4xl (
+        label: Reset Data to 4XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:$s('P40_SIZE','4XL');apex.submit({showWait:true});
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 1,000,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-5xl (
+        label: Reset Data to 5XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:$s('P40_SIZE','5XL');apex.submit({showWait:true});
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 5,000,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-l (
+        label: Reset Data to L
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:$s('P40_SIZE','L');apex.submit({showWait:true});
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 5,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-m (
+        label: Reset Data to M
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:$s('P40_SIZE','M');apex.submit({showWait:true});
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 1,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-s (
+        label: Reset Data to S
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:$s('P40_SIZE','S');apex.submit({showWait:true});
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 500 rows of sales history
+        }
+    )
+
+    entry reset-data-to-xl (
+        label: Reset Data to XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:$s('P40_SIZE','XL');apex.submit({showWait:true});
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 25,000 rows of sales history
+        }
+    )
+
+)
+
+list settings (
+    name: Settings
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 17
+                clearCache: 17
+            }
+        }
+        userDefinedAttributes {
+            1: Calendar view of all application activity by user.
+            2: calendarIcon
+        }
+    )
+
+    entry build-options (
+        label: Build Options
+        icon {
+            imageIconCssClasses: fa-check-square-o
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 10020
+                clearCache: 10020
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Set application configuration
+        }
+    )
+
+    entry event-log (
+        label: Event Log
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 21
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View administrative and debug event log.
+            2: reportIcon
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-analytics
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 39
+                clearCache: 10020
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Set application configuration
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10010
+                clearCache: 10010
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Set application user interface theme style for all users
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: Report of page views aggregated by user.
+            2: reportIcon
+        }
+    )
+
+)
+
+list transaction-reports (
+    name: Transaction Reports
+
+    entry api-calls-per-hour (
+        label: API Calls Per Hour
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 35
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Summary report of API calls summarized by hour.
+            2: reportIcon
+        }
+    )
+
+    entry api-calls-per-minute (
+        label: API Calls Per Minute
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+        userDefinedAttributes {
+            1: Summary report of API calls summarized by minute.
+        }
+    )
+
+    entry transactions-log (
+        label: Transactions Log
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: Report listing each call made to the transaction generator.
+            2: reportIcon
+        }
+    )
+
+)
+
+list transactions (
+    name: Transactions
+
+    entry generate-100-transactions-on-page-load (
+        label: Generate 100 Transactions on Page Load
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 31
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Generate 100 transactions.  Click button to generate another 100 transactions.
+        }
+    )
+
+    entry generate-transaction-on-button-click (
+        label: Generate Transaction on Button Click
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+        userDefinedAttributes {
+            1: Generate one transaction for a random product from a random store.  Press button complete transaction.
+        }
+    )
+
+    entry generate-transaction-on-page-load (
+        label: Generate Transaction on Page Load
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Generate one transaction by loading the page.  Includes option to automatically resubmit page via javascript.
+        }
+    )
+
+    entry remove-transaction-history (
+        label: Remove Transaction History
+        icon {
+            imageIconCssClasses: fa-trash-o
+        }
+        layout {
+            sequence: 300
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        userDefinedAttributes {
+            1: Remove transaction history.
+        }
+    )
+
+    entry reset-sample-data (
+        label: Reset Sample Data
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+        userDefinedAttributes {
+            1: Reset sales history to t-shirt sizes
+        }
+    )
+
+)
+
+list user-interface (
+    name: User Interface
+    config {
+        buildOption: @feature-theme-style-selection
+    }
+
+    entry theme-style-selection (
+        label: Theme Style Selection
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10010
+                clearCache: 10010
+            }
+        }
+        userDefinedAttributes {
+            1: Set the default application look and feel
+        }
+    )
+
+)
+

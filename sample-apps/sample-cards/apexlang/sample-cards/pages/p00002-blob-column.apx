@@ -1,0 +1,228 @@
+page 2 (
+    name: BLOB column
+    alias: BLOB-COLUMN
+    title: &APP_NAME. - BLOB column
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>You can display Cards images sourced from a BLOB column.</p>
+                
+                <p>Cards have declarative way of handling BLOB column value and display as <strong>Media</strong> or <strong>Icon</strong> images.  You can change the display of the image declaratively by position, appearance, or size using cards <strong>Media</strong>.  If you want to display the image smaller, you can display the image as <strong>Icon</strong>.</p>
+                
+                <p>When BLOB column is selected for either Media or Icon, <strong>Primary Key Column</strong> is required to fetch the BLOB.  Also defining <strong>Last Updated Column</strong> as part of BLOB attributes is recommended to cache the images in the browser to improve the performance and reduce the latency.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-image
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region icon-image (
+        name: Icon Image
+        type: cards
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CARD_EMP
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            gridColumns: 3
+        }
+        card {
+            primaryKeyColumn1: EMPNO
+        }
+        title {
+            column: ENAME
+        }
+        subtitle {
+            column: JOB
+        }
+        iconAndBadge {
+            iconSource: imageBlobColumn
+            imageColumn: PROFILE_IMAGE
+            iconDescription: &ENAME!ATTR.
+        }
+        blobAttributes {
+            mimeTypeColumn: MIMETYPE
+            lastUpdatedColumn: IMAGE_LAST_UPDATE
+        }
+        pagination {
+            type: page
+            showTotalCount: true
+            cardsPerPage: 6
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 14
+                    items: {
+                        P14_EMPNO: &EMPNO.
+                    }
+                    clearCache: 14
+                }
+            }
+        )
+
+    )
+
+    region media-image (
+        name: Media Image
+        type: cards
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CARD_EMP
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            gridColumns: 5
+        }
+        card {
+            primaryKeyColumn1: EMPNO
+        }
+        title {
+            column: ENAME
+        }
+        subtitle {
+            column: JOB
+        }
+        media {
+            source: blobColumn
+            blobColumn: PROFILE_IMAGE
+            position: first
+            imageDescription: &ENAME. - &JOB.
+        }
+        blobAttributes {
+            mimeTypeColumn: MIMETYPE
+            lastUpdatedColumn: IMAGE_LAST_UPDATE
+        }
+        pagination {
+            type: page
+            showTotalCount: true
+            cardsPerPage: 5
+        }
+
+        action action (
+            label: Edit
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 14
+                    items: {
+                        P14_EMPNO: &EMPNO.
+                    }
+                    clearCache: 14
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-file-o
+            }
+        )
+
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            includeShowAll: false
+            rememberSelection: false
+        }
+    )
+
+)
+

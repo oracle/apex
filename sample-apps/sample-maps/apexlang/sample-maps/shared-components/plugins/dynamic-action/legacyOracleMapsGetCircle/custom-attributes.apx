@@ -1,0 +1,84 @@
+customAttribute attribute_01 (
+    apexlangName: itemForCircleCenterX
+    attribute: 1
+    name: Item for Circle Center X
+    type: pageItem
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: Provide an APEX item to store the X-coordinate of the circle center in.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: itemForCircleCenterY
+    attribute: 2
+    name: Item for Circle Center Y
+    type: pageItem
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: Provide an APEX item to store the Y-coordinate of the circle center in.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: itemForCircleRadius
+    attribute: 3
+    name: Item for circle radius
+    type: pageItem
+    appearance {
+        sequence: 30
+    }
+    help {
+        helpText: Provide an APEX item to store the circle radius in.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: sridOfCircleCenterMapSrid
+    attribute: 4
+    name: SRID of Circle Center (Map SRID)
+    type: pageItem
+    appearance {
+        sequence: 40
+    }
+    help {
+        helpText: Provide an APEX item to store the SRID value in which the circle center is being returned.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: coordinteSystemForReturnData
+    attribute: 5
+    name: Coordinte system for return data
+    type: selectList
+    appearance {
+        sequence: 5
+    }
+    default {
+        value: WGS84
+    }
+    help {
+        helpText: Determine whether the circle center should be returned in the map coordinate system or as longitude / latitude (WGS84).
+    }
+
+    entry currentMapProjection (
+        sequence: 20
+        display: Current map projection
+        return: MAP
+    )
+
+    entry longitiudeLatitudeWgs84 (
+        sequence: 10
+        display: Longitiude / Latitude (WGS84)
+        return: WGS84
+    )
+
+)
+

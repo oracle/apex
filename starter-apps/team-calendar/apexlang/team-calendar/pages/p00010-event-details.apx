@@ -1,0 +1,2115 @@
+page 10 (
+    name: Event Details
+    alias: EVENT-DETAILS
+    title: Event Details
+    pageGroup: @events
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            var groupCal = groupCal || {};
+            
+            groupCal.defaultDuration = 1;
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region audit-information (
+        name: Audit Information
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @event
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_EVENT_ID
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region event (
+        name: Event
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region links (
+        name: Links
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-expanded
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region recurrence (
+        name: Recurrence
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @event
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P10_CALENDAR_ID (
+        type: selectList
+        label {
+            label: Calendar
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @calendars
+            displayExtraValues: false
+            nullDisplayValue: - Default Calendar -
+        }
+        layout {
+            sequence: 40
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Name of the event.
+        }
+    )
+
+    pageItem P10_CONTACT_EMAIL (
+        type: textField
+        label {
+            label: Contact Email
+            alignment: left
+        }
+        layout {
+            sequence: 160
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Person to contact for more information.
+        }
+    )
+
+    pageItem P10_CONTACT_PERSON (
+        type: textField
+        label {
+            label: Contact Person
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 150
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Person to contact for more information.
+        }
+    )
+
+    pageItem P10_CREATED_BY (
+        type: displayOnly
+        label {
+            label: Created By:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 290
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The user who created the record.
+        }
+    )
+
+    pageItem P10_CREATED_ON (
+        type: displayOnly
+        label {
+            label: Created:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 280
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The date on which the record was created.
+        }
+    )
+
+    pageItem P10_DURATION (
+        type: selectList
+        label {
+            label: End Time
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select to_char(to_date(to_char(trunc(sysdate),'&APP_DATE_FORMAT.')||:P10_EVENT_START_TIME_D,
+                                       '&APP_DATE_FORMAT.'||'&APP_TIME_FORMAT.') + ((i-1)/(24*4)),
+                               '&APP_TIME_FORMAT.') ||
+                       ' (' ||
+                      case when i = 1 then '0 mins'
+                            when i = 2 then '15 mins'
+                            when i = 3 then '30 mins'
+                            when i = 4 then '45 mins'
+                            when i = 5 then '1 hr'
+                            when i > 5 then to_char(trunc((i-1)/4)) || ' hrs' ||
+                              case when i - trunc((i-1)/4)*4 = 1 then ''
+                                   when i - trunc((i-1)/4)*4 = 2 then ' 15 mins'
+                                   when i - trunc((i-1)/4)*4 = 3 then ' 30 mins'
+                                   when i - trunc((i-1)/4)*4 = 4 then ' 45 mins'
+                               end
+                             end
+                       || ')' d,
+                       (i-1)/4 r
+                  from wwv_flow_dual100
+                 where i < 50
+                order by i
+                
+                ```
+            displayNullValue: false
+        }
+        cascadingLov {
+            parentItems: P10_EVENT_START_TIME_D
+            itemsToSubmit: P10_DURATION
+        }
+        layout {
+            sequence: 140
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        help {
+            helpText: End time of the event.
+        }
+    )
+
+    pageItem P10_EVENT_DATE_D (
+        type: datePicker
+        label {
+            label: Date
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 15
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Select the event date.
+        }
+    )
+
+    pageItem P10_EVENT_DATE_TIME (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @event
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_EVENT_DESC (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 200
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Description of the event.
+        }
+    )
+
+    pageItem P10_EVENT_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @event
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_EVENT_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Name of the event.
+        }
+    )
+
+    pageItem P10_EVENT_START_TIME_D (
+        type: selectList
+        label {
+            label: Start Time
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @start-time-selector
+            displayNullValue: false
+        }
+        layout {
+            sequence: 130
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        help {
+            helpText: Start time of the event.
+        }
+    )
+
+    pageItem P10_LAST_UPDATED_BY (
+        type: displayOnly
+        label {
+            label: Last Updated By:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 310
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The user who last updated the record.
+        }
+    )
+
+    pageItem P10_LAST_UPDATED_ON (
+        type: displayOnly
+        label {
+            label: Last Updated:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 300
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The date on which the record was last updated.
+        }
+    )
+
+    pageItem P10_LINK_NAME_1 (
+        type: textField
+        label {
+            label: Name 1
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 220
+            region: @links
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Name of 1st link.  If not provided, the URL will be displayed.
+        }
+    )
+
+    pageItem P10_LINK_NAME_2 (
+        type: textField
+        label {
+            label: 2
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 240
+            region: @links
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Name of 2nd link.  If not provided, the URL will be displayed.
+        }
+    )
+
+    pageItem P10_LINK_NAME_3 (
+        type: textField
+        label {
+            label: 3
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 260
+            region: @links
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Name of 3rd link.  If not provided, the URL will be displayed.
+        }
+    )
+
+    pageItem P10_LINK_URL_1 (
+        type: textField
+        label {
+            label: URL
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 230
+            region: @links
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: URL for 1st link.
+        }
+    )
+
+    pageItem P10_LINK_URL_2 (
+        type: textField
+        label {
+            label: 2
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 250
+            region: @links
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: URL for 2nd link.
+        }
+    )
+
+    pageItem P10_LINK_URL_3 (
+        type: textField
+        label {
+            label: 3
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 270
+            region: @links
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: URL for 3rd link.
+        }
+    )
+
+    pageItem P10_LOCATION (
+        type: textField
+        label {
+            label: Location
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 170
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Location of the event.
+        }
+    )
+
+    pageItem P10_NEW_COLOR_PREF_ID (
+        type: selectList
+        label {
+            label: Color Preference
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @color-preference
+            displayExtraValues: false
+            nullDisplayValue: - Select Color Preference -
+        }
+        layout {
+            sequence: 70
+            region: @event
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_NEW_EVENT_TYPE (
+        type: textField
+        label {
+            label: New Type
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 60
+            region: @event
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 48
+        }
+        validation {
+            maxLength: 60
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: If desired type is not in the select list, you can enter an event type here and it will be created.
+        }
+    )
+
+    pageItem P10_NEW_INTERNAL_YN (
+        type: selectList
+        label {
+            label: External / Internal
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:External;N,Internal Only;Y
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 80
+            region: @event
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        config {
+            buildOption: @include-external-internal-event-types
+        }
+    )
+
+    pageItem P10_RECUR (
+        type: hidden
+        layout {
+            sequence: 210
+            region: @recurrence
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_RECUR_END_DATE (
+        type: datePicker
+        label {
+            label: End Date
+            alignment: left
+        }
+        layout {
+            sequence: 200
+            region: @recurrence
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+            width: 15
+        }
+        validation {
+            maxLength: 30
+        }
+        default {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                case when :P10_EVENT_ID is null
+                     then sysdate+7
+                     else to_date(:P10_EVENT_DATE_D,'&APP_DATE_FORMAT.')+7
+                     end
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Date on which the recurrence will end.
+        }
+    )
+
+    pageItem P10_RECUR_FLAG (
+        type: checkboxGroup
+        label {
+            label: Recurs?
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @checkbox
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 220
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Identifies if event recurs.
+        }
+    )
+
+    pageItem P10_RECUR_FREQ (
+        type: selectList
+        label {
+            label: Frequency
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @recur-frequency
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 190
+            region: @recurrence
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Select recurrence frequency.
+        }
+    )
+
+    pageItem P10_SERIES_ID (
+        type: hidden
+        layout {
+            sequence: 180
+            region: @recurrence
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUPPRESS_TIME (
+        type: checkboxGroup
+        label {
+            label: All day event?
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @checkbox
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 120
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: If you do not want the start time to display on the Monthly report, check Suppress Time.
+        }
+    )
+
+    pageItem P10_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                  from eba_ca_tags_type_sum
+                 where content_type = 'EVENT'
+                 order by 1
+                ```
+        }
+        layout {
+            sequence: 180
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_TYPE_ID (
+        type: selectList
+        label {
+            label: Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @event-types
+            nullDisplayValue: - Select Type -
+        }
+        layout {
+            sequence: 50
+            region: @event
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: expression
+            plsqlExpression: nvl(:P1_EVENT_TYPE,:P12_EVENT_TYPE)
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Type of event.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Event
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10_EVENT_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE2
+        label: Delete
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P10_EVENT_ID is not null and
+                :P10_SERIES_ID is not null
+                ```
+        }
+    )
+
+    button delete-2 (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P10_EVENT_ID is not null and
+                :P10_SERIES_ID is null
+                ```
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_EVENT_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 70
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction display-recurrence-region (
+        name: display recurrence region
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P10_RECUR_FLAG
+        }
+        clientSideCondition {
+            type: item=value
+            item: P10_RECUR_FLAG
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @recurrence
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @recurrence
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction hide-time-if-all-day-event (
+        name: Hide time if All Day event
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P10_SUPPRESS_TIME
+        }
+        clientSideCondition {
+            type: item=value
+            item: P10_SUPPRESS_TIME
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P10_EVENT_START_TIME_D
+                    P10_DURATION
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: [
+                    P10_EVENT_START_TIME_D
+                    P10_DURATION
+                ]
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction redefault-recur-end-date (
+        name: redefault recur end date
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: P10_EVENT_DATE_D
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: "(:P10_EVENT_ID is null or :P10_RECUR_FLAG is null) and regexp_like(:P10_EVENT_DATE_D,'^[:digit:]+\\-[:alpha:]+\\-[:digit:]+$')"
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: plsqlExpression
+                plsqlExpression: to_date(:P10_EVENT_DATE_D,'&APP_DATE_FORMAT.')+7
+                itemsToSubmit: P10_EVENT_DATE_D
+            }
+            affectedElements {
+                selectionType: items
+                items: P10_RECUR_END_DATE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction reset-duration-after-refresh (
+        name: reset duration after refresh
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: items
+            items: P10_DURATION
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: groupCal.defaultDuration
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P10_DURATION
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction save-duration (
+        name: save duration
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P10_DURATION
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var duration = $v("P10_DURATION");
+                    
+                    if ( duration > 0 ) {
+                       groupCal.defaultDuration = duration;
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-new-event-type (
+        name: show/hide new event type
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P10_TYPE_ID
+        }
+        clientSideCondition {
+            type: item=value
+            item: P10_TYPE_ID
+            value: -1
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P10_NEW_EVENT_TYPE
+                    P10_NEW_COLOR_PREF_ID
+                    P10_NEW_INTERNAL_YN
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: [
+                    P10_NEW_EVENT_TYPE
+                    P10_NEW_COLOR_PREF_ID
+                    P10_NEW_INTERNAL_YN
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation p10-new-color-pref-id-not-null (
+        name: P10_NEW_COLOR_PREF_ID Not Null
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P10_NEW_COLOR_PREF_ID
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P10_NEW_COLOR_PREF_ID
+        }
+        serverSideCondition {
+            type: item=value
+            item: P10_TYPE_ID
+            value: -1
+        }
+    )
+
+    validation p10-new-event-type-not-null (
+        name: P10_NEW_EVENT_TYPE Not Null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P10_NEW_EVENT_TYPE
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P10_NEW_EVENT_TYPE
+        }
+        serverSideCondition {
+            type: item=value
+            item: P10_TYPE_ID
+            value: -1
+        }
+    )
+
+    validation p10-new-internal-yn-not-null (
+        name: P10_NEW_INTERNAL_YN Not Null
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: itemIsNotNull
+            item: P10_NEW_INTERNAL_YN
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P10_NEW_INTERNAL_YN
+        }
+        serverSideCondition {
+            type: item=value
+            item: P10_TYPE_ID
+            value: -1
+        }
+        config {
+            buildOption: @include-external-internal-event-types
+        }
+    )
+
+    validation p10-recur-end-date-not-null (
+        name: P10_RECUR_END_DATE not null
+        execution {
+            sequence: 50
+        }
+        validation {
+            type: itemIsNotNull
+            item: P10_RECUR_END_DATE
+        }
+        error {
+            errorMessage: Recur End Date must be supplied.
+            associatedItem: @P10_RECUR_END_DATE
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_RECUR_FLAG
+        }
+    )
+
+    validation recur-end-date-event-date (
+        name: recur end date > event date
+        execution {
+            sequence: 60
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                to_date(:P10_RECUR_END_DATE,'&APP_DATE_FORMAT.') >=
+                to_date(:P10_EVENT_DATE_D,'&APP_DATE_FORMAT.')
+                ```
+        }
+        error {
+            errorMessage: Recur End Date must be after Event Date
+            associatedItem: @P10_RECUR_END_DATE
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P10_RECUR_END_DATE is not null and 
+                :P10_RECUR_FLAG is not null
+                ```
+        }
+    )
+
+    validation url-1-must-start-with-http (
+        name: URL 1 must start with http
+        execution {
+            sequence: 80
+        }
+        validation {
+            plsqlExpression: substr(:P10_LINK_URL_1, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: URL must start with http:// or https://
+            associatedItem: @P10_LINK_URL_1
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_LINK_URL_1
+        }
+    )
+
+    validation url-2-must-start-with-http (
+        name: URL 2 must start with http
+        execution {
+            sequence: 90
+        }
+        validation {
+            plsqlExpression: substr(:P10_LINK_URL_2, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: URL must start with http:// or https://
+            associatedItem: @P10_LINK_URL_2
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_LINK_URL_2
+        }
+    )
+
+    validation url-3-must-start-with-http (
+        name: URL 3 must start with http
+        execution {
+            sequence: 100
+        }
+        validation {
+            plsqlExpression: substr(:P10_LINK_URL_3, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: URL must start with http:// or https://
+            associatedItem: @P10_LINK_URL_3
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_LINK_URL_3
+        }
+    )
+
+    validation valid-characters-in-tag (
+        name: Valid Characters in Tag
+        execution {
+            sequence: 70
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P10_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P10_TAGS
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    computation p10-duration (
+        itemName: P10_DURATION
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 1
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10_EVENT_ID
+        }
+    )
+
+    computation p10-event-date-d (
+        itemName: P10_EVENT_DATE_D
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: to_char(to_date(:P10_EVENT_DATE_D,'&APP_DATE_TIME_FORMAT.'),'&APP_NLS_DATE_FORMAT.')
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10_EVENT_ID
+        }
+    )
+
+    computation p10-event-start-time-d (
+        itemName: P10_EVENT_START_TIME_D
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select to_char(trunc(to_date(to_char(current_timestamp,'&APP_TIME_FORMAT.'),'&APP_TIME_FORMAT.'),'HH')+1/24,'&APP_TIME_FORMAT.') from dual
+                
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10_EVENT_ID
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 1696196229776451777
+        }
+        serverSideCondition {
+            type: request=Value
+            value: CREATE
+        }
+    )
+
+    process create (
+        name: Create
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_type_id         number;
+                   l_new_event_type  varchar2(60);
+                   l_display_time    varchar2(1);
+                   l_duration        number := :P10_DURATION;
+                begin
+                
+                if :P10_TYPE_ID = '-1' then
+                   l_type_id        := null;
+                   l_new_event_type := :P10_NEW_EVENT_TYPE;
+                else
+                   l_type_id        := :P10_TYPE_ID;
+                   l_new_event_type := null;
+                end if;
+                
+                if :P10_SUPPRESS_TIME = 'Y' then
+                   l_display_time := 'N';
+                   l_duration := 24;
+                else
+                   l_display_time := 'Y';
+                end if;
+                
+                EBA_ca_api.create_event (
+                   p_event_name      => :P10_EVENT_NAME,
+                   p_calendar_id     => :P10_CALENDAR_ID,
+                   p_type_id         => l_type_id,
+                   p_new_event_type  => l_new_event_type,
+                   p_new_color_pref_id => :P10_NEW_COLOR_PREF_ID,
+                   p_new_internal_yn   => :P10_NEW_INTERNAL_YN,
+                   p_event_date_time => to_date(:P10_EVENT_DATE_D||:P10_EVENT_START_TIME_D,
+                                               '&APP_DATE_FORMAT.&APP_TIME_FORMAT.'),
+                   p_duration        => l_duration,
+                   p_event_desc      => :P10_EVENT_DESC,
+                   p_contact_person  => :P10_CONTACT_PERSON,
+                   p_contact_email   => :P10_CONTACT_EMAIL,
+                   p_display_time    => l_display_time,
+                   p_location        => :P10_LOCATION,
+                   p_link_name_1     => :P10_LINK_NAME_1,
+                   p_link_url_1      => :P10_LINK_URL_1,
+                   p_link_name_2     => :P10_LINK_NAME_2,
+                   p_link_url_2      => :P10_LINK_URL_2,
+                   p_link_name_3     => :P10_LINK_NAME_3,
+                   p_link_url_3      => :P10_LINK_URL_3,
+                   p_tags            => :P10_TAGS,
+                   --
+                   p_recur_flag      => :P10_RECUR_FLAG,
+                   p_recur_freq      => :P10_RECUR_FREQ,
+                   p_recur_end_date  => to_date(:P10_RECUR_END_DATE||:P10_EVENT_START_TIME_D,
+                                               '&APP_DATE_FORMAT.&APP_TIME_FORMAT.') );
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Event created.
+        }
+        error {
+            errorMessage: Error creating event.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 9143021256983794062
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process load-data (
+        name: Load Data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                   select event_name,
+                          calendar_id,
+                          type_id,
+                          event_date_time,
+                          duration,
+                          event_desc,
+                          contact_person,
+                          case when display_time = 'Y' then null
+                               when display_time = 'N' then 'Y'
+                               end suppress_time,
+                          location,
+                          link_name_1, link_url_1, link_name_2, link_url_2, link_name_3, link_url_3,
+                          series_id,
+                          created_on, 
+                          created_by, 
+                          last_updated_on, 
+                          last_updated_by, 
+                          tags,
+                          contact_email
+                     from EBA_ca_events
+                   where event_id = :P10_EVENT_ID )
+                loop
+                   :P10_EVENT_NAME         := c1.event_name;	
+                   :P10_CALENDAR_ID        := c1.calendar_id;
+                   :P10_TYPE_ID	           := c1.type_id;	
+                   :P10_EVENT_DATE_TIME	   := to_char(c1.event_date_time,'&APP_DATE_FORMAT.&APP_TIME_FORMAT.');		
+                   :P10_EVENT_DATE_D	   := to_char(c1.event_date_time,'&APP_DATE_FORMAT.');	
+                   :P10_EVENT_START_TIME_D := to_char(c1.event_date_time,'&APP_TIME_FORMAT.');	
+                   :P10_DURATION           := c1.duration;	
+                   :P10_EVENT_DESC	   := c1.event_desc;	
+                   :P10_CONTACT_PERSON	   := c1.contact_person;
+                   if c1.contact_email is null and 
+                      instr(c1.contact_person,'@') > 0 and 
+                      instr(c1.contact_person,'.') > 0 then
+                      :P10_CONTACT_EMAIL      := c1.contact_person;
+                   else
+                      :P10_CONTACT_EMAIL      := c1.contact_email;
+                   end if;
+                   
+                   :P10_SUPPRESS_TIME      := c1.suppress_time;
+                   :P10_LOCATION           := c1.location;
+                   :P10_LINK_NAME_1        := c1.link_name_1;
+                   :P10_LINK_URL_1         := c1.link_url_1;
+                   :P10_LINK_NAME_2        := c1.link_name_2;
+                   :P10_LINK_URL_2         := c1.link_url_2;
+                   :P10_LINK_NAME_3        := c1.link_name_3;
+                   :P10_LINK_URL_3         := c1.link_url_3;
+                   :P10_TAGS               := c1.tags;
+                   :P10_SERIES_ID          := c1.series_id;	
+                
+                   :P10_CREATED_ON	   := apex_util.get_since(c1.created_on);	
+                   :P10_CREATED_BY	   := c1.created_by;	
+                   :P10_LAST_UPDATED_ON	   := apex_util.get_since(c1.last_updated_on);	
+                   :P10_LAST_UPDATED_BY	   := c1.last_updated_by;	
+                
+                   if c1.series_id is not null then
+                      for c2 in (
+                         select recur_freq,
+                                end_date
+                           from EBA_ca_series
+                         where series_id = c1.series_id )
+                      loop
+                         :P10_RECUR_FLAG	:= 'Y';
+                         :P10_RECUR_FREQ	:= c2.recur_freq;	
+                         :P10_RECUR_END_DATE	:= to_char(c2.end_date,'&APP_DATE_FORMAT.');	
+                      end loop;
+                      :P10_RECUR := 'Y';
+                   else
+                      :P10_RECUR := 'N';
+                   end if;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: failed to load data
+        }
+        advanced {
+            executionMappingIdentifier: 8762214608096563544
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_EVENT_ID
+        }
+    )
+
+    process recur-delete (
+        name: Recur Delete
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P10_RECUR        := 'Y';
+                :P11_REQUEST_TYPE := 'D';
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8502953397667721353
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process simple-delete (
+        name: Simple Delete
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                EBA_ca_api.delete_event (
+                   p_event_id       => :P10_EVENT_ID );
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Event deleted.
+        }
+        error {
+            errorMessage: Error deleting event.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8501010899700576748
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete-2
+        }
+    )
+
+    process update (
+        name: Update
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_type_id         number;
+                   l_new_event_type  varchar2(60);
+                   l_display_time    varchar2(1);
+                   l_duration        number := :P10_DURATION;
+                begin
+                
+                if :P10_SUPPRESS_TIME = 'Y' then
+                   l_display_time := 'N';
+                   l_duration := 24;
+                else
+                   l_display_time := 'Y';
+                end if;
+                
+                for c1 in (
+                   select series_id, to_char(event_date_time,'&APP_DATE_FORMAT.') event_date
+                     from EBA_ca_events
+                    where event_id = :P10_EVENT_ID )
+                loop
+                   -- simple update or adding recurrence
+                   if c1.series_id is null then
+                
+                      if :P10_TYPE_ID = '-1' then
+                         l_type_id        := null;
+                         l_new_event_type := :P10_NEW_EVENT_TYPE;
+                      else
+                         l_type_id        := :P10_TYPE_ID;
+                         l_new_event_type := null;
+                      end if;
+                
+                      EBA_ca_api.update_event (
+                         p_event_id        => :P10_EVENT_ID,
+                         p_event_name      => :P10_EVENT_NAME,
+                         p_calendar_id     => :P10_CALENDAR_ID,
+                         p_type_id         => l_type_id,
+                         p_new_event_type  => l_new_event_type,
+                         p_new_color_pref_id  => :P10_NEW_COLOR_PREF_ID,
+                         p_new_internal_yn    => :P10_NEW_INTERNAL_YN,
+                         p_event_date_time => to_date(:P10_EVENT_DATE_D||:P10_EVENT_START_TIME_D,
+                                                     '&APP_DATE_FORMAT.&APP_TIME_FORMAT.'),
+                         p_duration        => l_duration,
+                         p_event_desc      => :P10_EVENT_DESC,
+                         p_contact_person  => :P10_CONTACT_PERSON,
+                         p_contact_email   => :P10_CONTACT_EMAIL,
+                         p_display_time    => l_display_time,
+                         p_location        => :P10_LOCATION,
+                         p_link_name_1     => :P10_LINK_NAME_1,
+                         p_link_url_1      => :P10_LINK_URL_1,
+                         p_link_name_2     => :P10_LINK_NAME_2,
+                         p_link_url_2      => :P10_LINK_URL_2,
+                         p_link_name_3     => :P10_LINK_NAME_3,
+                         p_link_url_3      => :P10_LINK_URL_3,
+                         p_tags            => :P10_TAGS,
+                         --
+                         p_recur_flag      => :P10_RECUR_FLAG,
+                         p_recur_freq      => :P10_RECUR_FREQ,
+                         p_recur_end_date  => to_date(:P10_RECUR_END_DATE||:P10_EVENT_START_TIME_D,
+                                                     '&APP_DATE_FORMAT.&APP_TIME_FORMAT.'), 
+                         --
+                         p_update_request => 'S' );
+                
+                   else
+                      -- removing recurrence
+                      if c1.series_id is not null and :P10_RECUR_FLAG is null then
+                         :P10_RECUR := 'Y';
+                         :P11_REQUEST_TYPE := 'AFO';
+                      else
+                         if :P10_EVENT_DATE_D != c1.event_date then 
+                            :P10_RECUR := 'Y';
+                            :P11_REQUEST_TYPE := 'FO';
+                         else
+                            for c2 in (
+                               select recur_freq, end_date
+                                 from EBA_ca_series
+                                where series_id = c1.series_id )
+                            loop
+                               if c2.recur_freq != :P10_RECUR_FREQ or
+                                  to_char(c2.end_date,'&APP_DATE_FORMAT.') != :P10_RECUR_END_DATE then
+                                  :P10_RECUR := 'Y';
+                                  :P11_REQUEST_TYPE := 'AF';
+                               else
+                                  :P10_RECUR := 'Y';
+                                  :P11_REQUEST_TYPE := 'AFO';
+                               end if;
+                            end loop;
+                         end if;
+                      end if;
+                   end if;
+                end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Event updated.
+        }
+        error {
+            errorMessage: Error updating event.
+        }
+        advanced {
+            executionMappingIdentifier: 8501008502639539752
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    branch (
+        name: Go To Home if setting event to recur
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: 1
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+            type: expression
+            plsqlExpression: :P10_RECUR = 'N' and :P10_RECUR_FLAG = 'Y'
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 11
+                successMessage: false
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P10_RECUR = 'Y' and :REQUEST in ('SAVE','DELETE2')
+        }
+        comments {
+            comments: Created 08-SEP-2010 20:10 by SBKENNED
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 1
+                clearCache: 1
+                successMessage: false
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete-2
+        }
+        comments {
+            comments: Created 08-SEP-2010 20:10 by SBKENNED
+        }
+    )
+
+    branch (
+        name: Go To Page &LAST_VIEW.
+        execution {
+            sequence: 40
+        }
+        behavior {
+            target: {
+                page: &LAST_VIEW.
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :REQUEST not in ('DELETE','DELETE2')
+        }
+    )
+
+)
+

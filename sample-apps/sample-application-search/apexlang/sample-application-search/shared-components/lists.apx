@@ -1,0 +1,824 @@
+list administration (
+    name: Administration
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 501
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: This application ships with sample data. You can reset the sample data using this administrative page.
+        }
+    )
+
+    entry manage-web-credentials (
+        label: Manage Web Credentials
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 503
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: The REST Data Source page in the Basics section rely on REST Data Sources. Use this page to provide your own TMDb API key.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 502
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Set application user interface theme style for all users.
+        }
+    )
+
+)
+
+list advanced (
+    name: Advanced
+
+    entry cards-region (
+        label: Cards Region
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to integrate Search Configurations with native APEX Cards regions.
+        }
+    )
+
+    entry highlight-results (
+        label: Highlight Results
+        icon {
+            imageIconCssClasses: fa-underline
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 303
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to perform search on Search configurations and highlight search terms in search results.
+        }
+    )
+
+    entry map-regions (
+        label: Map Regions
+        icon {
+            imageIconCssClasses: fa-map-marker-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to integrate Search Configurations with Map regions.
+        }
+    )
+
+)
+
+list basics (
+    name: Basics
+
+    entry multiple-search-configurations (
+        label: Multiple Search Configurations
+        icon {
+            imageIconCssClasses: fa-cubes
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to use Search region to create searches on multiples Data Sources.
+        }
+    )
+
+    entry rest-data-source (
+        label: REST Data Source
+        icon {
+            imageIconCssClasses: fa-cloud
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to create Search Configurations based on REST Data Source.
+        }
+    )
+
+    entry single-search-configuration (
+        label: Single Search Configuration
+        icon {
+            imageIconCssClasses: fa-cube
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to create Search Configurations based on Local Data Source.
+        }
+    )
+
+)
+
+list home (
+    name: Home
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Explore advanced Application Search variations: Highlight search results, Integrate your Search Configurations with APEX regions like Maps, Cards ...
+        }
+    )
+
+    entry basics (
+        label: Basics
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Create Search Configurations based on Local data source, REST Enabled SQL Service, REST Data Source ... And integrate it with Search regions.
+        }
+    )
+
+    entry oracle-text (
+        label: Oracle Text
+        icon {
+            imageIconCssClasses: fa-server-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Leverage to Oracle Text advanced searching capabilities: Keyword searching, Fuzzy search and much more.
+        }
+    )
+
+    entry use-cases (
+        label: Use Cases
+        icon {
+            imageIconCssClasses: fa-puzzle-piece
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Explore different use case of the Search Configuration: prefix searching, link search result to from ...
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry administration (
+        label: " Administration"
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 600
+            }
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 20
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 270
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                500
+                501
+                502
+                503
+            ]
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 120
+        }
+        isCurrent {
+            type: pages
+            pages: 300
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry basics (
+        label: Basics
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry cards-region (
+        label: Cards Region
+        layout {
+            sequence: 210
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 301
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+    )
+
+    entry custom-result-row-template (
+        label: Custom Result Row Template
+        layout {
+            sequence: 180
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 204
+        }
+        link {
+            target: {
+                page: 204
+            }
+        }
+    )
+
+    entry filter-search-configurations (
+        label: Filter Search Configurations
+        layout {
+            sequence: 190
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 206
+        }
+        link {
+            target: {
+                page: 206
+            }
+        }
+    )
+
+    entry highlight-results (
+        label: Highlight Results
+        layout {
+            sequence: 230
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 303
+        }
+        link {
+            target: {
+                page: 303
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry link-search-result-to-form (
+        label: Link Search Result To Form
+        layout {
+            sequence: 175
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+    )
+
+    entry map-region (
+        label: Map Region
+        layout {
+            sequence: 220
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 302
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+    )
+
+    entry multiple-search-configurations (
+        label: Multiple Search Configurations
+        layout {
+            sequence: 150
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 102
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+    )
+
+    entry multiple-search-regions (
+        label: Multiple Search Regions
+        layout {
+            sequence: 200
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 207
+        }
+        link {
+            target: {
+                page: 207
+            }
+        }
+    )
+
+    entry oracle-text (
+        label: Oracle Text
+        icon {
+            imageIconCssClasses: fa-server-search
+        }
+        layout {
+            sequence: 130
+        }
+        isCurrent {
+            type: pages
+            pages: 400
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry rest-data-source (
+        label: REST Data Source
+        layout {
+            sequence: 260
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 103
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry search-query-prefix (
+        label: Search Query Prefix
+        layout {
+            sequence: 170
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 201
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+    )
+
+    entry single-search-configuration (
+        label: Single Search Configuration
+        layout {
+            sequence: 140
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 101
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+    )
+
+    entry standard (
+        label: Standard
+        layout {
+            sequence: 240
+            parentEntry: @oracle-text
+        }
+        isCurrent {
+            type: pages
+            pages: 401
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+    )
+
+    entry text-index-function (
+        label: Text Index Function
+        layout {
+            sequence: 250
+            parentEntry: @oracle-text
+        }
+        isCurrent {
+            type: pages
+            pages: 402
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+    )
+
+    entry use-cases (
+        label: Use Cases
+        icon {
+            imageIconCssClasses: fa-puzzle-piece
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+)
+
+list oracle-text (
+    name: Oracle Text
+
+    entry standard (
+        label: Standard
+        icon {
+            imageIconCssClasses: fa-server-search
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to create Search Configurations based on Oracle Text.
+        }
+    )
+
+    entry text-index-function (
+        label: Text Index Function
+        icon {
+            imageIconCssClasses: fa-function
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to Text Index Function to translate user queries to complex Oracle text syntax.
+        }
+    )
+
+)
+
+list use-cases (
+    name: Use Cases
+
+    entry custom-search-result-template (
+        label: Custom Search Result Template
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 204
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: "Demonstrates how to customize the default search results display template. "
+        }
+    )
+
+    entry filter-search-configurations (
+        label: Filter Search Configurations
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 206
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to add filters to search page to refine search results.
+        }
+    )
+
+    entry link-search-result-to-form (
+        label: Link Search Result To Form
+        icon {
+            imageIconCssClasses: fa-external-link
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to link form to search result row.
+        }
+    )
+
+    entry multiple-search-regions (
+        label: Multiple Search Regions
+        icon {
+            imageIconCssClasses: fa-layout-2col
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 207
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to add multiple Search regions to a single page.
+        }
+    )
+
+    entry search-query-prefix (
+        label: Search Query Prefix
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to use Search Query Prefix to perform targeted searches when using multiple search configurations.
+        }
+    )
+
+)
+

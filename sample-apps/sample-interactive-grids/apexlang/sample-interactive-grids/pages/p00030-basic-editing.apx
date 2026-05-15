@@ -1,0 +1,588 @@
+page 30 (
+    name: Basic Editing
+    alias: BASIC-EDITING
+    title: Basic Editing
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region basic-editing (
+        name: Basic Editing
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       ONLEAVE,
+                       NOTES,
+                       DEPTNO
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 698639828695926179
+        }
+
+        savedReport 14475 (
+            visibility: primary
+            view {
+                chart: true
+                default: grid
+                rowsPerPage: 5
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    sequence: 11
+                }
+            )
+
+            chart {
+                type: bar
+                label: @ENAME
+                value: @SAL
+                valueAggregation: sum
+            }
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select DNAME as d, DEPTNO as r from EBA_DEMO_IG_DEPT order by 1
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            settings {
+                textCase: upper
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+            }
+            settings {
+                navigationListFor: month
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: radioGroup
+            heading {
+                heading: Job
+            }
+            lov {
+                type: sharedComponent
+                lov: @emp-jobs
+                displayNullValue: false
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select ENAME as d, EMPNO as r from EBA_DEMO_IG_EMP order by 1
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textarea
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                width: 60
+                height: 4
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ONLEAVE (
+            type: checkbox
+            heading {
+                heading: On Leave
+                alignment: center
+            }
+            layout {
+                sequence: 100
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: N
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-basic-editing (
+        name: Overview: Basic Editing
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Like the <a href='f?p=&APP_ID.:3:&SESSION.:'>Basic Reporting</a> example this
+                page shows the result of going through the create page wizard and choosing Report
+                for page type, then Interactive Grid, and selecting EBA_DEMO_IG_EMP for the table
+                except this time change Editing Enabled to Yes. For Primary Key choose EMPNO and
+                remove the FLEX* columns (those will be used later). 
+                After that the columns were customized to give them nice heading labels and to
+                select appropriate types for editing.
+                Notice that row selector and actions menu columns are added automatically.
+                Also the primary key column is type hidden by default. 
+                An Interactive Grid - Automatic Row Processing (DML) process is added by default
+                when an Interactive Grid is made editable.
+                </p>
+                <p>Here are some things to know about editing:</p>
+                <ul>
+                <li>Normally the grid is in navigation mode where arrow keys move from cell to cell. 
+                To enter edit mode press the Edit button or double click or 
+                press Enter key or F2 key in a cell.</li>
+                <li>To exit edit mode press the Edit button or press Escape key in a cell.</li>
+                <li>The checkbox item is a special case that can be toggled while in
+                navigation mode.</li>
+                <li>In edit mode the [Shift] Tab key moves to the previous or next cells. 
+                The [Shift] Enter key moves to the same column in the previous or next row.</li>
+                <li>Edit controls such as radio groups or text areas that don't fit in a cell
+                are displayed in a floating popup. The popup can be moved or collapsed to see
+                the data under it. The Ctrl+F6 key will collapse or expand the floating popup.</li>
+                <li>Use the Delete key to delete the selected rows. 
+                Use the Insert key to add a row.</li>
+                <li>The second column is an actions menu that allows you to perform actions on
+                the row such as Delete or Duplicate. The menu in the header is a selection
+                actions menu that acts on the current selection.</li>
+                <li>The Copy Down, Fill, and Clear actions work with row or cell range selection. 
+                Use Actions > Selection > Cell / Row Selection to toggle seleciton mode or press F8 key. Copy Down requires at least 2 rows selected.</li>
+                <li>Editing is also supported in Single Row View.</li>
+                <li>All edits are stored locally until you press the Save button. 
+                If you try to leave the page while there are unsaved changes you will be warned.</li>
+                <li>Any action that causes refreshing the data such as changing a filter 
+                or sorting will warn if there are unsaved changes. Pagination does not affect changes.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 31
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 39
+                action: resetPagination
+            }
+        }
+    )
+
+    process save-interactive-grid-data (
+        name: " - Save Interactive Grid Data"
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @basic-editing
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 701151416339605522
+        }
+    )
+
+)
+

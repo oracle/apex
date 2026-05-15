@@ -1,0 +1,604 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry about (
+        name: About
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry activity-calendar (
+        name: Activity Calendar
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry event-log (
+        name: Event Log
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry generate-transaction (
+        name: Generate Transaction
+        pageNumber: 29
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry generate-transactions (
+        name: Generate Transactions
+        pageNumber: 28
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry load-data-results (
+        name: Load Data Results
+        pageNumber: 41
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry p15-region-name-region (
+        name: &P15_REGION_NAME. Region
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry p18-procuct-name (
+        name: &P18_PROCUCT_NAME.
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry p3-store-name (
+        name: &P3_STORE_NAME.
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry page-views (
+        name: Page Views
+        pageNumber: 39
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry product (
+        name: Product
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @products
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry product-availability-by-store (
+        name: Product Availability by Store
+        pageNumber: 27
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry products (
+        name: Products
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+                action: resetPagination
+            }
+        }
+    )
+
+    entry recent-sales (
+        name: Recent Sales
+        pageNumber: 43
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @p3-store-name
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry region (
+        name: Region
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @regions
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry regions (
+        name: Regions
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry remove-transaction-history (
+        name: Remove Transaction History
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry reports (
+        name: Reports
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry reset-sample-data (
+        name: Reset Sample Data
+        pageNumber: 40
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+    )
+
+    entry sales-by-product-and-region-by-week (
+        name: Sales by Product and Region by Week
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry sales-by-region-by-week (
+        name: Sales by Region by Week
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry sales-by-store-by-day (
+        name: Sales by Store by Day
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry sales-dashboard (
+        name: Sales Dashboard
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry sales-history (
+        name: Sales History
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry sales-history-2 (
+        name: Sales History
+        pageNumber: 38
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+    entry sales-history-3 (
+        name: Sales History
+        pageNumber: 50
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 50
+                action: resetPagination
+            }
+        }
+    )
+
+    entry sales-history-4 (
+        name: Sales History
+        pageNumber: 51
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry sales-history-5 (
+        name: Sales History
+        pageNumber: 45
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+    )
+
+    entry sales-history-6 (
+        name: Sales History
+        pageNumber: 46
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+    )
+
+    entry sales-history-7 (
+        name: Sales History
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry sales-history-8 (
+        name: Sales History
+        pageNumber: 42
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry sales-history-9 (
+        name: Sales History
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry sales-history-generation-log (
+        name: Sales History Generation Log
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry store (
+        name: Store
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry store-locations-map (
+        name: Store Locations Map
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry stores (
+        name: Stores
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry table-counts (
+        name: Table Counts
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry top-users (
+        name: Top Users
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+    entry transaction (
+        name: Transaction
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry transaction-details (
+        name: Transaction Details
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry transaction-log (
+        name: Transaction Log
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry transaction-summary-by-hour (
+        name: Transaction Summary by Hour
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry transaction-summary-by-minute (
+        name: Transaction Summary by Minute
+        pageNumber: 34
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+)
+

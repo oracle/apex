@@ -1,0 +1,36 @@
+installScript "Install Data" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: install-data.sql
+    }
+)
+
+installScript "Install Manage Orders Package" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: install-manage-orders-package.sql
+    }
+)
+
+installScript "Install Restaurant Tables" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: install-restaurant-tables.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+              from all_tab_columns
+             where table_name = 'SAMPLE_RESTAURANT';
+            ```
+    }
+)
+

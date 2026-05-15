@@ -1,0 +1,12 @@
+legacyDataLoadDefinition decison-projects (
+    name: Decison Projects
+    target {
+        tableOwner: #OWNER#
+        tableName: EBA_QPOLL_PROJECTS
+    }
+    uniqueKeys {
+        uniqueColumn1: PROJECT_NAME
+        uniqueColumn2: PROJECT_OWNER
+    }
+)
+

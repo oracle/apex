@@ -1,0 +1,587 @@
+page 99 (
+    name: Attachment Details
+    alias: ATTACHMENT-DETAILS
+    title: Attachment Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region attachment (
+        name: Attachment
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P99_ACCOUNT_ID (
+        type: hidden
+        layout {
+            sequence: 150
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCOUNT_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_CONTACT_ID (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_ENTITY_ID (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @attachment
+            slot: regionBody
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_ENTITY_TYPE (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENTITY_TYPE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_FILENAME (
+        type: displayOnly
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @attachment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILENAME
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P99_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_FILE_BLOB (
+        type: fileUpload
+        label {
+            label: File
+            alignment: left
+        }
+        display {
+            downloadLinkText: Download Attachment &nbsp;
+        }
+        storage {
+            mimeTypeColumn: FILE_MIMETYPE
+            filenameColumn: FILENAME
+            charSetColumn: FILE_CHARSET
+            bobLastUpdatedColumn: UPDATED
+        }
+        layout {
+            sequence: 50
+            region: @attachment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILE_BLOB
+            used: always
+        }
+    )
+
+    pageItem P99_FILE_COMMENTS (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 70
+            region: @attachment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILE_COMMENTS
+            used: always
+        }
+    )
+
+    pageItem P99_FILE_MIMETYPE (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILE_MIMETYPE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_LEAD_ID (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LEAD_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_OPPORTUNITY_ID (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_PRODUCT_ID (
+        type: hidden
+        layout {
+            sequence: 170
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PRODUCT_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P99_TAGS (
+        type: textField
+        label {
+            label: Tags
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @attachment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+    )
+
+    pageItem P99_TERRITORY_ID (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @attachment
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TERRITORY_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Attachment
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P99_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P99_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P99_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation p99-file-blob-is-not-null (
+        name: P99_FILE_BLOB is not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P99_FILE_BLOB
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P99_FILE_BLOB
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            itemsToReturn: REQUEST
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 6542459806492038195
+        }
+    )
+
+    process fetch-row-from-eba-sales-files (
+        name: Fetch Row from EBA_SALES_FILES
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_FILES
+            pkColumn: ID
+            pkItem: P99_ID
+        }
+        execution {
+            sequence: 20
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8897361150073134153
+        }
+    )
+
+    process process-row-of-eba-sales-files (
+        name: Process Row of EBA_SALES_FILES
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_FILES
+            pkColumn: ID
+            pkItem: P99_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 8897361338102134155
+        }
+    )
+
+    process proxy-p99-entity-id-on-create (
+        name: Proxy P99_ENTITY_ID on create
+        type: executeCode
+        source {
+            plsqlCode: apex_util.set_session_state('P99_' || :P99_ENTITY_TYPE || '_ID', :P99_ENTITY_ID);
+        }
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        advanced {
+            executionMappingIdentifier: 6636181793759949184
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+        comments {
+            comments: This needs to go before validations and processing to allow them to work correctly.
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 8897361538068134155
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

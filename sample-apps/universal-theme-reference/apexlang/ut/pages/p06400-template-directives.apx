@@ -1,0 +1,564 @@
+page 6400 (
+    name: Template Directives
+    alias: TEMPLATE-DIRECTIVES
+    title: Template Directives
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .item {
+                color: #9C27B0;
+            }
+            .directive {
+                color: #008676;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region case-directives (
+        name: Case Directives
+        type: staticContent
+        source {
+            htmlCode: <p>The <span class="directive"><strong>case</strong></span> directive can be used to show content based on the value of an item or column.</p>
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region evaluation (
+        name: Evaluation
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th>Truthy</th>
+                      <th>Falsey</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Not Null</td><td>Null</td></tr>
+                    <tr><td>T</td><td>F</td></tr>
+                    <tr><td>Y</td><td>N</td></tr>
+                    <tr><td>1</td><td>0</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @if-directives
+            slot: subRegions
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region example (
+        name: Example
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                    &lt;div&gt;
+                        <span class="directive">{if <span class="item">P1_DISPLAY_IMAGE</span>/}</span>
+                            &amp;P1_IMAGE.
+                        <span class="directive">{else/}</span>
+                            No image.
+                        <span class="directive">{endif/}</span>
+                    &lt;/div&gt;
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @if-directives
+            slot: subRegions
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: If Example
+        }
+    )
+
+    region example-2 (
+        name: Example
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                    &lt;div class=" 
+                        <span class="directive">{case <span class="item">BADGE_SHAPE</span>/}
+                            {when <span class="item">SQUARE</span>/}</span>
+                                t-Badge--square
+                            <span class="directive">{when <span class="item">CIRCULAR</span>/}</span>
+                                t-Badge--circle
+                            <span class="directive">{otherwise/}</span>
+                                t-Badge--rounded
+                        <span class="directive">{endcase/}</span> "&gt;
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @case-directives
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Case Example
+        }
+    )
+
+    region example-3 (
+        name: Example
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                    &lt;ul&gt;
+                        <span class="directive">{loop "<span class="item">,</span>" <span class="item">TAGS</span>/}</span>
+                            &lt;li&gt;Tag: &amp;APEX$ITEM.&lt;/li&gt;
+                        <span class="directive">{endloop/}</span>
+                    &lt;/ul&gt;
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @loop-directives
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Loop Example
+        }
+    )
+
+    region example-4 (
+        name: Example
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                    <span class="directive">{with/}</span>
+                        TYPE:=IMAGE
+                        IMAGE:=#PROFILE_IMAGE#
+                        IMAGE_ALT:=Profile Image
+                        SIZE:=t-Avatar--lg
+                        SHAPE:=t-Avatar--circle
+                        CSS_CLASSES:=u-color-29
+                    <span class="directive">{apply <span class="item">THEME$AVATAR</span>/}</span>
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @with-apply-directives
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: With Apply Example
+        }
+    )
+
+    region if-directives (
+        name: If Directives
+        type: staticContent
+        source {
+            htmlCode: <p>The <span class="directive"><strong>if</strong></span> directive can be used to conditionally show content based on the evaluation of an item or column value.</p>
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region loop-directives (
+        name: Loop Directives
+        type: staticContent
+        source {
+            htmlCode: <p>The <span class="directive"><strong>loop</strong></span> directive can be used to repeat content once for each item in a multi-value (character delimited) item or column.</p>
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Templating is an extremely powerful tool in APEX. 
+                    Template Directives provide control over how substitution strings and content is processed.</p>
+                <p>Template Directives can also be used to build dynamic, reusable templates, which can then be applied 
+                    in HTML Expressions anywhere in APEX.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region syntax (
+        name: Syntax
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                    <span class="directive">{if <span class="item"><em>ITEM</em></span>/}</span>
+                        ...
+                    <span class="directive">{elseif <span class="item"><em>!ITEM</em></span>/}</span>
+                        ...
+                    <span class="directive">{else/}</span>
+                        ...
+                    <span class="directive">{endif/}</span>
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @if-directives
+            slot: subRegions
+            columnSpan: 4
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: If Syntax
+        }
+    )
+
+    region syntax-2 (
+        name: Syntax
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                    <span class="directive">{case <span class="item"><em>ITEM</em></span>/}
+                        {when <span class="item"><em>VALUE</em></span>/}</span>
+                            ...
+                        <span class="directive">{when <span class="item"><em>VALUE</em></span>/}</span>
+                            ...
+                        <span class="directive">{otherwise/}</span>
+                            ...
+                    <span class="directive">{endcase/}</span>
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @case-directives
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Case Syntax
+        }
+    )
+
+    region syntax-3 (
+        name: Syntax
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                    <span class="directive">{loop "<span class="item"><em>SEPARATOR</em></span>" <span class="item"><em>ITEM</em></span>/}</span>
+                        ...
+                    <span class="directive">{endloop/}</span>
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @loop-directives
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Loop Syntax
+        }
+    )
+
+    region syntax-4 (
+        name: Syntax
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                    <span class="directive">{with/}</span>
+                        ...
+                    <span class="directive">{apply <span class="item"><em>TEMPLATE</em></span>/}</span>
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @with-apply-directives
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: With Apply Syntax
+        }
+    )
+
+    region token-modifiers (
+        name: Token Modifiers
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th>Condition</th>
+                      <th>Directive</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>if_exists_and_true</td><td><code><span class="directive">{if <span class="item">ITEM</span>/}</span></code></td></tr>
+                    <tr><td>if_exists</td><td><code><span class="directive">{if ?<span class="item">ITEM</span>/}</span></code></td></tr>
+                    <tr><td>if_not_exists_or_false</td><td><code><span class="directive">{if !<span class="item">ITEM</span>/}</span></code></td></tr>
+                    <tr><td>if_not_exists</td><td><code><span class="directive">{if !?<span class="item">ITEM</span>/}</span></code></td></tr>
+                    <tr><td>if_not_false</td><td><code><span class="directive">{if =<span class="item">ITEM</span>/}</span></code></td></tr>
+                    <tr><td>if_exists_and_false</td><td><code><span class="directive">{if !=<span class="item">ITEM</span>/}</span></code></td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @if-directives
+            slot: subRegions
+            columnSpan: 4
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region with-apply-directives (
+        name: With & Apply Directives
+        type: staticContent
+        source {
+            htmlCode: <p>The <span class="directive"><strong>with</strong></span> and <span class="directive"><strong>apply</strong></span> directives allow predefined dynamic templates to be used in HTML expressions.</p>
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

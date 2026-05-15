@@ -1,0 +1,266 @@
+dataLoadDefinition genai_csv_load (
+    name: GenAI CSV Load
+    target {
+        tableName: EBA_VECTOR_MOVIEDATA
+        loadingMethod: merge
+    }
+    errorHandling {
+        whenOnError: ignore
+    }
+    dataProfile {
+        name: GenAI CSV Load
+        format: csv
+    }
+    advanced {
+        encoding: utf-8
+        csvEnclosedBy: "
+    }
+
+    dataProfileColumn actors (
+        columnName: ACTORS
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            selector: ACTORS
+        }
+    )
+
+    dataProfileColumn embedding-vector (
+        columnName: EMBEDDING_VECTOR
+        source {
+            sequence: 18
+            type: sqlExpression
+            dataType: varchar2
+        }
+        computation {
+            sqlExpression: NULL
+        }
+    )
+
+    dataProfileColumn genre (
+        columnName: GENRE
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            selector: GENRE
+        }
+    )
+
+    dataProfileColumn moviedescription (
+        columnName: MOVIEDESCRIPTION
+        source {
+            sequence: 3
+            dataType: clob
+        }
+        parsing {
+            selector: MOVIEDESCRIPTION
+        }
+    )
+
+    dataProfileColumn rating (
+        columnName: RATING
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            selector: RATING
+        }
+    )
+
+    dataProfileColumn release-date (
+        columnName: RELEASE_DATE
+        source {
+            sequence: 7
+            dataType: date
+        }
+        parsing {
+            selector: RELEASE_DATE
+            formatMask: YYYY-MM-DD
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn title (
+        columnName: TITLE
+        source {
+            sequence: 2
+            dataType: varchar2
+            primaryKey: true
+        }
+        parsing {
+            selector: TITLE
+        }
+    )
+
+    dataProfileColumn votes (
+        columnName: VOTES
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            selector: VOTES
+        }
+    )
+
+)
+
+dataLoadDefinition manual_csv_load (
+    name: Manual CSV Load
+    target {
+        tableName: EBA_VECTOR_DATATABLE
+        loadingMethod: replace
+    }
+    errorHandling {
+        whenOnError: ignore
+    }
+    dataProfile {
+        name: Manual CSV Load
+        format: csv
+    }
+    advanced {
+        encoding: iso-8859-1
+        csvSeparator: ,
+        csvEnclosedBy: "
+        firstLineContainsHeaders: false
+    }
+
+    dataProfileColumn col (
+        columnName: COL1
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 1
+        }
+    )
+
+    dataProfileColumn col-10 (
+        columnName: COL10
+        source {
+            sequence: 11
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 10
+        }
+    )
+
+    dataProfileColumn col-2 (
+        columnName: COL2
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 2
+        }
+    )
+
+    dataProfileColumn col-3 (
+        columnName: COL3
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 3
+        }
+    )
+
+    dataProfileColumn col-4 (
+        columnName: COL4
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 4
+        }
+    )
+
+    dataProfileColumn col-5 (
+        columnName: COL5
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 5
+        }
+    )
+
+    dataProfileColumn col-6 (
+        columnName: COL6
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 6
+        }
+    )
+
+    dataProfileColumn col-7 (
+        columnName: COL7
+        source {
+            sequence: 8
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 7
+        }
+    )
+
+    dataProfileColumn col-8 (
+        columnName: COL8
+        source {
+            sequence: 9
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 8
+        }
+    )
+
+    dataProfileColumn col-9 (
+        columnName: COL9
+        source {
+            sequence: 10
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: sequence
+            columnNumber: 9
+        }
+    )
+
+    dataProfileColumn embedding-vector (
+        columnName: EMBEDDING_VECTOR
+        source {
+            sequence: 21
+            type: sqlExpression
+            dataType: varchar2
+        }
+        computation {
+            sqlExpression: NULL
+        }
+    )
+
+)
+

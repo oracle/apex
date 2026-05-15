@@ -1,0 +1,3415 @@
+page 1 (
+    name: home
+    alias: HOME
+    title: &NOMENCLATURE_STRATEGIC_PLANNER. home
+    pageGroup: @home
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            $(() => { 
+                apex.actions.add({
+                    name: 'favoriteProject',
+                    action: function(event, focusElement, args) {
+                        $(event.currentTarget).addClass('js-project-to-favorite');
+                        apex.item('P1_PROJECT_TO_FAVORITE').setValue(args.id);
+                        return true;
+                        }
+                });
+            });
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            
+            .resize-region {
+              resize: vertical;
+              overflow: auto;
+            }
+            
+            .a-CardView-iconWrap,
+            .a-CardView-badge { align-self: flex-start; }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    comments {
+        comments: home
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 75
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 40
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 150
+                }
+                behavior {
+                    target: {
+                        page: 1
+                        clearCache: 1
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+        )
+
+        action my-favorites (
+            position: primaryActions
+            template: button
+            label: My Favorites
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 23
+                    items: {
+                        P23_FAVORITE: Yes
+                    }
+                    action: resetPagination
+                }
+            }
+            appearance {
+                displayType: icon
+                icon: fa-heart
+                cssClasses: t-Button--noUI
+            }
+        )
+
+        action view-nomenclature-projects (
+            position: primaryActions
+            template: button
+            label: View &NOMENCLATURE_PROJECTS.
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 23
+                    action: resetPagination
+                }
+            }
+            appearance {
+                hot: true
+            }
+        )
+
+    )
+
+    region my-activities (
+        name: My Activities
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ap.id, 
+                       ap.project_id,
+                       --
+                       -- activity core information
+                       --
+                       at.activity_type,
+                       decode(greatest(length(ap.comments),80),80,ap.comments,substr(ap.comments,1,80)||'...') comments,
+                       ap.url,
+                       apex_util.get_since(ap.updated) last_updated,
+                       ap.created,
+                       ap.tags,
+                       ap.updated,
+                       --
+                       -- activity date fields
+                       --
+                       ap.start_date,
+                       ap.end_date,
+                       to_char(start_date,'YYYY.MM') start_month,
+                       to_char(end_date,'YYYY.MM') end_month,
+                       to_char(ap.start_date,'DD-MON-YYYY')||' to '||to_char(ap.end_date,'DD-MON-YYYY') TIMELINE,
+                       ap.end_date - ap.start_date days,
+                       round(ap.end_date - sysdate) days_remaining,
+                       --
+                       -- team member info
+                       --
+                       tm.first_name||' '||tm.last_name name,
+                       --
+                       -- optional initiative
+                       --
+                       decode(ap.initiative_id,null,null,(
+                           select initiative from sp_initiatives where id = ap.initiative_id
+                       )) initiative,
+                       ap.initiative_id,
+                       --
+                       -- optional project 
+                       --
+                       decode(ap.project_id,null,null,(
+                           select decode(greatest(length(p.project),80),80,p.PROJECT,substr(p.project,1,80)||'...') project 
+                           from sp_projects p 
+                           where p.id = ap.project_id and 
+                                 p.DUPLICATE_OF_PROJECT_ID is null and
+                                 p.ARCHIVED_YN = 'N')
+                           ) project,
+                       decode(ap.project_id,null,null,(
+                           select friendly_identifier 
+                           from sp_projects p 
+                           where p.id = ap.project_id and 
+                                 p.DUPLICATE_OF_PROJECT_ID is null and
+                                 p.ARCHIVED_YN = 'N')
+                           ) friendly_identifier,
+                       decode(ap.project_id,null,null,(
+                           select PROJECT_URL_NAME 
+                           from sp_projects p 
+                           where p.id = ap.project_id and 
+                                 p.DUPLICATE_OF_PROJECT_ID is null and
+                                 p.ARCHIVED_YN = 'N')
+                           ) PROJECT_URL_NAME,
+                       --
+                       -- badge status is red if past due and green if within begin and and dates
+                       --
+                       decode (trunc(sysdate),trunc(ap.end_date),'success',
+                       decode (trunc(sysdate),trunc(ap.start_date),'success',
+                       decode(
+                           greatest(to_char(ap.end_date,'YYYY.MM.DD'),to_char(sysdate,'YYYY.MM.DD')),
+                           to_char(sysdate,'YYYY.MM.DD'),
+                           'danger',
+                           decode(
+                               greatest(to_char(ap.start_date,'YYYY.MM.DD'),to_char(sysdate,'YYYY.MM.DD')),
+                               to_char(sysdate,'YYYY.MM.DD'),
+                               'success','info')))) as badge_class,       
+                       --
+                       -- pie chart icon in 10% chunks that show time percent complete
+                       --
+                       'fa-pie-chart-'||sp_date_range_pct_comp(ap.start_date, ap.end_date) icon,
+                       --
+                       -- current or future
+                       --
+                       --case when trunc(sysdate) <= trunc(ap.end_date) and trunk
+                       decode (trunc(sysdate),trunc(ap.end_date),'Current',
+                       decode (trunc(sysdate),trunc(ap.start_date),'Current',
+                       decode(
+                           greatest(trunc(sysdate),trunc(ap.end_date)),
+                           trunc(sysdate),
+                           'Past',
+                           decode(
+                               greatest(trunc(sysdate),trunc(ap.start_date)),
+                               trunc(sysdate),
+                               'Current',
+                               'Future')
+                           ))) timeframe
+                           
+                from sp_activities ap,
+                     sp_activity_types at,
+                     sp_team_members tm
+                where 
+                      --
+                      -- activity to activity type join
+                      --
+                      ap.activity_type_id = at.id and
+                      --
+                      -- show only current logged in user
+                      --
+                      tm.id = (select id from sp_team_members where email = lower(:APP_USER)) and
+                      --
+                      -- join team member detail
+                      --
+                      ap.team_member_id = tm.id and
+                      --
+                      --
+                      --
+                      trunc(sysdate) <= trunc(ap.end_date)
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: end_date
+        }
+        layout {
+            sequence: 31
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            icon: " "
+        }
+        accessibility {
+            landmarkType: region
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @activity-planning
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &COMMENTS.
+            description:
+                ```html
+                <strong>&ACTIVITY_TYPE.</strong>: &TIMELINE.<br>
+                {if PROJECT/}<strong>&NOMENCLATURE_PROJECT.</strong>: &PROJECT.<br>{endif/}
+                {if INITIATIVE/}<strong>&NOMENCLATURE_INITIATIVE.</strong>: &INITIATIVE.<br>{endif/}
+                ```
+            miscellaneous: &LAST_UPDATED.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            description: Percentage of time elapsed
+            shape: noShape
+            size: small
+        }
+        plugin-badge {
+            label: &NOMENCLATURE_PROJECTS.
+            value: TIMEFRAME
+            state: BADGE_CLASS
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+        messages {
+            whenNoDataFound: You have no current of future activities identified.
+        }
+
+        column ACTIVITY_TYPE (
+            layout {
+                sequence: 190
+            }
+            source {
+                databaseColumn: ACTIVITY_TYPE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_CLASS (
+            layout {
+                sequence: 330
+            }
+            source {
+                databaseColumn: BADGE_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column COMMENTS (
+            layout {
+                sequence: 200
+            }
+            source {
+                databaseColumn: COMMENTS
+                dataType: varchar2
+            }
+        )
+
+        column CREATED (
+            layout {
+                sequence: 410
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+            }
+        )
+
+        column DAYS (
+            layout {
+                sequence: 230
+            }
+            source {
+                databaseColumn: DAYS
+                dataType: number
+            }
+        )
+
+        column DAYS_REMAINING (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: DAYS_REMAINING
+                dataType: number
+            }
+        )
+
+        column END_DATE (
+            layout {
+                sequence: 220
+            }
+            source {
+                databaseColumn: END_DATE
+                dataType: date
+            }
+        )
+
+        column END_MONTH (
+            layout {
+                sequence: 380
+            }
+            source {
+                databaseColumn: END_MONTH
+                dataType: varchar2
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            layout {
+                sequence: 270
+            }
+            source {
+                databaseColumn: FRIENDLY_IDENTIFIER
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column INITIATIVE (
+            layout {
+                sequence: 440
+            }
+            source {
+                databaseColumn: INITIATIVE
+                dataType: varchar2
+            }
+        )
+
+        column INITIATIVE_ID (
+            layout {
+                sequence: 450
+            }
+            source {
+                databaseColumn: INITIATIVE_ID
+                dataType: number
+            }
+        )
+
+        column LAST_UPDATED (
+            layout {
+                sequence: 300
+            }
+            source {
+                databaseColumn: LAST_UPDATED
+                dataType: varchar2
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 250
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT (
+            layout {
+                sequence: 260
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_ID (
+            layout {
+                sequence: 350
+            }
+            source {
+                databaseColumn: PROJECT_ID
+                dataType: number
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            layout {
+                sequence: 290
+            }
+            source {
+                databaseColumn: PROJECT_URL_NAME
+                dataType: varchar2
+            }
+        )
+
+        column START_DATE (
+            layout {
+                sequence: 210
+            }
+            source {
+                databaseColumn: START_DATE
+                dataType: date
+            }
+        )
+
+        column START_MONTH (
+            layout {
+                sequence: 370
+            }
+            source {
+                databaseColumn: START_MONTH
+                dataType: varchar2
+            }
+        )
+
+        column TAGS (
+            layout {
+                sequence: 420
+            }
+            source {
+                databaseColumn: TAGS
+                dataType: varchar2
+            }
+        )
+
+        column TIMEFRAME (
+            layout {
+                sequence: 360
+            }
+            source {
+                databaseColumn: TIMEFRAME
+                dataType: varchar2
+            }
+        )
+
+        column TIMELINE (
+            layout {
+                sequence: 280
+            }
+            source {
+                databaseColumn: TIMELINE
+                dataType: varchar2
+            }
+        )
+
+        column UPDATED (
+            layout {
+                sequence: 430
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+            }
+        )
+
+        column URL (
+            layout {
+                sequence: 240
+            }
+            source {
+                databaseColumn: URL
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 140
+                    items: {
+                        P140_ID: &ID.
+                    }
+                    clearCache: 140
+                    action: resetPagination
+                    anchor: ACTIVITY
+                }
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 30
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu activity-quick-look (
+                label: Activity Quick Look
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 140
+                        items: {
+                            P140_ID: &ID.
+                        }
+                        clearCache: 140
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-badge-check
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 30
+                }
+            )
+
+            menu edit-activity (
+                label: Edit Activity
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 101
+                        items: {
+                            P101_ID: &ID.
+                        }
+                        clearCache: 101
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu nomenclature-project-detail (
+                label: &NOMENCLATURE_PROJECT. Detail
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 3
+                        items: {
+                            FI: &FRIENDLY_IDENTIFIER.
+                            PN: &PROJECT_URL_NAME.
+                        }
+                        clearCache: 3
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+                serverSideCondition {
+                    type: itemIsNotNull
+                    item: FRIENDLY_IDENTIFIER
+                }
+                security {
+                    authorizationScheme: @reader-rights
+                }
+            )
+
+            menu nomenclature-project-quick-look (
+                label: &NOMENCLATURE_PROJECT. Quick Look
+                layout {
+                    sequence: 50
+                }
+                behavior {
+                    target: {
+                        page: 36
+                        items: {
+                            P36_ID: &PROJECT_ID.
+                        }
+                        clearCache: 36
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+                serverSideCondition {
+                    type: itemIsNotNull
+                    item: FRIENDLY_IDENTIFIER
+                }
+                security {
+                    authorizationScheme: @reader-rights
+                }
+            )
+
+        )
+
+    )
+
+    region my-initiatives (
+        name: My Initiatives
+        title: My &NOMENCLATURE_INITIATIVES.
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select i.id,
+                       i.INITIATIVE,
+                       decode(greatest(length(i.OBJECTIVE),110),110,i.OBJECTIVE, substr(i.OBJECTIVE,1,108)||'...') objective,
+                       f.area area,
+                       --
+                       -- project count
+                       --
+                       (select count(*) 
+                        from sp_projects p 
+                        where p.initiative_id = i.id and
+                              p.archived_yn = 'N' and 
+                              p.DUPLICATE_OF_PROJECT_ID is null and 
+                              nvl(PCT_COMPLETE,0) != 0 and 
+                              nvl(PCT_COMPLETE,0) != 100) active_projects,
+                       --
+                       -- last updated
+                       --
+                       greatest(i.updated,nvl((
+                           select max(updated) 
+                           from sp_projects p 
+                           where p.initiative_id = i.id and 
+                                 p.archived_yn = 'N' and 
+                                 p.DUPLICATE_OF_PROJECT_ID is null
+                                 ),
+                           i.updated)) last_updated,
+                
+                       case when i.image is not null then i.image else f.image end image,
+                       case when i.image is not null then i.image_mimetype else f.image_mimetype end image_mimetype,
+                       case when i.image is not null then i.image_name else f.image_name end image_name, 
+                       case when i.image is not null then i.image_last_updated else f.image_last_updated end image_last_updated
+                
+                  from SP_INITIATIVES i, 
+                       sp_areas f
+                
+                  where i.area_id = f.id and
+                        --
+                        -- exclude archived initiatives
+                        --
+                        nvl(i.ARCHIVED_YN,'N') = 'N' and
+                        (
+                        --
+                        -- logged in user owns a project in the initiative
+                        --
+                        i.id in (
+                            select p.initiative_id 
+                            from sp_projects p 
+                            where p.OWNER_ID = (
+                                select id 
+                                from sp_team_members tm 
+                                where tm.email = lower(:APP_USER)
+                                )  and 
+                                p.archived_yn = 'N' and 
+                                p.DUPLICATE_OF_PROJECT_ID is null and
+                                nvl(p.PCT_COMPLETE,0) != 0 and 
+                                nvl(p.PCT_COMPLETE,0) != 100
+                                )
+                        --
+                        -- logged in user owns the initiative
+                        --
+                        or
+                        i.SPONSOR_ID = (
+                            select tm.id 
+                            from sp_team_members tm 
+                            where tm.email = lower(:APP_USER))
+                        --
+                        -- logged in user is a project contributor
+                        --
+                        or 
+                        i.id in (
+                            select p.initiative_id
+                            from SP_PROJECT_CONTRIBUTORS c,
+                                 SP_PROJECTS p
+                            where p.id = c.project_id and
+                                  p.archived_yn = 'N' and 
+                                  p.DUPLICATE_OF_PROJECT_ID is null and
+                                  c.TEAM_MEMBER_ID = (
+                                     select id 
+                                     from sp_team_members tm 
+                                     where tm.email = lower(:APP_USER)) and
+                                  nvl(p.PCT_COMPLETE,0) != 0 and 
+                                  nvl(p.PCT_COMPLETE,0) != 100
+                        )
+                        )
+                -- order by 6 desc nulls last
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: active_projects desc, last_updated desc
+        }
+        layout {
+            sequence: 41
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &AREA.
+            title: &INITIATIVE.
+            description: &OBJECTIVE.
+            miscellaneous:
+                ```html
+                &ACTIVE_PROJECTS. &NOMENCLATURE_PROJECTS.<br />
+                &LAST_UPDATED.
+                ```
+            displayAvatar: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: blobColumn
+                blobColumn: IMAGE
+                filenameColumn: IMAGE_NAME
+                mimeTypeColumn: IMAGE_MIMETYPE
+                lastUpdatedColumn: IMAGE_LAST_UPDATED
+            }
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column ACTIVE_PROJECTS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ACTIVE_PROJECTS
+                dataType: number
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column AREA (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: AREA
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column IMAGE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: IMAGE
+                dataType: blob
+            }
+        )
+
+        column IMAGE_LAST_UPDATED (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: IMAGE_LAST_UPDATED
+                dataType: date
+            }
+        )
+
+        column IMAGE_MIMETYPE (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: IMAGE_MIMETYPE
+                dataType: varchar2
+            }
+        )
+
+        column IMAGE_NAME (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: IMAGE_NAME
+                dataType: varchar2
+            }
+        )
+
+        column INITIATIVE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: INITIATIVE
+                dataType: varchar2
+            }
+        )
+
+        column LAST_UPDATED (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: LAST_UPDATED
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column OBJECTIVE (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: OBJECTIVE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 94
+                    items: {
+                        P94_INITIATIVE_ID: &ID.
+                    }
+                    clearCache: 94
+                    action: resetPagination
+                }
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 30
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu edit-nomenclature-initiative (
+                label: Edit &NOMENCLATURE_INITIATIVE.
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 22
+                        items: {
+                            P22_ID: &ID.
+                        }
+                        clearCache: 22
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu view-kanban (
+                label: View Kanban
+                layout {
+                    sequence: 30
+                }
+                behavior {
+                    target: {
+                        page: 160
+                        items: {
+                            P160_INITIATIVE_ID: &ID.
+                        }
+                        clearCache: 160
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-layout-3col
+                }
+            )
+
+            menu view-milestones (
+                label: View Milestones
+                layout {
+                    sequence: 50
+                }
+                behavior {
+                    target: {
+                        page: 112
+                        items: {
+                            P112_INITIATIVE_ID: &ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-calendar-month
+                }
+            )
+
+            menu view-nomenclature-initiative (
+                label: View &NOMENCLATURE_INITIATIVE.
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 94
+                        items: {
+                            P94_INITIATIVE_ID: &ID.
+                        }
+                        clearCache: 94
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-binoculars
+                }
+            )
+
+            menu view-nomenclature-projects (
+                label: View &NOMENCLATURE_PROJECTS.
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 23
+                        items: {
+                            P23_FOCUS_AREA: &AREA.
+                            P23_INITIATIVE: &INITIATIVE.
+                        }
+                        clearCache: 23
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+        )
+
+        action kanban (
+            position: primaryActions
+            template: button
+            label: Kanban
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 160
+                    items: {
+                        P160_INITIATIVE_ID: &ID.
+                    }
+                    clearCache: 160
+                    action: resetPagination
+                }
+            }
+            appearance {
+                displayType: icon
+                icon: fa-layout-3col
+                cssClasses: t-Button--noUI
+            }
+        )
+
+    )
+
+    region my-nomenclature-projects (
+        name: My &NOMENCLATURE_PROJECTS.
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       --
+                       -- project name
+                       --
+                       --decode(greatest(length(p.project),80),80,p.PROJECT,substr(p.project,1,80)||'...') project,
+                       p.project,
+                       --
+                       -- project owner
+                       --
+                       nvl(decode(t.first_name,null,t.email,t.first_name||' '||t.last_name),'No Owner') the_owner,
+                       p.owner_id,
+                       p.TARGET_COMPLETE,
+                       --
+                       -- percent complete
+                       --
+                       p.PCT_COMPLETE||'%' status,
+                       'fa-pie-chart-'||p.PCT_COMPLETE as icon,
+                       --
+                       -- priority
+                       --
+                       nvl((select 'P'||priority from sp_project_priorities pp where pp.id = p.priority_id),'Not Prioritized') priority,
+                       --
+                       -- Target
+                       --
+                       case when p.release_id is not null
+                            then (select t.release_train||' '||t.release from SP_RELEASE_TRAINS t where t.id = p.release_id)
+                            when p.target_complete is not null
+                            then to_char(p.target_complete,'Mon-RR')
+                            else 'No Target'
+                            end target,
+                       case when p.release_id is not null then 'success' else 'info' end target_badge_class,
+                       --
+                       -- Project favorites
+                       --
+                       nvl((select 'Yes' from sp_favorites f where f.project_id = p.id and f.team_member_id = :APP_USER_ID),'No') favorite,
+                       nvl((select 'fa-heart u-danger-text' from sp_favorites f where f.project_id = p.id and f.team_member_id = :APP_USER_ID),'fa-heart-o') favorite_icon,
+                       --
+                       -- project fields
+                       --
+                       lower(p.TAGS) tags,
+                       p.CREATED,
+                       apex_util.get_since(p.UPDATED) updated_since,
+                       p.updated,
+                       p.PROJECT_SIZE,
+                       p.project_url_name,
+                       p.friendly_identifier friendly_identifier1,
+                       --
+                       -- activity
+                       --
+                       (select '<span class="fa fa-badge-check" aria-hidden="true" title="Active Activity"></span> ' from dual where exists (
+                           select 1 
+                           from SP_ACTIVITIES ap 
+                           where ap.project_id = p.id and trunc(sysdate) between trunc(ap.start_date) and trunc(ap.end_date))) active_activity_icon
+                  from SP_PROJECTS p, 
+                       SP_INITIATIVES i,
+                       sp_team_members t  
+                where 
+                      p.archived_yn = 'N' and
+                      p.initiative_id = i.id and
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      t.id = lower(:APP_USER_ID) and
+                      --
+                      --
+                      --
+                      p.PCT_COMPLETE < 100 and
+                      --
+                      -- conditions to constrain list of project to current user
+                      --
+                      (
+                          -- app user is owner of project
+                          p.owner_id = t.id or
+                          -- app user has incomplete tasks
+                          p.id in (select ta.project_id 
+                                     from sp_tasks ta
+                                    where ta.PROJECT_ID = p.id
+                                      and ta.owner_id = :APP_USER_ID
+                                      and instr(:COMPLETE_TASK_STATUS_IDS,':'||ta.status_id||':') = 0)
+                      )
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: updated desc
+        }
+        layout {
+            sequence: 51
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            icon: " "
+        }
+        accessibility {
+            landmarkType: region
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: <div class="u-lineclamp-1">&PROJECT.</div>
+            description:
+                ```html
+                &ACTIVE_ACTIVITY_ICON!RAW. &PRIORITY. - &STATUS. - &PROJECT_SIZE.  
+                
+                ```
+            miscellaneous: &UPDATED_SINCE.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            description: &STATUS. Complete
+            shape: noShape
+            size: small
+        }
+        plugin-badge {
+            label: Target
+            value: TARGET
+            state: TARGET_BADGE_CLASS
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+        messages {
+            whenNoDataFound: You have no &NOMENCLATURE_PROJECT. Associations.
+        }
+
+        column ACTIVE_ACTIVITY_ICON (
+            layout {
+                sequence: 370
+            }
+            source {
+                databaseColumn: ACTIVE_ACTIVITY_ICON
+                dataType: varchar2
+            }
+        )
+
+        column CREATED (
+            layout {
+                sequence: 190
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+            }
+        )
+
+        column FAVORITE (
+            layout {
+                sequence: 340
+            }
+            source {
+                databaseColumn: FAVORITE
+                dataType: varchar2
+            }
+        )
+
+        column FAVORITE_ICON (
+            layout {
+                sequence: 350
+            }
+            source {
+                databaseColumn: FAVORITE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER1 (
+            layout {
+                sequence: 270
+            }
+            source {
+                databaseColumn: FRIENDLY_IDENTIFIER1
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 320
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column OWNER_ID (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: OWNER_ID
+                dataType: number
+            }
+        )
+
+        column PRIORITY (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: PRIORITY
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_SIZE (
+            layout {
+                sequence: 240
+            }
+            source {
+                databaseColumn: PROJECT_SIZE
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            layout {
+                sequence: 260
+            }
+            source {
+                databaseColumn: PROJECT_URL_NAME
+                dataType: varchar2
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 380
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        column TAGS (
+            layout {
+                sequence: 180
+            }
+            source {
+                databaseColumn: TAGS
+                dataType: varchar2
+            }
+        )
+
+        column TARGET (
+            layout {
+                sequence: 390
+            }
+            source {
+                databaseColumn: TARGET
+                dataType: varchar2
+            }
+        )
+
+        column TARGET_BADGE_CLASS (
+            layout {
+                sequence: 400
+            }
+            source {
+                databaseColumn: TARGET_BADGE_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column TARGET_COMPLETE (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: TARGET_COMPLETE
+                dataType: date
+            }
+        )
+
+        column THE_OWNER (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: THE_OWNER
+                dataType: varchar2
+            }
+        )
+
+        column UPDATED (
+            layout {
+                sequence: 210
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+            }
+        )
+
+        column UPDATED_SINCE (
+            layout {
+                sequence: 310
+            }
+            source {
+                databaseColumn: UPDATED_SINCE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 3
+                    items: {
+                        FI: &FRIENDLY_IDENTIFIER1.
+                        PN: &PROJECT_URL_NAME.
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu activity-quick-look (
+                label: Activity Quick Look
+                layout {
+                    sequence: 70
+                }
+                behavior {
+                    target: {
+                        page: 130
+                        items: {
+                            P130_PROJECT_ID: &ID.
+                        }
+                        clearCache: 130
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-badge-check
+                }
+                serverSideCondition {
+                    type: itemIsNotNull
+                    item: ACTIVE_ACTIVITY_ICON
+                }
+            )
+
+            menu add-activity (
+                label: Add Activity
+                layout {
+                    sequence: 80
+                }
+                behavior {
+                    target: {
+                        page: 101
+                        items: {
+                            P101_PROJECT_ID: &ID.
+                        }
+                        clearCache: 101
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-plus
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu add-comment (
+                label: Add Comment
+                layout {
+                    sequence: 100
+                }
+                behavior {
+                    target: {
+                        page: 100
+                        items: {
+                            P100_PROJECT_ID: &ID.
+                        }
+                        clearCache: 100
+                    }
+                }
+                appearance {
+                    icon: fa-comment-o
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu ai-summaries (
+                label: AI Summaries
+                layout {
+                    sequence: 60
+                }
+                behavior {
+                    target: {
+                        page: 26
+                        items: {
+                            P26_PROJECT_ID: &ID.
+                        }
+                        clearCache: 26
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-ai-sparkle-generate-text
+                }
+                config {
+                    buildOption: @ai-project-summaries
+                }
+            )
+
+            menu change-history (
+                label: Change History
+                layout {
+                    sequence: 110
+                }
+                behavior {
+                    target: {
+                        page: 124
+                        items: {
+                            P124_ID: &ID.
+                        }
+                        clearCache: 124
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-clock-o
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 30
+                }
+            )
+
+            menu edit (
+                label: "Edit "
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 24
+                        items: {
+                            P24_ID: &ID.
+                        }
+                        clearCache: 24
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu nomenclature-project-details (
+                label: &NOMENCLATURE_PROJECT. Details
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 3
+                        items: {
+                            FI: &FRIENDLY_IDENTIFIER1.
+                            PN: &PROJECT_URL_NAME.
+                        }
+                        clearCache: 3
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu nomenclature-project-quick-look (
+                label: &NOMENCLATURE_PROJECT. Quick Look
+                layout {
+                    sequence: 50
+                }
+                behavior {
+                    target: {
+                        page: 36
+                        items: {
+                            P36_ID: &ID.
+                        }
+                        clearCache: 36
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu owner-quick-look (
+                label: Owner Quick Look
+                layout {
+                    sequence: 90
+                }
+                behavior {
+                    target: {
+                        page: 73
+                        items: {
+                            P73_TEAM_MEMBER_ID: &OWNER_ID.
+                        }
+                        clearCache: 73
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-user
+                }
+            )
+
+        )
+
+        action favorite (
+            position: primaryActions
+            template: button
+            label: Favorite
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #action$favoriteProject?id=&ID.
+            }
+            appearance {
+                displayType: icon
+                icon: &FAVORITE_ICON.
+                cssClasses: t-Button--noUI
+            }
+        )
+
+    )
+
+    region my-open-releases (
+        name: My Open Releases
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id, 
+                       release_train, 
+                       release_owner_id,
+                       nvl(release_owner,'(No Owner)') release_owner,
+                       release,
+                       timeline,
+                       days_remaining,
+                       badge_state,
+                       RELEASE_OPEN_DATE,
+                       RELEASE_TARGET_DATE,
+                       to_char(RELEASE_TARGET_DATE,'YYYY') RELEASE_TARGET_YEAR,
+                       UPDATED,
+                       duration_in_days,
+                       AVG_PCT_COMPLETE,
+                       completed,
+                       not_completed,
+                       last_updated,
+                       projects,
+                       initcap(nvl(release_type,'FULL')) release_type,
+                       --
+                       -- percent of projects fully completed
+                       --
+                       round(
+                           100 *
+                           decode(nvl(not_completed,0),
+                                  0,0,
+                                  completed / (nvl(completed,0) + nvl(not_completed,0))
+                                  )
+                            ) pct_complete,
+                       'fa-pie-chart-'||round(.1 * 
+                           AVG_PCT_COMPLETE)*10 icon,
+                      window,
+                      --
+                      -- release milestone counts
+                      --
+                      milestones,
+                      completed_milestones
+                from (
+                select 
+                       r.ID,
+                       --
+                       -- release attributes
+                       --
+                       r.RELEASE_OPEN_DATE,
+                       r.RELEASE_TARGET_DATE,
+                       r.UPDATED,
+                       r.RELEASE_TARGET_DATE - r.RELEASE_OPEN_DATE duration_in_days,
+                       r.RELEASE_TRAIN,
+                       r.RELEASE_OWNER_ID,
+                       --
+                       -- release owner
+                       --
+                       (select first_Name||' '||last_name from sp_team_members tm where tm.id =  r.RELEASE_OWNER_ID) release_owner,
+                       --
+                       -- release
+                       --
+                       r.RELEASE_TRAIN||' '||r.RELEASE RELEASE, 
+                       --
+                       -- release date timeline (from open to targeted complete) for display in UI
+                       --
+                       to_char(r.RELEASE_OPEN_DATE,'Day DD-MON-YYYY')||' to '||to_char(r.RELEASE_TARGET_DATE,'Day DD-MON-YYYY') timeline,
+                       --
+                       -- Days remaining for release
+                       --
+                       decode(
+                           greatest( trunc(sysdate),r.RELEASE_TARGET_DATE),
+                           trunc(sysdate),
+                           'Completed',
+                           trunc(r.RELEASE_TARGET_DATE) - trunc(sysdate) || ' Days Remaining') as days_remaining,
+                       --
+                       -- State of release "danger", "warning", or "success"
+                       --
+                       case 
+                           when trunc(r.RELEASE_TARGET_DATE) < trunc(sysdate) then 'success'
+                           when trunc(r.RELEASE_TARGET_DATE) - trunc(sysdate) < 15 then 'danger' 
+                           when trunc(r.RELEASE_TARGET_DATE) - trunc(sysdate)< 30 then 'warning'
+                           else 'success'
+                        end as badge_state,
+                       --
+                       -- Count of projects targeted for release
+                       --
+                       (select count(*) 
+                          from sp_projects p 
+                         where p.release_id = r.id  
+                           and p.ARCHIVED_YN = 'N'
+                           and p.DUPLICATE_OF_PROJECT_ID is null) projects,
+                       --
+                       -- average percent complete of projects for a release
+                       --
+                       round(nvl((select avg(nvl(p.PCT_COMPLETE,0)) a
+                                    from sp_projects p 
+                                   where p.release_id = r.id
+                                     and p.ARCHIVED_YN = 'N'
+                                     and p.DUPLICATE_OF_PROJECT_ID is null),0)) AVG_PCT_COMPLETE,
+                       --
+                       -- fully completed projects for a given release
+                       --
+                       (select count(*) c 
+                          from sp_projects p 
+                         where p.release_id = r.id 
+                           and p.ARCHIVED_YN = 'N'
+                           and p.DUPLICATE_OF_PROJECT_ID is null
+                           and p.pct_complete = 100 ) completed,
+                       --
+                       -- Open (not completed) projects for a given release
+                       --
+                       (select count(*) c 
+                          from sp_projects p 
+                         where p.release_id = r.id
+                           and p.ARCHIVED_YN = 'N'
+                           and p.DUPLICATE_OF_PROJECT_ID is null
+                           and p.pct_complete != 100) not_completed,
+                       --
+                       -- Most recent update to release project or release train
+                       --
+                       greatest(nvl((select max(updated) 
+                                       from sp_projects p 
+                                      where p.release_id = r.id
+                                        and p.ARCHIVED_YN = 'N'
+                                        and p.DUPLICATE_OF_PROJECT_ID is null),r.updated),r.updated) last_updated,
+                       case when release_open_completed = 'Y' and nvl(release_completed,'N') = 'N'
+                            then 'Open'
+                            when nvl(release_open_completed,'N') = 'N'
+                            then 'Future'
+                            else 'Closed' 
+                            end window,
+                       --
+                       -- milestone counts
+                       --
+                       (select count(*) from SP_RELEASE_MILESTONES m where m.RELEASE_ID = r.id) milestones,
+                       (select count(*) from SP_RELEASE_MILESTONES m where m.RELEASE_ID = r.id and m.MILESTONE_COMPLETED_YN = 'Y') completed_milestones,
+                       --
+                       (select count(p.id) 
+                          from SP_TASKS t, 
+                               sp_projects p 
+                         where t.PROJECT_ID = p.id 
+                           and t.OWNER_ID = :APP_USER_ID 
+                           and p.release_id = r.id
+                           and p.ARCHIVED_YN = 'N'  
+                           and p.DUPLICATE_OF_PROJECT_ID is null) identified_as_task_owner,
+                       (select count(p.id)
+                          from SP_ACTIVITIES dap, 
+                               sp_projects p 
+                         where dap.project_id = p.id
+                           and dap.TEAM_MEMBER_ID = :APP_USER_ID
+                           and p.release_id = r.id
+                           and p.ARCHIVED_YN = 'N'  
+                           and p.DUPLICATE_OF_PROJECT_ID is null) project_activivity_contributor,
+                       --
+                       -- project owner
+                       --
+                       (select count(*) 
+                          from sp_projects p 
+                         where p.owner_id = :APP_USER_ID
+                           and p.release_id = r.id
+                           and p.ARCHIVED_YN = 'N'  
+                           and p.DUPLICATE_OF_PROJECT_ID is null) project_owner_count,
+                       r.release_type
+                  from SP_RELEASE_TRAINS r
+                  where nvl(RELEASE_OPEN_COMPLETED,'Y') = 'Y' and nvl(RELEASE_COMPLETED,'N') = 'N'
+                )
+                 where (identified_as_task_owner > 0 or 
+                        project_activivity_contributor > 0 or 
+                        project_owner_count > 0)
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: last_updated desc
+        }
+        layout {
+            sequence: 61
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        config {
+            buildOption: @releases
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &TIMELINE.
+            title: &RELEASE. - &RELEASE_TYPE.
+            description: &COMPLETED./&PROJECTS. Completed (&AVG_PCT_COMPLETE.% Progress based on status, &PCT_COMPLETE.% Fully Complete)
+            miscellaneous:
+                ```html
+                Updated: &LAST_UPDATED.<br />
+                &MILESTONES. Milestones, &COMPLETED_MILESTONES. completed
+                ```
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            shape: noShape
+            size: medium
+        }
+        plugin-badge {
+            label: &NOMENCLATURE_PROJECTS.
+            value: DAYS_REMAINING
+            state: BADGE_STATE
+            columnWidth: large
+        }
+        pagination {
+            entitiesPerPage: 10
+        }
+
+        column AVG_PCT_COMPLETE (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: AVG_PCT_COMPLETE
+                dataType: number
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column COMPLETED (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: COMPLETED
+                dataType: number
+            }
+        )
+
+        column COMPLETED_MILESTONES (
+            layout {
+                sequence: 250
+            }
+            source {
+                databaseColumn: COMPLETED_MILESTONES
+                dataType: number
+            }
+        )
+
+        column DAYS_REMAINING (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: DAYS_REMAINING
+                dataType: varchar2
+            }
+        )
+
+        column DURATION_IN_DAYS (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: DURATION_IN_DAYS
+                dataType: number
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 180
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column LAST_UPDATED (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: LAST_UPDATED
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column MILESTONES (
+            layout {
+                sequence: 240
+            }
+            source {
+                databaseColumn: MILESTONES
+                dataType: number
+            }
+        )
+
+        column NOT_COMPLETED (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: NOT_COMPLETED
+                dataType: number
+            }
+        )
+
+        column PCT_COMPLETE (
+            layout {
+                sequence: 190
+            }
+            source {
+                databaseColumn: PCT_COMPLETE
+                dataType: number
+            }
+        )
+
+        column PROJECTS (
+            layout {
+                sequence: 200
+            }
+            source {
+                databaseColumn: PROJECTS
+                dataType: number
+            }
+        )
+
+        column RELEASE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: RELEASE
+                dataType: varchar2
+            }
+        )
+
+        column RELEASE_OPEN_DATE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: RELEASE_OPEN_DATE
+                dataType: date
+            }
+        )
+
+        column RELEASE_OWNER (
+            layout {
+                sequence: 230
+            }
+            source {
+                databaseColumn: RELEASE_OWNER
+                dataType: varchar2
+            }
+        )
+
+        column RELEASE_OWNER_ID (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: RELEASE_OWNER_ID
+                dataType: number
+            }
+        )
+
+        column RELEASE_TARGET_DATE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: RELEASE_TARGET_DATE
+                dataType: date
+            }
+        )
+
+        column RELEASE_TARGET_YEAR (
+            layout {
+                sequence: 210
+            }
+            source {
+                databaseColumn: RELEASE_TARGET_YEAR
+                dataType: varchar2
+            }
+        )
+
+        column RELEASE_TRAIN (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: RELEASE_TRAIN
+                dataType: varchar2
+            }
+        )
+
+        column RELEASE_TYPE (
+            layout {
+                sequence: 260
+            }
+            source {
+                databaseColumn: RELEASE_TYPE
+                dataType: varchar2
+            }
+        )
+
+        column TIMELINE (
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: TIMELINE
+                dataType: varchar2
+            }
+        )
+
+        column UPDATED (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+            }
+        )
+
+        column WINDOW (
+            layout {
+                sequence: 220
+            }
+            source {
+                databaseColumn: WINDOW
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 117
+                    items: {
+                        P117_RELEASE_ID: &ID.
+                    }
+                    clearCache: 117
+                    action: resetPagination
+                }
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 30
+                }
+            )
+
+            menu edit-release (
+                label: Edit Release
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 27
+                        items: {
+                            P27_ID: &ID.
+                        }
+                        clearCache: 27
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu release-details (
+                label: Release Details
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 117
+                        items: {
+                            P117_RELEASE_ID: &ID.
+                        }
+                        clearCache: 117
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-ship
+                }
+            )
+
+            menu release-nomenclature-projects (
+                label: "Release &NOMENCLATURE_PROJECTS. "
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 300
+                        items: {
+                            P300_RELEASE_ID: &ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+        )
+
+    )
+
+    region nomenclature-project-search (
+        name: &NOMENCLATURE_PROJECT. Search
+        type: staticContent
+        layout {
+            sequence: 21
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region notifications (
+        name: Notifications
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_return clob;
+                   l_count  int := 0;
+                   l_user_tags varchar2(4000) := null;
+                begin
+                   for c1 in (select upper(tags) tags from sp_team_members where id = :APP_USER_ID and tags is not null) loop
+                       l_user_tags := c1.tags;
+                   end loop;
+                   for c1 in (
+                      select notification_description 
+                      from SP_APPLICATION_NOTIFICATIONS 
+                      where (from_date is null or sysdate >= from_date) and
+                            (to_date   is null or sysdate <= to_date) and 
+                            (required_user_tag is null or instr(l_user_tags,required_user_tag) > 0) and
+                            is_active_yn = 'Y') loop
+                      --
+                      --
+                      --
+                      l_count := l_count + 1;
+                      if l_count = 2 then 
+                          l_return := '<ul><li>'||l_return||'</li>';
+                      end if;
+                      if l_count >= 2 then
+                         l_return := l_return||'<li>';
+                      end if;
+                      l_return := l_return||apex_escape.html(c1.notification_description);
+                      if l_count >= 2 then
+                         l_return := l_return||'</li>';
+                      end if;
+                   end loop;
+                   --
+                   --
+                   --
+                   if l_count >= 2 then
+                      l_return := l_return||'</ul>';
+                   end if;
+                   --
+                   --
+                   --
+                   return l_return;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 1
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Alert--accessibleHeading
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                from SP_APPLICATION_NOTIFICATIONS n
+                where (from_date is null or sysdate >= from_date) and
+                      (to_date   is null or sysdate <= to_date) and 
+                      is_active_yn = 'Y' and
+                      (n.required_user_tag is null or exists (
+                          select 1
+                          from sp_team_members tm
+                          where tm.id = :APP_USER_ID and 
+                                tm.tags is not null and
+                                instr(upper(tm.tags),upper(n.required_user_tag)) > 0
+                      )
+                      )
+                ```
+        }
+    )
+
+    region recently-changed-nomenclature-projects (
+        name: Recently Changed &NOMENCLATURE_PROJECTS.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       p.PROJECT,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = p.OWNER_ID) the_owner,
+                       (select 'P'||PRIORITY from SP_PROJECT_PRIORITIES x where x.ID = p.PRIORITY_ID) priority,
+                       p.PCT_COMPLETE pct_complete,
+                       (select decode(greatest(length(initiative),15),15,initiative,substr(initiative,1,12)||'...') initiative 
+                        from sp_initiatives i 
+                        where i.id = p.initiative_id) initiative,
+                       decode(p.release_id,
+                          null, decode(p.TARGET_COMPLETE,null,'No Target',to_char(p.TARGET_COMPLETE,'DD-MON-YYYY')),
+                          (select RELEASE_TRAIN||' '||release from SP_RELEASE_TRAINS r where r.id = p.RELEASE_ID)) release,
+                       p.PROJECT_SIZE,
+                       p.UPDATED,
+                       null attributes,
+                       p.owner_id,
+                       p.friendly_identifier,
+                       p.project_url_name,
+                       p.ARCHIVED_YN,
+                       nvl((select first_name||' '||last_name from SP_TEAM_MEMBERS tm where tm.email = lower(p.updated_by)),lower(p.updated_by)) updated_by
+                from  SP_PROJECTS p
+                where nvl(p.ARCHIVED_YN,'N') != 'Y' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null
+                order by p.updated desc nulls last
+                fetch first 30 rows only
+                
+                
+                ```
+        }
+        layout {
+            sequence: 71
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            icon: " "
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+            cssClasses: [
+                h380
+                resize-region
+            ]
+        }
+
+        column ARCHIVED_YN (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 190
+            }
+        )
+
+        column ATTRIBUTES (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Attributes
+            }
+            layout {
+                sequence: 110
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="sp-tags-container">
+                        <span class="sp-tag">#PRIORITY#</span>
+                        <span class="sp-tag">#PROJECT_SIZE#</span>
+                        <span class="sp-tag">#PCT_COMPLETE#%</span>
+                        <span class="sp-tag">#RELEASE#</span>
+                    </div>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 170
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_INITIATIVE.
+            }
+            layout {
+                sequence: 120
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OWNER_ID (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 200
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 100
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: &NOMENCLATURE_PROJECT.
+            }
+            layout {
+                sequence: 30
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_SIZE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 180
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 210
+            }
+        )
+
+        column THE_OWNER (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            columnFormatting {
+                htmlExpression: #UPDATED# - #UPDATED_BY#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+    )
+
+    region reviews-needed (
+        name: Reviews Needed
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_return  varchar2(4000) := null;
+                begin
+                
+                if :APPROVALS_PENDING_CNT > 0 and :APPROVALS_MORE_INFO_CNT > 0 then
+                    if :APPROVALS_PENDING_CNT = 1 then
+                        l_return := 'You have 1 pending '|| :NOMENCLATURE_PROJECT ||' approval request.';
+                    else
+                        l_return := 'You have '|| :APPROVALS_PENDING_CNT ||' pending '|| :NOMENCLATURE_PROJECT ||' approval requests.';
+                    end if;
+                    if :APPROVALS_MORE_INFO_CNT = 1 then
+                        l_return := l_return || '<br/>You have 1 request for more information regarding your '|| :NOMENCLATURE_PROJECT ||' approval request.';
+                    else
+                        l_return := l_return || '<br/>You have '|| :APPROVALS_MORE_INFO_CNT ||' requests for more information regarding your '|| :NOMENCLATURE_PROJECT ||' approval requests.';
+                    end if;
+                elsif :APPROVALS_PENDING_CNT > 0 then
+                    if :APPROVALS_PENDING_CNT = 1 then
+                        l_return := 'You have 1 pending '|| :NOMENCLATURE_PROJECT ||' approval request.';
+                    else
+                        l_return := 'You have '|| :APPROVALS_PENDING_CNT ||' pending '|| :NOMENCLATURE_PROJECT ||' approval requests.';
+                    end if;
+                elsif :APPROVALS_MORE_INFO_CNT > 0 then
+                    if :APPROVALS_MORE_INFO_CNT = 1 then
+                        l_return := 'You have 1 request for more information regarding your '|| :NOMENCLATURE_PROJECT ||' approval request.';
+                    else
+                        l_return := 'You have '|| :APPROVALS_MORE_INFO_CNT ||' requests for more information regarding your '|| :NOMENCLATURE_PROJECT ||' approval requests.';
+                    end if;
+                end if;
+                
+                return l_return;
+                
+                end;
+                ```
+        }
+        layout {
+            sequence: 11
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--warning
+                t-Alert--removeHeading js-removeLandmark
+            ]
+            icon: fa-workflow
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :APPROVALS_PENDING_CNT > 0 or
+                :APPROVALS_MORE_INFO_CNT > 0
+                ```
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+    pageItem P1_ACTIVITIES (
+        type: hidden
+        layout {
+            sequence: 111
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P1_AREAS (
+        type: hidden
+        layout {
+            sequence: 81
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P1_GROUPS (
+        type: hidden
+        layout {
+            sequence: 151
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P1_INITIATIVES (
+        type: hidden
+        layout {
+            sequence: 91
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P1_PEOPLE (
+        type: hidden
+        layout {
+            sequence: 141
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P1_PROJECTS (
+        type: hidden
+        layout {
+            sequence: 121
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P1_PROJECT_GROUPS (
+        type: hidden
+        layout {
+            sequence: 161
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P1_PROJECT_TO_FAVORITE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @my-nomenclature-projects
+            slot: regionBody
+        }
+    )
+
+    pageItem P1_RELEASES (
+        type: hidden
+        layout {
+            sequence: 131
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P1_SEARCH (
+        type: textField
+        label {
+            alignment: left
+        }
+        settings {
+            subtype: search
+            submitWhenEnterPressed: true
+        }
+        layout {
+            sequence: 10
+            region: @nomenclature-project-search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search &NOMENCLATURE_PROJECTS.
+        }
+    )
+
+    button about-activity (
+        buttonName: about_activity
+        label: About Activity
+        layout {
+            sequence: 30
+            region: @my-activities
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-question-circle-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 131
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button about-my-projects (
+        buttonName: about_my_projects
+        label: About my &NOMENCLATURE_PROJECTS.
+        layout {
+            sequence: 30
+            region: @my-nomenclature-projects
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-question-circle-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 138
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button add-activity (
+        buttonName: add_activity
+        label: Add Activity
+        layout {
+            sequence: 40
+            region: @my-activities
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 101
+                clearCache: 101
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button add-project (
+        buttonName: add_project
+        label: Add &NOMENCLATURE_PROJECT.
+        layout {
+            sequence: 40
+            region: @my-nomenclature-projects
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 104
+                clearCache: 104
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button view-my-activities (
+        buttonName: view_my_activities
+        label: View My Activities
+        layout {
+            sequence: 50
+            region: @my-activities
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 102
+                items: {
+                    P102_PERSON: &APP_USER_FIRST_LAST_NAME.
+                }
+                clearCache: 102
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-my-projects (
+        buttonName: view_my_projects
+        label: View My &NOMENCLATURE_PROJECTS.
+        layout {
+            sequence: 60
+            region: @my-nomenclature-projects
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 113
+                clearCache: 113
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-open-releases (
+        buttonName: view_open_releases
+        label: View Open Releases
+        layout {
+            sequence: 20
+            region: @my-open-releases
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 8
+                items: {
+                    P8_WINDOW: Open
+                }
+                clearCache: 8
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-project-details (
+        buttonName: view_project_details
+        label: View &NOMENCLATURE_PROJECTS.
+        layout {
+            sequence: 10
+            region: @recently-changed-nomenclature-projects
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 23
+                clearCache: 23
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-requests (
+        buttonName: VIEW-REQUESTS
+        label: View Requests
+        layout {
+            sequence: 100
+            region: @reviews-needed
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--primary
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 132
+                clearCache: 132
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+    dynamicAction dismiss-notif (
+        name: dismiss notif
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: P1_NOTIF_TO_DISMISS
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    update sp_team_member_notifications
+                       set dismissed_yn = 'Y'
+                     where id = :P1_NOTIF_TO_DISMISS
+                       and team_member_id =  :APP_USER_ID;
+                    ```
+                itemsToSubmit: P1_NOTIF_TO_DISMISS
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.items.P1_NOTIF_TO_DISMISS.setValue('',undefined,true);
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction initiative-refresh-on-dialog-close (
+        name: initiative refresh on dialog close
+        execution {
+            sequence: 100
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @my-initiatives
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-initiatives
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction on-my-proj-dc-refresh (
+        name: on my proj dc refresh
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @my-nomenclature-projects
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-nomenclature-projects
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-activities
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction on-releases-after-edit (
+        name: on Releases after edit
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @my-open-releases
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-open-releases
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-my-curr-activity-on-dc (
+        name: refresh my curr activity on dc
+        execution {
+            sequence: 80
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @my-activities
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-activities
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-dialog-close (
+        name: refresh on dialog close
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @recently-changed-nomenclature-projects
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction toggle-favorite (
+        name: toggle favorite
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P1_PROJECT_TO_FAVORITE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    sp_favorite_toggle(
+                        p_project_id => :P1_PROJECT_TO_FAVORITE, 
+                        p_app_user_id => :APP_USER_ID
+                        );
+                    ```
+                itemsToSubmit: P1_PROJECT_TO_FAVORITE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var favButton$ = $(".js-project-to-favorite");
+                    var favButtonIcon$ = favButton$.find(".t-Icon");
+                    
+                    // we use the class to get the active element, can be cleared now
+                    favButton$.removeClass("js-project-to-favorite"); 
+                    
+                    if ( favButtonIcon$.hasClass("fa-heart") ) {
+                        favButtonIcon$.removeClass("fa-heart u-danger-text").addClass("fa-heart-o");
+                        // hide success message, no API to do this so done with classes
+                        $( "#APEX_SUCCESS_MESSAGE" ).removeClass("u-visible").addClass("u-hidden"); 
+                    } else if ( favButtonIcon$.hasClass("fa-heart-o") ) {
+                        favButtonIcon$.removeClass("fa-heart-o").addClass("fa-heart u-danger-text");
+                        apex.message.showPageSuccess('Project favorited!');
+                    }
+                    apex.items.P1_PROJECT_TO_FAVORITE.setValue('',undefined,true); //third parameter used to suppress change event
+                    ```
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-proj-jump-pg (
+        itemName: LAST_PROJ_JUMP_PG
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 1
+        }
+    )
+
+    computation last-project-view (
+        itemName: LAST_PROJECT_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 1
+        }
+    )
+
+    branch (
+        name: search projects
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 23
+                items: {
+                    P23_SEARCH: &P1_SEARCH.
+                }
+                clearCache: 23
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

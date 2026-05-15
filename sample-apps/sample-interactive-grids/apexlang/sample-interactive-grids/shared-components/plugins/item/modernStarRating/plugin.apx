@@ -1,0 +1,162 @@
+plugin modernStarRating (
+    name: Modern Star Rating
+    staticId: COM.ORACLE.APEX.STARRATING_MODERN
+    type: item
+    component {
+        standardAttributes: [
+            visibleWidget
+            sessionStateChangeable
+            readOnlyAttr
+            sourceAttrs
+            iconAttr
+            encryptSessionStateAttr
+            filter
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            c_default_stars      constant number        := 5;
+            c_default_icon_class constant varchar2(128) := 'fa-star';
+            c_default_acolor     constant varchar2(30)  := 'red';
+            c_default_bcolor     constant varchar2(30)  := '#e0e0e0';
+            
+            --===============================================================================
+            -- Renders the star rating item type based on the configuration of the page item.
+            --===============================================================================
+            procedure render_star_rating (
+                p_item   in apex_plugin.t_page_item,
+                p_plugin in apex_plugin.t_plugin,
+                p_param  in apex_plugin.t_item_render_param,
+                p_result in out nocopy apex_plugin.t_item_render_result )
+            is
+                c_number_of_stars      constant number          := nvl(to_number(p_item.attribute_01), c_default_stars);
+                c_escaped_value        constant varchar2(32767) := apex_escape.html_attribute(p_param.value);
+                
+                c_default_icon         constant varchar2(128)   := nvl( p_plugin.attribute_04, c_default_icon_class );
+                c_icon_class           constant varchar2(128)   := p_item.attribute_02;
+                c_default_icon_acolor  constant varchar2(128)   := nvl( p_plugin.attribute_02, c_default_acolor );
+                c_icon_acolor          constant varchar2(128)   := p_item.attribute_04;
+                c_default_icon_bcolor  constant varchar2(128)   := nvl( p_plugin.attribute_03, c_default_bcolor );
+                c_icon_bcolor          constant varchar2(128)   := p_item.attribute_05;
+                
+                c_label_text           constant varchar2(128)   := nvl( p_item.attribute_06, '#VALUE#' );
+                
+                c_use_default          boolean                  := case when p_item.attribute_03 = 'Y' then true else false end;
+                
+                l_name                 varchar2(30);
+                l_clear_tooltip        varchar2(4000)           := sys.htf.escape_sc(nvl(p_plugin.attribute_01, 'Clear Rating'));
+            
+            begin
+                l_name := apex_plugin.get_input_name_for_item;
+                
+                if p_param.is_readonly or p_param.is_printer_friendly then 
+                    apex_plugin_util.print_hidden_if_readonly (
+                        p_item_name           => l_name,
+                        p_value               => p_param.value,
+                        p_is_readonly         => p_param.is_readonly,
+                        p_is_printer_friendly => p_param.is_printer_friendly
+                   );
+                   sys.htp.prn (
+                       '<input type="text" ' ||
+                       'class="' || 'apex-item-starrating apex-item-plugin' || '" ' ||
+                       'id="'    || p_item.name|| '_DISPLAY" ' ||
+                       'value="' || case when p_param.value is null then '' else ltrim( rtrim ( c_escaped_value ) ) end || '" />' );
+            
+                else
+                
+                    -- render the text field widget
+                    sys.htp.prn (
+                        '<input type="text" ' ||
+                        wwv_flow_plugin_util.get_element_attributes(p_item, l_name, 'apex-item-starrating apex-item-plugin', false) ||
+                        'id="'    || p_item.name|| '" ' ||
+                        'value="' || case when p_param.value is null then '' else ltrim( rtrim ( c_escaped_value ) ) end || '" />' );
+                       
+                end if;
+            
+                apex_javascript.add_onload_code (
+                    p_code => 'starRatingItemInit("'|| case when p_param.is_readonly or p_param.is_printer_friendly then p_item.name || '_DISPLAY' else p_item.name end ||'", {'||
+                            apex_javascript.add_attribute( 'readOnly',      p_param.is_readonly,                                                       false, true  ) ||
+                            apex_javascript.add_attribute( 'numStars',      c_number_of_stars,                                                         false, true  ) ||
+                            apex_javascript.add_attribute( 'clearToolip',   l_clear_tooltip,                                                           false, true  ) ||
+                            apex_javascript.add_attribute( 'iconClass',     case when c_use_default then c_default_icon else c_icon_class end,         false, true  ) ||
+                            apex_javascript.add_attribute( 'isRequired',    p_item.is_required,                                                        false, true  ) ||
+                            apex_javascript.add_attribute( 'labelText',     c_label_text,                                                              false, true  ) ||
+                            apex_javascript.add_attribute( 'activeColor',   case when c_use_default then c_default_icon_acolor else c_icon_acolor end, false, true  ) ||
+                            apex_javascript.add_attribute( 'inactiveColor', case when c_use_default then c_default_icon_bcolor else c_icon_bcolor end, false, false ) ||
+                            '});' );
+            
+                -- Tell APEX that this field is navigable
+                p_result.is_navigable := (not p_param.is_readonly = false and not p_param.is_printer_friendly);
+            
+            end render_star_rating;
+            
+            
+            procedure metadata_star_rating (
+                p_item   in            apex_plugin.t_item,
+                p_plugin in            apex_plugin.t_plugin,
+                p_param  in            apex_plugin.t_item_meta_data_param,
+                p_result in out nocopy apex_plugin.t_item_meta_data_result )
+            is
+            begin
+                p_result.escape_output := false;
+            end;
+            
+            --==============================================================================
+            -- Validates the submitted star rating value against the configuration to make
+            -- sure that no invalid values are submitted by a hacker.
+            --==============================================================================
+            procedure validate_star_rating (
+                p_item   in            apex_plugin.t_item,
+                p_plugin in            apex_plugin.t_plugin,
+                p_param  in            apex_plugin.t_item_validation_param,
+                p_result in out nocopy apex_plugin.t_item_validation_result )
+            is
+                c_number_of_stars constant number := nvl(to_number(p_item.attribute_01), c_default_stars);
+            
+                l_value number;
+            begin
+                if p_param.value is null then return; end if;
+                
+                -- The value has to be numeric, in the boundaries of 1 and "number of stars"
+                if wwv_flow_utilities.is_numeric(p_param.value) then
+                    l_value := to_number(p_param.value);
+                    if not (   l_value between 0 and c_number_of_stars    )
+                    then
+                        p_result.message := l_value || ' is not in the valid rating range of 1 - '||c_number_of_stars;
+                    end if;
+                else
+                    p_result.message := apex_escape.html(p_param.value)||' is not numeric';
+                end if;
+            end validate_star_rating;
+            ```
+    }
+    callbacks {
+        apiInterface: procedureWithLegacyAttributes
+        renderProcedureName: render_star_rating
+        metaDataProcedureName: metadata_star_rating
+        validationProcedureName: validate_star_rating
+    }
+    advanced {
+        filePrefix: #IMAGE_PREFIX#plugins/com.oracle.apex.starrating_modern/
+        substituteAttributeValues: true
+    }
+    css {
+        fileUrls: #PLUGIN_FILES#com_oracle_apex_starrating_modern.css
+    }
+    javaScript {
+        fileUrls: #PLUGIN_FILES#com_oracle_apex_starrating_modern.js
+    }
+    information {
+        version: 1.1
+        aboutUrl: http://www.oracleapex.info/
+        helpText:
+            ```
+            <p><strong>Modern Star Rating Item</strong></p>
+            <p>This item displays a numeric value as a number of stars or other icons. The end user can change the value by selecting the desired number of stars. The value can be adjusted by clicking the number of stars with the mouse or by using the keyboard.</p>
+            <p>The icon to be displayed, the background and foreground colors can be adjusted either in the component settings or in the individual item settings. To use individual items and colors, set the attribute <strong>Use Component Defaults</strong> to <strong>No</strong>.</p>
+            <p>As icons, you may use any icon from the Icon Font available in your application. For Universal Theme applications, use an icon from the <em>Font APEX</em> library.</p>
+            ```
+    }
+)
+

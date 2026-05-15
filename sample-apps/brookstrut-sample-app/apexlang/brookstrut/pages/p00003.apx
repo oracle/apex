@@ -1,0 +1,666 @@
+page 3 (
+    name: Store
+    title: Store
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style type="text/css">
+            section#editProduct.uRegion div.uRegionContent table.formlayout {margin-left: 20px;}
+            section#addProduct.uRegion div.uRegionContent table.formlayout {margin-left: 20px;}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region store-performance (
+        name: Store Performance
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select store_name, 
+                       STORE_OPEN_DATE,
+                       sysdate - cast(STORE_OPEN_DATE as date)  days_open,
+                       sales_trailing_30_days, 
+                       sales_prior_30_days, 
+                       nvl(sales_trailing_30_days,0) - nvl(sales_prior_30_days,0) sales_trend,
+                       first_sale,
+                       most_recent_sale,
+                       sysdate - cast(first_sale as date) days_since_first_sale
+                from (
+                select s.STORE_OPEN_DATE,
+                       s.store_name,
+                       (select sum(QUANTITY*ITEM_PRICE) qp 
+                        from #OWNER#.OOW_DEMO_SALES_HISTORY h 
+                        where DATE_OF_SALE > sysdate - 30 and 
+                              h.store_id = :P3_ID) sales_trailing_30_days,
+                        (select sum(QUANTITY*ITEM_PRICE) qp 
+                        from #OWNER#.OOW_DEMO_SALES_HISTORY h 
+                        where DATE_OF_SALE > sysdate - 60 and 
+                              date_of_sale < sysdate - 30 and
+                              h.store_id  = :P3_ID) sales_prior_30_days,
+                        (select min(DATE_OF_SALE) from #OWNER#.OOW_DEMO_SALES_HISTORY h where store_id = :P3_ID) first_sale,
+                        (select max(DATE_OF_SALE) from #OWNER#.OOW_DEMO_SALES_HISTORY h where store_id = :P3_ID) most_recent_sale
+                from #OWNER#.OOW_DEMO_STORES s
+                where id = :P3_ID
+                ) x
+                
+                  
+                ```
+        }
+        layout {
+            sequence: 5
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column DAYS_OPEN (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Days Open
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column DAYS_SINCE_FIRST_SALE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Days Since First Sale
+                alignment: center
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column FIRST_SALE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: First Sale
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+        column MOST_RECENT_SALE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Most Recent Sale
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+        )
+
+        column SALES_PRIOR_30_DAYS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Sales Prior 30 Days
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column SALES_TRAILING_30_DAYS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Sales Trailing 30 Days
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column SALES_TREND (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Sales Trend
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column STORE_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Store Name
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column STORE_OPEN_DATE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Store Open Date
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: fmDay, fmDD fmMonth, YYYY
+            }
+        )
+
+    )
+
+    region store-products (
+        name: Store Products
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    i.item_name product,
+                    i.item_type,
+                    i.item_desc,
+                    i.msrp,
+                    s.ID,
+                    s.STORE_ID,
+                    s.ITEM_ID,
+                    s.SALE_START_DATE,
+                    s.DISCOUNT_PCT,
+                    s.SALE_END_DATE,
+                    nvl(s.ITEM_PRICE,i.msrp) item_price,
+                    nvl(s.item_price,i.msrp) - (nvl(s.item_price,i.msrp) * nvl(s.discount_pct,0) * .01) sale_price,
+                    i.id product_id
+                from OOW_DEMO_STORE_PRODUCTS s,
+                    OOW_DEMO_items i
+                where s.store_id = :P3_ID
+                    and i.id = s.item_id
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 1000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+        }
+        performance {
+            maxRowsToProcess: 1000
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column DISCOUNT_PCT (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Discount %
+                alignment: center
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 50
+            }
+        )
+
+        column ITEM_DESC (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column ITEM_ID (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column ITEM_PRICE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Suggested Price
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D00
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Item Type
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MSRP (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column PRODUCT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Product
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 18
+                    items: {
+                        P18_ID: #PRODUCT_ID#
+                    }
+                    clearCache: 18
+                    action: resetPagination
+                }
+                linkText: #PRODUCT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRODUCT_ID (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Edit
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 12
+                    items: {
+                        P12_ID: #PRODUCT_ID#
+                    }
+                    clearCache: 12
+                    action: resetPagination
+                }
+                linkText: <span class="fa fa-edit" aria-hidden="true"></span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SALE_END_DATE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Promo End
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SALE_PRICE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Sale Price
+                alignment: center
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D00
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SALE_START_DATE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Promo Start
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STORE_ID (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+    )
+
+    pageItem P3_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_STORE_NAME (
+        type: hidden
+        layout {
+            sequence: 30
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button edit-store (
+        buttonName: EDIT_STORE
+        label: Edit Store
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 7
+                items: {
+                    P7_ID: &P3_ID.
+                }
+                clearCache: 7
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 6
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction change-price (
+        name: Change price
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P3_ADD_ID
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery: select msrp from OOW_DEMO_items where id = :P3_ADD_ID;
+                itemsToSubmit: P3_ADD_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P3_ADD_PRICE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p3-store-name (
+        itemName: P3_STORE_NAME
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select store_name ||' - '||
+                STORE_ADDRESS || ' '||
+                STORE_CITY||', '||
+                STORE_STATE ||' '||
+                STORE_ZIP x
+                from #OWNER#.oow_demo_stores s where s.id = :P3_ID
+                ```
+        }
+    )
+
+    process start-timer (
+        name: start timer
+        type: executeCode
+        source {
+            plsqlCode: oow_demo_timing.start_timer;
+        }
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 12014837081644074034
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 3
+            }
+        }
+        comments {
+            comments: Created 13-SEP-2012 12:08 by ALLAN
+        }
+    )
+
+)
+

@@ -1,0 +1,230 @@
+app APEX-PWA-REFERENCE (
+    name: APEX PWA Reference
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: text
+        text: APEX PWA Reference
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    security {
+        embedInFrames: allowSameOrigin
+    }
+    sessionStateProtection {
+        checksumSalt: A13146FF78975F54FB3D6477EBD6762603EB60A1DE561795C1DDC173C8D0E343
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+        sessionStateCommits: immediate
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        installable: true
+        themeColor: #7c5095
+        appDescription: Reference application for Oracle APEX Progressive Web App features.
+        customManifest:
+            ```
+            {
+                "short_name": "APEX PWA"
+            }
+            ```
+    }
+    runtime {
+        allowFeedback: true
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c)2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0 as shown 
+            at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: APEX PWA Reference
+        }
+    )
+
+    pwaShortcut always-signed-in (
+        name: Always Signed In
+        sequence: 80
+        shortcut {
+            target: {
+                page: 10
+            }
+            iconUrl: pwa/shortcut-icon-80.png
+        }
+    )
+
+    pwaShortcut app-icon (
+        name: App Icon
+        sequence: 50
+        shortcut {
+            target: {
+                page: 4
+            }
+            iconUrl: pwa/shortcut-icon-50.png
+        }
+    )
+
+    pwaShortcut appearance (
+        name: Appearance
+        sequence: 40
+        shortcut {
+            target: {
+                page: 2
+            }
+            iconUrl: pwa/shortcut-icon-40.png
+        }
+    )
+
+    pwaShortcut faq (
+        name: FAQ
+        sequence: 100
+        shortcut {
+            target: {
+                page: 100
+            }
+            iconUrl: pwa/shortcut-icon-100.png
+        }
+    )
+
+    pwaShortcut geolocation (
+        name: Geolocation
+        sequence: 60
+        shortcut {
+            target: {
+                page: 8
+            }
+            iconUrl: pwa/shortcut-icon-60.png
+        }
+    )
+
+    pwaShortcut getting-started (
+        name: Getting Started
+        sequence: 20
+        shortcut {
+            target: {
+                page: 6
+            }
+            iconUrl: pwa/shortcut-icon-20.png
+        }
+    )
+
+    pwaShortcut home (
+        name: Home
+        sequence: 10
+        shortcut {
+            target: {
+                page: 1
+            }
+            iconUrl: pwa/shortcut-icon-10.png
+        }
+    )
+
+    pwaShortcut installation (
+        name: Installation
+        sequence: 30
+        shortcut {
+            target: {
+                page: 7
+            }
+            iconUrl: pwa/shortcut-icon-30.png
+        }
+    )
+
+    pwaShortcut web-share (
+        name: Web Share
+        sequence: 70
+        shortcut {
+            target: {
+                page: 9
+            }
+            iconUrl: pwa/shortcut-icon-70.png
+        }
+    )
+
+    pwaScreenshot screenshot1-png (
+        label: screenshot1.png
+        layout {
+            sequence: 10
+        }
+        screenshot {
+            url: pwa/screenshot1.png
+        }
+    )
+
+    pwaScreenshot screenshot2-png (
+        label: screenshot2.png
+        layout {
+            sequence: 20
+        }
+        screenshot {
+            url: pwa/screenshot2.png
+        }
+    )
+
+    pwaScreenshot screenshot3-png (
+        label: screenshot3.png
+        layout {
+            sequence: 30
+        }
+        screenshot {
+            url: pwa/screenshot3.png
+        }
+    )
+
+    pwaScreenshot screenshot4-png (
+        label: screenshot4.png
+        layout {
+            sequence: 40
+        }
+        screenshot {
+            url: pwa/screenshot4.png
+        }
+    )
+
+)
+

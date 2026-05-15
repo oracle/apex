@@ -1,0 +1,113 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Sample Cards
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-app (
+        name: About This App
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Cards is a native report region type in Oracle Application Express (APEX). The Cards region type gives developers a powerful, flexible, new way of displaying data in bite-sized blocks. Card regions are ideal for use in faceted search or presenting at-a-glance information.</p>
+                
+                <p>This flagship feature of APEX allows you to effortlessly customize every aspect of a Cards region's UI (layout, appearance, icon, badge, and media).  Cards regions can contain advanced HTML expressions that support client-side templating, and the ability to define multiple actions per card. A Cards region's media can be sourced from BLOB column, URL, video in an iFrame or Oracle JET Data Visualizations.  You can use Cards regions to delight your end users by presenting data in new ways.</p>
+                
+                <p><strong>Note:</strong> Cards regions can be sourced by REST Data Sources.  The <strong>Embedded Video</strong>, <strong>Background Image</strong>, and <strong>Video Images with Durations</strong> pages (in <strong>Images and Media</strong> section) rely on REST Data Sources.  To run these pages without error, please use the links and instructions below.  You will need to get your own API keys that you will then use to create the necessary <strong>Web Credentials</strong> (in Shared Components) after importing this sample application.
+                
+                <ul>
+                    <li><a href="&GOOGLE_API." title="Google API Key" target="_blank">Google API Key</a>
+                        <ul>
+                        <li>Credential Name: <em>key</em></li>
+                        <li>Credential Secret: <em>{your key}</em></li>
+                        </ul>
+                    </li>
+                    <li><a href="&MOVIEDB_API." title="Movie Database API" target="_blank">The Movie Database (TMDb) API Key</a>
+                        <ul>
+                        <li>Credential Name: <em>api_key</em></li>
+                        <li>Credential Secret: <em>{your key}</em></li>
+                        </ul>
+                    </li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            cssClasses: mxw800
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region app-navigation (
+        name: App Navigation
+        type: list
+        source {
+            list: @home
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+            cssClasses: mxw800
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+                u-colors
+            ]
+        }
+    )
+
+    region sample-cards (
+        name: Sample Cards
+        type: staticContent
+        source {
+            htmlCode: Cards report region examples for APEX apps
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+)
+

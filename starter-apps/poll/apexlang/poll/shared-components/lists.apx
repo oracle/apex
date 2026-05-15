@@ -1,0 +1,850 @@
+list access-control (
+    name: Access Control
+    config {
+        buildOption: @feature-access-control
+    }
+
+    entry access-control (
+        label: Access Control
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1: Set level of access for authenticated users of this application
+        }
+    )
+
+    entry self-service-access-requests (
+        label: Self Service Access Requests
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: Users without access can ask to be added. Review and approve or decline requests.
+            2: &P4_SELF_SRVC_REQ_CNT.
+        }
+        config {
+            buildOption: @self-service-requests
+        }
+    )
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10021
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change access control settings and disable access control
+        }
+    )
+
+)
+
+list activity-reports (
+    name: Activity Reports
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 42
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Monthly calendar of page view activity summarized by user by day.
+            2: calendarIcon
+        }
+    )
+
+    entry all-respondents (
+        label: All Respondents
+        icon {
+            imageIconCssClasses: fa-table-user
+        }
+        layout {
+            sequence: 2
+        }
+        link {
+            target: {
+                page: 84
+            }
+        }
+        userDefinedAttributes {
+            1: View all respondents across all Polls.
+        }
+    )
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 175
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all internal errors encountered within the application.
+            2: &P4_APP_ERROR_LOG_CNT.
+        }
+    )
+
+    entry application-log (
+        label: Application Log
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 61
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of various administrative actions.
+            2: &P4_APP_LOG_CNT.
+        }
+    )
+
+    entry application-page-views (
+        label: Application Page Views
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Report of individual page view, reporting the page, elapsed server generation time, user, date and other information.
+            2: reportIcon
+        }
+    )
+
+    entry application-user-log (
+        label: Application User Log
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 60
+                clearCache: RIR
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all users created via self-service requests.
+            2: &P4_APP_USER_LOG_CNT.
+        }
+    )
+
+    entry respondent-details (
+        label: Respondent Details
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 86
+                clearCache: [
+                    86
+                    RIR
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Displays polls taken and those invited to take but not taken for a selected respondent.
+            2: reportIcon
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: Report of page views summarized by user by day.
+            2: reportIcon
+        }
+    )
+
+)
+
+list code-tables (
+    name: Code Tables
+
+    entry build-options (
+        label: Build Options
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 2
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the status of build options. Build options allow application functionality to be included or excluded from an application.  Use build options to factor your application.
+            2: &P4_BUILD_OPTION_CNT.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from apex_application_build_options
+                 where application_id = :APP_ID
+                ```
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: This application ships with sample data. You can remove or recreate sample data using this administrative page.
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Manage notification messages displayed on the home page of this application.  Use notifications to alert application users of important information.
+            2: &P4_NOTIFICATION_CNT.
+        }
+    )
+
+    entry remove-extraneous-characters (
+        label: Remove Extraneous Characters
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Allows the removal of leading, non-displayed characters from Respondent email addresses.
+        }
+        config {
+            buildOption: @enable-scrubbing-respondent-emails
+        }
+    )
+
+    entry rename-application (
+        label: Rename Application
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 8
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change the application name, displayed on the top left of each page, to one of your choosing.  By default, the application name is "&APP_NAME.".
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 20
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Set application user interface theme style for all users.
+        }
+    )
+
+)
+
+list edit-poll-menu (
+    name: Edit Poll Menu
+
+    entry add-question (
+        label: Add Question
+        icon {
+            imageIconCssClasses: fa-question-square-o
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 88
+                items: {
+                    P88_POLL_ID: &POLL_ID.
+                }
+                clearCache: 88
+            }
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                   select status_id 
+                     from eba_qpoll_polls
+                    where id = :POLL_ID
+                
+                ) loop
+                   -- if closed, cannot add new
+                   if c1.status_id = 4 then
+                      return FALSE;
+                   -- if using sections, must have one to create a question
+                   elsif :P100_USE_SECTIONS_YN = 'Y' then
+                      for c1 in (
+                         select count(*) c
+                           from EBA_QPOLL_SECTIONS
+                          where POLL_ID = :POLL_ID
+                      ) loop
+                         if c1.c = 0 then
+                            return FALSE;
+                         end if;
+                      end loop;
+                   end if;
+                
+                   return TRUE;
+                
+                end loop;
+                
+                return FALSE;
+                ```
+        }
+    )
+
+    entry add-section (
+        label: Add Section
+        icon {
+            imageIconCssClasses: fa-layout-3row
+        }
+        layout {
+            sequence: 17
+        }
+        link {
+            target: {
+                page: 38
+                clearCache: 38
+            }
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                   select status_id 
+                     from eba_qpoll_polls
+                    where id = :POLL_ID
+                
+                ) loop
+                   -- if closed, cannot add new
+                   if c1.status_id = 4 then
+                      return FALSE;
+                   else
+                      return TRUE;
+                   end if;
+                end loop;
+                
+                return FALSE;
+                ```
+        }
+    )
+
+    entry close (
+        label: Close
+        icon {
+            imageIconCssClasses: fa-check-square-o
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from EBA_QPOLL_POLLS p
+                where id = :POLL_ID
+                and status_id = 3
+                ```
+        }
+    )
+
+    entry delete (
+        label: Delete
+        icon {
+            imageIconCssClasses: fa-trash
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry edit-poll-details (
+        label: Edit Poll Details
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 48
+                items: {
+                    P48_ID: &POLL_ID.
+                }
+            }
+        }
+    )
+
+    entry history (
+        label: History
+        icon {
+            imageIconCssClasses: fa-history
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_history
+                 where table_name = 'QUESTIONS'
+                   and poll_id = :POLL_ID
+                   and column_name = 'QUESTION'
+                ```
+        }
+    )
+
+    entry preview (
+        label: Preview
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 67
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_POLLS p,
+                       eba_qpoll_questions q
+                 where p.id = :POLL_ID
+                   and p.id = q.poll_id
+                   and p.status_id in (1,2,3)
+                ```
+        }
+    )
+
+    entry publish (
+        label: Publish
+        icon {
+            imageIconCssClasses: fa-box-arrow-out-east
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_POLLS p,
+                       eba_qpoll_questions q
+                 where p.id = :POLL_ID
+                   and p.id = q.poll_id
+                   and p.status_id in (1,2)
+                ```
+        }
+    )
+
+    entry view-poll-details (
+        label: View Poll Details
+        icon {
+            imageIconCssClasses: fa-layout-grid-3x
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+)
+
+list email-preferences (
+    name: Email Preferences
+
+    entry default-email-addresses (
+        label: Default Email Addresses
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 58
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Configure the application's default "From" and "Reply To" email addresses.
+            2: formIcon
+        }
+    )
+
+    entry email-history (
+        label: Email History
+        icon {
+            imageIconCssClasses: fa-envelope-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 59
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Review previous emails that have been sent via this application.
+            2: reportIcon
+        }
+    )
+
+    entry opt-out-user-list (
+        label: Opt Out User List
+        icon {
+            imageIconCssClasses: fa-envelope-user
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 34
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: List of users that have opted out of receiving emails from &APPLICATION_TITLE..  Users can be removed and added by administrators.
+            2: formIcon
+        }
+    )
+
+)
+
+list top-bar (
+    name: Top Bar
+
+    entry about (
+        label: About
+        icon {
+            imageIconCssClasses: fa-info-circle-o
+        }
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 39
+                clearCache: 39
+            }
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                39
+                50
+                63
+                68
+            ]
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                14
+                50
+                51
+                63
+                68
+                69
+                90
+            ]
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: a-Icon icon-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                14
+                51
+                57
+            ]
+        }
+    )
+
+    entry communities (
+        label: Communities
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 25
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                9
+                14
+                50
+                51
+                63
+                68
+                69
+                90
+            ]
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                14
+                50
+                51
+                57
+                67
+            ]
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-power-off
+        }
+        layout {
+            sequence: 100
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+

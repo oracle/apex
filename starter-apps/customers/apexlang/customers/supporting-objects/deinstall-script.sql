@@ -1,0 +1,62 @@
+drop sequence eba_cust_seq;
+
+drop table eba_cust_errors               cascade constraints;
+drop table eba_cust_history              cascade constraints;
+drop table eba_cust_countries            cascade constraints;
+drop table eba_cust_error_lookup         cascade constraints;
+drop table eba_cust_files                cascade constraints;
+drop table eba_cust_links                cascade constraints;
+drop table eba_cust_notes                cascade constraints;
+drop table eba_cust_notifications        cascade constraints;
+drop table eba_cust_preferences          cascade constraints;
+drop table eba_cust_product_uses         cascade constraints;
+drop table eba_cust_tags                 cascade constraints;
+drop table eba_cust_tags_sum             cascade constraints;
+drop table eba_cust_tags_type_sum        cascade constraints;
+drop table eba_cust_users                cascade constraints;
+drop table eba_cust_administrators       cascade constraints;
+drop table eba_cust_views_log            cascade constraints;
+drop table eba_cust_access_levels        cascade constraints;
+drop table eba_cust_contacts             cascade constraints;
+drop table eba_cust_sales_channel        cascade constraints;
+drop table eba_cust_customers            cascade constraints;
+drop table eba_cust_geographies          cascade constraints;
+drop table eba_cust_industries           cascade constraints;
+drop table eba_cust_product_families     cascade constraints;
+drop table eba_cust_products             cascade constraints;
+drop table eba_cust_status               cascade constraints;
+drop table eba_cust_contact_types        cascade constraints;
+drop table eba_cust_customer_reftype_ref cascade constraints;
+drop table eba_cust_reference_types      cascade constraints;
+drop table eba_cust_categories           cascade constraints;
+drop table eba_cust_tz_pref              cascade constraints;
+drop table eba_cust_clicks               cascade constraints;
+drop table eba_cust_verifications        cascade constraints;
+drop table EBA_CUST_REF_PHASE            cascade constraints;
+drop table EBA_CUST_PRODUCT_STATUSES     cascade constraints;
+drop table eba_cust_type                 cascade constraints;
+drop table eba_cust_use_case             cascade constraints;
+drop table EBA_CUST_COMPETITORS          cascade constraints;
+drop table EBA_CUST_CUST_COMPETITOR_REF  cascade constraints;
+drop table EBA_CUST_CUST_PARTNER_REF     cascade constraints;
+drop table EBA_CUST_IMPL_PARTNERS        cascade constraints;
+drop table eba_cust_activity_ref         cascade constraints;
+drop table eba_cust_activity_files       cascade constraints;
+drop table eba_cust_activities           cascade constraints;
+drop table eba_cust_activity_types       cascade constraints;
+drop table eba_cust_feedback_types       cascade constraints;
+drop table eba_cust_feedback             cascade constraints;
+drop table eba_cust_email_log            cascade constraints;
+drop table eba_cust_acl_features         cascade constraints;
+drop table eba_cust_issue_statuses       cascade constraints;
+drop table eba_cust_issues               cascade constraints;
+
+
+drop view eba_cust_customers_v;
+
+drop package eba_cust;
+drop package eba_cust_sample_data;
+drop package eba_cust_fw;
+drop package eba_cust_email;
+
+drop procedure eba_cust_tz_init;

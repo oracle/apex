@@ -1,0 +1,224 @@
+page 43 (
+    name: Recent Sales
+    title: Recent Sales
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region recent-sales (
+        name: Recent Sales
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with
+                    the_products as (
+                        select sp.store_id, sp.id product_id, i.item_name
+                        from oow_demo_store_products sp, oow_demo_items i
+                        where i.id = sp.item_id)
+                select p.item_name product_name,
+                       h.quantity units_sold,
+                       h.item_price total_sale,
+                       h.date_of_sale sold_on
+                from oow_demo_sales_history h, the_products p
+                where h.product_id = p.product_id
+                and h.store_id = :p3_id
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        advanced {
+            savedReportMappingIdentifier: 1906164400115129281
+        }
+
+        column PRODUCT_NAME (
+            type: plainText
+            heading {
+                heading: Product Name
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column SOLD_ON (
+            type: plainText
+            heading {
+                heading: Sold On
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column TOTAL_SALE (
+            type: plainText
+            heading {
+                heading: Total Sale
+                alignment: center
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column UNITS_SOLD (
+            type: plainText
+            heading {
+                heading: Units Sold
+                alignment: center
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 19061862 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn PRODUCT_NAME (
+                sequence: 1
+            )
+
+            displayColumn SOLD_ON (
+                sequence: 4
+            )
+
+            displayColumn TOTAL_SALE (
+                sequence: 3
+            )
+
+            displayColumn UNITS_SOLD (
+                sequence: 2
+            )
+
+            sort (
+                column: SOLD_ON
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            aggregate (
+                column: UNITS_SOLD
+            )
+
+            aggregate (
+                column: TOTAL_SALE
+            )
+
+        )
+
+    )
+
+)
+

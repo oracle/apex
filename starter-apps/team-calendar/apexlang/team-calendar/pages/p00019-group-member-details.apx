@@ -1,0 +1,373 @@
+page 19 (
+    name: Group Member Details
+    alias: GROUP-MEMBER-DETAILS
+    title: Group Member Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region group-member-details (
+        name: Group Member Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P19_EMAIL_ADDRESS (
+        type: textField
+        label {
+            label: Email Address
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 2
+            region: @group-member-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: EMAIL_ADDRESS
+            used: always
+        }
+        help {
+            helpText: The email address of the member.
+        }
+    )
+
+    pageItem P19_GROUP_ID (
+        type: selectList
+        label {
+            label: Email Group
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @email-groups
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 1.5
+            region: @group-member-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: GROUP_ID
+            used: always
+        }
+        help {
+            helpText: The group you are adding the member to.
+        }
+    )
+
+    pageItem P19_MBR_ID (
+        type: hidden
+        layout {
+            sequence: 1
+            region: @group-member-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: MBR_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Member
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P19_MBR_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P19_MBR_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P19_MBR_ID
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation p19-email-address (
+        name: P19_EMAIL_ADDRESS
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P19_EMAIL_ADDRESS
+            regexp: "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+        }
+        error {
+            errorMessage: Invalid Email format.
+            associatedItem: @P19_EMAIL_ADDRESS
+        }
+    )
+
+    validation p19-group-email-address-unique (
+        name: P19_GROUP_EMAIL_ADDRESS unique
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from EBA_ca_email_group_mbrs
+                 where lower(:P19_EMAIL_ADDRESS) = lower(email_address)
+                   and :P19_GROUP_ID = group_id
+                   and (:P19_MBR_ID != mbr_id or :P19_MBR_ID is null)
+                ```
+        }
+        error {
+            errorMessage: Email Address already exists within selected Group.
+            associatedItem: @P19_EMAIL_ADDRESS
+        }
+    )
+
+    computation p19-email-address (
+        itemName: P19_EMAIL_ADDRESS
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            language: sql
+            sqlExpression: lower(:P19_EMAIL_ADDRESS)
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 11
+        }
+        advanced {
+            executionMappingIdentifier: 26873671117758352
+        }
+    )
+
+    process fetch-row-from-eba-ca-email-group-mbrs (
+        name: Fetch Row from EBA_CA_EMAIL_GROUP_MBRS
+        type: autoRowFetch
+        source {
+            tableName: EBA_CA_EMAIL_GROUP_MBRS
+            pkColumn: MBR_ID
+            pkItem: P19_MBR_ID
+        }
+        execution {
+            sequence: 1
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 8006659876533100190
+        }
+    )
+
+    process process-row-of-eba-ca-email-group-mbrs (
+        name: Process Row of EBA_CA_EMAIL_GROUP_MBRS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CA_EMAIL_GROUP_MBRS
+            pkColumn: MBR_ID
+            pkItem: P19_MBR_ID
+        }
+        execution {
+            sequence: 1
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_CA_EMAIL_GROUP_MBRS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8006660061537100192
+        }
+    )
+
+)
+

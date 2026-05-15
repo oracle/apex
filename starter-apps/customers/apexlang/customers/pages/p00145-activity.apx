@@ -1,0 +1,1103 @@
+page 145 (
+    name: &P145_ACTIVITY.
+    alias: ACTIVITY
+    title: &P145_ACTIVITY.
+    pageGroup: @activities
+    appearance {
+        pageTemplate: @/marquee
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+        executeWhenPageLoads: $('dd.t-AVPList-value img').attr('style','max-height:250px;max-width:500px;');
+    }
+    css {
+        inline:
+            ```css
+            .js-dynamicHideShowRegion { display: none }
+            .apex-rds { visibility: hidden }
+            .t-Report--cleanBorders .t-Report-colHead { border-bottom: 1px solid rgba(0, 0, 0, .05); background-color: #fcfcfc; color: #707070; font-weight: normal; padding-bottom: .8rem; padding-top: .8rem }
+            .t-Report--cleanBorders .js-stickyTableHeader.is-stuck .t-Report-colHead { border-bottom: 0; }
+            .t-Report--cleanBorders .t-Report-cell { border-top: 1px solid #F4F4F4; }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    config {
+        buildOption: @activities
+    }
+
+    region activity (
+        name: Activity
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select a.id,
+                    a.type_id,
+                    a.name,
+                    a.description,
+                    a.activity_date,
+                    a.owner,
+                    a.location,
+                    a.created,
+                    lower(a.created_by) created_by,
+                    a.updated,
+                    lower(a.updated_by) updated_by,
+                    (   select count(*)
+                        from eba_cust_activity_ref rf
+                        where rf.activity_id = a.id ) references
+                from eba_cust_activities a
+                where a.id = :P145_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: CUSTOMERS
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            cssClasses: t-Report--cleanBorders
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column ACTIVITY_DATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Activity date
+            }
+            layout {
+                sequence: 8
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                    from eba_cust_activities
+                    where id = :P145_ID
+                        and activity_date is not null
+                    ```
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 13
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: #CREATED# by <i>#CREATED_BY#</i>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 14
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 7
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column LOCATION (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Location
+            }
+            layout {
+                sequence: 10
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                    from eba_cust_activities
+                    where id = :P145_ID
+                        and location is not null
+                    ```
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 6
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 9
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                    from eba_cust_activities
+                    where id = :P145_ID
+                        and owner is not null
+                    ```
+            }
+        )
+
+        column REFERENCES (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: References
+            }
+            layout {
+                sequence: 12
+            }
+        )
+
+        column TYPE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Type
+            }
+            lov {
+                type: sharedComponent
+                lov: @activity-types
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 15
+            }
+            appearance {
+                formatMask: Since
+            }
+            columnFormatting {
+                htmlExpression: #UPDATED# by <i>#UPDATED_BY#</i>
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 16
+            }
+        )
+
+    )
+
+    region attachments (
+        name: Attachments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                    '<a href="'||apex_util.get_blob_file_src('P64_FILE_BLOB',id)||'">'||apex_escape.html(f.file_name)||'</a>' file_name,
+                    f.file_mimetype,
+                    f.file_charset,
+                    apex_util.filesize_mask(dbms_lob.getlength(f.file_blob)) f_len,
+                    substr(f.file_comments,1,50)||decode(greatest(length(nvl(f.file_comments,' ')),50),50,null,'...') file_comments,
+                    case when instr(upper(f.file_name),'.PPT') > 0or instr(upper(f.file_name),'.PPTX') > 0 then
+                        'uFileIcon powerpoint'
+                    when instr(upper(f.file_name),'.XLS') > 0 or instr(upper(f.file_name),'.XLSX') > 0 then
+                        'uFileIcon excel'
+                    when instr(upper(f.file_name),'.DOC') > 0 or instr(upper(f.file_name),'.DOCX') > 0 then
+                        'uFileIcon word'
+                    when instr(upper(f.file_name),'.PDF') > 0 then
+                        'uFileIcon pdf'
+                    when instr(upper(f.file_name),'.GIF') > 0 or
+                         instr(upper(f.file_name),'.PNG') > 0 or
+                         instr(upper(f.file_name),'.TIFF') > 0 or
+                         instr(upper(f.file_name),'.JPG') > 0 then
+                        'uFileIcon image'
+                    else
+                        'uFileIcon generic'
+                    end file_type,
+                    f.created,
+                    lower(f.created_by) created_by
+                from eba_cust_activity_files f
+                where f.activity_id = :P145_ID
+                order by f.created desc;
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-showMaximizeButton
+                t-Region--hiddenOverflow
+            ]
+            cssClasses: js-dynamicHideShowRegion
+        }
+        advanced {
+            htmlDomId: rptAttachments
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+            cssClasses: t-Report--cleanBorders
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No attachments found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CREATED (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Added
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: #CREATED# &middot; #CREATED_BY#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: never
+            }
+        )
+
+        column FILE_CHARSET (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 9
+            }
+        )
+
+        column FILE_COMMENTS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FILE_MIMETYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 8
+            }
+        )
+
+        column FILE_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column FILE_TYPE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column F_LEN (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Size
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: <span class="u-VisuallyHidden">Edit</span>
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 114
+                    items: {
+                        P114_ACTIVITY_ID: &P50_ID.
+                        P114_ID: #ID#
+                    }
+                    clearCache: 114
+                    action: resetPagination
+                }
+                linkText: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 80
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region page-actions (
+        name: Page Actions
+        type: list
+        source {
+            list: @activity-actions
+        }
+        layout {
+            sequence: 120
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--stacked
+                t-Region--hiddenOverflow
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            htmlDomId: listPageActions
+        }
+        componentAppearance {
+            listTemplate: @/links-list
+            templateOptions: [
+                #DEFAULT#
+                t-LinksList--actions
+                t-LinksList--showIcons
+            ]
+        }
+    )
+
+    region references (
+        name: References
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select rf.id,
+                    c.id customer_id,
+                    c.customer_name,
+                    ct.name contact_name,
+                    nvl(a.activity_date, rf.activity_date) activity_date,
+                    nvl(a.owner, rf.owner) owner,
+                    nvl(a.location, rf.location) location,
+                    rf.contact_id
+                from eba_cust_activities a,
+                    eba_cust_activity_ref rf,
+                    eba_cust_customers c,
+                    eba_cust_contacts ct
+                where a.id = :P145_ID
+                    and rf.activity_id = a.id
+                    and c.id = rf.customer_id
+                    and ct.id(+) = rf.contact_id
+                order by lower(c.customer_name), lower(ct.name)
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-showMaximizeButton
+                t-Region--hiddenOverflow
+            ]
+            cssClasses: js-dynamicHideShowRegion
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+
+        column ACTIVITY_DATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Activity date
+            }
+            layout {
+                sequence: 7
+            }
+            appearance {
+                formatMask: fmDay, fmDD fmMonth, YYYY
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                    from eba_cust_activities
+                    where id = :P145_ID
+                        and activity_date is null
+                    ```
+            }
+        )
+
+        column CONTACT_ID (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 8
+            }
+        )
+
+        column CONTACT_NAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Contact
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CUSTOMER_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column CUSTOMER_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Customer
+            }
+            layout {
+                sequence: 3
+            }
+            link {
+                target: {
+                    page: 50
+                    items: {
+                        P50_ID: #CUSTOMER_ID#
+                    }
+                    action: resetPagination
+                }
+                linkText: #CUSTOMER_NAME#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column LOCATION (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Location
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                    from eba_cust_activities
+                    where id = :P145_ID
+                        and location is null
+                    ```
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                    from eba_cust_activities
+                    where id = :P145_ID
+                        and owner is null
+                    ```
+            }
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region display selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: masterDetail
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    pageItem P145_ACTIVITY (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select name
+                from eba_cust_activities
+                where id = :P145_ID
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P145_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button edit (
+        buttonName: EDIT
+        label: Edit Activity
+        layout {
+            sequence: 110
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 56
+                items: {
+                    P56_ID: &P145_ID.
+                }
+                clearCache: 56
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button popattachment (
+        buttonName: POPATTACHMENT
+        label: Add Attachment
+        layout {
+            sequence: 90
+            region: @attachments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 64
+                items: {
+                    P64_CUSTOMER_ID: &P145_ID.
+                }
+                clearCache: 64
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reload (
+        buttonName: RELOAD
+        label: Reload
+        layout {
+            sequence: 1
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-attachments (
+        buttonName: VIEW_ATTACHMENTS
+        label: View Attachments
+        layout {
+            sequence: 100
+            region: @attachments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 52
+                items: {
+                    P52_ID: &P145_ID.
+                }
+                clearCache: 52
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction handle-show-hide-content-regions (
+        name: Handle Show / Hide Content Regions
+        execution {
+            sequence: 10
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    (function() {
+                      function toggleRegion() {
+                          var $region = $(this)
+                            noDataFound = $region.find('.nodatafound').length === 1;
+                          
+                          //triggering after hide/show because that what the RDS response to
+                          if (noDataFound) {
+                            $region.hide();
+                            $region.trigger('apexafterhide');
+                          } else {
+                            $region.show();
+                            $region.trigger('apexaftershow');
+                          }
+                      }
+                      
+                      function initHIdeShowRegions() {
+                        var $regions = $('.js-dynamicHideShowRegion'),
+                          $rds = $('.apex-rds');
+                    
+                        $regions
+                          .each(toggleRegion)
+                          .on('apexafterrefresh', toggleRegion);
+                     
+                        //using visiblity over display to avoid DOM movement issues
+                        $rds.css('visibility', 'visible');
+                      } 
+                    
+                      //using load because document.ready here goes before the RDS has added its listeners
+                      $(window).on('theme42ready',initHIdeShowRegions);
+                    }())
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction refresh-attachments (
+        name: Refresh Attachments
+        execution {
+            sequence: 80
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @page-actions
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @attachments
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-page (
+        name: Refresh Page
+        execution {
+            sequence: 120
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @edit
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: location.reload();
+            }
+            affectedElements {
+                selectionType: region
+                region: @breadcrumb
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-page-regions-on-dialog-close (
+        name: Refresh Page Regions on dialog close
+        execution {
+            sequence: 110
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @page-actions
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @attachments
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 145
+        }
+    )
+
+    computation p145-activity (
+        itemName: P145_ACTIVITY
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select name
+                from eba_cust_activities
+                where id = :P145_ID
+                ```
+        }
+    )
+
+    process count-clicks (
+        name: Count Clicks
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                insert into eba_cust_clicks (cust_id) values (:P145_ID);
+                delete from eba_cust_clicks where view_timestamp < (sysdate - 90);
+                commit;
+                ```
+        }
+        execution {
+            sequence: 60
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 18166683398455540212
+        }
+    )
+
+)
+

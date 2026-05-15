@@ -1,0 +1,842 @@
+list access-control (
+    name: Access Control
+
+    entry access-control (
+        label: Access Control
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+        userDefinedAttributes {
+            1: Use to change the Access Control Scope or to disable Access Control.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry username-format (
+        label: Username Format
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+        userDefinedAttributes {
+            1: Define the username format for new users in this application.
+            2: formIcon
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 29
+        }
+        link {
+            target: {
+                page: 29
+                clearCache: [
+                    29
+                    RIR
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Administrators can define the domain of users and assign each a role.
+            2: userIcon
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_ca_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'Y'
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+
+list activity-reporting (
+    name: Activity Reporting
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Monthly calendar of page views with summary of page views by user by day.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+
+list admin-email (
+    name: Admin Email
+
+    entry group-members (
+        label: Group Members
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all members of all groups.  Used for adding members and seeing which groups a person belongs to.
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry groups (
+        label: Groups
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: Groups are reusable lists of people that you can email a set of events to.
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry send-email (
+        label: Send Email
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Send email of events to other app users.
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_from_email varchar2(255);
+                begin
+                    -- If the end-user's username is already an email address use it as the from address
+                    if regexp_like(:APP_USER, '^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\.(-?[a-zA-Z0-9+])*)+$') then
+                        l_from_email := lower(:APP_USER);
+                    else
+                        -- otherwise populate the from address by querying the apex_workspace_apex_users view (where email is a required value)
+                        select
+                            lower(a.email)
+                        into
+                            l_from_email
+                        from
+                            eba_ca_users u,
+                            apex_workspace_apex_users a
+                        where
+                            lower(u.username) = lower(a.user_name)
+                        and
+                            lower(:APP_USER) = lower(a.user_name);
+                    end if;
+                    return regexp_like(l_from_email, '^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\.(-?[a-zA-Z0-9+])*)+$');
+                end;
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+
+list administration (
+    name: Administration
+
+    entry application-appearance (
+        label: Application Appearance
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 175
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all internal errors encountered within the application.
+            2: reportIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry build-options (
+        label: Build Options
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 40
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the status of build options. Build options allow application functionality to be included or excluded from an application.  Use build options to factor your application.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry calendars (
+        label: Calendars
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 42
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Maintain the different calendars available to enter events against.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @include-multiple-calendars
+        }
+    )
+
+    entry event-types (
+        label: Event Types
+        icon {
+            imageIconCssClasses: fa-align-left
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Maintain the different types of events available. Examples: meeting, conference, etc.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+        userDefinedAttributes {
+            1: Create, re-Create or remove sample data distributed with this application.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        icon {
+            imageIconCssClasses: fa-bullhorn
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Manage application notifications that can be used to notify users of information.  Notifications can be set up to show within a specific date range.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry page-privileges (
+        label: Page Privileges
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1: Report of the pages within this application and their corresponding access control security level.
+            2: reportIcon
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry rename-application (
+        label: Rename Application
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: Change the application name, displayed on the top left of each page, to one of your choosing.  By default, the application name is "&APP_NAME.".
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry reporting-time-frames (
+        label: Reporting Time Frames
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 23
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: For reporting purposes, define different periods, such as fiscal months.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry time-zone (
+        label: Time Zone
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            1: Set my time zone preference for this application.
+            2: formIcon
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+)
+
+list event-actions (
+    name: Event Actions
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-external-link
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:openModal('edit_link_modal');
+            }
+        }
+    )
+
+    entry add-update (
+        label: Add Update
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 33
+                items: {
+                    P33_EVENT_ID: &P3_EVENT_ID.
+                }
+                clearCache: 33
+            }
+        }
+        config {
+            buildOption: @show-updates
+        }
+    )
+
+    entry attach-file (
+        label: Attach File
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 32
+                items: {
+                    P32_EVENT_ID: &P3_EVENT_ID.
+                }
+                clearCache: 32
+            }
+        }
+    )
+
+)
+
+list mobile-navigation-menu (
+    name: Mobile Navigation Menu
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: a-Icon icon-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry customize-appearance (
+        label: Customize Appearance
+        icon {
+            imageIconCssClasses: fa-wrench
+        }
+        layout {
+            sequence: 52
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: #CUSTOMIZE_URL#
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: '#CUSTOMIZE_URL#' is not null
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 1001
+                items: {
+                    P1001_PAGE_ID: &APP_PAGE_ID.
+                }
+                clearCache: 1001
+            }
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 54
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry preferences (
+        label: Preferences
+        icon {
+            imageIconCssClasses: fa-heart-o
+        }
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 60
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                27
+                28
+                4
+                25
+                26
+                7
+                8
+                23
+                24
+                15
+                16
+                17
+                29
+                40
+                39
+                175
+                9
+                35
+                30
+                37
+                18
+                19
+                38
+                53
+                54
+                41
+                100
+                5
+                6
+                43
+                41
+                40
+                42
+                44
+                6
+            ]
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry calendar (
+        label: Calendar
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 1
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                3
+                14
+                31
+                32
+                10
+                33
+                34
+                11
+                28
+                39
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry search (
+        label: Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 3
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                13
+            ]
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry tags (
+        label: Tags
+        icon {
+            imageIconCssClasses: fa-tags
+        }
+        layout {
+            sequence: 4
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry timeline (
+        label: Timeline
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 2
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+)
+
+list preferences (
+    name: Preferences
+
+    entry time-zone (
+        label: Time Zone
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            1: Set time zone for the current user.
+            2: switchIcon
+            3: &TZ.
+        }
+    )
+
+)
+

@@ -1,0 +1,449 @@
+page 127 (
+    name: Default Completeness Scale
+    alias: DEFAULT-COMPLETENESS-SCALE
+    title: Default Completeness Scale
+    pageGroup: @initiatives
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region initiative (
+        name: Initiative
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_INITIATIVES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region status-scale (
+        name: Status Scale
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select '0%' pct_complete, pc0_label project_status, pc0_desc description, :P127_STATUS_SCALE selected_scale,
+                       0 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '10%' pct_complete, pc10_label, pc10_desc, :P127_STATUS_SCALE selected_scale,
+                       10 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '20%' pct_complete, pc20_label, pc20_desc, :P127_STATUS_SCALE selected_scale,
+                       20 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '30%' pct_complete, pc30_label, pc30_desc, :P127_STATUS_SCALE selected_scale,
+                       30 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '40%' pct_complete, pc40_label, pc40_desc, :P127_STATUS_SCALE selected_scale,
+                       40 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '50%' pct_complete, pc50_label, pc50_desc, :P127_STATUS_SCALE selected_scale,
+                       50 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '60%' pct_complete, pc60_label, pc60_desc, :P127_STATUS_SCALE selected_scale,
+                       60 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '70%' pct_complete, pc70_label, pc70_desc, :P127_STATUS_SCALE selected_scale,
+                       70 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '80%' pct_complete, pc80_label, pc80_desc, :P127_STATUS_SCALE selected_scale,
+                       80 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '90%' pct_complete, pc90_label, pc90_desc, :P127_STATUS_SCALE selected_scale,
+                       90 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                union all
+                select '100%' pct_complete, pc100_label, pc100_desc, :P127_STATUS_SCALE selected_scale,
+                       100 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P127_STATUS_SCALE,'A')
+                order by r
+                ```
+            pageItemsToSubmit: P127_STATUS_SCALE
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Completeness
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_STATUS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column R (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column SELECTED_SCALE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+    )
+
+    pageItem P127_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @initiative
+            slot: regionBody
+        }
+        source {
+            formRegion: @initiative
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P127_INITIATIVE (
+        type: displayOnly
+        label {
+            label: &NOMENCLATURE_INITIATIVE.
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @initiative
+            column: INITIATIVE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P127_STATUS_SCALE (
+        type: radioGroup
+        label {
+            label: Default Completeness Scale
+            alignment: left
+        }
+        settings {
+            noOfCols: 7
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select scale_name, scale_letter
+                  from sp_project_scales
+                 where is_active_yn = 'Y'
+                 order by scale_letter
+                ```
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            formRegion: @initiative
+            column: STATUS_SCALE
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: A
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P127_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-status-scale-report (
+        name: refresh status scale report
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P127_STATUS_SCALE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P127_STATUS_SCALE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @status-scale
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 13048535712649984521
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    process initialize-form-initiative (
+        name: Initialize form Initiative
+        type: formInitialization
+        formRegion: @initiative
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 13048534418595984519
+        }
+    )
+
+    process process-form-initiative (
+        name: Process form Initiative
+        type: formAutoRowProcessing
+        formRegion: @initiative
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 13048534832689984519
+        }
+    )
+
+)
+

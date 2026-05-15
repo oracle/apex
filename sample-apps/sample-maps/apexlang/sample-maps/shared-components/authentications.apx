@@ -1,0 +1,5 @@
+authentication application-express-accounts (
+    name: Application Express Accounts
+    type: oracleApexAccounts
+)
+

@@ -1,0 +1,440 @@
+page 11310 (
+    name: Archived project
+    alias: ARCHIVED-PROJECT
+    title: Archived &NOMENCLATURE_PROJECT.
+    pageGroup: @administrative-utilities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region archived-nomenclature-project (
+        name: Archived &NOMENCLATURE_PROJECT.
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_PROJECTS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P11310_CREATED (
+        type: displayOnly
+        label {
+            label: Created
+            alignment: left
+        }
+        layout {
+            sequence: 200
+            region: @archived-nomenclature-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @archived-nomenclature-project
+            column: CREATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P11310_CREATED_BY (
+        type: displayOnly
+        label {
+            label: Created By
+            alignment: left
+        }
+        layout {
+            sequence: 210
+            region: @archived-nomenclature-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @archived-nomenclature-project
+            column: CREATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P11310_ID (
+        type: displayOnly
+        label {
+            label: ID
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @archived-nomenclature-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @archived-nomenclature-project
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P11310_PROJECT (
+        type: displayOnly
+        label {
+            label: Project
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @archived-nomenclature-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @archived-nomenclature-project
+            column: PROJECT
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P11310_UPDATED (
+        type: displayOnly
+        label {
+            label: Updated
+            alignment: left
+        }
+        layout {
+            sequence: 220
+            region: @archived-nomenclature-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @archived-nomenclature-project
+            column: UPDATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P11310_UPDATED_BY (
+        type: displayOnly
+        label {
+            label: Updated By
+            alignment: left
+        }
+        layout {
+            sequence: 230
+            region: @archived-nomenclature-project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @archived-nomenclature-project
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P11310_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 11817717116486445447
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-nomenclature-project (
+        name: Initialize form &NOMENCLATURE_PROJECT.
+        type: formInitialization
+        formRegion: @archived-nomenclature-project
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 11817716397484445445
+        }
+    )
+
+    process process-form-nomenclature-project (
+        name: Process form &NOMENCLATURE_PROJECT.
+        type: formAutoRowProcessing
+        formRegion: @archived-nomenclature-project
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 11817716743606445446
+        }
+    )
+
+    process remove-dependent-data-to-avoid-project-history-table-trigger-mutation (
+        name: remove dependent data (to avoid project_history table trigger mutation)
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select id
+                      from sp_tasks
+                     where project_id = :P11310_ID
+                ) loop
+                
+                    for c2 in (
+                        select image_ref_id
+                          from sp_task_comments
+                         where task_id = c1.id
+                           and image_ref_id is not null
+                    ) loop
+                        delete from sp_comment_images
+                         where image_ref_id = c2.image_ref_id;
+                    end loop;
+                
+                    delete from sp_task_comments
+                     where task_id = c1.id;
+                
+                    delete from sp_task_documents
+                     where task_id = c1.id;
+                
+                    delete from sp_task_links
+                     where task_id = c1.id;
+                
+                    delete from sp_task_history
+                     where task_id = c1.id;
+                end loop;
+                
+                delete from SP_TASKS
+                 where project_id = :P11310_ID;
+                
+                for c1 in (
+                    select image_ref_id
+                      from sp_project_comments
+                     where project_id = :P11310_ID
+                       and image_ref_id is not null
+                ) loop
+                    delete from sp_comment_images
+                     where image_ref_id = c1.image_ref_id;
+                end loop;
+                
+                delete from sp_project_comments
+                 where project_id = :P11310_ID;
+                
+                delete from SP_PROJECT_DOCUMENTS
+                 where project_id = :P11310_ID;
+                
+                delete from SP_PROJECT_LINKS
+                 where project_id = :P11310_ID;
+                
+                delete from SP_PROJECT_RELATED
+                 where project_id = :P11310_ID
+                    or related_project_id = :P11310_ID;
+                
+                delete from SP_PROJECT_HISTORY
+                 where project_id = :P11310_ID;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 14926172825344381522
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process remove-log-rows (
+        name: remove log rows
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                delete from SP_PROJ_INTERACTIONS_LOG
+                 where project_id = :P11310_ID;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 13594465955952793337
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

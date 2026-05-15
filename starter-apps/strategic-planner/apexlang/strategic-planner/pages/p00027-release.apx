@@ -1,0 +1,552 @@
+page 27 (
+    name: Release
+    alias: RELEASE
+    title: Release
+    pageGroup: @releases
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @releases
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region release (
+        name: Release
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_RELEASE_TRAINS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P27_DESCRIPTION (
+        type: richTextEditor
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            minHeight: 180
+        }
+        layout {
+            sequence: 120
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @release
+            column: DESCRIPTION
+            dataType: clob
+        }
+    )
+
+    pageItem P27_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @release
+            slot: regionBody
+        }
+        source {
+            formRegion: @release
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P27_RELEASE (
+        type: textField
+        label {
+            label: Release
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @release
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        source {
+            formRegion: @release
+            column: RELEASE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P27_RELEASE_COMPLETED (
+        type: switch
+        label {
+            label: Release Completed
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @release
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @release
+            column: RELEASE_COMPLETED
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+    )
+
+    pageItem P27_RELEASE_MANAGEMENT_URL (
+        type: textField
+        label {
+            label: URL
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @release
+            column: RELEASE_MANAGEMENT_URL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P27_RELEASE_OPEN_COMPLETED (
+        type: switch
+        label {
+            label: Release Open Completed
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @release
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @release
+            column: RELEASE_OPEN_COMPLETED
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+    )
+
+    pageItem P27_RELEASE_OPEN_DATE (
+        type: datePicker
+        label {
+            label: Release Open Date
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @release
+            column: RELEASE_OPEN_DATE
+            dataType: date
+        }
+    )
+
+    pageItem P27_RELEASE_OWNER_ID (
+        type: popupLov
+        label {
+            label: Owner
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+                  from SP_TEAM_MEMBERS
+                 where is_current_yn = 'Y'
+                    or id = :P27_RELEASE_OWNER_ID
+                 order by 1
+                ```
+            nullDisplayValue: - No Owner -
+        }
+        layout {
+            sequence: 60
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @release
+            column: RELEASE_OWNER_ID
+            dataType: number
+        }
+    )
+
+    pageItem P27_RELEASE_TARGET_DATE (
+        type: datePicker
+        label {
+            label: Release Target Date
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @release
+            column: RELEASE_TARGET_DATE
+            dataType: date
+        }
+    )
+
+    pageItem P27_RELEASE_TRAIN (
+        type: textField
+        label {
+            label: Release Train
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 50
+        }
+        source {
+            formRegion: @release
+            column: RELEASE_TRAIN
+            dataType: varchar2
+        }
+    )
+
+    pageItem P27_RELEASE_TYPE (
+        type: radioGroup
+        label {
+            label: Release Type
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Full;FULL,Patch;PATCH
+            displayNullValue: false
+        }
+        layout {
+            sequence: 110
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            formRegion: @release
+            column: RELEASE_TYPE
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: FULL
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P27_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P27_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-close-if-never-opened (
+        name: Cannot close if never opened
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                (nvl(:P27_RELEASE_OPEN_COMPLETED,'N') = 'N' and
+                 nvl(:P27_RELEASE_COMPLETED,'N') = 'N')
+                or
+                nvl(:P27_RELEASE_OPEN_COMPLETED,'N') = 'Y'
+                ```
+        }
+        error {
+            errorMessage: Cannot mark as complete because never marked as opened.
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 31915612573164945347
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    process initialize-form-release (
+        name: Initialize form Release
+        type: formInitialization
+        formRegion: @release
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 31915611752791945346
+        }
+    )
+
+    process process-form-release (
+        name: Process form Release
+        type: formAutoRowProcessing
+        formRegion: @release
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 31915612151071945347
+        }
+    )
+
+    branch (
+        name: Go To Page 8
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 8
+                clearCache: 27
+            }
+        }
+    )
+
+)
+

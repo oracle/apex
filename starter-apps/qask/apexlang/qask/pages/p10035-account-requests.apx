@@ -1,0 +1,481 @@
+page 10035 (
+    name: Account Requests
+    alias: ACCOUNT-REQUESTS
+    title: Account Requests
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administrator
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region account-requests (
+        name: Account Requests
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       EMAIL,
+                       JUSTIFICATION,
+                       ACCEPTED_TERMS_ID,
+                       USER_AGENT,
+                       X_FORWARDED_FOR,
+                       REMOTE_ADDR,
+                       request_status,
+                       STATUS_REASON,
+                       created_on CREATED,
+                       updated_on UPDATED,
+                       UPDATED_BY
+                  from QASK_ACCOUNT_REQUESTS
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            pivot: false
+            flashback: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 2956132952619531583
+        }
+
+        column ACCEPTED_TERMS_ID (
+            type: hidden
+            heading {
+                heading: Accepted Terms ID
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column EMAIL (
+            type: link
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 10036
+                    items: {
+                        P10036_ID: #ID#
+                    }
+                    clearCache: 10036
+                }
+                linkText: #EMAIL#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column JUSTIFICATION (
+            type: plainText
+            heading {
+                heading: Justification
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column REMOTE_ADDR (
+            type: plainText
+            heading {
+                heading: Remote Addr
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column REQUEST_STATUS (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Status
+            }
+            lov {
+                lov: @access-request-statuses
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column STATUS_REASON (
+            type: plainText
+            heading {
+                heading: Status Reason
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 13
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column USER_AGENT (
+            type: plainText
+            heading {
+                heading: User Agent
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column X_FORWARDED_FOR (
+            type: plainText
+            heading {
+                heading: X Forwarded For
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Account Requests
+        }
+
+        savedReport 30127211 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CREATED (
+                sequence: 5
+            )
+
+            displayColumn EMAIL (
+                sequence: 1
+            )
+
+            displayColumn JUSTIFICATION (
+                sequence: 2
+            )
+
+            displayColumn REQUEST_STATUS (
+                sequence: 3
+            )
+
+            displayColumn STATUS_REASON (
+                sequence: 4
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: REQUEST_STATUS
+                value: Requested
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region note (
+        name: Note
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                if :P10035_RESTRICT_USERS_YN = 'Y' then
+                    return apex_lang.message('USERS_AND_ACCESS_REQUESTS_RESTRICTED_BY_EMAIL_DOMAIN');
+                elsif :P10035_RESTRICT_REQUESTS_YN = 'Y' then
+                    return apex_lang.message('ACCESS_REQUESTS_RESTRICTED_BY_EMAIL_DOMAIN');
+                end if;
+                ```
+            pageItemsToSubmit: [
+                P10035_RESTRICT_USERS_YN
+                P10035_RESTRICT_REQUESTS_YN
+            ]
+        }
+        layout {
+            sequence: 5
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P10035_RESTRICT_REQUESTS_YN (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @note
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10035_RESTRICT_USERS_YN (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @note
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button up (
+        buttonName: Up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction modal-closing (
+        name: modal closing
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @account-requests
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @account-requests
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p10035-restrict-requests-yn (
+        itemName: P10035_RESTRICT_REQUESTS_YN
+        execution {
+            sequence: 10
+        }
+        computation {
+            type: expression
+            language: sql
+            sqlExpression: qask_util.get_setting('restrict_requests_to_email_domains_yn')
+        }
+    )
+
+    computation p10035-restrict-users-yn (
+        itemName: P10035_RESTRICT_USERS_YN
+        execution {
+            sequence: 20
+        }
+        computation {
+            type: expression
+            language: sql
+            sqlExpression: qask_util.get_setting('restrict_users_to_email_domains_yn')
+        }
+    )
+
+)
+

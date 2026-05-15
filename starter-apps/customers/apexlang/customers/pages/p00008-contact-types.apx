@@ -1,0 +1,358 @@
+page 8 (
+    name: Contact Types
+    alias: CONTACT-TYPES
+    title: Contact Types
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+            t-Dialog--noPadding
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: &CONTACT_TYPES_HELP.
+    }
+
+    region contact-types (
+        name: Contact Types
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                    contact_type,
+                    decode(is_active,'Y',:ACTIVE_MSG,:INACTIVE_MSG) status,
+                    created,
+                    created_by,
+                    updated,
+                    updated_by
+                from eba_cust_contact_types
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 3741426125354062048
+        }
+
+        column CONTACT_TYPE (
+            type: link
+            heading {
+                heading: Contact Type
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 9
+                    items: {
+                        P9_ID: #ID#
+                    }
+                    clearCache: 9
+                    action: resetPagination
+                }
+                linkText: #CONTACT_TYPE#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column CREATED_BY (
+            type: hidden
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Edit
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column UPDATED_BY (
+            type: hidden
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        savedReport 9136274 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CONTACT_TYPE (
+                sequence: 2
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 4
+            )
+
+            displayColumn CREATED_ON (
+                sequence: 3
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn STATUS (
+                sequence: 7
+            )
+
+            displayColumn UPDATED_BY (
+                sequence: 6
+            )
+
+            displayColumn UPDATED_ON (
+                sequence: 5
+            )
+
+            sort (
+                column: CONTACT_TYPE
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Contact Type
+        layout {
+            sequence: 20
+            region: @contact-types
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                clearCache: 9
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @contact-types
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 8
+                clearCache: [
+                    8
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-report (
+        name: Refresh Report
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Action Processed.');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @contact-types
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

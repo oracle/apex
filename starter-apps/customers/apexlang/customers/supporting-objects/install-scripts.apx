@@ -1,0 +1,543 @@
+installScript Activities (
+    execution {
+        sequence: 360
+    }
+    script {
+        contentFile: activities.sql
+    }
+)
+
+installScript "Click Counting Table" (
+    execution {
+        sequence: 490
+    }
+    script {
+        contentFile: click-counting-table.sql
+    }
+)
+
+installScript Competitors (
+    execution {
+        sequence: 350
+    }
+    script {
+        contentFile: competitors.sql
+    }
+)
+
+installScript "Content Validation Table" (
+    execution {
+        sequence: 500
+    }
+    script {
+        contentFile: content-validation-table.sql
+    }
+)
+
+installScript "Create eba_cust_acl_features" (
+    execution {
+        sequence: 420
+    }
+    script {
+        contentFile: create-eba-cust-acl-features.sql
+    }
+)
+
+installScript "Customer Statuses" (
+    execution {
+        sequence: 160
+    }
+    script {
+        contentFile: customer-statuses.sql
+    }
+)
+
+installScript "Customer Types" (
+    execution {
+        sequence: 170
+    }
+    script {
+        contentFile: customer-types.sql
+    }
+)
+
+installScript "Customer Use Cases" (
+    execution {
+        sequence: 180
+    }
+    script {
+        contentFile: customer-use-cases.sql
+    }
+)
+
+installScript "Feedback tables, data, and triggers" (
+    execution {
+        sequence: 520
+    }
+    script {
+        contentFile: feedback-tables-data-and-triggers.sql
+    }
+)
+
+installScript "Framework Body" (
+    execution {
+        sequence: 390
+    }
+    script {
+        contentFile: framework-body.sql
+    }
+)
+
+installScript "Framework Spec" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: framework-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_CUST_FW
+    )
+
+)
+
+installScript "Implementation Partners" (
+    execution {
+        sequence: 340
+    }
+    script {
+        contentFile: implementation-partners.sql
+    }
+)
+
+installScript "Load base data" (
+    execution {
+        sequence: 400
+    }
+    script {
+        contentFile: load-base-data.sql
+    }
+)
+
+installScript "Product Families" (
+    execution {
+        sequence: 190
+    }
+    script {
+        contentFile: product-families.sql
+    }
+)
+
+installScript "Reference Types" (
+    execution {
+        sequence: 270
+    }
+    script {
+        contentFile: reference-types.sql
+    }
+)
+
+installScript "Set First Run Preference" (
+    execution {
+        sequence: 560
+    }
+    script {
+        contentFile: set-first-run-preference.sql
+    }
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+
+installScript "access levels and users" (
+    execution {
+        sequence: 110
+    }
+    script {
+        contentFile: access-levels-and-users.sql
+    }
+)
+
+installScript "add ddl comments" (
+    execution {
+        sequence: 470
+    }
+    script {
+        contentFile: add-ddl-comments.sql
+    }
+)
+
+installScript categories (
+    execution {
+        sequence: 150
+    }
+    script {
+        contentFile: categories.sql
+    }
+)
+
+installScript "contact types" (
+    execution {
+        sequence: 230
+    }
+    script {
+        contentFile: contact-types.sql
+    }
+)
+
+installScript contacts (
+    execution {
+        sequence: 240
+    }
+    script {
+        contentFile: contacts.sql
+    }
+)
+
+installScript countries (
+    execution {
+        sequence: 90
+    }
+    script {
+        contentFile: countries.sql
+    }
+)
+
+installScript "create sequence" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: create-sequence.sql
+    }
+)
+
+installScript "create triggers" (
+    execution {
+        sequence: 370
+    }
+    script {
+        contentFile: create-triggers.sql
+    }
+)
+
+installScript "customer admins" (
+    execution {
+        sequence: 310
+    }
+    script {
+        contentFile: customer-admins.sql
+    }
+)
+
+installScript "customer after delete trigger" (
+    execution {
+        sequence: 580
+    }
+    script {
+        contentFile: customer-after-delete-trigger.sql
+    }
+)
+
+installScript "customer files" (
+    execution {
+        sequence: 280
+    }
+    script {
+        contentFile: customer-files.sql
+    }
+)
+
+installScript "customer links" (
+    execution {
+        sequence: 290
+    }
+    script {
+        contentFile: customer-links.sql
+    }
+)
+
+installScript "customer view log" (
+    execution {
+        sequence: 300
+    }
+    script {
+        contentFile: customer-view-log.sql
+    }
+)
+
+installScript customers (
+    execution {
+        sequence: 220
+    }
+    script {
+        contentFile: customers.sql
+    }
+)
+
+installScript "eba_cust body" (
+    execution {
+        sequence: 430
+    }
+    script {
+        contentFile: eba-cust-body.sql
+    }
+)
+
+installScript "eba_cust spec" (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: eba-cust-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_CUST
+    )
+
+)
+
+installScript "eba_cust_customers trigger" (
+    execution {
+        sequence: 380
+    }
+    script {
+        contentFile: eba-cust-customers-trigger.sql
+    }
+)
+
+installScript "eba_cust_email package body" (
+    execution {
+        sequence: 550
+    }
+    script {
+        contentFile: eba-cust-email-package-body.sql
+    }
+)
+
+installScript "eba_cust_email package spec" (
+    execution {
+        sequence: 540
+    }
+    script {
+        contentFile: eba-cust-email-package-spec.sql
+    }
+)
+
+installScript eba_cust_sales_channel (
+    execution {
+        sequence: 210
+    }
+    script {
+        contentFile: eba-cust-sales-channel.sql
+    }
+)
+
+installScript "eba_cust_sample_data body" (
+    execution {
+        sequence: 460
+    }
+    script {
+        contentFile: eba-cust-sample-data-body.sql
+    }
+)
+
+installScript "eba_cust_sample_data spec" (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: eba-cust-sample-data-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_CUST_SAMPLE_DATA
+    )
+
+)
+
+installScript "email log DDL" (
+    execution {
+        sequence: 530
+    }
+    script {
+        contentFile: email-log-ddl.sql
+    }
+)
+
+installScript "error log" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: error-log.sql
+    }
+)
+
+installScript geographies (
+    execution {
+        sequence: 80
+    }
+    script {
+        contentFile: geographies.sql
+    }
+)
+
+installScript history (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: history.sql
+    }
+)
+
+installScript industries (
+    execution {
+        sequence: 140
+    }
+    script {
+        contentFile: industries.sql
+    }
+)
+
+installScript issues (
+    execution {
+        sequence: 330
+    }
+    script {
+        contentFile: issues.sql
+    }
+)
+
+installScript "load acl data" (
+    execution {
+        sequence: 410
+    }
+    script {
+        contentFile: load-acl-data.sql
+    }
+)
+
+installScript lookup (
+    execution {
+        sequence: 120
+    }
+    script {
+        contentFile: lookup.sql
+    }
+)
+
+installScript notes (
+    execution {
+        sequence: 450
+    }
+    script {
+        contentFile: notes.sql
+    }
+)
+
+installScript notifications (
+    execution {
+        sequence: 440
+    }
+    script {
+        contentFile: notifications.sql
+    }
+)
+
+installScript phase (
+    execution {
+        sequence: 510
+    }
+    script {
+        contentFile: phase.sql
+    }
+)
+
+installScript "populate eba_cust_acl_features" (
+    execution {
+        sequence: 570
+    }
+    script {
+        contentFile: populate-eba-cust-acl-features.sql
+    }
+)
+
+installScript preferences (
+    execution {
+        sequence: 130
+    }
+    script {
+        contentFile: preferences.sql
+    }
+)
+
+installScript "product statuses" (
+    execution {
+        sequence: 260
+    }
+    script {
+        contentFile: product-statuses.sql
+    }
+)
+
+installScript "product uses" (
+    execution {
+        sequence: 250
+    }
+    script {
+        contentFile: product-uses.sql
+    }
+)
+
+installScript products (
+    execution {
+        sequence: 200
+    }
+    script {
+        contentFile: products.sql
+    }
+)
+
+installScript tags (
+    execution {
+        sequence: 320
+    }
+    script {
+        contentFile: tags.sql
+    }
+)
+
+installScript timezone (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: timezone.sql
+    }
+)
+
+installScript view (
+    execution {
+        sequence: 480
+    }
+    script {
+        contentFile: view.sql
+    }
+)
+

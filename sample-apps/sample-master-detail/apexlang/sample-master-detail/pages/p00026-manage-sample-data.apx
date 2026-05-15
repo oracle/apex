@@ -1,0 +1,264 @@
+page 26 (
+    name: Manage Sample Data
+    alias: MANAGE-SAMPLE-DATA
+    title: Manage Sample Data
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-region (
+        name: Button Region
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @manage-sample-data
+            slot: subRegions
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region manage-sample-data (
+        name: Manage Sample Data
+        type: staticContent
+        source {
+            htmlCode: <p>This application ships with sample data.  You can remove and recreate sample data using this page.  If the sample data is old recreating the data makes the dates more current.  Removing or adding sample data will not affect any decisions you created.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+            cssClasses: t-Alert--accessibleHeading
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 40
+            region: @button-region
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: SETTINGS
+                clearCache: SETTINGS
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button load-sample-data (
+        buttonName: load_sample_data
+        label: Load Sample Data
+        layout {
+            sequence: 20
+            region: @button-region
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--primary
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery: select null from eba_demo_md_projects where id <= 10
+        }
+    )
+
+    button remove-sample-data (
+        buttonName: remove_sample_data
+        label: Remove Sample Data
+        layout {
+            sequence: 10
+            region: @button-region
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--primary
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from eba_demo_md_projects where id <= 10
+        }
+    )
+
+    button reset-data (
+        buttonName: reset_data
+        label: Reset Data
+        layout {
+            sequence: 30
+            region: @button-region
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process load-sample-data (
+        name: Load Sample Data
+        type: executeCode
+        source {
+            plsqlCode: eba_demo_md_data_pkg.load_sample_data;
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Sample Data Loaded.
+        }
+        advanced {
+            executionMappingIdentifier: 4549867563992162486
+        }
+        serverSideCondition {
+            whenButtonPressed: @load-sample-data
+        }
+    )
+
+    process remove-sample-data (
+        name: remove sample data
+        type: executeCode
+        source {
+            plsqlCode: eba_demo_md_data_pkg.remove_sample_data;
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Sample Data Removed
+        }
+        advanced {
+            executionMappingIdentifier: 4549867167278162486
+        }
+        serverSideCondition {
+            whenButtonPressed: @remove-sample-data
+        }
+    )
+
+    process reset-data (
+        name: reset data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_demo_md_data_pkg.remove_sample_data;
+                eba_demo_md_data_pkg.load_sample_data;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Sample data reset.
+        }
+        advanced {
+            executionMappingIdentifier: 4549866785378162485
+        }
+        serverSideCondition {
+            whenButtonPressed: @reset-data
+        }
+    )
+
+    branch (
+        name: Go To Administration
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 24
+            }
+        }
+        comments {
+            comments: Created 06-JAN-2012 15:08 by MIKE
+        }
+    )
+
+)
+

@@ -1,0 +1,99 @@
+app SAMPLE-COLLECTIONS (
+    name: Sample Collections
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: text
+        text: Sample Collections
+    }
+    navigation {
+        homeUrl: {
+            page: 100
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar-top
+        listTemplate: @/navigation-bar
+    }
+    userInterface {
+        currentTheme: @universal-theme
+    }
+    appFormatMasks {
+        date: DS
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css
+    }
+    authentication {
+        scheme: @apex-auth
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        runOnPublicPages: true
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: 788FC081470B0A8D0D6DCB01693DD279F3A2C19585D459B112454FD66C998B26
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+    }
+    globalization {
+        documentDirection: leftToRight
+        languageDerivedFrom: browserPreference
+        autoCsvEncoding: false
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments:
+            ```
+            1.0.2 -> 1.0.3: Added "SQL Source" show/hide region to "Collection on EMP" page.
+            1.0.3 -> 1.0.4: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Collections
+        }
+    )
+
+)
+

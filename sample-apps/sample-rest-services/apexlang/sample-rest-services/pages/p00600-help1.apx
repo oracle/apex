@@ -1,0 +1,203 @@
+page 600 (
+    name: Help
+    alias: HELP1
+    title: Help
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @feature-about-page
+    }
+
+    region about-this-application (
+        name: About this application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div>
+                  <h2>About This Application</h2>
+                  <p>
+                   This application demonstrates seamless integration of external REST services with Oracle APEX. It leverages diverse REST data sources, including ORDS, OData, simple HTTP, and custom plugins. Advanced PL/SQL processes handle data transformation, validation, and error management. Dynamic interactive reporting and Oracle JET visualizations display insights. The app synchronizes external data into local tables to ensure robust performance. Overall, it exemplifies a modern, scalable approach to integrating REST services within Oracle APEX.
+                  </p>
+                </div>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region application-information (
+        name: Application information
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       'Oracle' vendor
+                  from apex_applications aa
+                 where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+            cssClasses: t-HeroRegion--featured
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App Version
+            }
+            layout {
+                sequence: 10
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+    )
+
+    region features (
+        name: Features
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>Features</h2>
+                <p>
+                    <ul>
+                        <li><b>Multiple REST Data Source Types</b> Simple HTTP, ORDS, OData, Custom Plugin</li>
+                        <li><b>Data Profiles</b> Mapping JSON responses to columns & Handling nested JSON responses </li>
+                        <li><b>Data Synchronization</b> Importing and synchronizing external REST data into local Oracle tables </li>
+                        <li><b>Advanced PL/SQL Processing and Business Logic</b> Writing custom PL/SQL code for complex operations beyond simple declarative data binding </li>
+                        <li><b>Data Display Options</b> Interactive Reporting and Visualization</li>
+                        <li><b>Error Handling and Debugging </b>Robust Error Handling in PL/SQL,User-Friendly Notifications & Debug Mode Activation</li>
+                  </ul>
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region help-container (
+        name: Help Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region quick-start (
+        name: Quick Start
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <H2>Getting Started</h2>
+                <p>Make sure that the APEX engine can connect to the APEX server via HTTP. A <i>Network ACL</i> is needed. Have a look into the APEX Installation Guide - chapter "Enabling Network Services in Oracle Database 11g or Later" for more information.</p>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the APEX Application Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
+                
+                <p>If you have questions, ask them on the <a href="https://forums.oracle.com/ords/apexds/domain/dev-community/category/apex" target="_blank">Oracle APEX Forum</a>.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

@@ -1,0 +1,225 @@
+page 31 (
+    name: Help
+    alias: HELP
+    title: Help
+    pageGroup: @help
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <link rel="stylesheet" href="#IMAGE_PREFIX#eba/css/eba_help.css" type="text/css" media="all"  charset="utf-8">
+            
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: plugin/translatedMessage
+        layout {
+            sequence: 10
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        settings {
+            textMessage: HELP_ABOUT
+        }
+    )
+
+    region application-title (
+        name: &APPLICATION_TITLE.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       'Oracle' vendor
+                from apex_applications aa
+                where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--featured t-HeroRegion--centered
+            ]
+            cssClasses: t-HeroRegion--featured
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App version
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 80
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region features (
+        name: Features
+        type: plugin/translatedMessage
+        layout {
+            sequence: 30
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        settings {
+            textMessage: HELP_FEATURES
+        }
+    )
+
+    region getting-started (
+        name: Getting Started
+        type: plugin/translatedMessage
+        layout {
+            sequence: 20
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        settings {
+            textMessage: HELP_GETTING_STARTED
+        }
+    )
+
+    region help-container (
+        name: Help Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region support (
+        name: Support
+        type: plugin/translatedMessage
+        source {
+            sqlQuery:
+                ```sql
+                select 'https://forums.oracle.com/forums/forum.jspa?forumID=137' support_link,
+                    'OTN Forum' support_text
+                from dual
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        settings {
+            textMessage: HELP_SUPPORT
+            substitutionColumn00: SUPPORT_LINK
+            substitutionColumn11: SUPPORT_TEXT
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 31
+        }
+    )
+
+)
+

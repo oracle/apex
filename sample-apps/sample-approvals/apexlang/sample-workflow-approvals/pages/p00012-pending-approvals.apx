@@ -1,0 +1,509 @@
+page 12 (
+    name: Pending Approvals
+    alias: PENDING-APPROVALS
+    title: Pending Approvals
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            apex.actions.add([
+            {
+              name: "handle-task-deadlines-action",
+              action: function( event, element, args)
+              {
+                // Trigger custom event to perform the server-side call
+                $("body").trigger("handle-task-deadlines-event");
+              }
+            },
+            {
+              name: "refresh-action",
+              action: function( event, element, args)
+              {
+                // Trigger custom event to perform the refresh
+                $("body").trigger("refresh-event");
+              }
+            }
+            ])
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page is handy for demo purposes since it shows the relevant approvers and administrators
+                    determined at task creation time for each pending approval task. Use this information
+                    to know which sample user to log in as to approve or administer a given approval task. 
+                </p>
+                <ul>
+                    <li>
+                        The Job Change approval task definition configures its participants at design time.
+                    </li>
+                    <li>
+                        The Salary Change approval task definition dynamically computes its participants at
+                        runtime by calling a PL/SQL function that uses the rows in the EBA_DEMO_APPR_APPROVERS
+                        table to determine the approvers and administrators based on the job code of
+                        the employee changing roles as well as the proposed new salary.
+                    </li>
+                    <li>
+                        The <em>Laptop Approval</em> approval task definition dynamically computes its participants at
+                        runtime by calling a PL/SQL function that uses the number of times the task has been
+                        renewed to determine to whom to assign it.
+                    </li>
+                </ul>
+                <p>
+                    Since by design the same user cannot approve an approval task they initiated, even if the
+                    current user <em>would</em> technically be a valid "potential owner" participant, their
+                    username won't appear as an approver on a job or salary request they created.
+                </p>
+                <p>
+                    This page's classic report region queries data from <strong>APEX_TASKS</strong>, 
+                    <strong>APEX_TASK_PARTICIPANTS</strong>, and 
+                    <strong>APEX_APPL_TASKDEFS</strong> views. It filters the list to only include approval
+                    tasks using the WHERE clause <code>TASK_TYPE_CODE = 'APPROVAL'</code>. Most applications 
+                    using approvals would typically only need one or more of the unified task list pages to allow
+                    end users to work with tasks. This sample includes <strong>My Tasks</strong>, 
+                    <strong>My Requests</strong>, and <strong>Approvals Administration</strong>
+                    unified task list pages for that purpose.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region handle-deadlines-and-refresh (
+        name: Handle Deadlines and Refresh
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                An hourly job handles task deadlines, but you can 
+                <a href="#action$handle-task-deadlines-action">handle them now</a>
+                or just
+                <a href="#action$refresh-action">update the list</a>.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region pending-approvals (
+        name: Pending Approvals
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.task_id, 
+                       t.subject,
+                       t.priority,
+                       t.initiator,
+                       case 
+                            when t.state_code = 'ASSIGNED' then 
+                                t.state||' to '||t.actual_owner
+                            when t.state_code = 'UNASSIGNED' then 
+                                t.state||' ('||eba_demo_appr.approvers_for_task(t.task_id)||')'
+                            when t.state_code = 'EXPIRED' then
+                                'Expired after '||
+                                (select listagg(t3.actual_owner,'←')
+                                   from apex_tasks t3
+                                   connect by prior t3.previous_task_id = t3.task_id
+                                   start with t3.task_id = t.task_id)
+                        end status,
+                        eba_demo_appr.admins_for_task(t.task_id) as admins,
+                        t.due_on due_by,
+                        eba_demo_appr.details_task_url(
+                          p_url     => d.details_link_target,
+                          p_app_id  => d.application_id,
+                          p_task_id => t.task_id) details_link_target,
+                       due_in, 
+                       case 
+                          when due_in_hours <   0 then 'OVERDUE'
+                          when due_in_hours <   1 then 'NEXT_HOUR'
+                          when due_in_hours <  24 then 'NEXT_24_HOURS'
+                          when due_in_hours < 168 then 'NEXT_7_DAYS'
+                          when due_in_hours < 720 then 'NEXT_30_DAYS'
+                          else            'MORE_THAN_30_DAYS'
+                      end due_code,
+                      case when state_code in ('COMPLETED', 'CANCELED') 
+                                                               then 'Y'
+                                                               else 'N'
+                                                          end is_completed         
+                from (
+                select task_id,
+                       task_def_id,
+                       subject,
+                       priority,
+                       initiator,
+                       actual_owner,
+                       due_on,
+                       apex_util.get_since(due_on) due_in,
+                       round((cast(due_on as date) - sysdate) * 24, 1) due_in_hours,
+                       state_code,
+                       state,
+                       task_type_code,
+                       application_id
+                       from apex_Tasks
+                ) t
+                left join apex_appl_taskdefs d on d.task_def_id = t.task_def_id
+                where t.application_id = :APP_ID
+                  and t.task_type_code = 'APPROVAL'
+                  and (
+                        (t.state_code in ('UNASSIGNED','ASSIGNED')
+                      or
+                      (
+                          t.state_code = 'EXPIRED' 
+                           and not exists (select 1 
+                                             from apex_tasks t2 
+                                            where previous_task_id = t.task_id)
+                      )
+                      ))
+                order by due_by
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            cssClasses: margin-top-md
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No pending approvals
+        }
+
+        column ADMINS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Admins
+            }
+            layout {
+                sequence: 51
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DETAILS_LINK_TARGET (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 71
+            }
+        )
+
+        column DUE_BY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Due
+            }
+            layout {
+                sequence: 61
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if !IS_COMPLETED/}
+                        {case DUE_CODE/}
+                            {when OVERDUE/}
+                                <strong class="u-danger-text">#DUE_IN#</strong>
+                            {when NEXT_HOUR/}
+                                <strong class="u-danger-text">#DUE_IN#</strong>
+                            {when NEXT_24_HOURS/}
+                                <span class="u-danger-text">#DUE_IN#</span>
+                            {otherwise/}
+                                {if DUE_IN/}<span>#DUE_IN#</span>{endif/}
+                        {endcase/}
+                    {endif/} 
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DUE_CODE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 101
+            }
+        )
+
+        column DUE_IN (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 91
+            }
+        )
+
+        column INITIATOR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Requester
+            }
+            layout {
+                sequence: 31
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column IS_COMPLETED (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 111
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 21
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 41
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SUBJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Subject
+            }
+            layout {
+                sequence: 11
+            }
+            link {
+                target: {
+                    type: url
+                    url: #DETAILS_LINK_TARGET#
+                }
+                linkText: #SUBJECT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TASK_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    dynamicAction handle-task-deadlines (
+        name: Handle Task Deadlines
+        execution {
+            sequence: 10
+        }
+        when {
+            event: custom
+            customEvent: handle-task-deadlines-event
+            selectionType: jQuerySelector
+            jquerySelector: body
+        }
+
+        action handle-task-deadlines (
+            name: Handle Task Deadlines
+            action: executeServerSideCode
+            settings {
+                plsqlCode: apex_approval.handle_task_deadlines;
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action refresh-pending-approvals (
+            name: Refresh Pending Approvals
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @pending-approvals
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-approvals-list (
+        name: Refresh Approvals List
+        execution {
+            sequence: 20
+        }
+        when {
+            event: custom
+            customEvent: refresh-event
+            selectionType: jQuerySelector
+            jquerySelector: body
+        }
+
+        action refresh-pending-approvals (
+            name: Refresh Pending Approvals
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @pending-approvals
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-dialog-closed (
+        name: When Dialog Closed
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @pending-approvals
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @pending-approvals
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

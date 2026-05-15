@@ -1,0 +1,612 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry administration (
+        name: Administration
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry analytic-function-examples (
+        name: Analytic Function Examples
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 34
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry bind-variables (
+        name: Bind Variables
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry cards (
+        name: Cards
+        pageNumber: 41
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry case-statement (
+        name: CASE Statement
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry classic-report (
+        name: Classic Report
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry connect-by (
+        name: Connect By
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry custom-buttons (
+        name: Custom Buttons
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry drill-down-reporting-using-interactive-grid (
+        name: Drill Down Reporting using Interactive Grid
+        pageNumber: 40
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+    )
+
+    entry drill-down-reporting-using-interactive-report (
+        name: Drill Down Reporting using Interactive Report
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry faceted-search (
+        name: Faceted Search
+        pageNumber: 42
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry filtering-using-classic-report (
+        name: Filtering using Classic Report
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry format-masks-using-interactive-reports (
+        name: Format Masks using Interactive Reports
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry group-by-clause (
+        name: Group By Clause
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry highlighting-using-interactive-reports (
+        name: Highlighting using Interactive Reports
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry inline-views (
+        name: Inline Views
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry interactive-grid (
+        name: Interactive Grid
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry interactive-report (
+        name: Interactive Report
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry interactive-report-2 (
+        name: Interactive Report
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry lead-and-lag (
+        name: LEAD and LAG
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @analytic-function-examples
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry linking-to-interactive-grids (
+        name: Linking to Interactive Grids
+        pageNumber: 37
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry linking-to-interactive-reports (
+        name: Linking to Interactive Reports
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry listagg (
+        name: LISTAGG
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @analytic-function-examples
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry non-tabular-templates (
+        name: Non-Tabular Templates
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry pipelined-functions (
+        name: Pipelined Functions
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry pivot-syntax (
+        name: Pivot Syntax
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry rank-and-dense-rank (
+        name: RANK and DENSE_RANK
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @analytic-function-examples
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry ratio-to-report (
+        name: RATIO_TO_REPORT
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @analytic-function-examples
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry regular-expressions (
+        name: Regular Expressions
+        pageNumber: 28
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry report-from-collection (
+        name: Report from Collection
+        pageNumber: 38
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+    entry row-number (
+        name: ROW_NUMBER
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @analytic-function-examples
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry soundex (
+        name: Soundex
+        pageNumber: 29
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry sql-examples (
+        name: SQL Examples
+        pageNumber: 39
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry string-functions (
+        name: String Functions
+        pageNumber: 27
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry top-n-queries (
+        name: Top N Queries
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @analytic-function-examples
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry use-cases (
+        name: Use Cases
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+)
+

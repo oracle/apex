@@ -1,0 +1,495 @@
+list activity-reports (
+    name: Activity Reports
+    config {
+        buildOption: @feature-activity-reporting
+    }
+
+    entry all-sessions (
+        label: All Sessions
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 10005
+            }
+        }
+        userDefinedAttributes {
+            1: All sessions created within this system
+        }
+    )
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-exclamation
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10022
+                clearCache: 10022
+            }
+        }
+        userDefinedAttributes {
+            1: Report of errors logged by this application
+        }
+    )
+
+    entry dashboard (
+        label: Dashboard
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10020
+                clearCache: 10020
+            }
+        }
+        userDefinedAttributes {
+            1: View application activity metrics
+        }
+    )
+
+    entry email-reporting (
+        label: Email Reporting
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 10050
+                clearCache: 10050
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all email queued to be sent and those already sent
+        }
+    )
+
+    entry job-reporting (
+        label: Job Reporting
+        icon {
+            imageIconCssClasses: fa-database-clock
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 10051
+                clearCache: 10051
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all database jobs that are associated with this application
+        }
+    )
+
+    entry logged-messages (
+        label: Logged Messages
+        icon {
+            imageIconCssClasses: fa-warning
+        }
+        layout {
+            sequence: 35
+        }
+        link {
+            target: {
+                page: 10026
+                clearCache: 10026
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            1: Report of messages logged by the apis supporting this application
+        }
+    )
+
+    entry page-performance (
+        label: Page Performance
+        icon {
+            imageIconCssClasses: fa-file-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10023
+                clearCache: 10023
+            }
+        }
+        userDefinedAttributes {
+            1: Report of activity and performance by application page
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-file-search
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 10024
+                clearCache: 10024
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            1: Report of each page view by user including date of access and elapsed time
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry about (
+        label: About
+        icon {
+            imageIconCssClasses: fa-info-circle-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        serverSideCondition {
+            type: userIsPublicUser
+        }
+    )
+
+    entry about-2 (
+        label: About
+        icon {
+            imageIconCssClasses: fa-info-circle-o
+        }
+        layout {
+            sequence: 40
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-wrench
+        }
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 10000
+            }
+        }
+        security {
+            authorizationScheme: @administrator
+        }
+    )
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 70
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+)
+
+list p120-actions (
+    name: p120_actions
+
+    entry add-question (
+        label: Add Question
+        icon {
+            imageIconCssClasses: fa-plus
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 112
+                items: {
+                    P112_SESSION_ID: &P120_SESSION_ID.
+                }
+                clearCache: 112
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_sessions
+                 where id = :P120_SESSION_ID
+                   and session_status = 'STAGED'
+                   and owner = lower(:APP_USER)
+                ```
+        }
+    )
+
+    entry copy-session (
+        label: Copy Session
+        icon {
+            imageIconCssClasses: fa-copy
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 115
+                items: {
+                    P115_ID: &P120_SESSION_ID.
+                }
+                clearCache: 115
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_sessions
+                 where id = :P120_SESSION_ID
+                   and session_status in ('STAGED','CLOSED')
+                   and owner = lower(:APP_USER)
+                ```
+        }
+    )
+
+    entry delete-session (
+        label: Delete Session
+        icon {
+            imageIconCssClasses: fa-trash-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 116
+                items: {
+                    P116_SESSION_ID: &P120_SESSION_ID.
+                }
+                clearCache: 116
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.get_session_status(p_session_id => :P120_SESSION_ID) in ('STAGED','CLOSED') and
+                qask_util.get_session_owner(p_session_id => :P120_SESSION_ID) = :APP_USER
+                ```
+        }
+    )
+
+)
+
+list user-interface (
+    name: User Interface
+
+    entry service-terms (
+        label: Service Terms
+        icon {
+            imageIconCssClasses: fa-file-check
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10012
+            }
+        }
+        userDefinedAttributes {
+            1: Terms that Hosts must accept in order to use this platform
+        }
+    )
+
+    entry settings (
+        label: Settings
+        icon {
+            imageIconCssClasses: fa-gears
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10011
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the settings that govern this application
+        }
+    )
+
+)
+
+list user-related-actions (
+    name: User Related Actions
+    config {
+        buildOption: @feature-access-control
+    }
+
+    entry accepted-service-terms (
+        label: Accepted Service Terms
+        icon {
+            imageIconCssClasses: fa-file-signature
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10014
+            }
+        }
+        userDefinedAttributes {
+            1: All users that have accepted Service Terms
+        }
+    )
+
+    entry account-requests (
+        label: Account Requests
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10035
+            }
+        }
+        userDefinedAttributes {
+            1: Review requests for accounts (for creating sessions)
+        }
+    )
+
+    entry restricted-to-email-domains (
+        label: Restricted To Email Domains
+        icon {
+            imageIconCssClasses: fa-envelope-check
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10037
+            }
+        }
+        userDefinedAttributes {
+            1: Control email domains that can be added as users
+        }
+    )
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10031
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Set level of access for authenticated users of this application
+        }
+    )
+
+)
+

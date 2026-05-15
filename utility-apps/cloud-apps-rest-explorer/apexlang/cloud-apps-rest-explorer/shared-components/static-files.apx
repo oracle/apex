@@ -1,0 +1,45 @@
+file app.css (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file app.js (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file app.min.css (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file app.min.js (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "icons/app-icon-144-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-256-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+

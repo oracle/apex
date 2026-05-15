@@ -1,0 +1,87 @@
+appProcess check-email-from (
+    name: Check Email From
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            if qask_util.get_setting (p_name => 'from_email') is null then
+               apex_util.redirect_url(apex_page.get_url(
+                                               p_application => :APP_ID,
+                                               p_page        => '10010',
+                                               p_session     => :APP_SESSION ));
+            end if;
+            ```
+    }
+    execution {
+        sequence: 20
+    }
+    serverSideCondition {
+        type: currentPageNotInList
+        pages: [
+            9995
+            9998
+            9999
+            10010
+        ]
+    }
+    security {
+        authorizationScheme: @administrator
+    }
+)
+
+appProcess check-service-terms (
+    name: Check Service Terms
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            if nvl(:ACCEPTED_TERMS_YN,'N') = 'N' then
+               if qask_util.has_accepted_latest_terms_yn (p_email => :APP_USER) = 'Y' then
+                   :ACCEPTED_TERMS_YN := 'Y';
+               else apex_util.redirect_url(apex_page.get_url(
+                                               p_application => :APP_ID,
+                                               p_page        => '9995',
+                                               p_session     => :APP_SESSION ));
+               end if;
+            end if;
+            ```
+    }
+    execution {
+        sequence: 10
+    }
+    serverSideCondition {
+        type: currentPageNotInList
+        pages: [
+            9995
+            9998
+            9999
+        ]
+    }
+    security {
+        authorizationScheme: @host
+    }
+)
+
+appProcess close-old-sessions (
+    name: close old sessions
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            for c1 in (
+                select count(*) cnt
+                  from user_scheduler_running_jobs
+                 where job_name = 'QASK_CLOSE_OLD_SESSIONS'
+            ) loop
+                if c1.cnt = 0 then
+                    sys.dbms_scheduler.run_job( 'QASK_CLOSE_OLD_SESSIONS', false );
+                end if;
+            end loop;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: afterAuthentication
+    }
+)
+

@@ -1,0 +1,157 @@
+page 32 (
+    name: Week Calendar: Conference
+    alias: WEEK-CALENDAR-CONFERENCE
+    title: Week Calendar: Conference
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>This is a standard Oracle APEX calendar region component showing a <b>weekly</b> view on events with a time component. This region component is well-suited to display conference or similar type schedules.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sessions (
+        name: Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   case when speaker is not null then 
+                       title || ' (' || speaker || ')' 
+                       else title
+                   end as title,
+                   speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when status       = 'INACTIVE' then  'apex-cal-gray'
+                      when session_type = 'BREAK'    then  'apex-cal-silver'
+                      when session_type = 'BUSINESS' then  'apex-cal-orange'
+                      when session_type = 'GENERAL'  then  'apex-cal-blue'
+                      when session_type = 'TECHNICAL' then 'apex-cal-green'
+                      when session_type = 'HANDS_ON' then 'apex-cal-lime'
+                   end as css_class
+                from eba_demo_cal_sessions
+                where status='ACTIVE'
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            htmlDomId: task_due_dates
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            pkColumn: ID
+            showTime: true
+            calendarViewsAndNavigation: [
+                week
+                day
+                list
+                navigation
+            ]
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    dynamicAction change-project-refresh-calendar (
+        name: Change Project - Refresh Calendar
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P32_PROJECTS
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,636 @@
+page 102 (
+    name: Account Agreement
+    alias: ACCOUNT-AGREEMENT
+    title: Account Agreement
+    pageGroup: @accounts
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+        executeWhenPageLoads:
+            ```javascript-browser
+            //SET CURSOR POSITION
+            $.fn.setCursorPosition = function(pos) {
+              this.each(function(index, elem) {
+                if (elem.setSelectionRange) {
+                  elem.setSelectionRange(pos, pos);
+                } else if (elem.createTextRange) {
+                  var range = elem.createTextRange();
+                  range.collapse(true);
+                  range.moveEnd('character', pos);
+                  range.moveStart('character', pos);
+                  range.select();
+                }
+              });
+              return this;
+            };
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region account-agreement (
+        name: Account Agreement
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P102_AGREEMENT_ID (
+        type: selectList
+        label {
+            label: Agreement
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @agreements
+        }
+        layout {
+            sequence: 20
+            region: @account-agreement
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: AGREEMENT_ID
+            used: always
+        }
+        help {
+            helpText: Select the appropriate agreement. Whichever agreement is selected will pre-fill the name field below.
+        }
+    )
+
+    pageItem P102_CLOSE_DATE (
+        type: datePicker
+        label {
+            label: Renew/Expire Date
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @account-agreement
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            formatMask: DD-MON-YYYY
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CLOSE_DATE
+            used: always
+        }
+        help {
+            helpText: Enter the date the agreement ends (in DD-MON-YYYY format) or use the date picker controls to navigate to and select the appropriate agreement end date.
+        }
+    )
+
+    pageItem P102_CUSTOMER_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @account-agreement
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P102_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @account-agreement
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DESCRIPTION
+            used: always
+        }
+        help {
+            helpText: Enter any additional information you feel is appropriate about this account agreement. You can enter up to 4,000 characters.
+        }
+    )
+
+    pageItem P102_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @account-agreement
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P102_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @account-agreement
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NAME
+            used: always
+        }
+        help {
+            helpText: Enter the name of this particular account's agreement. You can enter up to 255 characters.
+        }
+    )
+
+    pageItem P102_QUOTE_PRICE (
+        type: numberField
+        label {
+            label: Cost
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 70
+            region: @account-agreement
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            formatMask: FML999G999G999G999G999
+            width: 32
+            valuePlaceholder: $0
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: QUOTE_PRICE
+            used: always
+        }
+        help {
+            helpText: Enter the price that was quoted to the account for this agreement.
+        }
+    )
+
+    pageItem P102_TERM_ID (
+        type: selectList
+        label {
+            label: Term
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @terms-id-return-value
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 40
+            region: @account-agreement
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TERM_ID
+            used: always
+        }
+        help {
+            helpText: Select the appropriate term length for this account agreement.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Agreement
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P102_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P102_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P102_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction preset-name (
+        name: Preset Name
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P102_AGREEMENT_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P102_AGREEMENT_ID
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#P102_NAME').setCursorPosition(0);
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: items
+                items: P102_NAME
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-focus (
+            action: setFocus
+            affectedElements {
+                selectionType: items
+                items: P102_NAME
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select
+                        apex_escape.html(a.name)
+                    from
+                        eba_sales_agreements a
+                    where
+                        a.id = :P102_AGREEMENT_ID
+                    ```
+                itemsToSubmit: P102_AGREEMENT_ID
+                escapeSpecialChars: false
+            }
+            affectedElements {
+                selectionType: items
+                items: P102_NAME
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-term-id (
+        name: Set Term ID
+        execution {
+            sequence: 30
+        }
+        when {
+            event: ready
+        }
+        clientSideCondition {
+            type: itemIsNull
+            item: P102_TERM_ID
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery: select id from eba_sales_terms where month_equiv = 12
+            }
+            affectedElements {
+                selectionType: items
+                items: P102_TERM_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    computation p102-quote-price (
+        itemName: P102_QUOTE_PRICE
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression: replace(replace(:P102_QUOTE_PRICE,'$',null),',',null)
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 6118263755243318911
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process fetch-row-from-eba-sales-cust-agrmnt-map (
+        name: Fetch Row from EBA_SALES_CUST_AGRMNT_MAP
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_CUST_AGRMNT_MAP
+            pkColumn: ID
+            pkItem: P102_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 6118262529074318910
+        }
+    )
+
+    process process-row-of-eba-sales-cust-agrmnt-map (
+        name: Process Row of EBA_SALES_CUST_AGRMNT_MAP
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_CUST_AGRMNT_MAP
+            pkColumn: ID
+            pkItem: P102_ID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 6118262938609318910
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 6118263317730318910
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

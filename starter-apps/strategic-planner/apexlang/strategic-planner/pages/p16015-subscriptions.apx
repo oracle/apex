@@ -1,0 +1,613 @@
+page 16015 (
+    name: Subscriptions
+    alias: SUBSCRIPTIONS
+    title: Subscriptions
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @subscriptions
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region subscriptions (
+        name: Subscriptions
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select apex_escape.html(notification)||apex_item.hidden(1,n_id) notification,
+                       apex_escape.html(email)||apex_item.hidden(3,team_member_id)||apex_item.hidden(4,release_id) team_member,
+                       apex_item.switch(p_idx => 2, p_value => opted_in_yn, 
+                                        p_on_value => 'Y', p_off_value => 'N',
+                                        p_item_id => static_id || rownum, p_item_label => 'Opted In') opted_in,
+                       case when opted_in_yn = 'Y' then 'Yes' else 'No' end opted_in_for_filter,
+                       (select listagg(g.group_name, ', ') within group(order by g.group_name)
+                          from sp_groups g,
+                               sp_group_members m
+                         where g.id = m.group_id
+                           and m.team_member_id = team_member_id) groups,
+                       updated,
+                       updated_by,
+                       created_by,
+                       last_sent,
+                       apex_item.select_list(5,frequency,'Weekly,Weekdays') frequency,
+                       opted_in_yn opted_in_link,
+                       static_id static_id_link
+                from (
+                select n.name || case when r.id is not null then ' for '|| r.release_train ||' '|| r.release end notification,
+                       n.id n_id,
+                       tm.id team_member_id,
+                       ns.release_id,
+                       tm.email,
+                       ns.id,
+                       ns.opted_in_yn,
+                       ns.updated,
+                       lower(ns.updated_by) updated_by,
+                       lower(ns.created_by) created_by,
+                       ns.last_sent,
+                       n.static_id,
+                       initcap(ns.frequency) frequency
+                  from SP_NOTIFICATIONS n,
+                       SP_NOTIFICATION_SUBSCRIPTIONS ns,
+                       sp_team_members tm,
+                       sp_release_trains r
+                 where n.id = ns.notification_id
+                   and ns.team_member_id = tm.id
+                   and ns.release_id = r.id (+)
+                )
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        headerAndFooter {
+            footerText: This report includes only those that have explicitly subscribed or then unsubscribed.  Use 'Add New' to add anything not on this report.
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            controlBreak: false
+            highlight: false
+            compute: false
+            aggregate: false
+            chart: false
+            groupBy: false
+            pivot: false
+            flashback: false
+            download: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 19356204560615400171
+        }
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 101
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column FREQUENCY (
+            type: plainText
+            heading {
+                heading: Frequency
+            }
+            layout {
+                sequence: 31
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: X
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column GROUPS (
+            type: plainText
+            heading {
+                heading: Groups
+            }
+            layout {
+                sequence: 61
+            }
+            source {
+                dataType: STRING
+            }
+            columnFilter {
+                type: definedLovWordContains
+                sqlQuery:
+                    ```sql
+                    select group_name
+                      from sp_groups
+                     order by 1
+                    ```
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column LAST_SENT (
+            type: plainText
+            heading {
+                heading: Last Sent
+            }
+            layout {
+                sequence: 71
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column NOTIFICATION (
+            type: plainText
+            heading {
+                heading: Notification
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column OPTED_IN (
+            type: plainText
+            heading {
+                heading: Update Opt In
+            }
+            layout {
+                sequence: 41
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column OPTED_IN_FOR_FILTER (
+            type: plainText
+            heading {
+                heading: Opted In
+            }
+            layout {
+                sequence: 51
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column OPTED_IN_LINK (
+            type: hidden
+            heading {
+                heading: Just Opted In
+            }
+            layout {
+                sequence: 111
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column STATIC_ID_LINK (
+            type: hidden
+            heading {
+                heading: Selected Notification
+            }
+            layout {
+                sequence: 121
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column TEAM_MEMBER (
+            type: plainText
+            heading {
+                heading: Team Member
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+            enableUsersTo {
+                hide: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 81
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Last Updated By
+            }
+            layout {
+                sequence: 91
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        savedReport 82306002 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn FREQUENCY (
+                sequence: 3
+            )
+
+            displayColumn LAST_SENT (
+                sequence: 6
+            )
+
+            displayColumn NOTIFICATION (
+                sequence: 2
+            )
+
+            displayColumn OPTED_IN (
+                sequence: 4
+            )
+
+            displayColumn OPTED_IN_FOR_FILTER (
+                sequence: 5
+            )
+
+            displayColumn TEAM_MEMBER (
+                sequence: 1
+            )
+
+            displayColumn UPDATED (
+                sequence: 7
+            )
+
+            sort (
+                column: TEAM_MEMBER
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: NOTIFICATION
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button add (
+        buttonName: ADD
+        label: Add New
+        layout {
+            sequence: 50
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16016
+                clearCache: 16016
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY_CHANGES
+        label: Apply Changes
+        layout {
+            sequence: 70
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button info (
+        buttonName: INFO
+        label: Information
+        layout {
+            sequence: 60
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-question-circle-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16017
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16015
+                clearCache: 16015
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-after-add (
+        name: refresh after add
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @subscriptions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process update (
+        name: Update
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for i in 1..apex_application.g_f01.count loop
+                
+                    if apex_application.g_f02(i) = 'Y' then
+                        sp_util.notification_opt_in (
+                            p_team_member_id  => apex_application.g_f03(i),
+                            p_notification_id => apex_application.g_f01(i),
+                            p_frequency       => upper(apex_application.g_f05(i)),
+                            p_release_id      => apex_application.g_f04(i));
+                    else
+                        sp_util.notification_opt_out (
+                            p_team_member_id  => apex_application.g_f03(i),
+                            p_notification_id => apex_application.g_f01(i),
+                            p_release_id      => apex_application.g_f04(i));
+                    end if;
+                
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: "Notification Subscriptions updated. "
+        }
+        advanced {
+            executionMappingIdentifier: 11125615639027171228
+        }
+    )
+
+)
+

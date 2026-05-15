@@ -1,0 +1,206 @@
+page 10010 (
+    name: About
+    alias: HELP
+    title: About
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: All application help text can be accessed from this page. The links in the "Documentation" region give a much more in-depth explanation of the application's features and functionality.
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                The Document Generator Pre-Built Function (PBF) generates documents in an Oracle Cloud Infrastructure (OCI) Object Storage bucket based on provided JSON data and an Office template document stored in Object Storage.
+                You can download the examples as PDF, inspect the JSON data, and open the DOCX Templates with MS Office.
+                </p>
+                <p>
+                This application uses a custom Process Type Plug-in <strong>OCI Document Generator - Print Document</strong> which leverages The Oracle Cloud Infrastructure SDK for PL/SQL to manage files on Object Storage and Invoke the Pre-Built Function.
+                You can copy this Plug-in into your own application. It has several Component Settings to specify the location of Object Storage Buckets and the Document Generator Application.
+                </p>
+                <p>To learn more about Document Generator, you can refer to this blogpost:</p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/pulse/pdf-generation-oci-pre-built-function-kris-rice-gbree/">PDF Generation with OCI Pre-Built Function</a></p>
+                <p>The official documentation can be found here:</p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://docs.oracle.com/en-us/iaas/Content/Functions/Tasks/functions_pbf_catalog_document_generator.htm">Document Generator Function</a></p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region application-details (
+        name: Application Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       'Oracle' vendor
+                from apex_applications aa
+                where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App Version
+            }
+            layout {
+                sequence: 10
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+    )
+
+    region features (
+        name: Features
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ul>
+                <li>Download documents as PDF.</li>
+                <li>Download data for the document as JSON.</li>
+                <li>Download DOCX templates.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region getting-started (
+        name: Getting Started
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Application Express Application Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
+                <p>If you have questions, ask them on the <a target="_blank" rel="noopener noreferrer" href="https://forums.oracle.com/ords/apexds/domain/dev-community/category/apex">Oracle APEX Forum</a>.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @help-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region help-container (
+        name: Help Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+)
+

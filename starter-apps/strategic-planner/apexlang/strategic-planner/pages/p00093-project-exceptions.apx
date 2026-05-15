@@ -1,0 +1,91 @@
+page 93 (
+    name: Project Exceptions
+    alias: PROJECT-EXCEPTIONS
+    title: Project Exceptions
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region contents (
+        name: contents
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                return sp_util.exceptions_for_project (
+                           p_project_id     => :P93_PROJECT_ID,
+                           p_one_project_yn => 'Y',
+                           p_team_member_id => null,
+                           p_link_type      => 'APP',
+                           p_app_prefix_url => null,
+                           p_app_id         => :APP_ID,
+                           p_apex_session   => :APP_SESSION_ID,
+                           p_reviews_yn     => case when apex_util.get_build_option_status (
+                                                             p_application_id    => :APP_ID,
+                                                             p_build_option_name => 'Reviews') = 'INCLUDE' 
+                                                    then 'Y'
+                                                    else 'N'
+                                                    end,
+                           p_approvals_yn   => case when apex_util.get_build_option_status (
+                                                             p_application_id    => :APP_ID,
+                                                             p_build_option_name => 'Approvals') = 'INCLUDE' 
+                                                    then 'Y'
+                                                    else 'N'
+                                                    end );
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P93_PROJECT_ID (
+        type: displayOnly
+        label {
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-projects-project
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                margin-top-none
+                t-Form-fieldContainer--boldDisplay
+            ]
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+)
+

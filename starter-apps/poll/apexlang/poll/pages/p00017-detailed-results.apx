@@ -1,0 +1,1645 @@
+page 17 (
+    name: Detailed Results
+    alias: DETAILED-RESULTS
+    title: Detailed Results
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region current-poll (
+        name: Current Poll
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region result-details (
+        name: Result Details
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id result_id,
+                      case when p.anonymous_yn = 'Y' then 'anonymous' else lower(r.email) end respondent,
+                      (select distinct c.community_name
+                         from eba_qpoll_comm_invites c
+                        where p.id = c.poll_id
+                          and exists ( select 1
+                                         from eba_qpoll_invites i 
+                                        where c.id = i.comm_invite_id
+                                          and r.respondent_id = i.respondent_id) ) community,
+                      r.updated submission_date,
+                      d.answer_01||
+                        decode(d.answer_02,null,null,', '||d.answer_02)||
+                        decode(d.answer_03,null,null,', '||d.answer_03)||
+                        decode(d.answer_04,null,null,', '||d.answer_04)||
+                        decode(d.answer_05,null,null,', '||d.answer_05)||
+                        decode(d.answer_06,null,null,', '||d.answer_06)||
+                        decode(d.answer_07,null,null,', '||d.answer_07)||
+                        decode(d.answer_08,null,null,', '||d.answer_08)||
+                        decode(d.answer_09,null,null,', '||d.answer_09)||
+                        decode(d.answer_10,null,null,', '||d.answer_10)||
+                        decode(d.answer_11,null,null,', '||d.answer_11)||
+                        decode(d.answer_12,null,null,', '||d.answer_12) answer1,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 2) answer2,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 3) answer3,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 4) answer4,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 5) answer5,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 6) answer6,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 7) answer7,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 8) answer8,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 9) answer9,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 10) answer10,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 11) answer11,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 12) answer12,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 13) answer13,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 14) answer14,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 15) answer15,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 16) answer16,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 17) answer17,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 18) answer18,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 19) answer19,
+                      (select d2.answer_01||
+                        decode(d2.answer_02,null,null,', '||d2.answer_02)||
+                        decode(d2.answer_03,null,null,', '||d2.answer_03)||
+                        decode(d2.answer_04,null,null,', '||d2.answer_04)||
+                        decode(d2.answer_05,null,null,', '||d2.answer_05)||
+                        decode(d2.answer_06,null,null,', '||d2.answer_06)||
+                        decode(d2.answer_07,null,null,', '||d2.answer_07)||
+                        decode(d2.answer_08,null,null,', '||d2.answer_08)||
+                        decode(d2.answer_09,null,null,', '||d2.answer_09)||
+                        decode(d2.answer_10,null,null,', '||d2.answer_10)||
+                        decode(d2.answer_11,null,null,', '||d2.answer_11)||
+                        decode(d2.answer_12,null,null,', '||d2.answer_12)
+                       from EBA_QPOLL_RESULT_DETAILS d2,
+                            EBA_QPOLL_QUESTIONS q2
+                      where r.id = d2.result_id 
+                        and q2.id = d2.question_id
+                        and q2.poll_id = p.id
+                        and d2.display_sequence = 20) answer20
+                  from EBA_QPOLL_POLLS p,
+                       EBA_QPOLL_RESULTS r,
+                       EBA_QPOLL_RESULT_DETAILS d,
+                       EBA_QPOLL_QUESTIONS q
+                 where p.id                     = r.poll_id
+                   and r.id                     = d.result_id 
+                   and q.id                     = d.question_id
+                   and q.poll_id                = r.poll_id
+                   and p.id                     = :POLL_ID
+                   and d.display_sequence       = 1
+                   and nvl(r.is_valid_yn,'Y')   = 'Y' 
+                   and (   p.status_id = 4 or p.status_id = 3 
+                        or (    p.status_id = 2 
+                            and eba_qpoll.get_access_role (
+                             p_app_id   => :APP_ID,
+                             p_username => :APP_USER) in ('CONTRIBUTOR','ADMINISTRATOR') ) )
+                   and (   eba_qpoll.get_access_role (
+                               p_app_id   => :APP_ID,
+                               p_username => :APP_USER) != 'NONE'
+                       or (     p.all_view_results_yn = 'Y' 
+                            and exists 
+                                (select 1
+                                   from eba_qpoll_comm_invites c,
+                                        eba_qpoll_invites i
+                                  where c.poll_id = p.id
+                                    and c.id = i.comm_invite_id
+                                    and upper(respondent_email) = :APP_USER) ) )
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            pivot: false
+            subscription: false
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        heading {
+            fixedTo: none
+        }
+        advanced {
+            savedReportMappingIdentifier: 42888016442922279643
+        }
+
+        column ANSWER1 (
+            type: plainText
+            heading {
+                heading: &P17_Q1.
+            }
+            layout {
+                sequence: 43
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AH
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q1
+            }
+        )
+
+        column ANSWER10 (
+            type: plainText
+            heading {
+                heading: &P17_Q10.
+            }
+            layout {
+                sequence: 133
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AQ
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q10
+            }
+        )
+
+        column ANSWER11 (
+            type: plainText
+            heading {
+                heading: &P17_Q11.
+            }
+            layout {
+                sequence: 143
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AR
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q11
+            }
+        )
+
+        column ANSWER12 (
+            type: plainText
+            heading {
+                heading: &P17_Q12.
+            }
+            layout {
+                sequence: 153
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AS
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q12
+            }
+        )
+
+        column ANSWER13 (
+            type: plainText
+            heading {
+                heading: &P17_Q13.
+            }
+            layout {
+                sequence: 163
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AT
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q13
+            }
+        )
+
+        column ANSWER14 (
+            type: plainText
+            heading {
+                heading: &P17_Q14.
+            }
+            layout {
+                sequence: 173
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AU
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q14
+            }
+        )
+
+        column ANSWER15 (
+            type: plainText
+            heading {
+                heading: &P17_Q15.
+            }
+            layout {
+                sequence: 183
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AV
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q15
+            }
+        )
+
+        column ANSWER16 (
+            type: plainText
+            heading {
+                heading: &P17_Q16.
+            }
+            layout {
+                sequence: 193
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AW
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q16
+            }
+        )
+
+        column ANSWER17 (
+            type: plainText
+            heading {
+                heading: &P17_Q17.
+            }
+            layout {
+                sequence: 203
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AX
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q17
+            }
+        )
+
+        column ANSWER18 (
+            type: plainText
+            heading {
+                heading: &P17_Q18.
+            }
+            layout {
+                sequence: 213
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AY
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q18
+            }
+        )
+
+        column ANSWER19 (
+            type: plainText
+            heading {
+                heading: &P17_Q19.
+            }
+            layout {
+                sequence: 223
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AZ
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q19
+            }
+        )
+
+        column ANSWER2 (
+            type: plainText
+            heading {
+                heading: &P17_Q2.
+            }
+            layout {
+                sequence: 53
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AI
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q2
+            }
+        )
+
+        column ANSWER20 (
+            type: plainText
+            heading {
+                heading: &P17_Q20.
+            }
+            layout {
+                sequence: 233
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BA
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q20
+            }
+        )
+
+        column ANSWER3 (
+            type: plainText
+            heading {
+                heading: &P17_Q3.
+            }
+            layout {
+                sequence: 63
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q3
+            }
+        )
+
+        column ANSWER4 (
+            type: plainText
+            heading {
+                heading: &P17_Q4.
+            }
+            layout {
+                sequence: 73
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AK
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q4
+            }
+        )
+
+        column ANSWER5 (
+            type: plainText
+            heading {
+                heading: &P17_Q5.
+            }
+            layout {
+                sequence: 83
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AL
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q5
+            }
+        )
+
+        column ANSWER6 (
+            type: plainText
+            heading {
+                heading: &P17_Q6.
+            }
+            layout {
+                sequence: 93
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AM
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q6
+            }
+        )
+
+        column ANSWER7 (
+            type: plainText
+            heading {
+                heading: &P17_Q7.
+            }
+            layout {
+                sequence: 103
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AN
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q7
+            }
+        )
+
+        column ANSWER8 (
+            type: plainText
+            heading {
+                heading: &P17_Q8.
+            }
+            layout {
+                sequence: 113
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AO
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q8
+            }
+        )
+
+        column ANSWER9 (
+            type: plainText
+            heading {
+                heading: &P17_Q9.
+            }
+            layout {
+                sequence: 123
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AP
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P17_Q9
+            }
+        )
+
+        column COMMUNITY (
+            type: plainText
+            heading {
+                heading: Community
+                alignment: center
+            }
+            layout {
+                sequence: 33
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AG
+            }
+        )
+
+        column RESPONDENT (
+            type: link
+            heading {
+                heading: Respondent
+            }
+            layout {
+                sequence: 12
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_RESULT_ID: #RESULT_ID#
+                    }
+                    clearCache: 73
+                    action: resetPagination
+                }
+                linkText: #RESPONDENT#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AB
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column RESULT_ID (
+            type: hidden
+            heading {
+                heading: Result Id
+            }
+            layout {
+                sequence: 243
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: BB
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column SUBMISSION_DATE (
+            type: plainText
+            heading {
+                heading: Submission Date
+            }
+            layout {
+                sequence: 29
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AC
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        savedReport 3611085 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ANSWER1 (
+                sequence: 2
+            )
+
+            displayColumn ANSWER10 (
+                sequence: 11
+            )
+
+            displayColumn ANSWER11 (
+                sequence: 12
+            )
+
+            displayColumn ANSWER12 (
+                sequence: 13
+            )
+
+            displayColumn ANSWER13 (
+                sequence: 14
+            )
+
+            displayColumn ANSWER14 (
+                sequence: 15
+            )
+
+            displayColumn ANSWER15 (
+                sequence: 16
+            )
+
+            displayColumn ANSWER16 (
+                sequence: 17
+            )
+
+            displayColumn ANSWER17 (
+                sequence: 18
+            )
+
+            displayColumn ANSWER18 (
+                sequence: 19
+            )
+
+            displayColumn ANSWER19 (
+                sequence: 20
+            )
+
+            displayColumn ANSWER2 (
+                sequence: 3
+            )
+
+            displayColumn ANSWER20 (
+                sequence: 21
+            )
+
+            displayColumn ANSWER3 (
+                sequence: 4
+            )
+
+            displayColumn ANSWER4 (
+                sequence: 5
+            )
+
+            displayColumn ANSWER5 (
+                sequence: 6
+            )
+
+            displayColumn ANSWER6 (
+                sequence: 7
+            )
+
+            displayColumn ANSWER7 (
+                sequence: 8
+            )
+
+            displayColumn ANSWER8 (
+                sequence: 9
+            )
+
+            displayColumn ANSWER9 (
+                sequence: 10
+            )
+
+            displayColumn RESPONDENT (
+                sequence: 1
+            )
+
+            displayColumn RESULT_ID (
+                sequence: 22
+            )
+
+            sort (
+                column: POLL_ID
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: RESPONDENT
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: QUESTION_DISPLAY_SEQ
+                sort {
+                    sequence: 3
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P17_POLL_NAME (
+        type: displayOnly
+        label {
+            label: Poll
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @current-poll
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select poll_name from eba_qpoll_polls
+                 where id = :POLL_ID
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q1 (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q10 (
+        type: hidden
+        layout {
+            sequence: 200
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q11 (
+        type: hidden
+        layout {
+            sequence: 220
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q12 (
+        type: hidden
+        layout {
+            sequence: 230
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q13 (
+        type: hidden
+        layout {
+            sequence: 240
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q14 (
+        type: hidden
+        layout {
+            sequence: 250
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q15 (
+        type: hidden
+        layout {
+            sequence: 260
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q16 (
+        type: hidden
+        layout {
+            sequence: 270
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q17 (
+        type: hidden
+        layout {
+            sequence: 280
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q18 (
+        type: hidden
+        layout {
+            sequence: 290
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q19 (
+        type: hidden
+        layout {
+            sequence: 300
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q2 (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q20 (
+        type: hidden
+        layout {
+            sequence: 310
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q3 (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q4 (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q5 (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q6 (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q7 (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q8 (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_Q9 (
+        type: hidden
+        layout {
+            sequence: 180
+            region: @current-poll
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button back (
+        buttonName: BACK
+        label: Back
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-angle-double-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cross-poll (
+        buttonName: cross_poll
+        label: Alternate View
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                items: {
+                    IR_POLL_ID: &POLL_ID.
+                }
+                clearCache: [
+                    41
+                    CIR
+                    RIR
+                ]
+                action: resetPagination
+                request: CIR,RIR
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    button remove-results (
+        buttonName: REMOVE_RESULTS
+        label: Remove Results
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 40
+                action: resetPagination
+                request: CIR,RIR
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @result-details
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction after-edit-respondent (
+        name: after edit respondent
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @result-details
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @result-details
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction on-close (
+        name: on close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @remove-results
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @result-details
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process load-questions (
+        name: load questions
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_nbr  number := 1;
+                begin
+                
+                :P17_Q1 := null;
+                :P17_Q2 := null;
+                :P17_Q3 := null;
+                :P17_Q4 := null;     
+                :P17_Q5 := null;   
+                :P17_Q6 := null;    
+                :P17_Q7 := null;    
+                :P17_Q8 := null;   
+                :P17_Q9 := null; 
+                :P17_Q10 := null;
+                :P17_Q11 := null;
+                :P17_Q12 := null;
+                :P17_Q13 := null;
+                :P17_Q14 := null;      
+                :P17_Q15 := null;      
+                :P17_Q16 := null; 
+                :P17_Q17 := null;   
+                :P17_Q18 := null;     
+                :P17_Q19 := null; 
+                :P17_Q20 := null;
+                
+                for c1 in (
+                   select question
+                     from EBA_QPOLL_QUESTIONS
+                    where :POLL_ID = poll_id
+                    order by display_sequence
+                ) loop
+                   if l_nbr = 1 then
+                      :P17_Q1 := apex_escape.html(c1.question);
+                   elsif l_nbr = 2 then
+                      :P17_Q2 := apex_escape.html(c1.question);
+                   elsif l_nbr = 3 then
+                      :P17_Q3 := apex_escape.html(c1.question);
+                   elsif l_nbr = 4 then
+                      :P17_Q4 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 5 then
+                      :P17_Q5 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 6 then
+                      :P17_Q6 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 7 then
+                      :P17_Q7 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 8 then
+                      :P17_Q8 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 9 then
+                      :P17_Q9 := apex_escape.html(c1.question); 
+                   elsif l_nbr = 10 then
+                      :P17_Q10 := apex_escape.html(c1.question); 
+                   elsif l_nbr = 11 then
+                      :P17_Q11 := apex_escape.html(c1.question);
+                   elsif l_nbr = 12 then
+                      :P17_Q12 := apex_escape.html(c1.question);
+                   elsif l_nbr = 13 then
+                      :P17_Q13 := apex_escape.html(c1.question);
+                   elsif l_nbr = 14 then
+                      :P17_Q14 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 15 then
+                      :P17_Q15 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 16 then
+                      :P17_Q16 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 17 then
+                      :P17_Q17 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 18 then
+                      :P17_Q18 := apex_escape.html(c1.question);      
+                   elsif l_nbr = 19 then
+                      :P17_Q19 := apex_escape.html(c1.question); 
+                   elsif l_nbr = 20 then
+                      :P17_Q20 := apex_escape.html(c1.question);  
+                   end if;
+                   l_nbr := l_nbr + 1;
+                end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 361109338255946893
+        }
+    )
+
+)
+

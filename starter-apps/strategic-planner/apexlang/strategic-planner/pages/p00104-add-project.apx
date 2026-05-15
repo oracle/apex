@@ -1,0 +1,305 @@
+page 104 (
+    name: Add Project
+    alias: ADD-PROJECT
+    title: Add Project
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region content (
+        name: Content
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P104_AREA (
+        type: radioGroup
+        label {
+            label: Select &NOMENCLATURE_AREA.
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select a.area d, a.id r
+                from sp_areas a
+                where HIDDEN_BY_DEFAULT_YN = 'N'
+                order by upper(a.area)
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 5
+            region: @content
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: item
+            item: P104_DEFAULT_AREA
+        }
+        help {
+            helpText: &NOMENCLATURE_AREAS. are a top level "folders" that are subdivided into &NOMENCLATURE_INITIATIVES..   &NOMENCLATURE_INITIATIVES. are used to organize &NOMENCLATURE_PROJECTS.
+        }
+    )
+
+    pageItem P104_DEFAULT_AREA (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @content
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_DEFAULT_INITIATIVE (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @content
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_INITIATIVE (
+        type: radioGroup
+        label {
+            label: Select &NOMENCLATURE_INITIATIVE.
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select initiative, id
+                from SP_INITIATIVES i
+                where area_id = :P104_area and
+                      nvl(HIDDEN_BY_DEFAULT_YN,'N') = 'N'
+                order by upper(initiative)
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        cascadingLov {
+            parentItems: P104_AREA
+        }
+        layout {
+            sequence: 10
+            region: @content
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: item
+            item: P104_DEFAULT_INITIATIVE
+        }
+        help {
+            helpText: &NOMENCLATURE_INITIATIVES. organize &NOMENCLATURE_PROJECTS. within &NOMENCLATURE_AREAS.
+        }
+    )
+
+    pageItem P104_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @content
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: cancel
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close-dialog-on-cancel (
+        name: close dialog on cancel
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation initiative-must-be-specified (
+        name: Initiative must be specified
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P104_INITIATIVE
+        }
+        error {
+            errorMessage: &NOMENCLATURE_INITIATIVE. must be specified.
+        }
+    )
+
+    process set-defaults-based-on-last-project-view (
+        name: set defaults based on last project view
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P104_DEFAULT_AREA := null;
+                :P104_DEFAULT_INITIATIVE := null;
+                for c1 in (
+                    select l.project_id, i.area_id, p.INITIATIVE_ID, l.PAGE_RENDERED
+                    from   SP_PROJ_INTERACTIONS_LOG l, sp_projects P, sp_initiatives i 
+                    where  l.APP_USER = lower(:APP_USER) and
+                           l.project_id = p.id and
+                           p.INITIATIVE_ID = i.id and
+                           p.archived_yn = 'N'
+                    order by l.PAGE_RENDERED desc
+                    fetch first 1 rows only
+                
+                ) loop
+                    :P104_DEFAULT_AREA := c1.area_id;
+                    :P104_DEFAULT_INITIATIVE := c1.INITIATIVE_ID;
+                end loop;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1418176949973901543
+        }
+    )
+
+    branch (
+        name: go to step 2
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 24
+                items: {
+                    P24_INITIATIVE_ID: &P104_INITIATIVE.
+                    P24_RELEASE_ID: &P104_RELEASE_ID.
+                    P24_RELEASE_ID: &P104_RELEASE_ID.
+                }
+                clearCache: 24
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

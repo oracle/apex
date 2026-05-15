@@ -1,0 +1,313 @@
+page 3 (
+    name: Project Tracking
+    alias: PROJECT-TRACKING
+    title: Project Tracking
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: task_tree
+        }
+    )
+
+    region task-tracking-tabs (
+        name: Task_Tracking_Tabs
+        type: list
+        source {
+            list: @task-tracking-tabs
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--cols t-MediaList--2cols
+            ]
+        }
+    )
+
+    region task-tree (
+        name: Task Tree
+        type: tree
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select case when connect_by_isleaf = 1 then 0
+                            when level = 1             then 1
+                            else                           -1
+                       end as status, 
+                       level, 
+                       label||': '||name as title, 
+                       case when item_type = 'P' then 'fa-file-text-o'
+                            when item_type = 'S' then 'fa-caret-square-o-right'
+                            when item_type = 'T' then 'fa-minus-square-o'
+                       else null
+                       end as icon, 
+                       id as value, 
+                       case when tooltip is not null then name||' - '||tooltip||'% complete'
+                            else name
+                       end as tooltip,
+                       case when item_type = 'P' then 
+                               apex_util.prepare_url('f?p='||:app_id||':7:'||:app_session||':T:::P3_SELECTED_NODE,P7_PROJ_ID:'||id||','||id)
+                            when item_type = 'T' then
+                               apex_util.prepare_url('f?p='||:app_id||':9:'||:app_session||':T:::P3_SELECTED_NODE,P9_PROJ_ID,P9_TASK_ID:'||id||','||link)
+                            when item_type = 'S' then 
+                               apex_util.prepare_url('f?p='||:app_id||':10:'||:app_session||':T:::P3_SELECTED_NODE,P10_PROJ_ID,P10_ROWID:'||id||','||link)
+                       end as link 
+                 from (
+                select 'P' item_type,
+                       t.label label,
+                       to_char(a.PROJ_ID) id,
+                       null parent,
+                       a.project_name name,
+                       a.status tooltip,
+                       null link
+                  from eba_demo_tree_projects a, (select wwv_flow_lang.system_message('PROJECT') label from dual) t
+                union all
+                select 'T' item_type,
+                       u.label label,
+                       to_char(b.proj_id)||'-'||to_char(b.task_id) id,
+                       to_char(b.proj_id) parent,
+                       b.task_name name,
+                       null tooltip,
+                       b.proj_id||','||b.task_id link
+                  from eba_demo_tree_task b, (select wwv_flow_lang.system_message('TASK') label from dual) u
+                union all
+                select 'S' item_type,
+                       v.label label,
+                       to_char(c.proj_id)||'-'||to_char(c.task_id)||'-'||to_char(c.sub_id) id,
+                       to_char(c.proj_id)||'-'||to_char(c.task_id) parent,
+                       c.sub_name name,
+                       null tooltip,
+                       c.proj_id||','||c.rowid link
+                  from eba_demo_tree_subtask c, (select wwv_flow_lang.system_message('SUBTASK') label from dual) v
+                )
+                start with parent is null
+                connect by prior id = parent
+                order siblings by name
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: task_tree
+        }
+        settings {
+            nodeLabelColumn: TITLE
+            nodeValueColumn: VALUE
+            hierarchy: notComputed
+            nodeStatusColumn: STATUS
+            hierarchyLevelColumn: LEVEL
+            tooltip: databaseCol
+            tooltipColumn: TOOLTIP
+            linkColumn: LINK
+            iconCssClassColumn: ICON
+            iconTypeCssClass: fa
+            selectedNodePageItem: P3_SELECTED_NODE
+            staticTreeId: projTrackTree
+        }
+    )
+
+    pageItem P3_SELECTED_NODE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @task-tree
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button contract-all (
+        buttonName: CONTRACT_ALL
+        label: Collapse All
+        layout {
+            sequence: 20
+            region: @task-tree
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button expand-all (
+        buttonName: EXPAND_ALL
+        label: Expand All
+        layout {
+            sequence: 30
+            region: @task-tree
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button reset-tree (
+        buttonName: RESET_TREE
+        label: Reset Tree
+        layout {
+            sequence: 40
+            region: @task-tree
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+                clearCache: 3
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction collapse (
+        name: collapse
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @contract-all
+        }
+
+        action native-tree-collapse (
+            action: collapseTree
+            affectedElements {
+                selectionType: region
+                region: @task-tree
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction expand (
+        name: expand
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @expand-all
+        }
+
+        action native-tree-expand (
+            action: expandTree
+            affectedElements {
+                selectionType: region
+                region: @task-tree
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

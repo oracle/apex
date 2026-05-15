@@ -1,0 +1,666 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry access-control-list (
+        name: Access Control List
+        pageNumber: 29
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry activity-calendar (
+        name: Activity Calendar
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry add-multiple-members (
+        name: Add Multiple Members
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @group-members
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry add-multiple-members-2 (
+        name: Add Multiple Members
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @group-members
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry add-multiple-users (
+        name: Add Multiple Users
+        pageNumber: 53
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry add-multiple-users-2 (
+        name: Add Multiple Users
+        pageNumber: 54
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry application-appearance (
+        name: Application Appearance
+        pageNumber: 41
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry application-error-log (
+        name: Application Error Log
+        pageNumber: 175
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 175
+            }
+        }
+    )
+
+    entry attachment (
+        name: Attachment
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @attachments
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry attachments (
+        name: Attachments
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @p3-event-name
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry build-options (
+        name: Build Options
+        pageNumber: 40
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+    )
+
+    entry calendar-details (
+        name: Calendar Details
+        pageNumber: 44
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @calendars
+        }
+        link {
+            target: {
+                page: 44
+            }
+        }
+    )
+
+    entry calendars (
+        name: Calendars
+        pageNumber: 42
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry delete-multiple (
+        name: Delete Multiple
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @search
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry details (
+        name: Details
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @groups
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry details-2 (
+        name: Details
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @group-members
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry details-3 (
+        name: Details
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting-time-frames
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry details-4 (
+        name: Details
+        pageNumber: 8
+        execution {
+            sequence: 80
+        }
+        appearance {
+            parentEntry: @event-types
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry event (
+        name: Event
+        pageNumber: 10
+        execution {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry event-types (
+        name: Event Types
+        pageNumber: 7
+        execution {
+            sequence: 70
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry event-update (
+        name: Event Update
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @p3-event-name
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry event-updates (
+        name: Event Updates
+        pageNumber: 34
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @p3-event-name
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry group-members (
+        name: Group Members
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry groups (
+        name: Groups
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 43
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry notification (
+        name: Notification
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @notifications
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry notifications (
+        name: Notifications
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry p3-event-name (
+        name: &P3_EVENT_NAME.
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry page-privileges (
+        name: Page Privileges
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry preferences (
+        name: Preferences
+        pageNumber: 28
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry rename-application (
+        name: Rename Application
+        pageNumber: 37
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry reporting-time-frames (
+        name: Reporting Time Frames
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry search (
+        name: Search
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry send-email (
+        name: Send Email
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry tags (
+        name: Tags
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry time-zone (
+        name: Time Zone
+        pageNumber: 100
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @preferences
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry timeline-of-future-events (
+        name: Timeline of Future Events
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry update-or-delete-affects (
+        name: Update or Delete Affects
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @event
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry user-details (
+        name: User Details
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @access-control-list
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry username-format (
+        name: Username Format
+        pageNumber: 38
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+)
+

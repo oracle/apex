@@ -1,0 +1,529 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry administration (
+        name: Administration
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry calendar-and-report (
+        name: Calendar and Report
+        pageNumber: 51
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @dynamic-action-examples
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry calendar-client-events (
+        name: Calendar Client Events
+        pageNumber: 73
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @calendars-and-javascript
+        }
+        link {
+            target: {
+                page: 73
+            }
+        }
+    )
+
+    entry calendar-entry (
+        name: Calendar Entry
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry calendar-styling (
+        name: Calendar Styling
+        pageNumber: 90
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 90
+            }
+        }
+    )
+
+    entry calendars-and-javascript (
+        name: Calendars and Javascript
+        pageNumber: 70
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry copy-events-by-click (
+        name: Copy Events By Click
+        pageNumber: 54
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @dynamic-action-examples
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry create-calendar-events (
+        name: Create Calendar Events
+        pageNumber: 52
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @dynamic-action-examples
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry custom-calendar-initialization (
+        name: Custom Calendar Initialization
+        pageNumber: 110
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 110
+            }
+        }
+    )
+
+    entry custom-css-classes (
+        name: Custom CSS Classes
+        pageNumber: 91
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @calendar-styling
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+    )
+
+    entry custom-drag-and-drop-handlers (
+        name: Custom Drag and Drop Handlers
+        pageNumber: 112
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @dynamic-action-examples
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+    )
+
+    entry custom-event-icons (
+        name: Custom Event Icons
+        pageNumber: 92
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @calendar-styling
+        }
+        link {
+            target: {
+                page: 92
+            }
+        }
+    )
+
+    entry custom-navigation (
+        name: Custom Navigation
+        pageNumber: 71
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @calendars-and-javascript
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+    )
+
+    entry custom-weekly-schedule (
+        name: Custom weekly schedule
+        pageNumber: 111
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @custom-calendar-initialization
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+    )
+
+    entry delete-events-by-click (
+        name: Delete Events By Click
+        pageNumber: 53
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @dynamic-action-examples
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry dynamic-action-examples (
+        name: Dynamic Action Examples
+        pageNumber: 50
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry faceted-search-projects (
+        name: Faceted Search: Projects
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @standard-calendars
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry mini-calendar (
+        name: Mini Calendar
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry monthly-calendar-projects (
+        name: Monthly Calendar: Projects
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @standard-calendars
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry p14-project (
+        name: &P14_PROJECT.
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @mini-calendar
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry project-detail (
+        name: Project Detail
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @project-due-dates
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry project-due-dates (
+        name: Project Due Dates
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry query-calendar-status (
+        name: Query Calendar Status
+        pageNumber: 72
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @calendars-and-javascript
+        }
+        link {
+            target: {
+                page: 72
+            }
+        }
+    )
+
+    entry report (
+        name: Report
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @manage-sample-data
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry schedule-builder (
+        name: Schedule Builder
+        pageNumber: 74
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @calendars-and-javascript
+        }
+        link {
+            target: {
+                page: 74
+            }
+        }
+    )
+
+    entry standard-calendars (
+        name: Standard Calendars
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry time-line (
+        name: Time Line
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry weekly-calendar-conference (
+        name: Weekly Calendar: Conference
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @standard-calendars
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry weekly-calendar-drag-drop (
+        name: Weekly Calendar: Drag & Drop
+        pageNumber: 34
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @standard-calendars
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry weekly-calendar-edit-sessions (
+        name: Weekly Calendar: Edit Sessions
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @standard-calendars
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry weekly-calendar-time-format (
+        name: Weekly Calendar: Time Format
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @standard-calendars
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+)
+

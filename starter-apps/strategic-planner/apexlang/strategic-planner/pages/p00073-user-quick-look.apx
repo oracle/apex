@@ -1,0 +1,1826 @@
+page 73 (
+    name: User Quick Look
+    alias: USER-QUICK-LOOK
+    title: &NOMENCLATURE_USER. Quick Look
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region active-approvals (
+        name: Active Approvals
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.project, p.friendly_identifier, 
+                       t.approval_type,
+                       case when a.submitted_by_team_member_id = :APP_USER_ID
+                            then 'Submitter'
+                            else  (select case when status = 'PENDING' then 'Pending Review'
+                                               else initcap(replace(status,'-',' '))
+                                               end
+                                     from (select status,
+                                                  updated,
+                                                  max(updated) over (partition by team_member_id) last_updated
+                                             from sp_project_approval_chain
+                                            where project_approval_id = a.id
+                                              and team_member_id = :APP_USER_ID)
+                                    where last_updated = updated)
+                            end role,
+                            initcap(replace(a.status,'-',' ')) current_status,
+                            a.updated
+                  from sp_projects p, 
+                       sp_project_approvals a,
+                       sp_approval_types t
+                 where p.id = a.project_id
+                   and p.ARCHIVED_YN = 'N'
+                   and p.DUPLICATE_OF_PROJECT_ID is null
+                   and a.approval_type_id = t.id
+                   and a.status not in ('APPROVED','REJECTED','WITHDRAWN')
+                   and ( a.submitted_by_team_member_id = :APP_USER_ID
+                         or
+                         exists (select 1 from sp_project_approval_chain
+                                  where project_approval_id = a.id
+                                    and team_member_id = :APP_USER_ID) )
+                order by a.updated desc
+                ```
+            pageItemsToSubmit: P73_TEAM_MEMBER_ID
+        }
+        layout {
+            sequence: 75
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P73_TEAM_MEMBER_ID
+        }
+        config {
+            buildOption: @approvals
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+            ]
+        }
+        messages {
+            whenNoDataFound: None Found
+        }
+
+        column APPROVAL_TYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Approval Type
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CURRENT_STATUS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Current Status
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                    }
+                    clearCache: 3
+                }
+                linkText: #PROJECT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROLE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Role
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region associated-groups (
+        name: Associated Groups
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select g.GROUP_NAME, gm.CREATED added_to_group, g.id group_id, 
+                       (select count(*) from SP_GROUP_MEMBERS x where x.group_id = gm.group_id) members,
+                       decode(nvl(full_time_yn,'N'),'Y','Yes','No') full_time,
+                       decode(nvl(group_leader_yn,'N'),'Y','Yes','No') group_leader
+                from   SP_GROUP_MEMBERS gm,
+                       SP_GROUPS g
+                where  TEAM_MEMBER_ID = :P73_TEAM_MEMBER_ID and
+                       g.id = gm.GROUP_ID
+                order by upper(g.group_name)
+                ```
+        }
+        layout {
+            sequence: 85
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P73_TEAM_MEMBER_ID
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: None Found
+        }
+
+        column ADDED_TO_GROUP (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Added
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FULL_TIME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Full Time
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GROUP_ID (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column GROUP_LEADER (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Group Leader
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GROUP_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Group Name
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 151
+                    items: {
+                        P151_GROUP_ID: #GROUP_ID#
+                    }
+                    clearCache: 151
+                    action: resetPagination
+                }
+                linkText: #GROUP_NAME#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MEMBERS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Group Members
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region button-container (
+        name: Button Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P73_TEAM_MEMBER_ID
+        }
+    )
+
+    region current-and-future-nomenclature-project-activities (
+        name: Current and Future &NOMENCLATURE_PROJECT. Activities
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ap.id, 
+                       at.activity_type,
+                       decode(greatest(length(ap.comments),80),80,ap.comments,substr(ap.comments,1,80)||'...') comments,
+                       ap.start_date,
+                       ap.end_date,
+                       to_char(ap.end_date,'Day DD-MON-YYYY') end_date_formatted,
+                       to_char(ap.start_date,'Day DD-MON-YYYY')||' to '||to_char(ap.end_date,'Day DD-MON-YYYY') TIMELINE,
+                       --
+                       -- determine if activity is past, current, or future
+                       --
+                       decode(trunc(ap.end_date),trunc(sysdate),'Current',
+                       decode(trunc(ap.start_date),trunc(sysdate),'Current',
+                       decode(
+                           greatest(trunc(ap.start_date),trunc(sysdate)),
+                               trunc(ap.start_date),'Future',
+                           decode(
+                               greatest(trunc(ap.end_date),trunc(sysdate)),
+                               trunc(sysdate),
+                               'Past','Current')
+                           ))) timeframe,
+                       --
+                       -- optional project detail
+                       --
+                       decode(ap.project_id,null,null,(
+                           select decode(greatest(length(p.project),80),80,p.PROJECT,substr(p.project,1,80)||'...') project 
+                           from sp_projects p 
+                           where p.id = ap.project_id and 
+                                 p.DUPLICATE_OF_PROJECT_ID is null and
+                                 p.ARCHIVED_YN = 'N')
+                           ) project,
+                       decode(ap.project_id,null,null,(
+                           select friendly_identifier 
+                           from sp_projects p 
+                           where p.id = ap.project_id and 
+                                 p.DUPLICATE_OF_PROJECT_ID is null and
+                                 p.ARCHIVED_YN = 'N')
+                           ) friendly_identifier,
+                       decode(ap.project_id,null,null,(
+                           select PROJECT_URL_NAME 
+                           from sp_projects p 
+                           where p.id = ap.project_id and 
+                                 p.DUPLICATE_OF_PROJECT_ID is null and
+                                 p.ARCHIVED_YN = 'N')
+                           ) PROJECT_URL_NAME,
+                       --
+                       --
+                       --
+                       ap.end_date - ap.start_date days,
+                       round(ap.end_date - sysdate) days_remaining,
+                       ap.url,
+                       apex_util.get_since(ap.updated) last_updated,
+                       --
+                       -- team member info
+                       --
+                       tm.first_name||' '||tm.last_name name,
+                       --
+                       -- badge status is red if past due and green if within begin and and dates
+                       --
+                
+                       decode (trunc(sysdate),trunc(ap.end_date),'success',
+                       decode (trunc(sysdate),trunc(ap.start_date),'success',
+                       decode(
+                           greatest(to_char(ap.end_date,'YYYY.MM.DD'),to_char(sysdate,'YYYY.MM.DD')),
+                           to_char(sysdate,'YYYY.MM.DD'),
+                           'danger',
+                           decode(
+                               greatest(to_char(ap.start_date,'YYYY.MM.DD'),to_char(sysdate,'YYYY.MM.DD')),
+                               to_char(sysdate,'YYYY.MM.DD'),
+                               'success','info')))) as badge_class,       
+                       --
+                       -- pie chart icon in 10% chunks that show time percent complete
+                       --
+                       'fa-pie-chart-'||sp_date_range_pct_comp(ap.start_date, ap.end_date) icon
+                from sp_activities ap,
+                     sp_activity_types at,
+                     sp_team_members tm
+                where 
+                      ap.activity_type_id = at.id and
+                      tm.id = :P73_TEAM_MEMBER_ID and
+                      ap.team_member_id = tm.id and
+                      --
+                      -- excludes completed in the past
+                      --
+                      trunc(ap.end_date) >= trunc(sysdate)
+                ```
+            pageItemsToSubmit: P73_TEAM_MEMBER_ID
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P73_TEAM_MEMBER_ID
+        }
+        config {
+            buildOption: @activity-planning
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: <strong>&ACTIVITY_TYPE.</strong>: &TIMELINE.
+            title: &PROJECT.
+            description: &COMMENTS.
+            miscellaneous: &LAST_UPDATED.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            description: Elapsed Time
+            shape: noShape
+            size: small
+        }
+        plugin-badge {
+            label: &NOMENCLATURE_PROJECTS.
+            value: TIMEFRAME
+            state: BADGE_CLASS
+            columnWidth: small
+        }
+        pagination {
+            entitiesPerPage: 30
+        }
+
+        column ACTIVITY_TYPE (
+            layout {
+                sequence: 190
+            }
+            source {
+                databaseColumn: ACTIVITY_TYPE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_CLASS (
+            layout {
+                sequence: 330
+            }
+            source {
+                databaseColumn: BADGE_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column COMMENTS (
+            layout {
+                sequence: 200
+            }
+            source {
+                databaseColumn: COMMENTS
+                dataType: varchar2
+            }
+        )
+
+        column DAYS (
+            layout {
+                sequence: 230
+            }
+            source {
+                databaseColumn: DAYS
+                dataType: number
+            }
+        )
+
+        column DAYS_REMAINING (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: DAYS_REMAINING
+                dataType: number
+            }
+        )
+
+        column END_DATE (
+            layout {
+                sequence: 220
+            }
+            source {
+                databaseColumn: END_DATE
+                dataType: date
+            }
+        )
+
+        column END_DATE_FORMATTED (
+            layout {
+                sequence: 310
+            }
+            source {
+                databaseColumn: END_DATE_FORMATTED
+                dataType: varchar2
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            layout {
+                sequence: 270
+            }
+            source {
+                databaseColumn: FRIENDLY_IDENTIFIER
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column LAST_UPDATED (
+            layout {
+                sequence: 300
+            }
+            source {
+                databaseColumn: LAST_UPDATED
+                dataType: varchar2
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 250
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT (
+            layout {
+                sequence: 260
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            layout {
+                sequence: 290
+            }
+            source {
+                databaseColumn: PROJECT_URL_NAME
+                dataType: varchar2
+            }
+        )
+
+        column START_DATE (
+            layout {
+                sequence: 210
+            }
+            source {
+                databaseColumn: START_DATE
+                dataType: date
+            }
+        )
+
+        column TIMEFRAME (
+            layout {
+                sequence: 340
+            }
+            source {
+                databaseColumn: TIMEFRAME
+                dataType: varchar2
+            }
+        )
+
+        column TIMELINE (
+            layout {
+                sequence: 280
+            }
+            source {
+                databaseColumn: TIMELINE
+                dataType: varchar2
+            }
+        )
+
+        column URL (
+            layout {
+                sequence: 240
+            }
+            source {
+                databaseColumn: URL
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 3
+                    items: {
+                        FI: &FRIENDLY_IDENTIFIER.
+                        PN: &PROJECT_URL_NAME.
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu edit-activity (
+                label: Edit Activity
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 101
+                        items: {
+                            P101_ID: &ID.
+                        }
+                        clearCache: 101
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu view-nomenclature-project (
+                label: View &NOMENCLATURE_PROJECT.
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 3
+                        items: {
+                            FI: &FRIENDLY_IDENTIFIER.
+                            PN: &PROJECT_URL_NAME.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-glasses
+                }
+                security {
+                    authorizationScheme: @reader-rights
+                }
+            )
+
+        )
+
+    )
+
+    region nomenclature-project-associations-excludes-completed (
+        name: &NOMENCLATURE_PROJECT. Associations (Excludes Completed)
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select x.*, 
+                       ltrim(case when x.is_owner = 'Yes' then 'Owner' end || 
+                             case when x.contrib > 0 then ', Contributor' end ||
+                             case when x.milestone_owner > 0 then ', Milestone Owner' end ||
+                             case when x.reviewer > 0 then ', Reviewer' end ||
+                             case when x.task_owner > 0 then ', Task Owner' end,', ') Association
+                from (
+                select p.id, 
+                       p.PROJECT, 
+                       i.INITIATIVE, 
+                       f.area focus_area, 
+                       --
+                       -- project attributes
+                       --
+                       p.PCT_COMPLETE PCT_COMPLETE,
+                       (select max('P'||PRIORITY) from sp_project_priorities pp where pp.id = p.priority_id) priority,
+                       (select release_train||' '||release from SP_RELEASE_TRAINS r where r.id = p.release_id) release,
+                       p.tags,
+                       p.project_size,
+                       p.updated,
+                       p.created,
+                       --
+                       -- columns needed to link to project
+                       --
+                       p.FRIENDLY_IDENTIFIER,
+                       p.PROJECT_URL_NAME,
+                       --
+                       -- project owner
+                       --
+                       case when p.owner_id = :P73_TEAM_MEMBER_ID
+                            then 'Yes'
+                            else 'No'
+                            end as is_owner,
+                       --
+                       -- contrib
+                       --
+                       nvl((select min(1) from SP_PROJECT_CONTRIBUTORS c 
+                             where c.project_id = p.id
+                               and c.team_member_id = :P5_ID),0) contrib,
+                       --
+                       -- task owner
+                       --
+                       nvl((select min(1) from sp_tasks t, sp_task_types tt 
+                             where t.project_id = p.id
+                               and t.owner_id = :P5_ID
+                               and nvl(t.task_sub_type_id,t.task_type_id) = tt.id
+                               and tt.static_id not like 'REVIEW%'
+                               and tt.static_id not like 'MILESTONE%'),0) task_owner,
+                       --
+                       -- milestone owner
+                       --
+                       nvl((select min(1) from sp_tasks t, sp_task_types tt 
+                             where t.project_id = p.id
+                               and t.owner_id = :P5_ID
+                               and nvl(t.task_sub_type_id,t.task_type_id) = tt.id
+                               and tt.static_id like 'MILESTONE%'),0) milestone_owner,
+                       --
+                       -- reviewer role
+                       --
+                       nvl((select min(1) from sp_tasks t, sp_task_types tt 
+                             where t.project_id = p.id
+                               and t.owner_id = :P5_ID
+                               and nvl(t.task_sub_type_id,t.task_type_id) = tt.id
+                               and tt.static_id like 'REVIEW%'),0) reviewer
+                from SP_PROJECTS p,
+                     sp_initiatives i,
+                     sp_areas f
+                where (p.owner_id = :P73_TEAM_MEMBER_ID or 
+                         :P73_TEAM_MEMBER_ID in (select c.team_member_id 
+                                                   from SP_PROJECT_CONTRIBUTORS c 
+                                                  where c.project_id = p.id) or
+                         :P73_TEAM_MEMBER_ID in (select c.owner_id 
+                                                   from SP_TASKS c 
+                                                  where c.project_id = p.id) or
+                         :P73_TEAM_MEMBER_ID in (select a.TEAM_MEMBER_ID from SP_ACTIVITIES a where a.PROJECT_ID = p.id)
+                      ) and
+                      p.INITIATIVE_ID = i.id and
+                      i.area_id = f.id and
+                      p.ARCHIVED_YN = 'N' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.pct_complete > 0 and 
+                      p.pct_complete < 100
+                ) x
+                order by updated desc
+                      
+                
+                ```
+            pageItemsToSubmit: P73_TEAM_MEMBER_ID
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P73_TEAM_MEMBER_ID
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: None Found
+        }
+
+        column ASSOCIATION (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: Association
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CONTRIB (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 50
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column IS_OWNER (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column MILESTONE_OWNER (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 180
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Complete
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_SIZE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 100
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+            config {
+                buildOption: @releases
+            }
+        )
+
+        column REVIEWER (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 190
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 90
+            }
+        )
+
+        column TASK_OWNER (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 170
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region nomenclature-user-details (
+        name: &NOMENCLATURE_USER. Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tm.ID,
+                       tm.FIRST_NAME||' '||tm.LAST_NAME name,
+                       tm.EMAIL,
+                       replace(lower(tm.TAGS),',',', ') tags,
+                       rtrim(replace(tm.competencies,',',', ')) competencies,
+                       decode(tm.is_current_yn,'Y','Yes','N','No',tm.is_current_yn) IS_CURRENT_YN,
+                       screen_name,
+                       tm.created,
+                       tm.updated
+                from SP_TEAM_MEMBERS tm
+                where id = :P73_TEAM_MEMBER_ID
+                ```
+            pageItemsToSubmit: P73_TEAM_MEMBER_ID
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-top-sm
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P73_TEAM_MEMBER_ID
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column COMPETENCIES (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Competencies
+            }
+            layout {
+                sequence: 100
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery: select 1 from sp_team_members where competencies is not null and id = :P73_TEAM_MEMBER_ID
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column EMAIL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column IS_CURRENT_YN (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Current
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column SCREEN_NAME (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Screen Name
+            }
+            layout {
+                sequence: 60
+            }
+            config {
+                buildOption: @comment-tagging
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 110
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
+    region not-a-team-member (
+        name: Not a Team Member
+        type: staticContent
+        source {
+            htmlCode: Person selected is not a team member in this application.
+        }
+        layout {
+            sequence: 1
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P73_TEAM_MEMBER_ID
+        }
+    )
+
+    region open-reviews (
+        name: Open Reviews
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tt.task_type review_type,
+                       p.PROJECT,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = p.OWNER_ID) the_owner,
+                       (select 'P'||PRIORITY from SP_PROJECT_PRIORITIES x where x.ID = p.PRIORITY_ID) priority,
+                       p.PCT_COMPLETE pct_complete,
+                       decode(p.release_id,
+                          null, decode(p.TARGET_COMPLETE,null,'No Target',to_char(p.TARGET_COMPLETE,'DD-MON-YYYY')),
+                          (select RELEASE_TRAIN||' '||release from SP_RELEASE_TRAINS r where r.id = p.RELEASE_ID)) release,
+                       p.PROJECT_SIZE,
+                       t.UPDATED,
+                       s.status,
+                       t.impact,
+                       t.target_complete review_date,
+                       null attributes
+                  from SP_PROJECTS p,
+                       sp_tasks t,
+                       sp_task_types tt,
+                       sp_task_statuses s
+                 where nvl(p.ARCHIVED_YN,'N') != 'Y'
+                   and p.DUPLICATE_OF_PROJECT_ID is null
+                   and p.id = t.project_id
+                   and t.owner_id = :P73_TEAM_MEMBER_ID
+                   and nvl(t.task_sub_type_id,t.task_type_id) = tt.id
+                   and t.status_id = s.id (+)
+                   and tt.static_id like 'REVIEW%'
+                   and instr(:COMPLETE_TASK_STATUS_IDS,':'||t.status_id||':') = 0
+                 order by t.updated desc
+                ```
+            pageItemsToSubmit: P73_TEAM_MEMBER_ID
+        }
+        layout {
+            sequence: 65
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P73_TEAM_MEMBER_ID
+        }
+        config {
+            buildOption: @reviews
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+            ]
+        }
+        messages {
+            whenNoDataFound: None Found
+        }
+
+        column ATTRIBUTES (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Attributes
+            }
+            layout {
+                sequence: 110
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="sp-tags-container">
+                        <span class="sp-tag">#PRIORITY#</span>
+                        <span class="sp-tag">#PROJECT_SIZE#</span>
+                        <span class="sp-tag">#PCT_COMPLETE#%</span>
+                        <span class="sp-tag">#RELEASE#</span>
+                    </div>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column IMPACT (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Impact
+            }
+            layout {
+                sequence: 130
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_SIZE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 100
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 90
+            }
+        )
+
+        column REVIEW_DATE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Review Date
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: DD-MON
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column REVIEW_TYPE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Review Type
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 120
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column THE_OWNER (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 140
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P73_EXT_LINK (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @nomenclature-user-details
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select replace(apex_app_setting.get_value('EXTERNAL_PERSON_LINK'),'#EMAIL#',lower(email)) 
+                  from sp_team_members
+                 where id = :P73_TEAM_MEMBER_ID
+                   and email is not null
+                   and apex_app_setting.get_value('EXTERNAL_PERSON_LINK_DOMAIN') is not null
+                   and lower(email) like '%@'||lower(apex_app_setting.get_value('EXTERNAL_PERSON_LINK_DOMAIN'))
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P73_PHOTO (
+        type: displayImage
+        label {
+            label: Photo
+            alignment: left
+        }
+        settings {
+            basedOn: blobColSql
+            sqlQuery: select PHOTO from sp_team_members where id = :P73_TEAM_MEMBER_ID
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+            alignment: left
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                from sp_team_members 
+                where id = :P73_TEAM_MEMBER_ID and 
+                photo is not null
+                ```
+        }
+    )
+
+    pageItem P73_PHOTO_PLACEHOLDER (
+        type: displayImage
+        label {
+            label: Photo
+            alignment: left
+        }
+        settings {
+            basedOn: url
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+            alignment: left
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: staticValue
+            staticValue: #APP_FILES#default-user-avatar.png
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                from sp_team_members 
+                where id = :P73_TEAM_MEMBER_ID and 
+                      photo is not null
+                ```
+        }
+    )
+
+    pageItem P73_TEAM_MEMBER_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @nomenclature-user-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button edit-user (
+        buttonName: edit_user
+        label: Edit (Admin)
+        layout {
+            sequence: 40
+            region: @button-container
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 20
+                items: {
+                    P20_ID: &P73_TEAM_MEMBER_ID.
+                }
+                clearCache: 20
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from sp_team_members tm
+                where tm.id = :P73_TEAM_MEMBER_ID and
+                      tm.email = lower(:APP_USER)
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    button external-link (
+        buttonName: external_link
+        label: External Directory
+        layout {
+            sequence: 30
+            region: @button-container
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-external-link
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:window.open('&P73_EXT_LINK.','_blank');
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            customAttributes: title="External Directory"
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P73_EXT_LINK
+        }
+    )
+
+    button manage-my-profile (
+        buttonName: manage_my_profile
+        label: Manage My Profile
+        layout {
+            sequence: 20
+            region: @button-container
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-user
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 144
+                items: {
+                    P144_ID: &APP_USER_ID.
+                }
+                clearCache: 144
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from sp_team_members tm
+                where tm.id = :P73_TEAM_MEMBER_ID and
+                      tm.email = lower(:APP_USER)
+                ```
+        }
+    )
+
+    button view-details (
+        buttonName: view_details
+        label: View Details
+        layout {
+            sequence: 50
+            region: @button-container
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-glasses
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 5
+                items: {
+                    P5_ID: &P73_TEAM_MEMBER_ID.
+                }
+                clearCache: 5
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

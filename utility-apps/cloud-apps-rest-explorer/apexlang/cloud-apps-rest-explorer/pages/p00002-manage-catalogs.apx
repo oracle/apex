@@ -1,0 +1,615 @@
+page 2 (
+    name: Manage Catalogs
+    alias: MANAGE-CATALOGS
+    title: Manage Catalogs
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            $(function () {
+                apex.actions.add([
+                {
+                    name: "catalog-install",
+                    label: "Install",
+                    iconType: "fa",
+                    icon: "fa-file-cabinet",
+                    action: function( event, element, args)
+                    {
+                        apex.items.P2_SELECTED_RELEASE.value = args.release;
+                        apex.items.P2_SELECTED_PILLAR.value  = args.pillar;
+                        apex.items.P2_SELECTED_ACTION.value  = 'INSTALL';
+                        $("body").trigger("manage-catalog-event");
+                    }
+                },
+                {
+                    name: "catalog-uninstall",
+                    label: "Uninstall",
+                    iconType: "fa",
+                    icon: "fa-file-cabinet",
+                    action: function( event, element, args)
+                    {
+                        apex.items.P2_SELECTED_RELEASE.value = args.release;
+                        apex.items.P2_SELECTED_PILLAR.value  = args.pillar;
+                        apex.items.P2_SELECTED_ACTION.value  = 'UNINSTALL';
+                        $("body").trigger("manage-catalog-event");
+                    }
+                }
+                ]);
+            });
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region pillars (
+        name: Pillars
+        type: themeTemplateComponent/contentRow
+        source {
+            location: jsonSource
+            jsonSource: @available_catalogs_by_release
+            pageItemsToSubmit: P2_RELEASE
+        }
+        dataProfile {
+            nestedRows: @pillars
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.NAME,
+                       d.PILLAR_NAME,
+                       case
+                            when c.id             is not null then 'INSTALLED'
+                            when bgp.execution_id is not null then 'INSTALLING'
+                            else                                   'AVAILABLE'
+                       end as status
+                  from #APEX$SOURCE_DATA# d
+                  left join eba_util_facat_releases r  on r.name = d.name
+                  left join eba_util_facat_pillars  p  on p.name = d.pillar_name
+                  left join apex_appl_page_bg_proc_status bgp on bgp.process_name = 'Install Catalog in Background'
+                                                              and regexp_substr(bgp.context_value,'^[^:]+') = d.name
+                                                              and regexp_substr(bgp.context_value,'[^:]+$',1,1) = d.pillar_name
+                                                              and bgp.status_code   in ( 'ENQUEUED','SCHEDULED', 'EXECUTING')
+                                                              and bgp.application_id = :APP_ID
+                                                              and bgp.page_id        = 2
+                  left join eba_util_facat_catalogs c  on r.id   = c.release_id
+                                                      and p.id   = c.pillar_id
+                where d.name = :P2_RELEASE
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &PILLAR_NAME.
+            displayBadge: true
+        }
+        plugin-badge {
+            label: Status
+            value: STATUS
+        }
+
+        column NAME (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+                primaryKey: true
+            }
+        )
+
+        column PILLAR_NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: PILLAR_NAME
+                dataType: varchar2
+                primaryKey: true
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: primaryActions
+            template: menu
+            label: ⋮
+            layout {
+                sequence: 10
+            }
+
+            menu install (
+                label: Install
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #action$catalog-install?release=&NAME.&pillar=&PILLAR_NAME.
+                }
+                appearance {
+                    icon: fa-file-cabinet
+                }
+                serverSideCondition {
+                    type: item=value
+                    item: STATUS
+                    value: AVAILABLE
+                }
+            )
+
+            menu uninstall (
+                label: Uninstall
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #action$catalog-uninstall?release=&NAME.&pillar=&PILLAR_NAME.
+                }
+                appearance {
+                    icon: fa-file-cabinet
+                }
+                serverSideCondition {
+                    type: item=value
+                    item: STATUS
+                    value: INSTALLED
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P2_BACKGROUND_CONTEXT (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 80
+            slot: contentBody
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_ERROR_MESSAGE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_RELEASE (
+        type: selectList
+        label {
+            label: Release
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @lov-manifest-releases
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P2_SELECTED_ACTION (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    pageItem P2_SELECTED_PILLAR (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    pageItem P2_SELECTED_RELEASE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    dynamicAction on-catalog-action (
+        name: On Catalog Action
+        execution {
+            sequence: 20
+        }
+        when {
+            event: custom
+            customEvent: manage-catalog-event
+            selectionType: jQuerySelector
+            jquerySelector: body
+        }
+
+        action perform-catalog-action (
+            name: Perform Catalog Action
+            action: submitPage
+            settings {
+                requestButtonName: CATALOG_ACTION
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action prepare-for-catalog-action (
+            name: Prepare for Catalog Action
+            action: clear
+            affectedElements {
+                selectionType: items
+                items: P2_ERROR_MESSAGE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction on-change-release (
+        name: On Change Release
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P2_RELEASE
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @pillars
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p2-release (
+        itemName: P2_RELEASE
+        execution {
+            sequence: 10
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_context   apex_exec.t_context;
+                    l_columns   apex_exec.t_columns;
+                    l_order_bys apex_exec.t_order_bys;
+                begin
+                    apex_exec.add_column(p_columns     => l_columns,
+                                         p_column_name => 'NAME');
+                    apex_exec.add_order_by(p_order_bys => l_order_bys,
+                                           p_column_name => 'NAME');
+                    l_context := apex_exec.open_query_context(
+                                    p_location              => apex_exec.c_location_json_source,
+                                    p_json_source_static_id => 'available_catalogs_by_release',
+                                    p_array_column_name     => 'RELEASES',
+                                    p_columns               => l_columns,
+                                    p_order_bys             => l_order_bys);
+                    while apex_exec.next_row(l_context) loop
+                        return apex_exec.get_varchar2(l_context,'NAME');
+                    end loop;
+                end;
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P2_RELEASE
+        }
+    )
+
+    process compute-background-context (
+        name: Compute Background Context
+        type: executeCode
+        executionChain: @if-installing
+        source {
+            plsqlCode: :P2_BACKGROUND_CONTEXT := :P2_SELECTED_RELEASE||':'||:P2_SELECTED_PILLAR;
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 9704902409832725
+        }
+    )
+
+    process else-if-uninstalling (
+        name: Else If Uninstalling...
+        type: executionChain
+        executionChain: @handle-catalog-action
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 9703579444832711
+        }
+        serverSideCondition {
+            type: item=value
+            item: P2_SELECTED_ACTION
+            value: UNINSTALL
+        }
+    )
+
+    process ensure-available-catalogs (
+        name: Ensure Available Catalogs
+        type: invokeApi
+        invoke {
+            package: EBA_UTIL_FAREST_EXPLORER
+            procedureOrFunction: ENSURE_AVAILABLE_CATALOGS
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3185170980459125
+        }
+    )
+
+    process handle-catalog-action (
+        name: Handle Catalog Action
+        type: executionChain
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 9703357218832709
+        }
+        serverSideCondition {
+            type: request=Value
+            value: CATALOG_ACTION
+        }
+    )
+
+    process if-installing (
+        name: If Installing...
+        type: executionChain
+        executionChain: @handle-catalog-action
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 9703491380832710
+        }
+        serverSideCondition {
+            type: item=value
+            item: P2_SELECTED_ACTION
+            value: INSTALL
+        }
+    )
+
+    process install-catalog-in-background (
+        name: Install Catalog in Background
+        type: executionChain
+        executionChain: @if-installing
+        backgroundExecution {
+            runInBackground: true
+            contextValueItem: P2_BACKGROUND_CONTEXT
+        }
+        serialization {
+            serialize: true
+            whenAlreadyRunning: error
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Release &P2_SELECTED_RELEASE. &P2_SELECTED_PILLAR. pillar installing in background
+        }
+        advanced {
+            executionMappingIdentifier: 9703636835832712
+        }
+    )
+
+    process install-using-manage-catalogs (
+        name: Install Using Manage Catalogs
+        type: invokeApi
+        executionChain: @install-catalog-in-background
+        invoke {
+            package: EBA_UTIL_FAREST_EXPLORER
+            procedureOrFunction: MANAGE_CATALOGS
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 9703735388832713
+        }
+
+        parameter (
+            type: functionResult
+            value {
+                item: P2_ERROR_MESSAGE
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+        parameter p_operation (
+            value {
+                type: item
+                item: P2_SELECTED_ACTION
+            }
+            advanced {
+                displaySequence: 40
+            }
+        )
+
+        parameter p_pillar (
+            value {
+                type: item
+                item: P2_SELECTED_PILLAR
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_release (
+            value {
+                type: item
+                item: P2_SELECTED_RELEASE
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+    )
+
+    process uninstall-using-manage-catalogs (
+        name: Uninstall Using Manage Catalogs
+        type: invokeApi
+        executionChain: @else-if-uninstalling
+        invoke {
+            package: EBA_UTIL_FAREST_EXPLORER
+            procedureOrFunction: MANAGE_CATALOGS
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Release &P2_SELECTED_RELEASE. &P2_SELECTED_PILLAR. pillar uninstalled
+        }
+        error {
+            errorMessage: &P2_ERROR_MESSAGE.
+        }
+        advanced {
+            executionMappingIdentifier: 9704365339832719
+        }
+
+        parameter (
+            type: functionResult
+            value {
+                item: P2_ERROR_MESSAGE
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+        parameter p_operation (
+            value {
+                type: item
+                item: P2_SELECTED_ACTION
+            }
+            advanced {
+                displaySequence: 40
+            }
+        )
+
+        parameter p_pillar (
+            value {
+                type: item
+                item: P2_SELECTED_PILLAR
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_release (
+            value {
+                type: item
+                item: P2_SELECTED_RELEASE
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+    )
+
+)
+

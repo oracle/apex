@@ -1,0 +1,412 @@
+page 1902 (
+    name: Charts
+    alias: CHARTS
+    title: Charts - &APP_TITLE.
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region 1-bar (
+        name: 1. Bar
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        chartLayout {
+            height: 200
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series series (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select
+                        rownum  as value,
+                        'label' as label
+                    from
+                        dual
+                    connect by level <= 12
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region 2-dial-gauge (
+        name: 2. Dial Gauge
+        type: chart
+        layout {
+            sequence: 40
+            parentRegion: @demo
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            height: 200
+        }
+        gauge {
+            innerRadius: 0.7
+            startAngle: 180
+            angleExtent: 180
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+
+        series series (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT
+                        80 value, 
+                        100 max_value 
+                    FROM
+                        dual
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                display: onIndicator
+            }
+        )
+
+    )
+
+    region 3-donut (
+        name: 3. Donut
+        type: chart
+        layout {
+            sequence: 60
+            parentRegion: @demo
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        chart {
+            type: donut
+        }
+        chartLayout {
+            height: 200
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series series (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select
+                        rownum  as value,
+                        rownum || ' label' as label
+                    from
+                        dual
+                    connect by level <= 3
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Charts are based on Oracle JavaScript Extension Toolkit (JET) Data Visualizations.<br>For more examples, please install the <strong>Sample Charts</strong>  from Packaged Apps > Sample Apps.</p>
+                <p class="dm-Hero-steps">Set <strong>Chart</strong> as Region type and provide SQL query. In Region attributes, select a type out of 15 types, e.g. "Bar".</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query-bar (
+        name: Sample SQL Query: Bar
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-sql"><code>select
+                    rownum  as value,
+                    'label' as label
+                from
+                    dual
+                connect by level <= 12</code></pre>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region sample-sql-query-dial-gauge (
+        name: Sample SQL Query: Dial Gauge
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-sql"><code>select
+                    80 value, 
+                    100 max_value 
+                from
+                    dual</code></pre>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region sample-sql-query-donut (
+        name: Sample SQL Query: Donut
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-sql"><code>select
+                    rownum  as value,
+                    rownum || ' label' as label
+                from
+                    dual
+                connect by level <= 3</code></pre>
+                ```
+        }
+        layout {
+            sequence: 100
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+    )
+
+)
+

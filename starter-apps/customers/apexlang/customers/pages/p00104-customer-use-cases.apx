@@ -1,0 +1,419 @@
+page 104 (
+    name: Customer Use Cases
+    alias: CUSTOMER-USE-CASES
+    title: Customer Use Cases
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+            t-Dialog--noPadding
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: &CUSTOMER_USE_CASE_HELP.
+    }
+    config {
+        buildOption: @customer-use-case
+    }
+
+    region customer-use-cases (
+        name: Customer Use Cases
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    u.id,
+                    u.use_case,
+                    u.description,
+                    decode(u.is_active,'Y',:ACTIVE_MSG,:INACTIVE_MSG) Status,
+                    u.updated,
+                    u.created,
+                    u.updated_by,
+                    u.created_by,
+                    (select count(*) from eba_cust_customers c where c.use_case_id = u.id) customer_count
+                from
+                    eba_cust_use_case u
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No use case codes found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 16069400028381293792
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 25
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created by
+            }
+            layout {
+                sequence: 45
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CUSTOMER_COUNT (
+            type: link
+            heading {
+                heading: Customer Count
+                alignment: end
+            }
+            layout {
+                sequence: 55
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 59
+                    items: {
+                        P59_USE_CASE: #ID#
+                    }
+                    clearCache: 59
+                    action: resetPagination
+                }
+                linkText: #CUSTOMER_COUNT#
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Edit
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 15
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated by
+            }
+            layout {
+                sequence: 35
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column USE_CASE (
+            type: link
+            heading {
+                heading: Use Case
+            }
+            layout {
+                sequence: 65
+            }
+            link {
+                target: {
+                    page: 105
+                    items: {
+                        P105_ID: #ID#
+                    }
+                    clearCache: 105
+                    action: resetPagination
+                }
+                linkText: #USE_CASE#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 160694039 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CUSTOMER_COUNT (
+                sequence: 3
+            )
+
+            displayColumn DESCRIPTION (
+                sequence: 1
+            )
+
+            displayColumn STATUS (
+                sequence: 2
+            )
+
+            displayColumn USE_CASE (
+                sequence: 4
+            )
+
+            sort (
+                column: CUSTOMER_TYPE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: CUSTOMER_STATUS
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Use Case Code
+        layout {
+            sequence: 20
+            region: @customer-use-cases
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 105
+                clearCache: 105
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @customer-use-cases
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 104
+                clearCache: [
+                    5
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-on-add (
+        name: Refresh on Add
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @create
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-use-cases
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-edit (
+        name: Refresh on Edit
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @customer-use-cases
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-use-cases
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

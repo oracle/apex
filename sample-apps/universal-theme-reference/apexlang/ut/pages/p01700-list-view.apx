@@ -1,0 +1,236 @@
+page 1700 (
+    name: List View
+    alias: LIST-VIEW
+    title: List View
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region 1-default (
+        name: 1. Default
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @examples
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region 2-with-list-divider-and-badge (
+        name: 2. With List Divider and Badge
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @examples
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region departments (
+        name: Departments
+        type: listView
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       (select project from EBA_UT_CHART_PROJECTS p where p.id = t.project) PROJECT,
+                       TASK_NAME,
+                       START_DATE,
+                       END_DATE,
+                       STATUS
+                  from EBA_UT_CHART_TASKS t
+                ```
+        }
+        layout {
+            sequence: 170
+            parentRegion: @2-with-list-divider-and-badge
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            features: showListDivider
+            textColumn: TASK_NAME
+            counterColumn: STATUS
+            listDividerColumn: PROJECT
+        }
+        reportLayout {
+            numberOfRows: 10
+        }
+    )
+
+    region examples (
+        name: Examples
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The List View component provides a simple list-based user interface that has a wide range of features. This component has built in search, list dividers, counters, nested lists, and more.</p>
+                <p class="dm-Hero-steps">Set <strong>List View</strong> as Region Type.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region projects-list (
+        name: Projects List
+        type: listView
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       (select project from EBA_UT_CHART_PROJECTS p where p.id = t.project) PROJECT,
+                       TASK_NAME,
+                       START_DATE,
+                       END_DATE,
+                       STATUS
+                  from EBA_UT_CHART_TASKS t
+                ```
+        }
+        layout {
+            sequence: 140
+            parentRegion: @1-default
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            textColumn: TASK_NAME
+            linkTarget: {
+                type: url
+                url: #
+            }
+        }
+        reportLayout {
+            numberOfRows: 5
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+)
+

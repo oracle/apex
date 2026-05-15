@@ -1,0 +1,402 @@
+page 44 (
+    name: Products
+    alias: PRODUCTS3
+    title: Products
+    pageGroup: @products
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>This page summarizes product use by customer.  Each customer can use zero or more products.  Click the <strong>product name</strong> column to drill-down to a report of customer products.  Products can be managed for each customer from the customer details page.</p>
+    }
+    config {
+        buildOption: @products-and-services
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region customer-product-usage (
+        name: Customer Product Usage
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select product_name, 
+                    description, 
+                    id, 
+                    created created,
+                    lower(created_by) created_by, 
+                    updated updated, 
+                    lower(updated_by) updated_by ,
+                    (select name from eba_cust_product_families f where f.id = p.product_family_id) family,
+                    (   select count(*)
+                        from eba_cust_product_uses u
+                        where u.product_id = p.id ) customer_uses,
+                    tags
+                from eba_cust_products p
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        advanced {
+            htmlDomId: PRODUCTS
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 3739519839538772940
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column CUSTOMER_USES (
+            type: plainText
+            heading {
+                heading: Customer Uses
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column FAMILY (
+            type: plainText
+            heading {
+                heading: Family
+            }
+            layout {
+                sequence: 31
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AE
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                    from eba_cust_product_families
+                    ```
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: Id
+                alignment: end
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column PRODUCT_NAME (
+            type: link
+            heading {
+                heading: Product / Service Name
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 19
+                    items: {
+                        IR_PRODUCT_NAME: #PRODUCT_NAME#
+                    }
+                    clearCache: [
+                        19
+                        RIR
+                        CIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #PRODUCT_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            columnFilter {
+                type: definedLovWordContains
+                sqlQuery:
+                    ```sql
+                    select tag
+                      from eba_cust_tags_type_sum
+                     where content_type = 'PRODUCT'
+                       and tag_count > 0
+                    ```
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        savedReport 9117208 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CUSTOMER_USES (
+                sequence: 3
+            )
+
+            displayColumn FAMILY (
+                sequence: 2
+            )
+
+            displayColumn PRODUCT_NAME (
+                sequence: 1
+            )
+
+            displayColumn UPDATED (
+                sequence: 4
+            )
+
+            sort (
+                column: CUSTOMER_USES
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @customer-product-usage
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 44
+                clearCache: RIR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

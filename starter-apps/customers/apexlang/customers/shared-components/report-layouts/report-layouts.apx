@@ -1,0 +1,7 @@
+reportLayout CUSTOMER_REPORT (
+    name: Customer_Report
+    templates {
+        pageFile: CUSTOMER-REPORT.rtf
+    }
+)
+

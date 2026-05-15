@@ -1,0 +1,2026 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry accounts (
+        name: Accounts
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry accounts-with-no-territory (
+        name: Accounts with No Territory
+        pageNumber: 132
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 132
+            }
+        }
+    )
+
+    entry activity-calendar (
+        name: Activity Calendar
+        pageNumber: 139
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 139
+            }
+        }
+    )
+
+    entry add-country (
+        name: Add Country
+        pageNumber: 124
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @countries
+        }
+        link {
+            target: {
+                page: 124
+            }
+        }
+    )
+
+    entry add-multiple-users (
+        name: Add Multiple Users
+        pageNumber: 153
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 153
+            }
+        }
+    )
+
+    entry add-multiple-users-2 (
+        name: Add Multiple Users
+        pageNumber: 154
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 154
+            }
+        }
+    )
+
+    entry add-state (
+        name: Add State
+        pageNumber: 126
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @states-2
+        }
+        link {
+            target: {
+                page: 126
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry agreement-types (
+        name: Agreement Types
+        pageNumber: 58
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 58
+            }
+        }
+    )
+
+    entry agreements (
+        name: Agreements
+        pageNumber: 84
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 84
+            }
+        }
+    )
+
+    entry agreements-2 (
+        name: Agreements
+        pageNumber: 130
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-6
+        }
+        link {
+            target: {
+                page: 130
+            }
+        }
+    )
+
+    entry application-appearance (
+        name: Application Appearance
+        pageNumber: 141
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 141
+            }
+        }
+    )
+
+    entry application-error-log (
+        name: Application Error Log
+        pageNumber: 175
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 175
+            }
+        }
+    )
+
+    entry application-preferences (
+        name: Application Preferences
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry assessment-code (
+        name: Assessment Code
+        pageNumber: 95
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @financial-assessments
+        }
+        link {
+            target: {
+                page: 95
+            }
+        }
+    )
+
+    entry attachment (
+        name: Attachment
+        pageNumber: 99
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @attachments
+        }
+        link {
+            target: {
+                page: 99
+            }
+        }
+    )
+
+    entry attachments (
+        name: Attachments
+        pageNumber: 92
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-4
+        }
+        link {
+            target: {
+                page: 92
+            }
+        }
+    )
+
+    entry breadcrumb-display (
+        name: &BREADCRUMB_DISPLAY.
+        pageNumber: 61
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @products-2
+        }
+        link {
+            target: {
+                page: 61
+            }
+        }
+    )
+
+    entry breadcrumb-display-2 (
+        name: &BREADCRUMB_DISPLAY.
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @contacts-2
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry breadcrumb-display-3 (
+        name: &BREADCRUMB_DISPLAY.
+        pageNumber: 133
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @leads
+        }
+        link {
+            target: {
+                page: 133
+            }
+        }
+    )
+
+    entry breadcrumb-display-4 (
+        name: &BREADCRUMB_DISPLAY.
+        pageNumber: 80
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 80
+            }
+        }
+    )
+
+    entry breadcrumb-display-5 (
+        name: &BREADCRUMB_DISPLAY.
+        pageNumber: 93
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @territories
+        }
+        link {
+            target: {
+                page: 93
+            }
+        }
+    )
+
+    entry breadcrumb-display-6 (
+        name: &BREADCRUMB_DISPLAY.
+        pageNumber: 94
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @accounts
+        }
+        link {
+            target: {
+                page: 94
+            }
+        }
+    )
+
+    entry build-options (
+        name: Build Options
+        pageNumber: 110
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 110
+            }
+        }
+    )
+
+    entry close-deal (
+        name: Close Deal
+        pageNumber: 79
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-4
+        }
+        link {
+            target: {
+                page: 79
+            }
+        }
+    )
+
+    entry closed-opportunities (
+        name: Closed Opportunities
+        pageNumber: 81
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 81
+            }
+        }
+    )
+
+    entry competition (
+        name: Competition
+        pageNumber: 86
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-4
+        }
+        link {
+            target: {
+                page: 86
+            }
+        }
+    )
+
+    entry competition-2 (
+        name: Competition
+        pageNumber: 98
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-6
+        }
+        link {
+            target: {
+                page: 98
+            }
+        }
+    )
+
+    entry competitor (
+        name: Competitor
+        pageNumber: 52
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @competitors
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry competitor-analysis (
+        name: Competitor Analysis
+        pageNumber: 49
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+    )
+
+    entry competitor-threats (
+        name: Competitor Threats
+        pageNumber: 59
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 59
+            }
+        }
+    )
+
+    entry competitors (
+        name: Competitors
+        pageNumber: 51
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry contacts (
+        name: Contacts
+        pageNumber: 105
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-6
+        }
+        link {
+            target: {
+                page: 105
+            }
+        }
+    )
+
+    entry contacts-2 (
+        name: Contacts
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry contract-terms (
+        name: Contract Terms
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry convert-to-opportunity (
+        name: Convert to Opportunity
+        pageNumber: 63
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @leads
+        }
+        link {
+            target: {
+                page: 63
+            }
+        }
+    )
+
+    entry countries (
+        name: Countries
+        pageNumber: 123
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-5
+        }
+        link {
+            target: {
+                page: 123
+            }
+        }
+    )
+
+    entry countries-2 (
+        name: Countries
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry country-code (
+        name: Country Code
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @countries-2
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry currencies (
+        name: Currencies
+        pageNumber: 111
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+    )
+
+    entry currency (
+        name: Currency
+        pageNumber: 112
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @currencies
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+    )
+
+    entry customer-contact (
+        name: Customer Contact
+        pageNumber: 106
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @contacts
+        }
+        link {
+            target: {
+                page: 106
+            }
+        }
+    )
+
+    entry data-loading (
+        name: Data Loading
+        pageNumber: 136
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 136
+            }
+        }
+    )
+
+    entry data-loading-2 (
+        name: Data Loading
+        pageNumber: 137
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 137
+            }
+        }
+    )
+
+    entry data-loading-3 (
+        name: Data Loading
+        pageNumber: 140
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 140
+            }
+        }
+    )
+
+    entry data-loading-4 (
+        name: Data Loading
+        pageNumber: 143
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 143
+            }
+        }
+    )
+
+    entry financial-assessments (
+        name: Financial Assessments
+        pageNumber: 57
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 57
+            }
+        }
+    )
+
+    entry fiscal-quarter-details (
+        name: Fiscal Quarter Details
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @fiscal-quarters
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry fiscal-quarters (
+        name: Fiscal Quarters
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 128
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 128
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 100
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry industries (
+        name: Industries
+        pageNumber: 64
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 64
+            }
+        }
+    )
+
+    entry industry (
+        name: Industry
+        pageNumber: 65
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @industries
+        }
+        link {
+            target: {
+                page: 65
+            }
+        }
+    )
+
+    entry lead-source (
+        name: Lead Source
+        pageNumber: 70
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @lead-sources
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry lead-sources (
+        name: Lead Sources
+        pageNumber: 69
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 69
+            }
+        }
+    )
+
+    entry lead-status-code-details (
+        name: Lead Status Code Details
+        pageNumber: 38
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @lead-status-codes
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+    entry lead-status-codes (
+        name: Lead Status Codes
+        pageNumber: 37
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry lead-usage-metrics (
+        name: Lead Usage Metrics
+        pageNumber: 138
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-3
+        }
+        link {
+            target: {
+                page: 138
+            }
+        }
+    )
+
+    entry leads (
+        name: Leads
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry lines-of-business (
+        name: Lines of Business
+        pageNumber: 144
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 144
+            }
+        }
+    )
+
+    entry link (
+        name: Link
+        pageNumber: 114
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @links
+        }
+        link {
+            target: {
+                page: 114
+            }
+        }
+    )
+
+    entry links (
+        name: Links
+        pageNumber: 89
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-4
+        }
+        link {
+            target: {
+                page: 89
+            }
+        }
+    )
+
+    entry locations (
+        name: Locations
+        pageNumber: 107
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-6
+        }
+        link {
+            target: {
+                page: 107
+            }
+        }
+    )
+
+    entry manage-access-control-list (
+        name: Manage Access Control List
+        pageNumber: 115
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 115
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 142
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 142
+            }
+        }
+    )
+
+    entry notification (
+        name: Notification
+        pageNumber: 78
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @notifications
+        }
+        link {
+            target: {
+                page: 78
+            }
+        }
+    )
+
+    entry notifications (
+        name: Notifications
+        pageNumber: 77
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 77
+            }
+        }
+    )
+
+    entry opportunities (
+        name: Opportunities
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry opportunities-about-to-close (
+        name: Opportunities About to Close
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry opportunities-by-competitor (
+        name: Opportunities by Competitor
+        pageNumber: 134
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 134
+            }
+        }
+    )
+
+    entry opportunities-by-product (
+        name: Opportunities by Product
+        pageNumber: 135
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 135
+            }
+        }
+    )
+
+    entry opportunities-by-rep-title (
+        name: Opportunities by &REP_TITLE.
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry opportunities-by-territory (
+        name: Opportunities by Territory
+        pageNumber: 42
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry opportunities-past-due (
+        name: Opportunities Past Due
+        pageNumber: 131
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 131
+            }
+        }
+    )
+
+    entry opportunities-with-no-assigned-products (
+        name: Opportunities with No Assigned Products
+        pageNumber: 129
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 129
+            }
+        }
+    )
+
+    entry opportunity (
+        name: Opportunity
+        pageNumber: 82
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @closed-opportunities
+        }
+        link {
+            target: {
+                page: 82
+            }
+        }
+    )
+
+    entry opportunity-pipeline (
+        name: Opportunity Pipeline
+        pageNumber: 62
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 62
+            }
+        }
+    )
+
+    entry opportunity-product (
+        name: Opportunity Product
+        pageNumber: 108
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-4
+        }
+        link {
+            target: {
+                page: 108
+            }
+        }
+    )
+
+    entry opportunity-stages (
+        name: Opportunity Stages
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry page-privileges (
+        name: Page Privileges
+        pageNumber: 44
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 44
+            }
+        }
+    )
+
+    entry page-views (
+        name: Page Views
+        pageNumber: 90
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 90
+            }
+        }
+    )
+
+    entry potential-revenue-by-rep-title (
+        name: Potential Revenue by &REP_TITLE.
+        pageNumber: 121
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 121
+            }
+        }
+    )
+
+    entry preferences (
+        name: Preferences
+        pageNumber: 148
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 148
+            }
+        }
+    )
+
+    entry product-details (
+        name: Product Details
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @products-3
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry product-families (
+        name: Product Families
+        pageNumber: 28
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry products (
+        name: Products
+        pageNumber: 85
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-4
+        }
+        link {
+            target: {
+                page: 85
+            }
+        }
+    )
+
+    entry products-2 (
+        name: Products
+        pageNumber: 68
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 68
+            }
+        }
+    )
+
+    entry products-3 (
+        name: Products
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry projected-close-dates (
+        name: Projected Close Dates
+        pageNumber: 47
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 47
+            }
+        }
+    )
+
+    entry rename-application (
+        name: Rename Application
+        pageNumber: 45
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+    )
+
+    entry rep-title-details (
+        name: &REP_TITLE. Details
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @rep-title-s
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry rep-title-s (
+        name: &REP_TITLE.s
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry reports (
+        name: Reports
+        pageNumber: 39
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry revenue-by-quarter (
+        name: Revenue by Quarter
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry revenue-by-rep-title (
+        name: Revenue by &REP_TITLE.
+        pageNumber: 46
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+    )
+
+    entry risk-assessment (
+        name: Risk Assessment
+        pageNumber: 54
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @risk-assessments
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry risk-assessments (
+        name: Risk Assessments
+        pageNumber: 53
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry search-results (
+        name: Search Results
+        pageNumber: 116
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 116
+            }
+        }
+    )
+
+    entry state (
+        name: State
+        pageNumber: 96
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @states
+        }
+        link {
+            target: {
+                page: 96
+            }
+        }
+    )
+
+    entry states (
+        name: States
+        pageNumber: 83
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 83
+            }
+        }
+    )
+
+    entry states-2 (
+        name: States
+        pageNumber: 125
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-5
+        }
+        link {
+            target: {
+                page: 125
+            }
+        }
+    )
+
+    entry status-assessment (
+        name: Status Assessment
+        pageNumber: 56
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @status-assessments
+        }
+        link {
+            target: {
+                page: 56
+            }
+        }
+    )
+
+    entry status-assessments (
+        name: Status Assessments
+        pageNumber: 55
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 55
+            }
+        }
+    )
+
+    entry status-updates (
+        name: Status Updates
+        pageNumber: 88
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-4
+        }
+        link {
+            target: {
+                page: 88
+            }
+        }
+    )
+
+    entry step-to-close (
+        name: Step to Close
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunity-stages
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry support-amount-types (
+        name: Support Amount Types
+        pageNumber: 103
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry support-amounts (
+        name: Support Amounts
+        pageNumber: 118
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 118
+            }
+        }
+    )
+
+    entry support-amounts-2 (
+        name: Support Amounts
+        pageNumber: 127
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-6
+        }
+        link {
+            target: {
+                page: 127
+            }
+        }
+    )
+
+    entry svp (
+        name: SVP
+        pageNumber: 67
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @svps
+        }
+        link {
+            target: {
+                page: 67
+            }
+        }
+    )
+
+    entry svps (
+        name: SVPs
+        pageNumber: 66
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 66
+            }
+        }
+    )
+
+    entry tags (
+        name: Tags
+        pageNumber: 48
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+    )
+
+    entry team-members (
+        name: Team Members
+        pageNumber: 87
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @breadcrumb-display-4
+        }
+        link {
+            target: {
+                page: 87
+            }
+        }
+    )
+
+    entry team-role-details (
+        name: Team Role Details
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @team-roles
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry team-roles (
+        name: Team Roles
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry territories (
+        name: Territories
+        pageNumber: 50
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry territories-2 (
+        name: Territories
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry territory-acl (
+        name: Territory ACL
+        pageNumber: 109
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @territory-assignments
+        }
+        link {
+            target: {
+                page: 109
+            }
+        }
+    )
+
+    entry territory-assignments (
+        name: Territory Assignments
+        pageNumber: 104
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 104
+            }
+        }
+    )
+
+    entry territory-details (
+        name: Territory Details
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @territories-2
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry threat (
+        name: Threat
+        pageNumber: 60
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @competitor-threats
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+    )
+
+    entry time-zone (
+        name: Time Zone
+        pageNumber: 43
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @preferences
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry top-users (
+        name: Top Users
+        pageNumber: 91
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+    )
+
+    entry upload-data (
+        name: Upload Data
+        pageNumber: 210
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 210
+            }
+        }
+    )
+
+    entry upload-data-2 (
+        name: Upload Data
+        pageNumber: 211
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 211
+            }
+        }
+    )
+
+    entry upload-data-3 (
+        name: Upload Data
+        pageNumber: 212
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 212
+            }
+        }
+    )
+
+    entry upload-data-4 (
+        name: Upload Data
+        pageNumber: 213
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @opportunities
+        }
+        link {
+            target: {
+                page: 213
+            }
+        }
+    )
+
+    entry user-access-control (
+        name: "User Access Control  "
+        pageNumber: 119
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @manage-access-control-list
+        }
+        link {
+            target: {
+                page: 119
+            }
+        }
+    )
+
+    entry username-format (
+        name: Username Format
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+)
+

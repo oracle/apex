@@ -1,0 +1,753 @@
+page 13 (
+    name: Delete Multiple Events
+    alias: DELETE-MULTIPLE-EVENTS
+    title: Delete Multiple Events
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Use the filters on the left to change the events displayed in the list on the right. Once you've changed a flter value click the <strong>Go</strong> button to set your filter values. Once you've filtered the results down to all of the events you would like to delete, click the <strong>Delete Events Listed Below</strong> button. Click the <strong>Cancel</strong> button to navigate away from this page without deleting any events.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region directions (
+        name: Directions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>You can use this to delete a set of events or to clean out historic events, like for the previous year.
+                </p>
+                <ol>
+                  <li>Use the filter to select the set of events to be deleted.</li>
+                  <li>Click [Delete Events].</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region events-to-be-deleted (
+        name: Events to be Deleted
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select e.EVENT_ID
+                ,      e.event_name
+                ,      case when et.display_color is not null then 
+                         '<span style="white-space:nowrap;">' 
+                         || apex_escape.html(et.type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null)) || '</span>'
+                       else 
+                         '<span style="white-space:nowrap;">' 
+                         || apex_escape.html(et.type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null)) || '</span>'
+                       end event_type
+                ,      e.EVENT_DATE_TIME event_date
+                ,      case when to_char(e.EVENT_DATE_TIME,'MI') = '00' 
+                            then ltrim(to_char(e.EVENT_DATE_TIME,'HHam'),'0')
+                            else ltrim(to_char(e.EVENT_DATE_TIME,'HH:MIam'),'0')
+                            end start_time
+                ,      case when to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'MI') = '00'
+                            then ltrim(to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'HHam'),'0')
+                            else ltrim(to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'HH:MIam'),'0')
+                            end end_time
+                ,      case when e.duration = 0  then '0 mins'
+                            when e.duration = .25 then '15 mins'
+                            when e.duration = .5 then '30 mins'
+                            when e.duration = .75 then '45 mins'
+                            when e.duration = 1 then '1 hr'
+                            when e.duration > 1 then to_char(trunc(e.duration)) || ' hrs'
+                              || case when e.duration - trunc(e.duration) = 0  then ''
+                                      when e.duration - trunc(e.duration) = .25 then ' 15 mins'
+                                      when e.duration - trunc(e.duration) = .5 then ' 30 mins'
+                                      when e.duration - trunc(e.duration) = .75 then ' 45 mins'
+                                 end
+                            end duration
+                ,      e.EVENT_DESC
+                ,      decode(e.calendar_id, null, 'Default'
+                              , c.short_name || ' - ' || c.calendar_name 
+                                || decode(public_view_yn, 'Y', null, ' (Private)')
+                             ) calendar
+                from eba_ca_events e
+                ,    eba_ca_event_types et
+                ,    eba_ca_calendars c
+                where e.type_id = et.type_id
+                and   e.calendar_id = c.calendar_id (+)
+                and   (   :MULTIPLE_CAL_BO = 'Exclude' 
+                       or (   e.calendar_id is null
+                           or (   c.public_view_yn = 'Y'
+                               or exists (select 'x'
+                                          from eba_ca_users u
+                                          where u.username = :APP_USER
+                                          and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                                 or (access_level_id = 3 and restricted_to is null)
+                                                )
+                                         )
+                              )
+                          )
+                      )
+                and   (   :EXTERNAL_INTERNAL_BO = 'Exclude'
+                       or (   nvl(et.internal_yn, 'N') = 'N'
+                           or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                          )
+                      )
+                and   (   :P13_EVENT_TYPE is null 
+                       or e.type_id = :P13_EVENT_TYPE
+                      )
+                and   (   :P13_CALENDAR_ID is null 
+                       or nvl(e.calendar_id, -1) = :P13_CALENDAR_ID
+                      )
+                and   (   :P13_START_DATE is null 
+                       or trunc(to_date(to_char(e.event_date_time,'&APP_DATE_FORMAT.'),'&APP_DATE_FORMAT.')) 
+                            >= to_date(:P13_START_DATE,'&APP_DATE_FORMAT.') 
+                      )
+                and   (   :P13_END_DATE is null 
+                       or trunc(to_date(to_char(e.event_date_time,'&APP_DATE_FORMAT.'),'&APP_DATE_FORMAT.')) 
+                          <= to_date(:P13_END_DATE,'&APP_DATE_FORMAT.') 
+                      )
+                and   (  :P13_TIMEFRAME is null 
+                       or (    trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                                 >= (select start_date 
+                                     from EBA_ca_timeframes
+                                     where :P13_TIMEFRAME = tf_id
+                                    ) 
+                           and trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                                 <= (select end_date 
+                                     from EBA_ca_timeframes
+                                     where :P13_TIMEFRAME = tf_id
+                                    )
+                          )
+                      )
+                order by e.event_date_time, event_name
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        headerAndFooter {
+            headerText: <p/>
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No events found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CALENDAR (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Calendar
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+            config {
+                buildOption: @include-multiple-calendars
+            }
+        )
+
+        column DURATION (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column END_TIME (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column EVENT_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Event Date
+            }
+            layout {
+                sequence: 1
+            }
+            appearance {
+                formatMask: &APP_DATE_FORMAT.
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_DESC (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column EVENT_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Event Name
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_TYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Event Type
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column START_TIME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Timing
+            }
+            layout {
+                sequence: 3
+            }
+            columnFormatting {
+                htmlExpression: #START_TIME# - #END_TIME# (#DURATION#)
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region filter (
+        name: Filter
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    pageItem P13_CALENDAR_ID (
+        type: selectList
+        label {
+            label: Calendar
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @calendars-with-default
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 20
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        help {
+            helpText: If selected, only events for the selected calendar will be included.
+        }
+        config {
+            buildOption: @include-multiple-calendars
+        }
+    )
+
+    pageItem P13_END_DATE (
+        type: datePicker
+        label {
+            label: Until
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+            width: 16
+        }
+        validation {
+            maxLength: 30
+        }
+        help {
+            helpText: If entered, Events after this date will not be included.
+        }
+    )
+
+    pageItem P13_EVENT_TYPE (
+        type: selectList
+        label {
+            label: Event Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @event-types-for-main-cal
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 10
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        help {
+            helpText: If selected, only events of this type will be included.
+        }
+    )
+
+    pageItem P13_START_DATE (
+        type: datePicker
+        label {
+            label: From
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+            width: 16
+        }
+        validation {
+            maxLength: 30
+        }
+        help {
+            helpText: If entered, Events before this date will not be included.
+        }
+    )
+
+    pageItem P13_TIMEFRAME (
+        type: selectList
+        label {
+            label: Timeframe
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @timeframes-showing-dates
+            nullDisplayValue: - None -
+        }
+        layout {
+            sequence: 30
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_ca_timeframes
+                ```
+        }
+        help {
+            helpText: Select Reporting Timeframe to restrict the report.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 2
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete Events Listed Below
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button p13-clear (
+        buttonName: P13_CLEAR
+        label: Clear
+        layout {
+            sequence: 20
+            region: @filter
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: P13_CLEAR
+            requestSourceType: staticValue
+            requestSource: CLEAR
+        }
+    )
+
+    button p13-go (
+        buttonName: P13_GO
+        label: Go
+        layout {
+            sequence: 10
+            region: @filter
+            slot: help
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: P13_GO
+            requestSourceType: staticValue
+            requestSource: Go
+        }
+    )
+
+    dynamicAction save-group-id (
+        name: save group id
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P13_GROUP_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P13_GROUP_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process delete-events (
+        name: Delete Events
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (select e.event_id
+                           from EBA_CA_EVENTS e
+                           ,    EBA_CA_EVENT_TYPES et
+                           ,    eba_ca_calendars c
+                           where e.type_id = et.type_id
+                           and   e.calendar_id = c.calendar_id (+)
+                           and   (   :MULTIPLE_CAL_BO = 'Exclude' 
+                                  or (   e.calendar_id is null
+                                      or (   c.public_view_yn = 'Y'
+                                          or exists (select 'x'
+                                                     from eba_ca_users u
+                                                     where u.username = :APP_USER
+                                                     and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                                            or (access_level_id = 3 and restricted_to is null)
+                                                           )
+                                                    )
+                                         )
+                                     )
+                                 )
+                           and   (   :EXTERNAL_INTERNAL_BO = 'Exclude'
+                                  or (   nvl(et.internal_yn, 'N') = 'N'
+                                      or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                                     )
+                                 )
+                           and   (   :P13_EVENT_TYPE is null 
+                                  or e.type_id = :P13_EVENT_TYPE
+                                 )
+                           and   (   :P13_CALENDAR_ID is null 
+                                  or nvl(e.calendar_id, -1) = :P13_CALENDAR_ID
+                                 )
+                           and   (   :P13_START_DATE is null 
+                                  or trunc(to_date(to_char(e.event_date_time,'&APP_DATE_FORMAT.'),'&APP_DATE_FORMAT.')) 
+                                       >= to_date(:P13_START_DATE,'&APP_DATE_FORMAT.') 
+                                 )
+                           and   (   :P13_END_DATE is null 
+                                  or trunc(to_date(to_char(e.event_date_time,'&APP_DATE_FORMAT.'),'&APP_DATE_FORMAT.')) 
+                                       <= to_date(:P13_END_DATE,'&APP_DATE_FORMAT.') 
+                                 )
+                           and   (  :P13_TIMEFRAME is null 
+                                  or (    trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                                            >= (select start_date 
+                                                from EBA_ca_timeframes
+                                                where :P13_TIMEFRAME = tf_id
+                                               ) 
+                                      and trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                                            <= (select end_date 
+                                                from EBA_ca_timeframes
+                                                where :P13_TIMEFRAME = tf_id
+                                               )
+                                     )
+                                 )
+                          ) loop
+                  eba_ca_api.delete_event (  p_event_id       => c1.event_id
+                                           , p_delete_request => 'O' 
+                                          );
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Event(s) deleted.
+        }
+        error {
+            errorMessage: Event(s) failed to be deleted.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 7414772560218958310
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process reset-pagination (
+        name: Reset Pagination
+        type: resetPagination
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 7414918653134232339
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: Go,CLEAR
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        behavior {
+            target: {
+                page: 13
+                clearCache: 13
+                successMessage: false
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            whenButtonPressed: @p13-clear
+        }
+    )
+
+    branch (
+        name: Go To Page 13
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 2
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+        comments {
+            comments: Created 18-OCT-2010 12:49 by SBKENNED
+        }
+    )
+
+)
+

@@ -1,0 +1,565 @@
+page 10012 (
+    name: User Details
+    alias: USER-DETAILS
+    title: User Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            <p>Use this form to enter users, their email address and set their access level. 
+            The settings defined under <em>Configure Access Control</em> will determine whether the username must be their email address or can be any alphanumeric entry.</p>
+            <p>This application supports the following 3 access levels: Reader, Contributor, and Administrator.</p>
+            <ul>
+              <li><strong>Readers</strong> have read-only access to all information and can also view reports.</li>
+              <li><strong>Contributors</strong> can create, edit and delete information and view reports.</li>
+              <li><strong>Administrators</strong>, in addition to Contributors capability, can also perform configuration of the application by accessing the Administration section of the application.</li>
+            </ul>
+            <p>When editing an existing user you can lock their account which will prevent them from accessing the application.</p>
+            <p><em><strong>Note:</strong>   If using Oracle APEX accounts then users entered here must also be defined as end users by a Workspace Administrator, who can also set their password.</em></p>
+            ```
+    }
+    config {
+        buildOption: @access-control
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region form-on-manage-user-access (
+        name: Form on Manage User Access
+        type: form
+        source {
+            location: localDatabase
+            tableName: APEX_APPL_ACL_USERS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P10012_APPLICATION_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @form-on-manage-user-access
+            slot: regionBody
+        }
+        source {
+            formRegion: @form-on-manage-user-access
+            column: APPLICATION_ID
+            dataType: number
+        }
+        default {
+            type: static
+            staticValue: &APP_ID.
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10012_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @form-on-manage-user-access
+            slot: regionBody
+        }
+        source {
+            formRegion: @form-on-manage-user-access
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10012_OLD_ROLE_NAME (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @form-on-manage-user-access
+            slot: regionBody
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select role_names
+                  from APEX_APPL_ACL_USERS
+                 where id = :P10012_ID
+                   and application_id = :APP_ID
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10012_ROLE_IDS (
+        type: radioGroup
+        label {
+            label: Role
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-roles
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @form-on-manage-user-access
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @form-on-manage-user-access
+            column: ROLE_IDS
+            dataType: varchar2
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select role_id
+                  from APEX_APPL_ACL_ROLES
+                 where application_id = :APP_ID
+                   and role_name = 'Contributor'
+                ```
+        }
+        help {
+            helpText:
+                ```html
+                <p>When Access Control is enabled, Administrators have the ability to restrict access to certain application features for authenticated users. This application supports the following 3 roles: Reader, Contributor, and Administrator.<p>
+                <ul>
+                  <li><strong>Readers</strong> have read-only access to all information and can also view reports.</li>
+                  <li><strong>Contributors</strong> can create,edit and delete information and view reports.</li>
+                  <li><strong>Administrators</strong>,in addition to Contributors capability,can also perform configuration of the application.</li>
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P10012_USER_NAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @form-on-manage-user-access
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @form-on-manage-user-access
+            column: USER_NAME
+            dataType: varchar2
+        }
+        readOnly {
+            type: itemIsNotNull
+            item: P10012_ID
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add User
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10012_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Remove All Access
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10012_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10012_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-remove-yourself-from-administrator (
+        name: Cannot remove yourself from administrator
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if :P10012_USER_NAME = :APP_USER and
+                    apex_acl.is_role_removed_from_user (
+                        p_application_id => :APP_ID,
+                        p_user_name      => :APP_USER,
+                        p_role_static_id => 'ADMINISTRATOR',
+                        p_role_ids       => apex_string.split_numbers(
+                                                p_str => case when :REQUEST = 'DELETE' then
+                                                             null
+                                                         else
+                                                             :P10012_ROLE_IDS
+                                                         end,
+                                                p_sep => ':') ) then
+                    return false;
+                else
+                    return true;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: You cannot remove administrator role from yourself.
+            displayLocation: inlineInNotification
+        }
+    )
+
+    validation email-valid (
+        name: email valid
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P10012_USER_NAME
+            regexp: "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+        }
+        error {
+            errorMessage: Username must be a valid email
+            associatedItem: @P10012_USER_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    computation p10012-id (
+        itemName: P10012_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select id
+                  from APEX_APPL_ACL_USERS
+                 where application_id = :APP_ID
+                   and user_name = upper(:P10012_USER_NAME)
+                ```
+        }
+        serverSideCondition {
+            type: request=Value
+            value: FROMPERSON
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 70
+        }
+        advanced {
+            executionMappingIdentifier: 139322900858952930164
+        }
+    )
+
+    process initialize-form-manage-user-access (
+        name: Initialize form Manage User Access
+        type: formInitialization
+        formRegion: @form-on-manage-user-access
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 139322900087871930163
+        }
+    )
+
+    process log-create (
+        name: log create
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select role_name
+                      from APEX_APPL_ACL_ROLES
+                     where application_id = :APP_ID 
+                       and role_id = :P10012_ROLE_IDS
+                ) loop
+                    sp_util.add_app_log(
+                        p_activity => 'Added User', 
+                        p_details  => lower(:P10012_USER_NAME)||' (role: '||c1.role_name||')');
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 4072870955151768313
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process log-delete (
+        name: log delete
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.add_app_log(
+                    p_activity => 'Deleted User', 
+                    p_details  => lower(:P10012_USER_NAME)||' (role: '||:P10012_OLD_ROLE_NAME||')' );
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 4072871104036768315
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process log-update (
+        name: log update
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select role_name
+                      from APEX_APPL_ACL_ROLES
+                     where application_id = :APP_ID 
+                       and role_id = :P10012_ROLE_IDS
+                ) loop
+                    if :P10012_OLD_ROLE_NAME != c1.role_name then
+                        sp_util.add_app_log(
+                            p_activity => 'Updated User', 
+                            p_details  => lower(:P10012_USER_NAME) ||' (role changed from '||:P10012_OLD_ROLE_NAME ||' to '||c1.role_name||')' );
+                    end if;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 4072871095637768314
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    process process-form-manage-user-access (
+        name: Process form Manage User Access
+        type: formAutoRowProcessing
+        formRegion: @form-on-manage-user-access
+        target {
+            returnPksAfterInsert: false
+        }
+        lockRow {
+            lockRow: false
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 139322900466327930164
+        }
+    )
+
+    process sync-team-member (
+        name: sync_team_member
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.sync_team_member_app_role (
+                    p_app_id => :APP_ID,
+                    p_email  => :P10012_USER_NAME);
+                ```
+        }
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 1381325471828723933
+        }
+    )
+
+)
+

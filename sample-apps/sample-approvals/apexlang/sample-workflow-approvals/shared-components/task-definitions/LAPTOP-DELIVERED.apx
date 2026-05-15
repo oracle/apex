@@ -1,0 +1,34 @@
+taskDefinition LAPTOP_DELIVERED (
+    name: Laptop Delivered
+    type: action
+    task {
+        subject: Awaiting delivery of &LAPTOP_TYPE. laptop for &ENAME.
+    }
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select ename,
+                   case laptop_type when 'MAC' then 'MacBook Pro' when 'WIN' then 'Lenovo T490' end as laptop_type
+            from eba_demo_appr_laptop_requests lr
+            left outer join eba_demo_appr_emp e on e.empno = lr.empno
+            where lr.id = :APEX$TASK_PK
+            ```
+    }
+
+    participant (
+        value {
+            type: expression
+            plsqlExpression: eba_demo_appr.userlist_for_department('OPERATIONS')
+        }
+    )
+
+    participant (
+        type: businessAdministrator
+        value {
+            staticValue: PAT
+        }
+    )
+
+)
+

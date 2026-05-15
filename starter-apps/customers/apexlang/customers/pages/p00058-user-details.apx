@@ -1,0 +1,520 @@
+page 58 (
+    name: User Details
+    alias: USER_DETAILS
+    title: User Details
+    pageGroup: @acl
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    readOnly {
+        type: expression
+        plsqlExpression: upper(:P58_USERNAME) = upper(:APP_USER)
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: <p>When Access Control is enabled, Administrators have the ability to restrict access to certain application features, for authenticated users. Customers supports the following 3 access levels; Reader, Contributor and Administrator. <b>Reader's</b> have read-only access and can also view reports. <b>Contributor's</b> can create, edit, delete and view reports. <b>Administrator's</b>, in addition to Contributor's capability, can also perform Customers administration, including configuration of access control, managing application look-up data and installing or uninstalling sample data.</p>
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region form-items (
+        name: Form Items
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @user-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region user-details (
+        name: User Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    pageItem P58_ACCESS_LEVEL_ID (
+        type: radioGroup
+        label {
+            label: Access Level
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-levels
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCESS_LEVEL_ID
+            used: always
+        }
+        default {
+            type: static
+            staticValue: 2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: There are three access levels (Administrator, Contributor, Reader).
+        }
+    )
+
+    pageItem P58_ACCOUNT_LOCKED (
+        type: switch
+        label {
+            label: Account Locked
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @form-items
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCOUNT_LOCKED
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P58_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P58_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @form-items
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P58_USERNAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: USERNAME
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The username for this particular user.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add User
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P58_ID
+        }
+    )
+
+    button create-again (
+        buttonName: CREATE_AGAIN
+        label: Add and Add Another
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P58_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 'show' d
+                from dual
+                where :P58_ID is not null
+                    and not exists (
+                        select null
+                        from eba_cust_users
+                        where upper(username) = :APP_USER
+                            and id = :P58_ID )
+                ```
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 'show' d
+                from dual
+                where :P58_ID is not null
+                    and not exists (
+                        select null
+                        from eba_cust_users
+                        where upper(username) = :APP_USER
+                            and id = :P58_ID )
+                ```
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-update-yourself (
+        name: cannot update yourself
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_cust_users
+                 where upper(username) = :APP_USER
+                   and id = :P58_ID
+                ```
+        }
+        error {
+            errorMessage: You cannot update your own record.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    validation p58-username-email-username-is-valid (
+        name: P58_USERNAME Email Username is valid
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P58_USERNAME
+            regexp: "^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$"
+        }
+        error {
+            errorMessage: Username is not in a valid email address format. Please note the application's username format below.
+            associatedItem: @P58_USERNAME
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value ('USERNAME_FORMAT') = 'EMAIL'
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    computation p58-username (
+        itemName: P58_USERNAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression: trim(:P58_USERNAME)
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 1654643165734839255
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: CREATE_AGAIN
+        }
+    )
+
+    process fetch-row-from-eba-cust-users (
+        name: Fetch Row from EBA_CUST_USERS
+        type: autoRowFetch
+        source {
+            tableName: EBA_CUST_USERS
+            pkColumn: ID
+            pkItem: P58_ID
+            rowVersionColumn: ROW_VERSION
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 15827586091804185026
+        }
+    )
+
+    process process-row-of-eba-cust-users (
+        name: Process Row of EBA_CUST_USERS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CUST_USERS
+            pkColumn: ID
+            pkItem: P58_ID
+            rowVersionColumn: ROW_VERSION
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 15827586284765185027
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 15827586492329185027
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

@@ -1,0 +1,151 @@
+customAttribute attribute_01 (
+    apexlangName: displayOrientation
+    attribute: 1
+    name: Display Orientation
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    builder {
+        common: false
+        showInWizard: false
+    }
+    default {
+        value: horizontal
+    }
+    help {
+        helpText: Select whether the slider should be displayed horizontally or vertically on the page.
+    }
+
+    entry horizontal (
+        sequence: 10
+        display: Horizontal
+        return: horizontal
+    )
+
+    entry vertical (
+        sequence: 20
+        display: Vertical
+        return: vertical
+    )
+
+)
+
+customAttribute attribute_02 (
+    apexlangName: minimumValue
+    attribute: 2
+    name: Minimum Value
+    type: integer
+    validation {
+        required: true
+        maxLength: 6
+    }
+    appearance {
+        sequence: 20
+    }
+    builder {
+        displayWidth: 6
+    }
+    default {
+        value: 0
+    }
+    help {
+        helpText:
+            ```
+            <p>Enter the minimum value for the slider.</p>
+            <p>Note: If the value if less than the minimum then it will be displayed as the minimum value.</p>
+            ```
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: maximumValue
+    attribute: 3
+    name: Maximum Value
+    type: integer
+    validation {
+        required: true
+        maxLength: 6
+    }
+    appearance {
+        sequence: 30
+    }
+    builder {
+        displayWidth: 6
+    }
+    default {
+        value: 1000
+    }
+    help {
+        helpText:
+            ```
+            <p>Enter the maximum value for the slider.</p>
+            <p>Note: If the value if greater than the maximum then it will be displayed as the maximum value.</p>
+            ```
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: step
+    attribute: 4
+    name: Step
+    type: integer
+    validation {
+        required: true
+        maxLength: 6
+    }
+    appearance {
+        sequence: 40
+    }
+    builder {
+        displayWidth: 6
+    }
+    default {
+        value: 1
+    }
+    help {
+        helpText:
+            ```
+            <p>Enter how much the value will increment or decrement based on the slider being moved left or right.</p>
+            <p>If there is a large difference between the minimum and maximum values, for example 0 to 10000, then you may want a larger step value, such as 100.</p>
+            ```
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: animate
+    attribute: 5
+    name: Animate
+    type: yesNo
+    appearance {
+        sequence: 60
+    }
+    help {
+        helpText: Select whether animations should be used when the slider is moved.
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: valueSuffix
+    attribute: 6
+    name: Value Suffix
+    validation {
+        maxLength: 25
+    }
+    appearance {
+        sequence: 50
+    }
+    builder {
+        common: false
+        showInWizard: false
+        translatable: true
+        displayWidth: 25
+    }
+    help {
+        helpText: Enter the text that is appended to the value. he default value is " %"
+    }
+)
+

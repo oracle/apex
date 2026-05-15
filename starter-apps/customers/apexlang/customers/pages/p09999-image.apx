@@ -1,0 +1,28 @@
+page 9999 (
+    name: Image Download
+    alias: IMAGE
+    title: Image Download
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    comments {
+        comments: This page is only used as a placeholder for calling the get image URL on demand process.
+    }
+)
+

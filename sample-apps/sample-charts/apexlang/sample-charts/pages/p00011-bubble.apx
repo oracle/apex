@@ -1,0 +1,272 @@
+page 11 (
+    name: Bubble
+    alias: BUBBLE
+    title: Bubble
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Bubble charts, using Oracle JET Data Visualizations, are showcased on this page. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your charts. With plug-in based bar charts, you can display labels in a legend or with rollover labels on the bars. Native bubble charts define data items using x, y, and z values, making them useful for viewing relationships between 3 dimensions. However, 0 or negative values should not be used for the z value.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-bubble-chart
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region bubble (
+        name: Bubble
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: bubble
+        }
+        title {
+            title: OECD Members Pension Contribution Revenues, 2011
+        }
+        chartLayout {
+            height: 400
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series jet_chart_series (
+            name: 2011
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select country country,
+                           name,
+                           (employee/100) employee,
+                           (employer/100) employer,
+                           (total/100) total
+                     from eba_demo_chart_stats
+                    ```
+            }
+            columnMapping {
+                label: COUNTRY
+                x: EMPLOYEE
+                y: EMPLOYER
+                z: TOTAL
+            }
+            link {
+                type: redirectUrl
+                targetUrl: javascript:$s("P11_POINT",'&COUNTRY.  Total Contributions: $&TOTAL.');
+            }
+            label {
+                show: true
+                position: center
+            }
+        )
+
+        axis x (
+            name: x
+            title: Employee Contribution (% of GDP)
+            value {
+                format: percent
+                decimalPlaces: 1
+                formatScaling: none
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+        axis y (
+            name: y
+            title: Employer Contribution (% of GDP)
+            value {
+                format: percent
+                decimalPlaces: 1
+                formatScaling: none
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region filter (
+        name: Filter
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region information (
+        name: Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a Bubble chart with percent numeric formatting. The <strong>Percent</strong> Format allows a user to format the numeric values on the axes and tooltips as percent values. When a number is formatted as a percent, the values on the chart are multiplied by 100.<p/>
+                For more information on the Bubble chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=bubbleChart&demo=default" target="_blank">Bubble Chart: Basic</a> example.<p/>The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank">OECD Pensions at a Glance 2013</a> report.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @bubble
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    pageItem P11_POINT (
+        type: displayOnly
+        label {
+            label: Selected:
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @bubble
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    dynamicAction refresh-on-salary-change (
+        name: Refresh on salary change
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P11_SALARY
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

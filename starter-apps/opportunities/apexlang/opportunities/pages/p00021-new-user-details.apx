@@ -1,0 +1,522 @@
+page 21 (
+    name: New User Details
+    alias: NEW-USER-DETAILS
+    title: New User Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region form-items (
+        name: Form Items
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @user-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region information (
+        name: Information
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                htp.prn(replace(
+                    apex_lang.message('ACCESS_CONTROL_INFO'),
+                    '#IMAGE_PREFIX'||'#',
+                    :image_prefix));
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region user-details (
+        name: User Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P21_ACCESS_LEVEL_ID (
+        type: radioGroup
+        label {
+            label: Access Level
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-levels
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: 2
+        }
+        readOnly {
+            type: expression
+            plsqlExpression: :P21_SEQUENCE is not null and lower(:APP_USER) = lower(:P21_USERNAME)
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: The access level assigned to this user.
+        }
+    )
+
+    pageItem P21_SEQUENCE (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @form-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P21_USERNAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        readOnly {
+            type: expression
+            plsqlExpression: :P21_SEQUENCE is not null and lower(:APP_USER) = lower(:P21_USERNAME)
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: The username assigned by this user.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add User
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P21_SEQUENCE
+        }
+    )
+
+    button create-again (
+        buttonName: CREATE_AGAIN
+        label: Add and Add Another
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P21_SEQUENCE
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P21_SEQUENCE is not null and lower(:APP_USER) != lower(:P21_USERNAME)
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P21_SEQUENCE
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: Close Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-update-yourself (
+        name: cannot update yourself
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_sales_users
+                 where upper(username) = :APP_USER
+                   and upper(username) = upper(:P21_USERNAME)
+                ```
+        }
+        error {
+            errorMessage: You cannot update your own record.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    validation p21-username-email-is-valid (
+        name: P21_USERNAME Email is Valid
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P21_USERNAME
+            regexp: "^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$"
+        }
+        error {
+            errorMessage: Username is not in a valid email address format. Please note the application's username format below.
+            associatedItem: @P21_USERNAME
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sales_fw.get_preference_value ('USERNAME_FORMAT') = 'EMAIL'
+        }
+    )
+
+    validation username-is-unique (
+        name: Username is unique
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select
+                    null
+                from
+                    apex_collections
+                where
+                    collection_name = 'NEW_USERS'
+                and
+                    lower(c001) = lower(:P21_USERNAME)
+                and
+                    :P21_SEQUENCE is null;
+                ```
+        }
+        error {
+            errorMessage: This username has already been added. Please enter a unique username.
+            associatedItem: @P21_USERNAME
+        }
+    )
+
+    process add-user-to-collection (
+        name: Add User to Collection
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.add_member(
+                    p_collection_name => 'NEW_USERS',
+                    p_c001            => lower(:P21_USERNAME),
+                    p_n001            => :P21_ACCESS_LEVEL_ID);
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: &P21_USERNAME. added successfully.
+        }
+        advanced {
+            executionMappingIdentifier: 6799931745743413556
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,CREATE_AGAIN
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 6799932197499413557
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process remove-user-from-collection (
+        name: Remove User from Collection
+        type: executeCode
+        source {
+            plsqlCode: apex_collection.delete_member(p_collection_name => 'NEW_USERS', p_seq => :P21_SEQUENCE);
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 6799932590620413557
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 6799933288400413558
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-again
+        }
+    )
+
+    process update-user-in-collection (
+        name: Update User in Collection
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.update_member(
+                    p_collection_name => 'NEW_USERS',
+                    p_c001            => lower(:P21_USERNAME),
+                    p_n001            => :P21_ACCESS_LEVEL_ID,
+                    p_seq             => :P21_SEQUENCE);
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 6799932910995413558
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    branch (
+        name: Add and Add Another
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: &APP_PAGE_ID.
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-again
+        }
+    )
+
+)
+

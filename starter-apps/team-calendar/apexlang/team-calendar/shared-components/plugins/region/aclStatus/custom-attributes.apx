@@ -1,0 +1,136 @@
+customAttribute attribute_01 (
+    apexlangName: configurationPage
+    attribute: 1
+    name: Configuration Page
+    type: pageNumber
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: Enter the application page number used to maintain the ACL settings.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: aclPage
+    attribute: 2
+    name: ACL Page
+    type: pageNumber
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: Enter the application page number used to maintain users and their access level.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: administratorCountColumn
+    attribute: 3
+    name: Administrator Count Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 30
+    }
+    supports {
+        dataTypes: number
+    }
+    help {
+        helpText: Select the column from the region SQL Query which holds the count of Administrators.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: contributorCountColumn
+    attribute: 4
+    name: Contributor Count Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 40
+    }
+    supports {
+        dataTypes: number
+    }
+    help {
+        helpText: Select the column from the region SQL Query which holds the count of Contributors.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: readerCountColumn
+    attribute: 5
+    name: Reader Count Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 50
+    }
+    supports {
+        dataTypes: number
+    }
+    help {
+        helpText: Select the column from the region SQL Query which holds the count of Readers.
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: scopePreferenceValue
+    attribute: 6
+    name: Scope Preference Value
+    type: plsqlExpressionReturningVarchar2
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 60
+    }
+    help {
+        helpText:
+            ```
+            <p>Enter a function which returns the appropriate scope for the ACL.
+            Allowable values are:</p>
+            <dl>
+              <dt>ACL_ONLY</dt><dd>Rights are determined by ACL access levels. Public users cannot access the application.</dd>
+              <dt>PUBLIC_CONTRIBUTE</dt><dd>Public users can contribute, but cannot access Administrative tasks.</dd>
+              <dt>PUBLIC_READONLY</dt><dd>Public users can access the application, but cannot update records.</dd>
+            </dl>
+            ```
+    }
+    examples {
+        examples: eba_plugin_fw.get_preference_value('ACCESS_CONTROL_SCOPE')
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: aclEnabledPreference
+    attribute: 7
+    name: ACL Enabled Preference
+    type: plsqlExpressionReturningVarchar2
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 70
+    }
+    help {
+        helpText: <p>Enter a function which returns if ACL is currently enabled or disabled.</p>
+    }
+    examples {
+        examples: eba_plugin_fw.get_preference_value('ACCESS_CONTROL_ENABLED')
+    }
+)
+

@@ -1,0 +1,299 @@
+page 11 (
+    name: Prepare Movie Data
+    alias: PREPARE-MOVIE-DATA-1
+    title: Prepare Movie Data
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        width: 1024
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region data-generation (
+        name: Data Generation
+        title: What kind of movie data should AI create for you?
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region progress (
+        name: Progress
+        type: list
+        source {
+            list: @ai-generated-data-progress
+        }
+        layout {
+            sequence: 10
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayCurrentLabelOnly
+            ]
+        }
+    )
+
+    pageItem P11_EXE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @data-generation
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P11_PROMPT_INPUT (
+        type: textarea
+        label {
+            label: Prompt Input
+            alignment: left
+        }
+        settings {
+            autoHeight: true
+        }
+        layout {
+            sequence: 10
+            region: @data-generation
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+        quickPicks {
+            type: static
+            label1: Hollywood Movies
+            value1: Generate data on the most successful Hollywood movies.
+            label2: European Movies
+            value2: Generate data on the most famous European movies.
+            label3: Anime and Manga
+            value3: Generate data on popular Asian anime and manga.
+        }
+    )
+
+    button generate-data (
+        buttonName: GENERATE_DATA
+        label: Generate Data
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation p11-prompt-input-not-null (
+        name: P11_PROMPT_INPUT not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P11_PROMPT_INPUT
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P11_PROMPT_INPUT
+        }
+        serverSideCondition {
+            whenButtonPressed: @generate-data
+        }
+    )
+
+    process ask-ai (
+        name: Ask AI
+        type: executeCode
+        executionChain: @generate-sample-data
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_response          clob            := 'TITLE;MOVIEDESCRIPTION;ACTORS;GENRE;RELEASE_DATE;RATING' || chr(10);
+                    l_genre_list        apex_t_varchar2 := apex_t_varchar2( 'Action','Comedy','Drama','Sci-Fi','Horror','Education','Western', 'Crime','Mystery','Romance' ); 
+                    l_prompt            varchar2( 32767 );
+                    l_exec              apex_background_process.t_execution;
+                    l_exec_id           number;
+                    l_current_ai_prov   varchar2( 20 )    := case when :CURRENT_AI_PROVIDER = 'OCI' 
+                                                                 then 'EBA_GENAI_OCI'
+                                                                 else 'EBA_GENAI_OPENAI'
+                                                             end ;
+                
+                begin
+                    apex_background_process.set_progress( l_genre_list.count, 0);
+                
+                    for i in 1 .. l_genre_list.count loop
+                
+                        l_prompt := '
+                        ### ROLE:
+                        You are a helpful assistant that provides concise and accurate responses in generating real Data on existing Movies in CSV Format. Exactly 5 lines in CSV format are needed. Return only the pure CSV content, and nothing else.
+                        The CSV content must adhere strictly to the following structure and format. You are a CSV generator that will always output the data in a schema, using the following columns:
+                        - Column 1: TITLE alphanumeric, up to 50 characters
+                        - Column 2: MOVIEDESCRIPTION alphanumeric, up to 2000 characters
+                        - Column 3: ACTORS Varchar2 space-separated list, up to 100 characters
+                        - Column 4: GENRE Varchar2 space-separated list, up to 25 characters - only generate Movies from the GENRE: ' || l_genre_list( i ) || '!
+                        - Column 5: RELEASE_DATE Date, values between 1980-01-01 and 2024-12-31
+                        - Column 6: RATING Number(2,1), values between 1.0 and 5.0
+                
+                        ### EXAMPLE:
+                        "Movie-Title Placeholder";Description of the first Movie; Lisa Example, Robert Placeholder;' || l_genre_list( i ) || ';1999-03-31;4.9
+                        "Movie-Title Placeholder";Description of the second Movie; Lisa Example, Robert Placeholder;' || l_genre_list( i ) || ';1999-03-31;2.7
+                        ...
+                        "Movie-Title Placeholder";Description of the eight Movie; Lisa Example, Robert Placeholder;' || l_genre_list( i ) || ';1999-03-31;3.0
+                        "Movie-Title Placeholder";Description of the ninth Movie; Lisa Example, Robert Placeholder;' || l_genre_list( i ) || ';1999-03-31;3.9
+                
+                        ### GUARDRAILS:
+                        1.	Do not generate any information that deviates from the Rules provided.
+                        2.	If a user asks for additional or different information, always use the fixed format, never adding new columns or different data.
+                        3.	Avoid any assumptions about additional fields; limit the response strictly to the given format.
+                        4.  Ensure there are no extra line breaks between rows.
+                
+                
+                        ### RULES:
+                        1. Return data in "text" format.
+                        2. Each row must be separated by exactly one line break. No additional shifts, spaces, tabs, or other characters are allowed between rows.
+                        3. Complete Lines: Always write each line from start to finish, ensuring no incomplete or partial lines in the output.
+                        4. Data Format: Each subsequent line must follow the order of TITLE, DESCRIPTION, ACTORS, GENRE, RELEASE_DATE, and RATING.
+                        5. Consistency: Always use a semicolon (;) as the delimiter.
+                        ';
+                
+                        --
+                        -- GenAI Request
+                        --
+                        l_response :=   l_response
+                                      
+                                     -- Replace multiple line breaks with a single line break after each AI response message
+                                     || rtrim(
+                
+                                            -- Replace multiple line breaks with a single line break within an AI response message
+                                            regexp_replace( 
+                                                
+                                                apex_ai.generate(
+                                                    p_prompt            => :P11_PROMPT_INPUT,
+                                                    p_system_prompt     => l_prompt,
+                                                    p_service_static_id => l_current_ai_prov ),
+                
+                                                '(' || chr(10) || '){2,}', chr(10) ),
+                
+                                            chr(10) )
+                                     || chr(10);
+                
+                        apex_background_process.set_progress( l_genre_list.count, i);                             
+                
+                    end loop;
+                
+                    l_exec    := apex_background_process.get_current_execution;
+                    l_exec_id := l_exec.id;
+                    
+                    insert into eba_vector_ai_helper (
+                        execution_id, 
+                        output
+                    ) values (
+                        l_exec_id, 
+                        l_response
+                    );
+                
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 11260076463604371
+        }
+    )
+
+    process generate-sample-data (
+        name: Generate Sample Data
+        type: executionChain
+        backgroundExecution {
+            runInBackground: true
+            returnIdIntoItem: P11_EXE_ID
+            executionsLimit: 1
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 11260412829604374
+        }
+        serverSideCondition {
+            whenButtonPressed: @generate-data
+        }
+    )
+
+    branch (
+        name: Go To Data Preview
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 12
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @generate-data
+        }
+    )
+
+)
+

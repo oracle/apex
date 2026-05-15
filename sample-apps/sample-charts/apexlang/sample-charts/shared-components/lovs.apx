@@ -1,0 +1,51 @@
+lov projects (
+    name: PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select project d, id r
+            from   eba_demo_chart_projects
+            order by 1
+            ```
+    }
+)
+
+lov salary-amounts (
+    name: SALARY AMOUNTS
+    source {
+        location: staticValues
+    }
+
+    entry 1-000-or-less (
+        sequence: 1
+        display: $1,000 or less
+        return: 1000
+    )
+
+    entry 2-000-or-less (
+        sequence: 2
+        display: $2,000 or less
+        return: 2000
+    )
+
+    entry 3-000-or-less (
+        sequence: 3
+        display: $3,000 or less
+        return: 3000
+    )
+
+    entry 4-000-or-less (
+        sequence: 4
+        display: $4,000 or less
+        return: 4000
+    )
+
+    entry 5-000-or-less (
+        sequence: 5
+        display: $5,000 or less
+        return: 5000
+    )
+
+)
+

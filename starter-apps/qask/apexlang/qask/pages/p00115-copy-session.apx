@@ -1,0 +1,388 @@
+page 115 (
+    name: Copy Session
+    alias: COPY-SESSION
+    title: Copy Session
+    pageGroup: @session-management
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    css {
+        inline:
+            ```css
+            .t-HeroRegion-title {
+                display: none;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @host
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    comments {
+        comments: Start a new Q&A session and asks the first session question
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region start-session (
+        name: Start Session
+        type: form
+        source {
+            location: localDatabase
+            tableName: QASK_SESSIONS
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P115_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @start-session
+            slot: regionBody
+        }
+        source {
+            formRegion: @start-session
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P115_NEW_SESSION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @start-session
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P115_OWNER (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @start-session
+            slot: regionBody
+        }
+        source {
+            formRegion: @start-session
+            column: OWNER
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P115_PURPOSE (
+        type: textarea
+        label {
+            label: Purpose
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @start-session
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @start-session
+            column: PURPOSE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P115_RESP_EMAIL_REQUIRED_YN (
+        type: switch
+        label {
+            label: Participant Email Required
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @start-session
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @start-session
+            column: RESP_EMAIL_REQUIRED_YN
+            dataType: varchar2
+        }
+    )
+
+    pageItem P115_RESP_NAME_REQUIRED_YN (
+        type: switch
+        label {
+            label: Participant Name Required
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @start-session
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @start-session
+            column: RESP_NAME_REQUIRED_YN
+            dataType: varchar2
+        }
+    )
+
+    pageItem P115_ROW_VERSION (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @start-session
+            slot: regionBody
+        }
+        source {
+            formRegion: @start-session
+            column: ROW_VERSION
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P115_SESSION_CODE (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @start-session
+            slot: regionBody
+        }
+        source {
+            formRegion: @start-session
+            column: SESSION_CODE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P115_SESSION_NAME (
+        type: textField
+        label {
+            label: Session Name
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @start-session
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @start-session
+            column: SESSION_NAME
+            dataType: varchar2
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 100
+                clearCache: 111
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button copy-session (
+        buttonName: COPY_SESSION
+        label: Copy Session
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: START_SESSION
+        }
+    )
+
+    validation prevent-dup-names (
+        name: prevent dup names
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                qask_util.new_session_name_ok_yn (
+                    p_session_name => :P115_SESSION_NAME,
+                    p_app_user     => lower(:APP_USER)) = 'Y'
+                ```
+        }
+        error {
+            errorMessage: You already have a session "&P115_SESSION_NAME.", please enter a different name.
+            associatedItem: @P115_SESSION_NAME
+        }
+    )
+
+    process copy-session (
+        name: copy session
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P115_NEW_SESSION_ID := qask_util.copy_session (
+                                            p_from_session_id        => :P115_ID,
+                                            p_app_user               => lower(:APP_USER),
+                                            p_session_name           => :P115_SESSION_NAME,
+                                            p_purpose                => :P115_PURPOSE,
+                                            p_resp_name_required_yn  => :P115_RESP_NAME_REQUIRED_YN,
+                                            p_resp_email_required_yn => :P115_RESP_EMAIL_REQUIRED_YN,
+                                            p_session_status         => 'STAGED' );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Session copied.
+        }
+        advanced {
+            executionMappingIdentifier: 51852585663605706773
+        }
+    )
+
+    process load-session-to-copy (
+        name: Load session to copy
+        type: formInitialization
+        formRegion: @start-session
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 20591546687349265137
+        }
+    )
+
+    branch (
+        name: branch to session summary
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 120
+                items: {
+                    P120_SESSION_ID: &P115_NEW_SESSION_ID.
+                }
+                clearCache: 120
+                action: resetRegions
+            }
+        }
+    )
+
+)
+

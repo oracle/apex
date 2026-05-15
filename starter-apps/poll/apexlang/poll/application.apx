@@ -1,0 +1,99 @@
+app POLL (
+    name: Poll
+    version: 26.1.0
+    group: @starter-apps
+    logo {
+        type: text
+        text: &APPLICATION_TITLE.
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+    }
+    navigationMenu {
+        listTemplate: @/top-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-tabLike
+        ]
+        listPosition: top
+    }
+    navigationBar {
+        list: @top-bar
+        listTemplate: @/navigation-bar
+    }
+    userInterface {
+        currentTheme: @universal-theme
+    }
+    javaScript {
+        includeLegacyJavascript: [
+            pre18
+            18
+        ]
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css
+    }
+    authentication {
+        scheme: @apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: @application-sentry
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: [
+            modifyThisApp
+            modifyWorkspaceRepository
+        ]
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: 8CDF7379F437DE8D903E39B58C90D46224F778963182E9289D4B81F2FC0984E7
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+        maxSessionLength: 28800
+    }
+    globalization {
+        documentDirection: leftToRight
+        languageDerivedFrom: notTranslated
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    errorHandling {
+        errorHandlingFunctionName: eba_qpoll_fw.apex_error_handling
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments: 1.0.2 -> 1.0.3: Error handling procedure updated to resolve bug 17516350
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Poll
+        }
+    )
+
+)
+

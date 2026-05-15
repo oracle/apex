@@ -1,0 +1,893 @@
+page 42 (
+    name: Opportunities by Territory
+    alias: OPPORTUNITIES-BY-TERRITORY
+    title: Opportunities by Territory
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This is an interactive report of all opportunities listed by territory. Weighted values are derived from multiplying the opportunity's value by its chance of coming to fruition and dividing the result by 100. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region opportunities-by-territory-and-quarter (
+        name: Opportunities by Territory and Quarter
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    v1.territory_name,
+                    v1.qtr,
+                    v1.product_qtr,
+                    v1.customers,
+                    v1.deal_amount,
+                    v1.calculated_amount,
+                    v1.calculated_tcv,
+                    v1.deal_revenues as revenues,
+                    v1.calculated_opp,
+                    v1.weighted_forecast,
+                    v1.calculated_weighted_forecast
+                from
+                (
+                    select
+                        t.territory_name,
+                        o.qtr,
+                        sum(o.deal_amount) as deal_revenues,
+                        listagg(dp.qtr,', ') within group (order by substr(dp.qtr, -2) asc, substr(dp.qtr, 2) asc) as product_qtr,
+                        count(distinct c.id) customers,
+                        sum(o.deal_amount) as deal_amount,
+                        nvl(sum(nvl(dp.quote_price, 0)), 0) as calculated_amount,
+                        nvl(sum(nvl(dp.tcv, 0)), 0) as calculated_tcv,
+                        sum(nvl((select sum(nvl(dx.quote_price, 0)) from EBA_SALES_DEAL_PRODUCTS dx where dx.deal_id = dp.id and dx.term is null), 0)) as calculated_opp,
+                        sum(o.deal_amount * o.deal_probability / 100) weighted_forecast,
+                        nvl(sum(nvl(dp.quote_price, 0) * o.deal_probability / 100), 0) calculated_weighted_forecast
+                    from eba_sales_territories t
+                    left join eba_sales_customers c
+                      on c.customer_territory_id = t.id
+                    left join eba_sales_deals o
+                      on o.customer_id = c.id
+                    left join eba_sales_deal_products dp
+                      on dp.deal_id = o.id
+                    where o.qtr is not null
+                       or (select max(dps.qtr) from eba_sales_deal_products dps where dps.deal_id = o.id) is not null
+                    group by  t.territory_name, o.qtr
+                ) v1
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        config {
+            buildOption: !@opportunity-amount-set-at-product-level
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+            ]
+            filename: opportunities_by_territory.csv
+        }
+        advanced {
+            savedReportMappingIdentifier: 2585157227293372003
+        }
+
+        column CALCULATED_AMOUNT (
+            type: plainText
+            heading {
+                heading: &AMT_HDR.
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CALCULATED_OPP (
+            type: plainText
+            heading {
+                heading: On-Premise Purchase Amount
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column CALCULATED_TCV (
+            type: plainText
+            heading {
+                heading: Actual Total Contract Value
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CALCULATED_WEIGHTED_FORECAST (
+            type: plainText
+            heading {
+                heading: Weighted Forecast
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CUSTOMERS (
+            type: plainText
+            heading {
+                heading: Accounts
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column DEAL_AMOUNT (
+            type: plainText
+            heading {
+                heading: Actual Amount
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+            config {
+                buildOption: !@opportunity-amount-set-at-product-level
+            }
+        )
+
+        column PRODUCT_QTR (
+            type: plainText
+            heading {
+                heading: Quarter(s)
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            config {
+                buildOption: @product-level-close-dates
+            }
+        )
+
+        column QTR (
+            type: plainText
+            heading {
+                heading: Quarter
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+            config {
+                buildOption: !@product-level-close-dates
+            }
+        )
+
+        column REVENUES (
+            type: plainText
+            heading {
+                heading: Revenues
+                alignment: center
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column TERRITORY_NAME (
+            type: link
+            heading {
+                heading: Territory
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 1
+                    items: {
+                        P1_DISPLAY_AS: GRID
+                        IR_TERRITORY_NAME: #TERRITORY_NAME#
+                    }
+                    clearCache: [
+                        1
+                        RIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #TERRITORY_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column WEIGHTED_FORECAST (
+            type: plainText
+            heading {
+                heading: Weighted Forecast
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+            config {
+                buildOption: !@opportunity-amount-set-at-product-level
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 25851690 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CALCULATED_AMOUNT (
+                sequence: 8
+            )
+
+            displayColumn CALCULATED_OPP (
+                sequence: 10
+            )
+
+            displayColumn CALCULATED_TCV (
+                sequence: 9
+            )
+
+            displayColumn CALCULATED_WEIGHTED_FORECAST (
+                sequence: 5
+            )
+
+            displayColumn CUSTOMERS (
+                sequence: 3
+            )
+
+            displayColumn DEAL_AMOUNT (
+                sequence: 7
+            )
+
+            displayColumn PRODUCT_QTR (
+                sequence: 6
+            )
+
+            displayColumn QTR (
+                sequence: 2
+            )
+
+            displayColumn REVENUES (
+                sequence: 11
+            )
+
+            displayColumn TERRITORY_NAME (
+                sequence: 1
+            )
+
+            displayColumn WEIGHTED_FORECAST (
+                sequence: 4
+            )
+
+        )
+
+    )
+
+    region opportunities-by-territory-and-quarter-2 (
+        name: Opportunities by Territory and Quarter
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    v1.territory_name,
+                    eba_sales_fw.remove_duplicates(v1.product_qtr) as product_qtr,
+                    v1.customers,
+                    v1.deal_amount,
+                    v1.calculated_amount,
+                    v1.calculated_tcv,
+                    v1.calculated_amount + v1.calculated_opp as revenues,
+                    v1.calculated_opp,
+                    v1.weighted_forecast,
+                    v1.calculated_weighted_forecast
+                from
+                (
+                    select
+                        t.territory_name,
+                        sum(o.deal_amount) as deal_revenues,
+                        listagg(dp.qtr,', ') within group (order by substr(dp.qtr, -2) asc, substr(dp.qtr, 2) asc) as product_qtr,
+                        count(distinct c.id) customers,
+                        sum(o.deal_amount) as deal_amount,
+                        nvl(sum(nvl(dp.quote_price, 0)), 0) as calculated_amount,
+                        nvl(sum(nvl(dp.tcv, 0)), 0) as calculated_tcv,
+                        sum(nvl((select sum(nvl(dx.quote_price, 0)) from EBA_SALES_DEAL_PRODUCTS dx where dx.deal_id = dp.id and dx.term is null), 0)) as calculated_opp,
+                        sum(o.deal_amount * o.deal_probability / 100) weighted_forecast,
+                        nvl(sum(nvl(dp.quote_price, 0) * o.deal_probability / 100), 0) calculated_weighted_forecast
+                    from eba_sales_territories t
+                    left join eba_sales_customers c
+                      on c.customer_territory_id = t.id
+                    left join eba_sales_deals o
+                      on o.customer_id = c.id
+                    left join eba_sales_deal_products dp
+                      on dp.deal_id = o.id
+                    where o.qtr is not null
+                       or (select max(dps.qtr) from eba_sales_deal_products dps where dps.deal_id = o.id) is not null
+                    group by  t.territory_name
+                ) v1
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+            ]
+            filename: opportunities_by_territory.csv
+        }
+        advanced {
+            savedReportMappingIdentifier: 3725344724950466954
+        }
+
+        column CALCULATED_AMOUNT (
+            type: plainText
+            heading {
+                heading: &AMT_HDR.
+                alignment: end
+            }
+            layout {
+                sequence: 44
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CALCULATED_OPP (
+            type: plainText
+            heading {
+                heading: On-Premise Purchase Amount
+                alignment: end
+            }
+            layout {
+                sequence: 64
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column CALCULATED_TCV (
+            type: plainText
+            heading {
+                heading: Actual Total Contract Value
+                alignment: end
+            }
+            layout {
+                sequence: 54
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CALCULATED_WEIGHTED_FORECAST (
+            type: plainText
+            heading {
+                heading: Weighted Forecast
+                alignment: end
+            }
+            layout {
+                sequence: 14
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CUSTOMERS (
+            type: plainText
+            heading {
+                heading: Accounts
+                alignment: end
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column DEAL_AMOUNT (
+            type: plainText
+            heading {
+                heading: Actual Amount
+                alignment: end
+            }
+            layout {
+                sequence: 34
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+            config {
+                buildOption: !@opportunity-amount-set-at-product-level
+            }
+        )
+
+        column PRODUCT_QTR (
+            type: plainText
+            heading {
+                heading: Quarter(s)
+            }
+            layout {
+                sequence: 24
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            config {
+                buildOption: @product-level-close-dates
+            }
+        )
+
+        column REVENUES (
+            type: plainText
+            heading {
+                heading: Revenues
+                alignment: center
+            }
+            layout {
+                sequence: 74
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column TERRITORY_NAME (
+            type: link
+            heading {
+                heading: Territory
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 1
+                    items: {
+                        P1_DISPLAY_AS: GRID
+                        IR_TERRITORY_NAME: #TERRITORY_NAME#
+                    }
+                    clearCache: [
+                        1
+                        RIR
+                    ]
+                    action: resetPagination
+                    request: IR_25333932
+                }
+                linkText: #TERRITORY_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column WEIGHTED_FORECAST (
+            type: plainText
+            heading {
+                heading: Weighted Forecast
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+            config {
+                buildOption: !@opportunity-amount-set-at-product-level
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 8977905 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CALCULATED_AMOUNT (
+                sequence: 5
+            )
+
+            displayColumn CALCULATED_OPP (
+                sequence: 6
+            )
+
+            displayColumn CALCULATED_WEIGHTED_FORECAST (
+                sequence: 4
+            )
+
+            displayColumn CUSTOMERS (
+                sequence: 2
+            )
+
+            displayColumn PRODUCT_QTR (
+                sequence: 3
+            )
+
+            displayColumn REVENUES (
+                sequence: 7
+            )
+
+            displayColumn TERRITORY_NAME (
+                sequence: 1
+            )
+
+            sort (
+                column: TERRITORY_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: QTR
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT_1
+        label: Reset
+        layout {
+            sequence: 10
+            region: @opportunities-by-territory-and-quarter
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 42
+                clearCache: [
+                    42
+                    RIR
+                    CIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report-2 (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @opportunities-by-territory-and-quarter-2
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 42
+                clearCache: [
+                    42
+                    RIR
+                    CIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

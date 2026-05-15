@@ -1,0 +1,284 @@
+page 31 (
+    name: Links from Comments
+    alias: LINKS-FROM-COMMENTS
+    title: Links from Comments
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region links (
+        name: links
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare 
+                    x                 clob            := null;
+                    r                 clob            := null;
+                    l_comment_count   int             := 0;
+                    l_link            varchar2(32767) := null;
+                    l_link_exists     boolean         := false;
+                    l_link_count      int             := 0;
+                    l_existing_links  int             := 0;
+                begin
+                    --
+                    -- count existing links
+                    --
+                    for c1 in (select count(*) c from sp_project_links where project_id = :P31_ID ) loop
+                        l_existing_links := c1.c;
+                    end loop;
+                    r := '<p>This '||:NOMENCLATURE_PROJECT||' has '||l_existing_links||' links defined.</p>';
+                    --
+                    -- search comments for links
+                    --
+                    for c1 in (
+                        select body, 
+                               id, 
+                               created, 
+                               project_id
+                        from SP_PROJECT_COMMENTS c 
+                        where c.PROJECT_ID = :P31_ID and 
+                              c.PRIVATE_YN = 'N'
+                        order by created desc) loop
+                       x := c1.body;
+                       for i in 1..30 loop
+                           l_link := REGEXP_SUBSTR ( x, 'http[s]?://[a-zA-Z0-9./?=_-]+',1,i);
+                           if l_link is null then 
+                               exit;
+                           end if;
+                           --
+                           -- check for existing link
+                           --
+                           l_link_exists := false;
+                           for c2 in (
+                               select 1 x 
+                               from SP_PROJECT_LINKS l 
+                               where l.project_id = c1.project_id and 
+                                     lower(l.LINK_URL) = lower(l_link)) loop
+                               l_link_exists := true;
+                               exit;
+                           end loop;
+                           --
+                           -- display new links
+                           --
+                           if not l_link_exists then
+                                if dbms_lob.instr(r,l_link) = 0 then
+                                    l_link_count := l_link_count + 1;
+                                    if l_link_count = 1 then 
+                                        r := r||chr(10)||'<p>The following new links have been found:</p>'||chr(10)||'<ul>';
+                                    end if;
+                                    r := r||chr(10)||'<li>'||l_link||'</li>';
+                                end if;
+                           end if;
+                       end loop;
+                       l_comment_count := l_comment_count + 1;
+                       if l_comment_count >= 100 then 
+                           exit;
+                       end if;
+                    end loop;
+                    if l_link_count = 0 then 
+                        r := r||chr(10)||'No new links found searching '||trim(to_char(l_comment_count,'999G999G990'))||' comments';
+                    else
+                       r := r||chr(10)||'</ul>';
+                    end if;
+                    return r;
+                end;
+                
+                ```
+            pageItemsToSubmit: P31_ID
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P31_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button add-links (
+        buttonName: add_links
+        label: Add Links
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction close-on-click (
+        name: close on click
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process add-links (
+        name: Add links
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare 
+                    x               clob            := null;
+                    l_comment_count int             := 0;
+                    l_link          varchar2(32767) := null;
+                    l_link_exists   boolean         := false;
+                begin
+                    for c1 in (
+                       select body, 
+                              id, 
+                              created, 
+                              project_id
+                       from SP_PROJECT_COMMENTS c 
+                       where c.PROJECT_ID = :P31_ID and 
+                             c.PRIVATE_YN = 'N'
+                       order by created desc) loop
+                       -- 
+                       x := c1.body;
+                       for i in 1..30 loop
+                           l_link := REGEXP_SUBSTR ( x, 'http[s]?://[a-zA-Z0-9./?=_-]+',1,i);
+                           if l_link is null then 
+                               exit;
+                           end if;
+                           --
+                           -- determine if link exists
+                           --
+                           l_link_exists := false;
+                           for c2 in (
+                               select 1 x 
+                               from SP_PROJECT_LINKS l
+                               where l.project_id = c1.project_id and
+                                     lower(l.LINK_URL) = lower(l_link)
+                               ) loop
+                               l_link_exists := true;
+                               exit;
+                           end loop;
+                           --
+                           if not l_link_exists then
+                                insert into SP_PROJECT_LINKS (
+                                    LINK_URL, LINK_NAME, project_id) 
+                                values (
+                                    l_link, 'Added from '||to_char(c1.created,'DD-MON-YYYY')||' comment.', c1.project_id);
+                           end if;
+                
+                       end loop;
+                       l_comment_count := l_comment_count + 1;
+                       if l_comment_count >= 100 then 
+                           exit;
+                       end if;
+                    end loop;
+                end;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Links Added
+        }
+        error {
+            errorMessage: Error: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 5598306491525678941
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-links
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+)
+

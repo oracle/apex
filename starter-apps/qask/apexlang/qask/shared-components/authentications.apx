@@ -1,0 +1,23 @@
+authentication email-based-authentication (
+    name: email-based authentication
+    type: custom
+    settings {
+        authFunctionName: local_auth
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function local_auth (
+                p_username  in  varchar2,
+                p_password  in  varchar2 )
+                return boolean
+            is
+            begin
+                return qask_util.token_is_valid (
+                           p_username => p_username,
+                           p_token    => p_password );
+            end local_auth;
+            ```
+    }
+)
+

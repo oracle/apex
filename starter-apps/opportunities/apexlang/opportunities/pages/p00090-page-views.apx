@@ -1,0 +1,398 @@
+page 90 (
+    name: Page Views
+    alias: PAGE-VIEWS
+    title: Page Views
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This is an interactive report of page view details. Change the "Timeline" filter to vary the report's results. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region page-views (
+        name: Page Views
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select lower(userid) user_name,
+                  step_id page_number,
+                  (
+                    select page_name 
+                    from apex_application_pages p 
+                    where p.page_id = l.step_id 
+                      and p.application_id = :app_id
+                  ) page_name,
+                  time_stamp viewed,
+                  elap elapsed,
+                  num_rows,
+                  ir_search search,
+                  sqlerrm error
+                from apex_activity_log l
+                where flow_id = :app_id 
+                  and time_stamp > sysdate - to_number(:P90_TIMEFRAME, '9999999990.99999999999', 'NLS_NUMERIC_CHARACTERS=''.,''')
+                ```
+            pageItemsToSubmit: P90_TIMEFRAME
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 3747034341244339786
+        }
+
+        column ELAPSED (
+            type: plainText
+            heading {
+                heading: Elapsed
+                alignment: end
+            }
+            layout {
+                sequence: 43
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column ERROR (
+            type: plainText
+            heading {
+                heading: Error
+            }
+            layout {
+                sequence: 73
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column NUM_ROWS (
+            type: plainText
+            heading {
+                heading: Rows
+                alignment: end
+            }
+            layout {
+                sequence: 53
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column PAGE_NAME (
+            type: plainText
+            heading {
+                heading: Page Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column PAGE_NUMBER (
+            type: plainText
+            heading {
+                heading: Page ID
+                alignment: end
+            }
+            layout {
+                sequence: 23
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column SEARCH (
+            type: plainText
+            heading {
+                heading: Search
+            }
+            layout {
+                sequence: 63
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column USER_NAME (
+            type: plainText
+            heading {
+                heading: User
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column VIEWED (
+            type: plainText
+            heading {
+                heading: Viewed
+            }
+            layout {
+                sequence: 33
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        savedReport 9194806 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ERROR (
+                sequence: 5
+            )
+
+            displayColumn PAGE_NAME (
+                sequence: 3
+            )
+
+            displayColumn PAGE_NUMBER (
+                sequence: 2
+            )
+
+            displayColumn USER_NAME (
+                sequence: 1
+            )
+
+            displayColumn VIEWED (
+                sequence: 4
+            )
+
+            sort (
+                column: VIEWED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: "View"
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P90_TIMEFRAME (
+        type: selectList
+        label {
+            label: Timeframe
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @timeframe-4-weeks
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: 00001.0000000000
+        }
+        default {
+            type: static
+            staticValue: 00001.0000000000
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 90
+                clearCache: [
+                    RIR
+                    90
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction p90-timeframe-changed (
+        name: P90_TIMEFRAME changed
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P90_TIMEFRAME
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @page-views
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

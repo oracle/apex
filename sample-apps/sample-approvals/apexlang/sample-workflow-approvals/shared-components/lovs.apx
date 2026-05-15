@@ -1,0 +1,365 @@
+lov all-enames-lov (
+    name: ALL_ENAMES_LOV
+    source {
+        tableName: EBA_DEMO_APPR_EMP
+    }
+    columnMapping {
+        return: ENAME
+        display: ENAME
+        defaultSort: ENAME
+    }
+)
+
+lov approval-task-lov (
+    name: APPROVAL_TASK_LOV
+    source {
+        type: sqlQuery
+        sqlQuery: select name,static_id from apex_appl_taskdefs where application_id = :APP_ID
+    }
+    columnMapping {
+        return: STATIC_ID
+        display: NAME
+        defaultSort: NAME
+    }
+)
+
+lov available-laptop-types (
+    name: AVAILABLE_LAPTOP_TYPES
+    source {
+        location: staticValues
+    }
+
+    entry lenovo-t (
+        sequence: 2
+        display: Lenovo T490
+        return: WIN
+    )
+
+    entry macbook-pro (
+        sequence: 1
+        display: MacBook Pro 14"
+        return: MAC
+    )
+
+)
+
+lov dept-dname (
+    name: DEPT.DNAME
+    source {
+        tableName: DEPT
+    }
+    columnMapping {
+        return: DEPTNO
+        display: DNAME
+        defaultSort: DNAME
+    }
+)
+
+lov desktop-theme-styles (
+    name: DESKTOP THEME STYLES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select s.name d,
+                   s.theme_style_id r
+              from apex_application_theme_styles s,
+                   apex_application_themes t
+             where s.application_id = :app_id
+               and t.application_id = s.application_id
+               and t.theme_number   = s.theme_number
+               and t.ui_type_name   = 'DESKTOP'
+               and t.is_current     = 'Yes'
+             order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov distinct-job-codes-lov (
+    name: DISTINCT_JOB_CODES_LOV
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select job dv, job rv
+            from (
+                select distinct job from eba_demo_appr_emp
+            )
+            order by job
+            ```
+    }
+    columnMapping {
+        return: RV
+        display: DV
+        defaultSort: DV
+    }
+)
+
+lov eba-demo-conf-emp-lov (
+    name: EBA_DEMO_CONF_EMP_LOV
+    source {
+        tableName: EBA_DEMO_APPR_EMP
+    }
+    columnMapping {
+        return: EMPNO
+        display: ENAME
+        defaultSort: ENAME
+    }
+)
+
+lov emp-ename (
+    name: EMP.ENAME
+    source {
+        tableName: EMP
+    }
+    columnMapping {
+        return: EMPNO
+        display: ENAME
+        defaultSort: ENAME
+    }
+)
+
+lov unified-task-list-lov-due (
+    name: UNIFIED_TASK_LIST.LOV.DUE
+    source {
+        location: staticValues
+    }
+
+    entry more-than-30-days (
+        sequence: 6
+        display: More than 30 days
+        return: 720|
+    )
+
+    entry next-24-hours (
+        sequence: 3
+        display: Next 24 hours
+        return: 1|24
+    )
+
+    entry next-30-days (
+        sequence: 5
+        display: Next 30 days
+        return: 168|720
+    )
+
+    entry next-7-days (
+        sequence: 4
+        display: Next 7 days
+        return: 24|168
+    )
+
+    entry next-hour (
+        sequence: 2
+        display: Next hour
+        return: 0|1
+    )
+
+    entry overdue (
+        sequence: 1
+        display: Overdue
+        return: |0
+    )
+
+)
+
+lov unified-task-list-lov-initiated (
+    name: UNIFIED_TASK_LIST.LOV.INITIATED
+    source {
+        location: staticValues
+    }
+
+    entry last-24-hours (
+        sequence: 2
+        display: Last 24 hours
+        return: 1|24
+    )
+
+    entry last-30-days (
+        sequence: 4
+        display: Last 30 days
+        return: 168|720
+    )
+
+    entry last-7-days (
+        sequence: 3
+        display: Last 7 days
+        return: 24|168
+    )
+
+    entry last-hour (
+        sequence: 1
+        display: Last hour
+        return: |1
+    )
+
+    entry older-than-30-days (
+        sequence: 5
+        display: Older than 30 days
+        return: 720|
+    )
+
+)
+
+lov unified-task-list-lov-priority (
+    name: UNIFIED_TASK_LIST.LOV.PRIORITY
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            
+            select disp, 
+                   val 
+              from table ( apex_approval.get_lov_priority )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+
+lov unified-task-list-lov-state (
+    name: UNIFIED_TASK_LIST.LOV.STATE
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            
+            select disp, 
+                   val 
+              from table ( apex_approval.get_lov_state )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+
+lov unified-task-list-lov-type (
+    name: UNIFIED_TASK_LIST.LOV.TYPE
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val
+              from table ( apex_approval.get_lov_type )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+
+lov user-theme-preference (
+    name: USER_THEME_PREFERENCE
+    source {
+        location: staticValues
+    }
+
+    entry allow-end-users-to-choose-theme-style (
+        sequence: 1
+        display: Allow End Users to choose Theme Style
+        return: Yes
+    )
+
+)
+
+lov workflow-charts-lov-time-unit (
+    name: WORKFLOW_CHARTS.LOV.TIME_UNIT
+    source {
+        location: staticValues
+    }
+
+    entry days (
+        sequence: 4
+        display: Days
+        return: DAY
+    )
+
+    entry hours (
+        sequence: 3
+        display: Hours
+        return: HOUR
+    )
+
+    entry minutes (
+        sequence: 2
+        display: Minutes
+        return: MIN
+    )
+
+    entry seconds (
+        sequence: 1
+        display: Seconds
+        return: SEC
+    )
+
+)
+
+lov workflow-console-lov-initiated (
+    name: WORKFLOW_CONSOLE.LOV.INITIATED
+    source {
+        location: staticValues
+    }
+
+    entry last-24-hours (
+        sequence: 2
+        display: Last 24 hours
+        return: 1|24
+    )
+
+    entry last-30-days (
+        sequence: 4
+        display: Last 30 days
+        return: 168|720
+    )
+
+    entry last-7-days (
+        sequence: 3
+        display: Last 7 days
+        return: 24|168
+    )
+
+    entry last-hour (
+        sequence: 1
+        display: Last hour
+        return: |1
+    )
+
+    entry older-than-30-days (
+        sequence: 5
+        display: Older than 30 days
+        return: 720|
+    )
+
+)
+
+lov workflow-console-lov-workflow-state (
+    name: WORKFLOW_CONSOLE.LOV.WORKFLOW_STATE
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val
+              from table ( apex_workflow.get_lov_workflow_state )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+

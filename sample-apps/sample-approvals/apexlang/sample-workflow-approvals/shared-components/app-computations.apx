@@ -1,0 +1,40 @@
+appComputation current-user-empno (
+    itemName: CURRENT_USER_EMPNO
+    execution {
+        sequence: 10
+        point: afterAuthentication
+    }
+    computation {
+        type: sqlQuerySingleValue
+        sqlQuery:
+            ```sql
+            select empno
+              from eba_demo_appr_emp
+             where ename = :APP_USER
+            ```
+    }
+)
+
+appComputation p29-show-for-subordinates (
+    itemName: P29_SHOW_FOR_SUBORDINATES
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: null
+    }
+)
+
+appComputation p8-show-only-subordinates (
+    itemName: P8_SHOW_ONLY_SUBORDINATES
+    execution {
+        sequence: 10
+        point: afterAuthentication
+    }
+    computation {
+        type: expression
+        plsqlExpression: null
+    }
+)
+

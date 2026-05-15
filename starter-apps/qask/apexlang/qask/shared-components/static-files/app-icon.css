@@ -1,0 +1,12 @@
+.app-icon {
+    background-image: url(icons/app-icon-192.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+    background-color: #295866;
+}
+
+.t-Alert-icon .app-icon {
+    width: 128px;
+    height: 128px;
+}

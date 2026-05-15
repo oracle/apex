@@ -1,0 +1,198 @@
+page 2 (
+    name: Help
+    alias: HELP
+    title: &APP_NAME. - Help
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            div.helpContainer{width:960px;margin:16px auto;zoom:1}
+            div.helpContainer:before,div.helpContainer:after{content:"\0020";display:block;height:0;overflow:hidden}
+            div.helpContainer:after{clear:both}
+            div.helpContainer div.helpSide{float:left;width:300px}
+            div.helpContainer div.helpSide h1.appNameHeader{position:relative;font:bold 22px/36px Arial,sans-serif;color:#404040;padding:0;margin:0}
+            div.helpContainer div.helpSide h1.appNameHeader img{display:block;position:absolute;left:0;top:0}
+            div.helpContainer div.helpMain{float:right;border-left:1px solid #EEE;width:632px;padding-left:16px}
+            div.helpContainer div.helpMain h2{font:bold 20px/32px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h3{font:bold 16px/24px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h4{font:bold 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain p{font:normal 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain ul{list-style:outside disc;margin:0 0 0 24px}
+            div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}
+            div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>About this Application</h2>
+                <p>This application contains numerous examples of visualizing coordinate data on a map. Use Map Markers, Lines or Polygons, or the Heat Map feature. The APEX <strong>Map Region</strong> can easily be combined with Oracle Spatial functionality (which is included in every Oracle Database) to perform a "Within Distance Search", "Nearest Neighbor Search", or other spatial analysis.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       'Oracle' vendor
+                from apex_applications aa
+                where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            cssClasses: t-HeroRegion--featured
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App Version
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+    )
+
+    region features (
+        name: Features
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>Features</h2>
+                <p>
+                    <ul>
+                        <li>Simple Map Visualizations: Markers, Polygons, Heat Maps.</li>
+                        <li>Show Map object details using Tool Tips and Information Windows.</li>
+                        <li>Use <strong>Faceted Search</strong> with a Map.</li>
+                        <li>Use Interactive Reports to look up an object and show it on the Map.</li>
+                        <li>Connect a report: Always show what's visible on the Map.</li>
+                        <li>"Circle Search": Draw a circle on the map and use Spatial SQL to find objects within.</li>
+                        <li>Find Nearest Neighbors, based from a given point.</li>
+                        <li>Use Custom Map Markers.</li>
+                    </ul>
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+    region help-container (
+        name: Help Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region quick-start (
+        name: Quick Start
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <H2>Getting Started</h2>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Application Express Application Builder. Click on the "Edit Page #" button to see how the pages are defined.</p>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+)
+

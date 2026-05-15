@@ -1,0 +1,470 @@
+textMessage ABOUT_THIS_APPLICATION (
+    message {
+        text: About this Application
+        language: en
+    }
+)
+
+textMessage ABOUT_TO_CREATE (
+    message {
+        text: Please confirm adding the following %0 <strong>%1</strong> user(s) to your access control list.
+        language: en
+    }
+)
+
+textMessage ABOUT_TO_CREATE_WITH_INVALIDS (
+    message {
+        text: Please confirm adding the following %0 <strong>%1</strong> user(s) to your access control list. Note that %2 string(s) were invalid usernames.
+        language: en
+    }
+)
+
+textMessage ACCESS_CONTROL_INFO (
+    message {
+        text:
+            ```
+            <p>When Access Control is enabled, Administrators have the ability to restrict access to certain application features, for authenticated users. Customers supports the following 3 access levels; Reader, Contributor and Administrator.
+              <b>Reader's</b> have read-only access and can also view reports.
+              <b>Contributor's</b> can create, edit, delete and view reports.
+              <b>Administrator's</b>, in addition to Contributor's capability, can also perform Customers administration, including configuration of access control, managing application look-up data and installing or uninstalling sample data.</p> 
+            
+            ```
+        language: en
+    }
+)
+
+textMessage ACCESS_CONTROL_IS_DISABLED (
+    message {
+        text: Access control for this application is currently disabled. All users are currently Administrators. Navigate to <a href="%0">application administration</a> to enable access control.
+        language: en
+    }
+)
+
+textMessage ACL_CONFIGURATION_INFO (
+    message {
+        text:
+            ```
+            <p><strong>Enabling Access Control</strong> allows the application and its features to be controlled by the <strong>Access Control List</strong>, as defined by the application administrator. This application has 3 access levels available that can be granted to a user; Administrator, Contributor and Reader. Please see the Manage Access Control List page for further details on what each level provides.</p>
+            
+            <p>In addition, if you want to make every authenticated user a 'Reader' of your application, you can select Reader access for any authenticated user from the Access Control Scope configuration option. Similarly, selecting Contributor access for any authenticated user will provide contributor access to any user who can authenticate into your application.</p>
+            
+            <br>
+            <p><b>Disabling Access Control</b> means that access to the application and all of its features including Administration are open to any user who can authenticate to the application.</p>
+            <br>
+            <p>Note: Irrespective of whether Access Control is enabled or disabled, a user still has to authenticate successfully into the application.</p>
+            ```
+        language: en
+    }
+)
+
+textMessage ACL_DISABLED (
+    message {
+        text: <p>All users are currently <strong>Administrators</strong>. Please enable Access Control to restrict user access to this application.</p>
+        language: en
+    }
+)
+
+textMessage ACL_ENABLED (
+    message {
+        text: <p>Only users defined in the Access Control List have access to this application.</p>
+        language: en
+    }
+)
+
+textMessage ACL_PUBLIC_CONTRIBUTE (
+    message {
+        text: <p>All authenticated users have <strong>Reader</strong> and <strong>Contributor</strong> access.</p><p>Administrators are restricted by the Access Control List.</p>
+        language: en
+    }
+)
+
+textMessage ACL_PUBLIC_READONLY (
+    message {
+        text: <p>All authenticated users have <strong>Reader</strong> access.</p><p>Contributors and Administrators are restricted by the Access Control List.</p>
+        language: en
+    }
+)
+
+textMessage ACTIVE (
+    message {
+        text: Active
+        language: en-us
+    }
+)
+
+textMessage ADDITIONAL_INFORMATION (
+    message {
+        text: Additional Information
+        language: en
+    }
+)
+
+textMessage ADMINISTRATION (
+    message {
+        text: Administration
+        language: en
+    }
+)
+
+textMessage ALREADY_IN_ACL (
+    message {
+        text: User is already in Access Control List
+        language: en
+    }
+)
+
+textMessage ANY_AUTHENTICATED_USER (
+    message {
+        text: Any Authenticated User
+        language: en
+    }
+)
+
+textMessage AUTHENTICATION_REQUIRED_PAGES (
+    message {
+        text: Login Required Pages
+        language: en
+    }
+)
+
+textMessage BAU_EMAIL_INSTRUCTIONS (
+    message {
+        text: Enter or copy and paste email addresses separated by commas, semicolons, or new lines. Note that if you copy and paste email addresses from email messages, extraneous text will be filtered out. All email users provided will be added as the selected role. Existing or duplicate email addresses will be ignored.
+        language: en
+    }
+)
+
+textMessage BAU_STRING_INSTRUCTIONS (
+    message {
+        text: Enter or copy and paste usernames separated by commas, semicolons, or whitespace. All usernames provided will be added as the selected role. Existing or duplicate usernames will be ignored.
+        language: en
+    }
+)
+
+textMessage CATEGORY_HELP (
+    message {
+        text: Categories are used for grouping Customers. The Category will be available when you Add, Modify or Search for a Customer. Category can be made Active or Inactive but only active Categories will be shown when adding or modifying a Customer.
+        language: en-us
+    }
+)
+
+textMessage CONTACT_TYPES_HELP (
+    message {
+        text: Contact Types are used for grouping Contacts. The Contact Type will be available when you Add, Modify or Search for a Contact. Contact Types can be made Active or Inactive but only active Contact Types will be shown when adding or modifying a Contact.
+        language: en-us
+    }
+)
+
+textMessage CREATE (
+    message {
+        text: Create
+        language: en-us
+    }
+)
+
+textMessage CUSTOMER_STATUS_HELP (
+    message {
+        text: Statuses are used for identifying the current Status of a Customer. The Status will be available when you Add, Modify or Search for a Customer.  Status can be made Active or Inactive but only active Statuses will be shown when adding or modifying a Customer.
+        language: en-us
+    }
+)
+
+textMessage CUSTOMER_TYPE_HELP (
+    message {
+        text: Types are used for identifying the type of Customer. The Type will be available when you Add, Modify or Search for a Customer. Type can be made Active or Inactive but only active Types will be shown when adding or modifying a Customer.
+        language: en
+    }
+)
+
+textMessage CUSTOMER_USE_CASE_HELP (
+    message {
+        text: Use Cases are used for identifying the type of Customer. The Use Case will be available when you Add, Modify or Search for a Customer. Use Case can be made Active or Inactive but only active Use Cases will be shown when adding or modifying a Customer.
+        language: en
+    }
+)
+
+textMessage DUPLICATE_USER (
+    message {
+        text: Duplicate user in list
+        language: en
+    }
+)
+
+textMessage EMAIL_USERNAME_FORMAT_MSG (
+    message {
+        text: This application is currently using an <strong>email address</strong> username format (e.g. xyz@xyz.com). <a href="f?p=%0:%1:%2:">Change Username Format</a>
+        language: en
+    }
+)
+
+textMessage FEATURES (
+    message {
+        text: Features
+        language: en
+    }
+)
+
+textMessage GETTING_STARTED (
+    message {
+        text: Getting Started
+        language: en
+    }
+)
+
+textMessage HELP (
+    message {
+        text: Help
+        language: en
+    }
+)
+
+textMessage HELP_ABOUT (
+    message {
+        text:
+            ```
+            <div class="aboutApp">
+            <h2>About this Application</h2>
+            <p>Customers helps you improve your customer interactions by offering a centralized repository of information.</p>
+            <p>Each customer can have multiple contacts and be associated with multiple products.  Each contact has a variety of standard attributes, such as category, geography, industry and status, as well as the ability to add tags to a customer for further ad hoc classification.  You can indicate the reference status for a customer and enter free form text as a customer profile.</p>
+            <p>You can create activity records to log interactions with each customer.  Customers includes a variety of reports which let you view recent activities, status changes and tags.  You can also use interactive reports to give your users the ability to filter and shape customer, contact, activity and interaction data.</p>
+            <p>Customers gives you the ability to define your own standards for attributes such as categories, statuses, customer and activity types, and products, allowing you to create a customized version of Customers to meet your own needs.</p>
+            </div>
+            ```
+        language: en
+    }
+)
+
+textMessage HELP_FEATURES (
+    message {
+        text:
+            ```
+            <div class="textRegion">
+            <h2>Features</h2>
+            <ul>
+            <li>Track and Manage Customers</li>
+            <li>Flexible and updateable customer contacts</li>
+            <li>Flexible and updateable procucts</li>
+            <li>Robust Reporting</li>
+            <li>Link, Note, and File Attachments</li>
+            <li>Mobile Interface</li>
+            <li>Flexible Access Control (reader, contributor, administrator model)</li>
+            </ul>
+            </div>
+            ```
+        language: en
+    }
+)
+
+textMessage HELP_GETTING_STARTED (
+    message {
+        text:
+            ```
+            <div class="textRegion">
+            <h2>Getting Started</h2>
+               <p>1. Create Customer</p>
+               <ul>
+               <li>Click the Customers tab</li>
+               <li>Click the Add Customer button</li>
+               <li>Add your customer details</li>
+               </ul>
+               <p>2. Define your Contacts:</p>
+               <ul>
+               <li>Click the Contacts tab</li>
+               <li>Click the Create Contact button</li>
+               <li>Select the customer the contact is associated with</li>
+               <li>Add your contact details</li>
+               </ul>
+               <p>3. Define your Products:</p>
+               <ul>
+               <li>Click the Administration link</li>
+               <li>Click the Manage Products list entry</li>
+               <li>Click the Create Product button</li>
+               <li>Add your product details</li>
+               </ul>
+               <p>4. Associate Products to Customers:</p>
+               <ul>
+               <li>Click the Customers tab</li>
+               <li>Select the Customer you wish to add products for</li>
+               <li>Click the ''+'' button on the Products region</li>
+               <li>Select your product</li>
+               </ul>
+            </div>
+            ```
+        language: en
+    }
+)
+
+textMessage HELP_SIDEBAR (
+    message {
+        text:
+            ```
+            <h1 class="appNameHeader">
+                <img src="%0f_spacer.gif" class="appIcon %1" alt="" />
+                %2
+            </h1>
+            <ul class="vapList">
+                <li>
+                    <span class="vLabel">App Version</span>
+                    <span class="vValue">%3</span>
+                </li>
+                <li>
+                    <span class="vLabel">Pages</span>
+                    <span class="vValue">%4</span>
+                </li>
+                <li>
+                    <span class="vLabel">Vendor</span>
+                    <span class="vValue">%5 </span>
+                </li>
+            </ul>
+            ```
+        language: en
+    }
+)
+
+textMessage HELP_SUPPORT (
+    message {
+        text:
+            ```
+            <div class="textRegion">
+            <h2>Additional Information</h2>
+            <p>If you have questions, ask them on the <a href="%0" target="_blank">%1</a>.
+            </p>
+            </div>
+            ```
+        language: en
+    }
+)
+
+textMessage INACTIVE (
+    message {
+        text: Inactive
+        language: en-us
+    }
+)
+
+textMessage INVALID_USERS_NOT_CREATED (
+    message {
+        text: Note that %0 string(s) were invalid usernames.
+        language: en
+    }
+)
+
+textMessage MISSING_AT_SIGN (
+    message {
+        text: Missing @ sign
+        language: en
+    }
+)
+
+textMessage MISSING_DOT (
+    message {
+        text: Missing dot
+        language: en
+    }
+)
+
+textMessage MOBILE (
+    message {
+        text: Mobile
+        language: en
+    }
+)
+
+textMessage N_DAY (
+    message {
+        text: %0 day
+        language: en
+    }
+)
+
+textMessage N_DAYS (
+    message {
+        text: %0 days
+        language: en
+    }
+)
+
+textMessage N_HOUR (
+    message {
+        text: %0 hour
+        language: en
+    }
+)
+
+textMessage N_HOURS (
+    message {
+        text: %0 hours
+        language: en
+    }
+)
+
+textMessage N_MINUTES (
+    message {
+        text: %0 minutes
+        language: en
+    }
+)
+
+textMessage N_WEEK (
+    message {
+        text: %0 week
+        language: en
+    }
+)
+
+textMessage N_WEEKS (
+    message {
+        text: %0 weeks
+        language: en
+    }
+)
+
+textMessage PAGES_WITH_CUSTOM_AUTH (
+    message {
+        text: Authorization Protected
+        language: en
+    }
+)
+
+textMessage PUBLIC_PAGES (
+    message {
+        text: Public Pages
+        language: en
+    }
+)
+
+textMessage REFERENCE_TYPES_HELP (
+    message {
+        text: Reference Types are used for indicating how references are willing to be used. The Reference Type will be available when you Add, Modify or Search for a Contact. Reference Types can be made Active or Inactive but only active Reference Types will be shown when adding or modifying a Contact.
+        language: en
+    }
+)
+
+textMessage STRING_USERNAME_FORMAT_MSG (
+    message {
+        text: This application is currently using a <strong>non-email address</strong> username format (e.g. JOHNDOE). <a href="f?p=%0:%1:%2:">Change Username Format</a>
+        language: en
+    }
+)
+
+textMessage UNLINK_CONFIRMATION (
+    message {
+        text: This will remove the Contact from the Customer's Contact list but will not delete the Contact.
+        language: en-us
+    }
+)
+
+textMessage USER (
+    message {
+        text: User
+        language: en
+    }
+)
+
+textMessage USERNAME_TOO_LONG (
+    message {
+        text: Username too long
+        language: en
+    }
+)
+

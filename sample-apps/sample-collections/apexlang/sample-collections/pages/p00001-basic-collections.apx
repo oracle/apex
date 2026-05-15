@@ -1,0 +1,699 @@
+page 1 (
+    name: Basic Collections
+    alias: BASIC-COLLECTIONS
+    title: Basic Collections
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            section.infoRegion {
+                border: 1px solid #9AAEC8;
+                background-color: #DDE7F5;
+            }
+            section.infoRegion > div.uRegionHeading {
+                background: none transparent;
+            }
+            .infoRegionIcon {
+                position: absolute;
+                left: 0;
+                margin: 16px;
+                top: 0;
+            }
+            section.infoRegion.uRegion > div.uRegionContent {
+                position: relative;
+                min-height: 32px;
+                padding: 16px 16px 16px 64px;
+            }
+            .infoRegion h1 {
+                font-weight: bold;
+                font-size: 14px;
+                color: #202020;
+                text-shadow: 0 1px 0 rgba(255,255,255,.65);
+            }
+            .infoRegion p {
+                font-size: 12px;
+                line-height: 20px;
+                padding: 8px 0 0 0;
+                text-shadow: 0 1px 0 rgba(255,255,255,.25);
+                color: #303030;
+            }
+            .infoRegion p:last-child {
+                margin-bottom: 0 !important;
+            }
+            
+            
+            
+            div.featuredBlock{
+            	-webkit-border-radius:3px;
+            	-moz-border-radius:3px;
+            	border-radius:3px;
+            	-webkit-box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	-moz-box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	border:1px solid #E1E6EB;
+            	margin-bottom:18px
+            }
+            div.featuredBlock div.featuredIcon{
+            	background-image:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIvPjxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIi8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmNGY0ZjgiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=');
+            	background-size:100%;
+            	background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(40%, #ffffff), color-stop(60%, #f4f4f8), color-stop(100%, #ffffff));
+            	background-image:-webkit-linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	background-image:-moz-linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	background-image:linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	-webkit-border-radius:3px 3px 0 0;
+            	-moz-border-radius:3px 3px 0 0;
+            	border-radius:3px 3px 0 0;
+            	padding:8px 0;
+            	min-height: 90px;
+            	text-align:center;
+            }
+            div.featuredBlock div.featuredIcon img{
+            	display:block;
+            	margin:0 auto 0 auto;
+            	-webkit-box-reflect:below -20px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(255,255,255,0.2)));
+            }
+            div.featuredBlock div.featuredIcon h1{
+            	font-size:12px;
+            	line-height:12px;
+            	color:#404040;
+            	margin:0 8px;
+            	padding:0;
+            	text-align:center;
+            }
+            a.blockLink,a.blockLink:hover{
+            	text-decoration:none
+            }
+            a.blockLink:hover div.featuredBlock{
+            	border:1px solid #b1bbcb
+            }
+            a.blockLink:hover div.featuredBlock div.featuredIcon{
+            	background: none #e5effb;
+            	-webkit-box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            	-moz-box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            	box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            }
+            .regionDivider {
+            	border-top: 2px solid #F0F0F0 !important;
+            	padding-top: 8px;;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This use case covers the basics of creating and editing an Oracle Application Express (APEX) collection. Collections are used to support vectors of APEX se
+                ssion-based data.  APEX Collections are commonly used in place of Oracle temporary tables, but they should not be used for millions of rows per user per APEX 
+                session.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region apex-collections-view (
+        name: APEX_COLLECTIONS View
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select seq_id, c001, c002, c003, c004, c005, n001, n002, n003, d001, d002, d003,  case when xmltype001 is null then null else substr(extract(xmltype001,'*').getstringval(),1,40) || '...' end xmltype001, md5_original, collection_name, COLLECTION_NAME COLLECTION_NAME2
+                  from apex_collections
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than 10,000 rows, please filter your data to ensure complete results.
+        }
+        searchBar {
+            rowsPerPageSelector: true
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                html
+                csv
+            ]
+            sendAsEmail: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 7788161179199500656
+        }
+
+        column C001 (
+            type: plainText
+            heading {
+                heading: Character<br />Attribute 1
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column C002 (
+            type: plainText
+            heading {
+                heading: Character<br />Attribute 2
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column C003 (
+            type: plainText
+            heading {
+                heading: Character<br />Attribute 3
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column C004 (
+            type: plainText
+            heading {
+                heading: Character<br />Attribute 4
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column C005 (
+            type: plainText
+            heading {
+                heading: Character<br />Attribute 5
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column COLLECTION_NAME (
+            type: link
+            heading {
+                heading: Action
+            }
+            layout {
+                sequence: 13
+            }
+            link {
+                target: {
+                    page: 4
+                    items: {
+                        P4_NAME: #COLLECTION_NAME#
+                        P4_SEQ: #SEQ_ID#
+                    }
+                    clearCache: 4
+                }
+                linkText: Edit
+                linkAttributes: class="t-Button t-Button--warning"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column COLLECTION_NAME2 (
+            type: plainText
+            heading {
+                heading: Collection Name
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column D001 (
+            type: plainText
+            heading {
+                heading: Date<br />Attribute 1
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column D002 (
+            type: plainText
+            heading {
+                heading: Date<br />Attribute 2
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column D003 (
+            type: plainText
+            heading {
+                heading: Date<br />Attribute 3
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column MD5_ORIGINAL (
+            type: plainText
+            heading {
+                heading: MD5 Original
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column N001 (
+            type: plainText
+            heading {
+                heading: Numeric<br />Attribute 1
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column N002 (
+            type: plainText
+            heading {
+                heading: Numeric<br />Attribute 2
+                alignment: end
+            }
+            layout {
+                sequence: 9
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column N003 (
+            type: plainText
+            heading {
+                heading: Numeric<br />Attribute 3
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column SEQ_ID (
+            type: plainText
+            heading {
+                heading: Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column XMLTYPE001 (
+            type: plainText
+            heading {
+                heading: XML Type
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        savedReport 4502667 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 5
+            }
+
+            displayColumn C001 (
+                sequence: 4
+            )
+
+            displayColumn C002 (
+                sequence: 5
+            )
+
+            displayColumn C003 (
+                sequence: 6
+            )
+
+            displayColumn C004 (
+                sequence: 7
+            )
+
+            displayColumn C005 (
+                sequence: 8
+            )
+
+            displayColumn COLLECTION_NAME (
+                sequence: 1
+            )
+
+            displayColumn COLLECTION_NAME2 (
+                sequence: 2
+            )
+
+            displayColumn D001 (
+                sequence: 12
+            )
+
+            displayColumn D002 (
+                sequence: 13
+            )
+
+            displayColumn D003 (
+                sequence: 14
+            )
+
+            displayColumn N001 (
+                sequence: 9
+            )
+
+            displayColumn N002 (
+                sequence: 10
+            )
+
+            displayColumn N003 (
+                sequence: 11
+            )
+
+            displayColumn SEQ_ID (
+                sequence: 3
+            )
+
+            displayColumn XMLTYPE001 (
+                sequence: 15
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumbs
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region footer (
+        name: Footer
+        type: plugin/sampleAppsFooter
+        layout {
+            sequence: 40
+            slot: body
+        }
+    )
+
+    region tip (
+        name: Tip
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol style="margin: 8px 24px;">
+                <li>Click the "Create Collection" button to create a new named collection
+                <li>Add members to the collection by clicking the "Modify Collection" button
+                <li>Modify the members of the collection by clicking the icon in the Action column in the report below
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnAttributes: valign=top
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+    )
+
+    button create-collection (
+        buttonName: Create_Collection
+        label: Create Collection
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 2
+                clearCache: 2
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button modify-collection (
+        buttonName: Modify_Collection
+        label: Modify Collection
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @apex-collections-view
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

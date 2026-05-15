@@ -1,0 +1,576 @@
+page 10500 (
+    name: Project Default Tags
+    alias: PROJECT-DEFAULT-TAGS
+    title: &NOMENCLATURE_PROJECT. Default Tags
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region default-tags (
+        name: Default Tags
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select null edit,
+                       ID,
+                       DISPLAY_SEQUENCE,
+                       TAG,
+                       lower(tag) tag_link,
+                       description,
+                       CREATED,
+                       CREATED_BY,
+                       UPDATED,
+                       UPDATED_BY,
+                       (select count(*) from sp_projects p where instr(p.tags, t.tag) > 0) projects
+                  from SP_DEFAULT_TAGS t
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 10027979749945807109
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            type: plainText
+            heading {
+                heading: Display Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column EDIT (
+            type: link
+            heading {
+                heading: Edit
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 10510
+                    items: {
+                        P10510_ID: #ID#
+                    }
+                    clearCache: 10510
+                    action: resetPagination
+                }
+                linkText: <span class="fa fa-edit" aria-hidden="true"></span>
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Edit
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PROJECTS (
+            type: link
+            heading {
+                heading: References
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_TAGS: #TAG_LINK#
+                    }
+                    clearCache: 23
+                }
+                linkText: #PROJECTS#
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column TAG (
+            type: plainText
+            heading {
+                heading: Tag
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column TAG_LINK (
+            type: hidden
+            heading {
+                heading: Tag Link
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Default Tags
+        }
+
+        savedReport 100459378 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DESCRIPTION (
+                sequence: 4
+            )
+
+            displayColumn DISPLAY_SEQUENCE (
+                sequence: 2
+            )
+
+            displayColumn EDIT (
+                sequence: 1
+            )
+
+            displayColumn PROJECTS (
+                sequence: 5
+            )
+
+            displayColumn TAG (
+                sequence: 3
+            )
+
+            displayColumn UPDATED (
+                sequence: 6
+            )
+
+            sort (
+                column: DISPLAY_SEQUENCE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: PROJECTS
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+            aggregate (
+                column: PROJECTS
+            )
+
+        )
+
+    )
+
+    region sql (
+        name: SQL
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'insert into SP_DEFAULT_TAGS (ID, DISPLAY_SEQUENCE, TAG, DESCRIPTION) values ('||
+                       id||', '||
+                       DISPLAY_SEQUENCE||', '''||
+                       TAG||', '''||
+                       DESCRIPTION||''');' SQL
+                  from SP_DEFAULT_TAGS t
+                order by DISPLAY_SEQUENCE, tag
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column SQL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: SQL
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P10500_ADD_TAG (
+        type: textField
+        label {
+            label: Add Tag
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @default-tags
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    button add-tag (
+        buttonName: add_tag
+        label: Add Tag
+        layout {
+            sequence: 20
+            region: @default-tags
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapTop
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10500
+                clearCache: 10500
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction add-tag (
+        name: add tag
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @add-tag
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    sp_util.add_default_tag(
+                        p_tag => :P10500_ADD_TAG);
+                    :P10500_ADD_TAG := null;
+                    ```
+                itemsToSubmit: P10500_ADD_TAG
+                itemsToReturn: P10500_ADD_TAG
+                showProcessing: true
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action refresh-report (
+            name: refresh report
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @default-tags
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-dialog-close (
+        name: refresh on dialog close
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @default-tags
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @default-tags
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

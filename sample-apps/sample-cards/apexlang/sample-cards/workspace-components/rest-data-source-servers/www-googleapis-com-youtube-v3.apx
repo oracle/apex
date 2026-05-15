@@ -1,0 +1,7 @@
+restDataSourceServer www_googleapis_com_youtube_v3 (
+    name: www-googleapis-com-youtube-v3
+    endpointUrl {
+        url: https://www.googleapis.com/youtube/v3/
+    }
+)
+

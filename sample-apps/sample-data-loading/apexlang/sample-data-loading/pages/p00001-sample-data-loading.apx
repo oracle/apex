@@ -1,0 +1,178 @@
+page 1 (
+    name: Sample Data Loading
+    alias: SAMPLE-DATA-LOADING
+    title: Sample Data Loading
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            div.featuredBlock{
+            	-webkit-border-radius:3px;
+            	-moz-border-radius:3px;
+            	border-radius:3px;
+            	-webkit-box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	-moz-box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	border:1px solid #E1E6EB;
+            	margin-bottom:18px
+            }
+            div.featuredBlock div.featuredIcon{
+            	background-image:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIvPjxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIi8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmNGY0ZjgiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=');
+            	background-size:100%;
+            	background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(40%, #ffffff), color-stop(60%, #f4f4f8), color-stop(100%, #ffffff));
+            	background-image:-webkit-linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	background-image:-moz-linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	background-image:linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	-webkit-border-radius:3px 3px 0 0;
+            	-moz-border-radius:3px 3px 0 0;
+            	border-radius:3px 3px 0 0;
+            	padding:8px 0;
+            	min-height: 90px;
+            	text-align:center;
+            }
+            div.featuredBlock div.featuredIcon img{
+            	display:block;
+            	margin:0 auto 0 auto;
+            	-webkit-box-reflect:below -20px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(255,255,255,0.2)));
+            }
+            div.featuredBlock div.featuredIcon h1{
+            	font-size:12px;
+            	line-height:12px;
+            	color:#404040;
+            	margin:0 8px;
+            	padding:0;
+            	text-align:center;
+            }
+            a.blockLink,a.blockLink:hover{
+            	text-decoration:none
+            }
+            a.blockLink:hover div.featuredBlock{
+            	border:1px solid #b1bbcb
+            }
+            a.blockLink:hover div.featuredBlock div.featuredIcon{
+            	background: none #e5effb;
+            	-webkit-box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            	-moz-box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            	box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            }
+            .regionDivider {
+            	border-top: 2px solid #F0F0F0 !important;
+            	padding-top: 8px;;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-application (
+        name: About This Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This application highlights Application Data Loading functionality in Oracle Application Express (APEX).   You can define a data loading definition to allow end users to upload data into an existing table or a collection.</p>
+                
+                <ul>
+                <li>Application Data Loading Supports CSV, XLSX, XML, and JSON formats.</li>
+                <li>Column mapping occurs at design time, removing the burden for end users.</li>
+                <li>Flexible column mappings based on simple names or regular expressions.</li>
+                <li>Data conversion with transformation rules or lookup queries.</li>
+                <li>Easy work flow for end users: upload the file, verify the preview, and load data.</li>
+                <li>CSV, XLSX, XML, and JSON data formats can be loaded to tables or collections.</li>
+                <li>Configure data loading to Append, Merge or Replace data, with or without Error Handling.</li>
+                <li>Simple new Process Type <strong>Data Loading</strong>: Customize Data Loading pages as you wish.</li>
+                <li><strong>APEX_DATA_LOADING</strong> PL/SQL API available for custom processing.</li>
+                <li>Maximum number of columns to load is 300. Note that Legacy data load supports up to 45.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: staticContent
+        source {
+            htmlCode: <p>Enable users to upload data using your application</p>
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    region data-load-examples (
+        name: Data Load Examples
+        type: list
+        source {
+            list: @home
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+            ]
+        }
+    )
+
+    region footer (
+        name: Footer
+        type: plugin/sampleAppsFooter
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

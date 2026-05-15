@@ -1,0 +1,16 @@
+attributeGroup avatar (
+    name: Avatar
+    sequence: 10
+    advanced {
+        staticId: avatar
+    }
+)
+
+attributeGroup badge (
+    name: Badge
+    sequence: 20
+    advanced {
+        staticId: badge
+    }
+)
+

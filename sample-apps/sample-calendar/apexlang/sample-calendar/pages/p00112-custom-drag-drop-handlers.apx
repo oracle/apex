@@ -1,0 +1,253 @@
+page 112 (
+    name: Custom Drag & Drop Handlers
+    alias: CUSTOM-DRAG-DROP-HANDLERS
+    title: Custom Drag & Drop Handlers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This is a standard Oracle APEX calendar region component showing a <b>weekly</b> view on events with a time component. Using drag and drop, calendar events can be moved within the displayed week. In this example, dynamic actions are being executed to display messages based on drag and drop events. These advanced calendar events are not exposed in the builder, but can be accessed as a custom event type. When creating a dynamic action, choose <b>Custom</b> as the event type, <b>Region</b> as <b>Selection Type</b> the the calendar region as <b>Region</b>.</p>
+                <ul>
+                <li>The <b>apexcalendardragdropstart</b> event is being fired when the user starts dragging an event. The event data is being passed as the <b>data</b> attribute.</li>
+                <li>The <b>apexcalendardragdropfinish</b> event is being fired after the drag and drop PL/SQL code has been successfully executed on the server.</li>
+                <li>The <b>apexcalendardragdroperror</b> event is being fired when an error occurs on the server. The <b>data</b> attribute contains the server's error message.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sessions (
+        name: Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   case when speaker is not null then 
+                       title || ' (' || speaker || ')' 
+                       else title
+                   end as title,
+                   speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when status       = 'INACTIVE' then  'apex-cal-gray'
+                      when session_type = 'BREAK'    then  'apex-cal-silver'
+                      when session_type = 'BUSINESS' then  'apex-cal-orange'
+                      when session_type = 'GENERAL'  then  'apex-cal-blue'
+                      when session_type = 'TECHNICAL' then 'apex-cal-green'
+                      when session_type = 'HANDS_ON' then 'apex-cal-lime'
+                   end as css_class
+                from eba_demo_cal_sessions
+                where status='ACTIVE'
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            pkColumn: ID
+            showTime: true
+            calendarViewsAndNavigation: [
+                week
+                list
+                navigation
+            ]
+            dragAndDrop: true
+            dragAndDropPlsqlCode:
+                ```plsql
+                declare
+                  l_title eba_demo_cal_sessions.title%type;
+                  l_start varchar2(30);
+                begin
+                    update eba_demo_cal_sessions
+                       set start_date = to_date(:APEX$NEW_START_DATE, 'YYYYMMDDHH24MISS'),
+                           end_date = to_date(:APEX$NEW_END_DATE, 'YYYYMMDDHH24MISS')
+                     where id = :APEX$PK_VALUE
+                     returning title, ltrim(to_char(start_date, 'Dy, HH24:MI')) 
+                     into l_title, l_start;
+                     :P112_DRAGDROP_MSG := '"' || l_title || '": now at ' || l_start ||'.';
+                end;
+                ```
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function ( pOptions) {
+                    pOptions.titleFormat            = function( pDate ) { return "Conference Schedule" };
+                    pOptions.slotMinTime            = "07:00:00";
+                    pOptions.slotMaxTime            = "18:00:00";
+                    pOptions.dayHeaderFormat        = { weekday: 'short', month: 'numeric', day: 'numeric' };
+                    pOptions.slotDuration           = "00:15:00";
+                    pOptions.weekNumbers            = true;
+                    pOptions.weekText               = "CW";
+                    pOptions.weekNumberCalculation  = "ISO";
+                    pOptions.eventStartEditable     = true;
+                    pOptions.disableKeyboardSupport = true;
+                    return pOptions;
+                }
+                ```
+        }
+    )
+
+    pageItem P112_DRAGDROP_MSG (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            region: @sessions
+            slot: regionBody
+        }
+    )
+
+    dynamicAction begin-drag-drop (
+        name: "Begin Drag & Drop "
+        execution {
+            sequence: 30
+        }
+        when {
+            event: custom
+            customEvent: apexcalendardragdropstart
+            selectionType: region
+            region: @sessions
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    apex.message.showPageSuccess("moving \"" + this.data.title + "\" ...");
+                    
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction finish-drag-drop (
+        name: Finish Drag & Drop
+        execution {
+            sequence: 40
+        }
+        when {
+            event: custom
+            customEvent: apexcalendardragdropfinish
+            selectionType: region
+            region: @sessions
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess( $v( "P112_DRAGDROP_MSG") );
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: plsqlExpression
+                plsqlExpression: "v( 'P112_DRAGDROP_MSG' ) "
+            }
+            affectedElements {
+                selectionType: items
+                items: P112_DRAGDROP_MSG
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

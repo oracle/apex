@@ -1,0 +1,196 @@
+page 92 (
+    name: Week Calendar with Icons
+    alias: WEEK-CALENDAR-WITH-ICONS
+    title: Week Calendar with Icons
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .icon-left .fc-content .fc-title:before {
+              font-family: FontAwesome;
+              margin-right: 5px;
+              float: left;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page displays <i>icons</i> with each calendar event, depending on the event type. This is being achieved by passing HTML code as the <b>title</b> column as follows.</p>
+                <pre>
+                select apex_escape.html( id ),
+                       <b>'&lt;span class="fa fa-flag&gt;&lt;/span&gt;' || apex_escape.html( title )</b>,
+                       :
+                  from eba_demo_cal_sessions
+                </pre>
+                <p>Set the <b>Escape Special Characters</b> region attribute to <b>No</b> in order to prevent HTML code escaping. To avoid CSS vulnerabilities make sure to use <b>APEX_ESCAPE.HTML</b> in your SQL query for all columns.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sessions (
+        name: Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   '<span class="fa fa-' ||
+                       case
+                          when status       = 'INACTIVE' then  'times-circle-o'
+                          when session_type = 'BREAK'    then  'coffee'
+                          when session_type = 'BUSINESS' then  'money'
+                          when session_type = 'GENERAL'  then  'users'
+                          when session_type = 'TECHNICAL' then 'wrench'
+                          when session_type = 'HANDS_ON' then 'laptop'
+                          else 'apex'
+                       end || ' fc fc-title" style="float: left;"></span>&nbsp;' || apex_escape.html(title) as title,
+                   apex_escape.html(speaker) as speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when status       = 'INACTIVE' then  'apex-cal-gray'
+                      when session_type = 'BREAK'    then  'apex-cal-silver'
+                      when session_type = 'BUSINESS' then  'apex-cal-orange'
+                      when session_type = 'GENERAL'  then  'apex-cal-blue'
+                      when session_type = 'TECHNICAL' then 'apex-cal-green'
+                      when session_type = 'HANDS_ON' then 'apex-cal-lime'
+                   end as css_class
+                from eba_demo_cal_sessions
+                where status='ACTIVE' or :P33_SHOW_INACTIVE='Y'
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            pkColumn: ID
+            showTime: true
+            supplementalInfo: &SPEAKER.
+            calendarViewsAndNavigation: [
+                week
+                day
+                list
+                navigation
+            ]
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function ( pOptions) {
+                    pOptions.slotMinTime      = "07:00:00";                               // hide slots before minTime
+                    pOptions.slotMaxTime      = "18:00:00";                               // hide slots after maxTime
+                    pOptions.slotDuration     = "00:15:00";                               // custom slot duration
+                    return pOptions;
+                }
+                
+                ```
+        }
+    )
+
+    dynamicAction change-project-refresh-calendar (
+        name: Change Project - Refresh Calendar
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P92_PROJECTS
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

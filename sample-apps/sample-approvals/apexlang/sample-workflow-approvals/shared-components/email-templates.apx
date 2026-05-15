@@ -1,0 +1,38 @@
+emailTemplate JOB_CHANGE_NOTIFICATION (
+    name: Job Change Notification
+    emailSubject: Job Change for #P_ENAME# Completed
+    htmlFormat {
+        header: <b style="font-size: 24px;">Sample Workflow, Approvals, and Tasks</b>
+        body:
+            ```html
+            Hello,<br>
+            The job change for #P_ENAME# from #P_JOB_BEFORE# to #P_JOB_AFTER# has been approved and is now complete.
+            ```
+    }
+    advanced {
+        versionNumber: 2
+    }
+)
+
+emailTemplate LAPTOP_DELIVERED_NOTIFICATION (
+    name: Laptop Delivered Notification
+    emailSubject: #P_LAPTOP_TYPE# Laptop for #P_ENAME# Completed
+    htmlFormat {
+        header: <b style="font-size: 24px;">Sample Workflow, Approvals, and Tasks</b>
+        body:
+            ```html
+            Dear &P_ENAME.,<br><br>
+            
+            Congratulations, your new #P_LAPTOP_TYPE# laptop has been delivered. <br><br>
+            
+            {if P_DELIVERED_FROM_STOCK/}We used stock on hand to get it to you more quickly.<br><br>{endif/}
+            
+            Best Regards,
+              The backoffice team
+            ```
+    }
+    advanced {
+        versionNumber: 2
+    }
+)
+

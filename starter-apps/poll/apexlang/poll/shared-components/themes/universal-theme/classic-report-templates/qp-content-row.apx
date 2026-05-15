@@ -1,0 +1,87 @@
+classicReportTemplate qp-content-row (
+    name: "[qp] Content Row"
+    templateClass: borderless
+    type: namedColumn
+    reportTemplate {
+        top: <div class="qa-ContentRowReport #COMPONENT_CSS_CLASSES#" id="report_#REGION_STATIC_ID#" #REPORT_ATTRIBUTES#><ul class="qa-ContentRowReport-items">
+        bottom:
+            ```html
+            </ul>
+            </div>
+            <table class="t-Report-pagination" role="presentation">#PAGINATION#</table>
+            ```
+    }
+    rowTemplate1 {
+        template:
+            ```html
+            <li class="qa-ContentRowReport-item #ITEM_CSS_MODIFIERS#" #ITEM_CUSTOM_ATTRS#>
+              <div class="qa-ContentRowReport-itemWrap">
+                <div class="qa-ContentRowReport-itemSelection">#ITEM_SELECTION#</div>
+                <div class="qa-ContentRowReport-itemIconWrap">#ITEM_ICON#</div>
+                <div class="qa-ContentRowReport-itemBody">
+                  <div class="qa-ContentRowReport-itemContent">
+                    <h2 class="qa-ContentRowReport-itemTitle"><a href="#ITEM_LINK#">#ITEM_TITLE#</a></h2>
+                    <div class="qa-ContentRowReport-itemDescription">#ITEM_DESCRIPTION#</div>
+                  </div>
+                  <div class="qa-ContentRowReport-itemMisc">#ITEM_MISC#</div>
+                  <div class="qa-ContentRowReport-itemActions">#ITEM_ACTIONS#</div>
+                </div>
+              </div>
+            </li>
+            
+            ```
+        conditionType: plsqlExpression
+        plsqlExpression: '#ITEM_LINK#' is not null
+    }
+    rowTemplate2 {
+        template:
+            ```html
+            <li class="qa-ContentRowReport-item #ITEM_CSS_MODIFIERS#" #ITEM_CUSTOM_ATTRS#>
+              <div class="qa-ContentRowReport-itemWrap">
+                <div class="qa-ContentRowReport-itemSelection">#ITEM_SELECTION#</div>
+                <div class="qa-ContentRowReport-itemIconWrap">#ITEM_ICON#</div>
+                <div class="qa-ContentRowReport-itemBody">
+                  <div class="qa-ContentRowReport-itemContent">
+                    <h2 class="qa-ContentRowReport-itemTitle">#ITEM_TITLE#</h2>
+                    <div class="qa-ContentRowReport-itemDescription">#ITEM_DESCRIPTION#</div>
+                  </div>
+                  <div class="qa-ContentRowReport-itemMisc">#ITEM_MISC#</div>
+                  <div class="qa-ContentRowReport-itemActions">#ITEM_ACTIONS#</div>
+                </div>
+              </div>
+            </li>
+            
+            ```
+    }
+    pagination {
+        template: <span class="t-Report-paginationText">#TEXT#</span>
+        nextPage:
+            ```html
+            <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+              #PAGINATION_NEXT#<span class="a-Icon icon-right-arrow"></span>
+            </a>
+            ```
+        previousPage:
+            ```html
+            <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+              <span class="a-Icon icon-left-arrow"></span>#PAGINATION_PREVIOUS#
+            </a>
+            ```
+        nextSet:
+            ```html
+            <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--next">
+              #PAGINATION_NEXT_SET#<span class="a-Icon icon-right-arrow"></span>
+            </a>
+            ```
+        previousSet:
+            ```html
+            <a href="#LINK#" class="t-Button t-Button--small t-Button--noUI t-Report-paginationLink t-Report-paginationLink--prev">
+              <span class="a-Icon icon-left-arrow"></span>#PAGINATION_PREVIOUS_SET#
+            </a>
+            ```
+    }
+    advanced {
+        identifier: QP_CONTENT_ROW
+    }
+)
+

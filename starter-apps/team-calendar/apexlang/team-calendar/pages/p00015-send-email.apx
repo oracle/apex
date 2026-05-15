@@ -1,0 +1,1248 @@
+page 15 (
+    name: Send Email
+    alias: SEND-EMAIL
+    title: Send Email
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <ol>
+              <li>Use the filter to select the set of events to be included.</li>
+              <li>Select the group to send email to and/or enter email addresses separated by commas.</li>
+              <li>Customize the from, subject and message body.</li>
+              <li>Click [Send Email].</li>
+            </ol>
+            <p>Emails can be sent to other app users.  The set of events will be appended to the message body.  The 'From' email address will be carbon-copied on the email.
+            </p>
+            ```
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region email-details (
+        name: Email Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            customAttributes: style="width: 99%; min-width: 99%"
+        }
+    )
+
+    region email-functionality-disabled (
+        name: Email Functionality Disabled
+        type: staticContent
+        source {
+            htmlCode: This form uses the current end-user's email address as the "From" email address for the emails it sends. We were unable to derive your email address, therefore this form cannot be used. Please ensure your APEX account has a valid email address defined or change the app's authentication method to one that uses email addresses as usernames.
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--danger
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: "not regexp_like(:P15_FROM, '^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$')"
+        }
+    )
+
+    region events-to-be-included (
+        name: Events to be Included
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select e.EVENT_ID,
+                       event_name,
+                       et.type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null) event_type,
+                       e.EVENT_DATE_TIME event_date,
+                       case when to_char(e.EVENT_DATE_TIME,'MI') = '00' 
+                            then ltrim(to_char(e.EVENT_DATE_TIME,'HHam'),'0')
+                            else ltrim(to_char(e.EVENT_DATE_TIME,'HH:MIam'),'0')
+                            end start_time,
+                       case when to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'MI') = '00'
+                            then ltrim(to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'HHam'),'0')
+                            else ltrim(to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'HH:MIam'),'0')
+                            end end_time,
+                       case when e.duration = 0  then '0 mins'
+                            when e.duration = .25 then '15 mins'
+                            when e.duration = .5 then '30 mins'
+                            when e.duration = .75 then '45 mins'
+                            when e.duration = 1 then '1 hr'
+                            when e.duration > 1 then to_char(trunc(e.duration)) || ' hrs'
+                              || case when e.duration - trunc(e.duration) = 0  then ''
+                                      when e.duration - trunc(e.duration) = .25 then ' 15 mins'
+                                      when e.duration - trunc(e.duration) = .5 then ' 30 mins'
+                                      when e.duration - trunc(e.duration) = .75 then ' 45 mins'
+                                 end
+                            end duration,
+                       e.EVENT_DESC
+                  from EBA_CA_EVENTS e,
+                       EBA_CA_EVENT_TYPES et
+                 where (:EXTERNAL_INTERNAL_BO = 'Exclude'
+                        or (   nvl(internal_yn, 'N') = 'N'
+                            or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                           )
+                       )
+                   and e.type_id = et.type_id (+)
+                   and (:P15_EVENT_TYPE is null or e.type_id = :P15_EVENT_TYPE)
+                   and (:P15_START_DATE is null or 
+                        trunc(to_date(to_char(e.event_date_time,'&APP_DATE_FORMAT.'),
+                              '&APP_DATE_FORMAT.')) >= to_date(:P15_START_DATE,'&APP_DATE_FORMAT.') )
+                   and (:P15_END_DATE is null or 
+                        trunc(to_date(to_char(e.event_date_time,'&APP_DATE_FORMAT.'),
+                              '&APP_DATE_FORMAT.')) <= to_date(:P15_END_DATE,'&APP_DATE_FORMAT.') )
+                   and (:P15_TIMEFRAME is null or
+                        (trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                            >= (select start_date from EBA_ca_timeframes
+                                 where :P15_TIMEFRAME = tf_id) and
+                         trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                            <= (select end_date from EBA_ca_timeframes
+                                 where :P15_TIMEFRAME = tf_id)))
+                 order by e.event_date_time
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hiddenOverflow
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: setPaginationSearchEngine
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No events found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column DURATION (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column END_TIME (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column EVENT_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Event Date
+            }
+            layout {
+                sequence: 1
+            }
+            appearance {
+                formatMask: &APP_DATE_FORMAT.
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_DESC (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column EVENT_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_TYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column START_TIME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Timing
+            }
+            layout {
+                sequence: 3
+            }
+            columnFormatting {
+                htmlExpression: #START_TIME# - #END_TIME# (#DURATION#)
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region filter (
+        name: Filter
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    pageItem P15_END_DATE (
+        type: datePicker
+        label {
+            label: Until
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+            width: 16
+        }
+        validation {
+            maxLength: 30
+        }
+        help {
+            helpText: If entered, Events after this date will not be included.
+        }
+    )
+
+    pageItem P15_EVENT_TYPE (
+        type: selectList
+        label {
+            label: Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @event-types-for-main-cal
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 60
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        help {
+            helpText: If selected, only events of this type will be included.
+        }
+    )
+
+    pageItem P15_FROM (
+        type: textField
+        label {
+            label: From
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @email-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: "regexp_like(:P15_FROM, '^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$')"
+        }
+        readOnly {
+            type: always
+        }
+        help {
+            helpText: Who the email will be sent from.
+        }
+    )
+
+    pageItem P15_GROUP_ID (
+        type: selectList
+        label {
+            label: To (group)
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @email-groups-with-cnt
+            nullDisplayValue: - Select Group -
+        }
+        layout {
+            sequence: 10
+            region: @email-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 7
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        serverSideCondition {
+            type: never
+        }
+        help {
+            helpText: The email group that the email will be sent to.  The can be in addition to email addresses identified in the 'To' or instead of.
+        }
+        comments {
+            comments:
+                ```
+                select
+                    1
+                from
+                    (
+                        select g.group_id,
+                               g.group_name name,
+                               count(*) cnt    
+                          from EBA_ca_email_groups g, 
+                               EBA_ca_email_group_mbrs m
+                         where m.group_id = g.group_id
+                         group by g.group_id, g.group_name
+                    ) v1
+                where
+                    v1.cnt > 0
+                ```
+        }
+    )
+
+    pageItem P15_MSG_BODY (
+        type: textarea
+        label {
+            label: Message
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 60
+            region: @email-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 90
+            height: 4
+        }
+        default {
+            type: static
+            staticValue: Below is a set of events for your review.  If updates are necessary, please let me know.
+        }
+        help {
+            helpText: Enter the body of your email.  A table including the selected events will be included below the text.
+        }
+    )
+
+    pageItem P15_START_DATE (
+        type: datePicker
+        label {
+            label: From
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+            width: 16
+        }
+        validation {
+            maxLength: 30
+        }
+        help {
+            helpText: If entered, Events before this date will not be included.
+        }
+    )
+
+    pageItem P15_SUBJECT (
+        type: textField
+        label {
+            label: Subject
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 50
+            region: @email-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        default {
+            type: static
+            staticValue: Please review the following events
+        }
+        help {
+            helpText: The subject line for the email.
+        }
+    )
+
+    pageItem P15_TIMEFRAME (
+        type: selectList
+        label {
+            label: Timeframe
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @timeframes-showing-dates
+            nullDisplayValue: - None -
+        }
+        layout {
+            sequence: 70
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_ca_timeframes
+                ```
+        }
+        help {
+            helpText: Select Reporting Timeframe to restrict the report.
+        }
+    )
+
+    pageItem P15_TO (
+        type: popupLov
+        label {
+            label: To (emails)
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    a.email as dv,
+                    a.email as rv
+                from
+                    eba_ca_users u,
+                    apex_workspace_apex_users a
+                where
+                    lower(u.username) = lower(a.user_name);
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @email-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select
+                    null
+                from
+                    eba_ca_users u,
+                    apex_workspace_apex_users a
+                where
+                    lower(u.username) = lower(a.user_name);
+                ```
+        }
+        help {
+            helpText: Addresses to email.  Multiple addresses can be selected.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 120
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button members (
+        buttonName: MEMBERS
+        label: View Members
+        layout {
+            sequence: 20
+            region: @email-details
+            slot: regionBody
+            startNewRow: false
+            column: 8
+            columnSpan: 5
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--small
+                t-Button--primary
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 20
+                items: {
+                    P20_GROUP_ID: &P15_GROUP_ID.
+                }
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            customAttributes: style="margin-top:8px;"
+        }
+        serverSideCondition {
+            type: never
+        }
+        comments {
+            comments:
+                ```
+                select
+                    1
+                from
+                    (
+                        select g.group_id,
+                               g.group_name name,
+                               count(*) cnt    
+                          from EBA_ca_email_groups g, 
+                               EBA_ca_email_group_mbrs m
+                         where m.group_id = g.group_id
+                         group by g.group_id, g.group_name
+                    ) v1
+                where
+                    v1.cnt > 0
+                ```
+        }
+    )
+
+    button p15-clear (
+        buttonName: P15_CLEAR
+        label: Clear
+        layout {
+            sequence: 20
+            region: @filter
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: P15_CLEAR
+            requestSourceType: staticValue
+            requestSource: CLEAR
+        }
+    )
+
+    button p15-go (
+        buttonName: P15_GO
+        label: Go
+        layout {
+            sequence: 10
+            region: @filter
+            slot: help
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: P15_GO
+            requestSourceType: staticValue
+            requestSource: Go
+        }
+    )
+
+    button send-email (
+        buttonName: SEND_EMAIL
+        label: Send Email
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: "regexp_like(:P15_FROM, '^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$')"
+        }
+    )
+
+    dynamicAction new (
+        name: New
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P15_GROUP_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P15_GROUP_ID
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: button
+                button: @members
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: button
+                button: @members
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction save-group-id (
+        name: save group id
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P15_GROUP_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P15_GROUP_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation defined-to-users-are-valid (
+        name: "Defined \"To\" users are valid "
+        execution {
+            sequence: 60
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_email_array  apex_t_varchar2;
+                    l_valid_emails apex_t_varchar2;
+                    l_idx          varchar2(20);
+                    l_retval       boolean := true;
+                begin
+                   -- Populate submitted array
+                   l_email_array := apex_string.split(
+                                        p_str => :P15_TO,
+                                        p_sep => ':'
+                                    );
+                
+                    -- Populate Valid Emails string
+                    begin
+                        select
+                            lower(a.email)
+                        bulk collect into
+                            l_valid_emails
+                        from
+                            eba_ca_users u,
+                            apex_workspace_apex_users a
+                        where
+                            lower(u.username) = lower(a.user_name);
+                    exception
+                        when no_data_found then
+                            -- No users have been defined in the app and/or APEX workspace yet
+                            l_retval := false;
+                            return l_retval;
+                    end;
+                
+                    -- Start index at 1
+                    l_idx := l_email_array.first;
+                
+                    -- Loop through emails submitted in form
+                    while (l_idx is not null)
+                    loop
+                        -- Verify that the emails entered by end-user is in the list of emails assigned to APEX workspace users
+                        l_retval := lower(l_email_array(l_idx)) member of l_valid_emails; -- if this returns false it means the end-user somehow entered an invalid email
+                        
+                        -- Bail from continued looping if last retval assignment was false
+                        if not l_retval then
+                            exit;
+                        end if;
+                
+                        -- If retval was true, move on to the next array value
+                        l_idx := l_email_array.next(l_idx);
+                    end loop;
+                    return l_retval;
+                end;
+                ```
+        }
+        error {
+            errorMessage: Please select only email addresses offered in the list.
+            displayLocation: inlineWithField
+            associatedItem: @P15_TO
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P15_TO
+        }
+    )
+
+    validation from-valid-email (
+        name: From valid email
+        execution {
+            sequence: 50
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P15_FROM
+            regexp: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}"
+        }
+        error {
+            errorMessage: Invalid Email format for From.
+            associatedItem: @P15_FROM
+        }
+        serverSideCondition {
+            whenButtonPressed: @send-email
+            type: itemIsNotNull
+            item: P15_FROM
+        }
+    )
+
+    validation p15-from-not-null (
+        name: P15_FROM not null
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P15_FROM
+        }
+        error {
+            errorMessage: From must be specified.
+            associatedItem: @P15_FROM
+        }
+        serverSideCondition {
+            whenButtonPressed: @send-email
+        }
+    )
+
+    validation p15-group-id-or-to-not-null (
+        name: P15_GROUP_ID  or TO not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                :P15_GROUP_ID is not null or 
+                :P15_TO is not null
+                ```
+        }
+        error {
+            errorMessage: Either a group must be selected or 'To' must be specified.
+            associatedItem: @P15_GROUP_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @send-email
+        }
+    )
+
+    validation p15-msg-body-must-be-specified (
+        name: P15_MSG_BODY must be specified
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: itemIsNotNull
+            item: P15_MSG_BODY
+        }
+        error {
+            errorMessage: Message Body must be specified.
+            associatedItem: @P15_MSG_BODY
+        }
+        serverSideCondition {
+            whenButtonPressed: @send-email
+        }
+    )
+
+    validation p15-subject-not-null (
+        name: P15_SUBJECT not null
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P15_SUBJECT
+        }
+        error {
+            errorMessage: Subject must be specified.
+            associatedItem: @P15_SUBJECT
+        }
+        serverSideCondition {
+            whenButtonPressed: @send-email
+        }
+    )
+
+    computation p15-from (
+        itemName: P15_FROM
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_from_email varchar2(255);
+                begin
+                    -- If the end-user's username is already an email address use it as the from address
+                    if regexp_like(:APP_USER, '^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\.(-?[a-zA-Z0-9+])*)+$') then
+                        l_from_email := lower(:APP_USER);
+                    else
+                        -- otherwise populate the from address by querying the apex_workspace_apex_users view (where email is a required value)
+                        select
+                            lower(a.email)
+                        into
+                            l_from_email
+                        from
+                            eba_ca_users u,
+                            apex_workspace_apex_users a
+                        where
+                            lower(u.username) = lower(a.user_name)
+                        and
+                            lower(:APP_USER) = lower(a.user_name);
+                    end if;
+                    return l_from_email;
+                end;
+                ```
+        }
+    )
+
+    process reset-pagination (
+        name: Reset Pagination
+        type: resetPagination
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 7414917659236224616
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: Go,CLEAR
+        }
+    )
+
+    process send-email (
+        name: Send Email
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_app_name  varchar2(255)  default 'Team Calendar';
+                   l_body      clob;
+                   l_email_to  varchar2(32000);
+                   crlf        varchar2(2) := chr(10) || chr(13); 
+                begin
+                
+                   for c1 in (
+                      select logo, logo_type
+                        from apex_applications
+                       where application_id = :APP_ID )
+                   loop
+                      if c1.logo_type = 'Text Logo' then
+                         l_app_name := replace(substr(c1.logo,6),'&'||'APPLICATION_TITLE.',:APPLICATION_TITLE);
+                         if lower(substr(l_app_name,1,4)) = '<img' then
+                            l_app_name := substr(l_app_name,instr(l_app_name,'>')+1);
+                         end if;
+                      end if;
+                   end loop;
+                
+                   l_body := '<div style="margin: 10px">
+                    <h1 style="margin: 0 0 5px 0; padding: 10px; font: bold 18px/32px Arial, sans-serif; color: #EA0000; background-color: #F0F0F0; border-bottom: 2px solid #E6E6E6">'||l_app_name||'</h1>
+                    <p style="margin: 15px 0; font: normal 13px/18px Arial, sans-serif;padding: 0 10px">'||crlf;
+                
+                   dbms_lob.append(l_body, apex_escape.html(:P15_MSG_BODY)||'</p>'||crlf);
+                
+                   dbms_lob.append(l_body,'<p style="margin: 15px 0; font: normal 13px/18px Arial, sans-serif;padding: 0 10px">'||crlf);
+                
+                   dbms_lob.append(l_body,'Please note that all dates and times are shown in '||:F855_TIMEZONE||
+                                   ' time.  You can access these events in the <a href="'||:HOST_URL||'f?p='||:APP_ID||':1">'||l_app_name||'</a> application.</p>'||crlf);
+                
+                   dbms_lob.append(l_body,' <table style="width: 100%;" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <th style="background-color: #CCC; color: #333; font: bold 11px/18px Arial, sans-serif; text-align: left; width: 10%; padding: 5px 10px">Event Date</th>
+                            <th style="background-color: #CCC; color: #333; font: bold 11px/18px Arial, sans-serif; text-align: left; width: 17%; padding: 5px 10px">Time</th>
+                            <th style="background-color: #CCC; color: #333; font: bold 11px/18px Arial, sans-serif; text-align: left; width: 28%; padding: 5px 10px">Event Name</th>
+                            <th style="background-color: #CCC; color: #333; font: bold 11px/18px Arial, sans-serif; text-align: left; width: 10%; padding: 5px 10px">Type</th>
+                            <th style="background-color: #CCC; color: #333; font: bold 11px/18px Arial, sans-serif; text-align: left; width: 35%; padding: 5px 10px">Description</th>
+                        </tr>'||crlf);
+                
+                   for c1 in (
+                      select to_char(e.EVENT_DATE_TIME,:APP_DATE_FORMAT) event_date,
+                             case when to_char(e.EVENT_DATE_TIME,'MI') = '00' 
+                                  then ltrim(to_char(e.EVENT_DATE_TIME,'HHam'),'0')
+                                 else ltrim(to_char(e.EVENT_DATE_TIME,'HH:MIam'),'0')
+                                 end || ' - ' ||
+                            case when to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'MI') = '00'
+                                 then ltrim(to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'HHam'),'0')
+                                 else ltrim(to_char(to_date(to_char(EVENT_DATE_TIME,'DD-MON-RR'||'HH:MIam'),
+                                         'DD-MON-RR'||'HH:MIam')+(e.duration/24),'HH:MIam'),'0')
+                                 end || ' (' ||
+                            case when e.duration = 0  then '0 mins'
+                                 when e.duration = .5 then '30 mins'
+                                 when e.duration = 1 then '1 hr'
+                                 when e.duration > 1 then to_char(e.duration) || ' hrs'
+                                 end || ')' event_time,
+                             case when et.display_color is not null
+                                  then '<span style="color:' || apex_escape.html(et.display_color) || '; white-space:nowrap; font-weight:bold;">' || apex_escape.html(e.event_name) || '</span>'
+                                  else '<span style="white-space:nowrap; font-weight:bold;">' || apex_escape.html(e.event_name) || '</span>'
+                                  end event_name,
+                             nvl(apex_escape.html(et.type_name),'&nbsp;') event_type,
+                             nvl(apex_escape.html(e.EVENT_DESC),'&nbsp;') event_desc
+                        from EBA_CA_EVENTS e,
+                             EBA_CA_EVENT_TYPES et
+                       where e.type_id = et.type_id (+)
+                         and (:P15_EVENT_TYPE is null or e.type_id = :P15_EVENT_TYPE)
+                         and (:P15_START_DATE is null or 
+                              trunc(to_date(to_char(e.event_date_time,:APP_DATE_FORMAT),
+                                    '&APP_DATE_FORMAT.')) >= to_date(:P15_START_DATE,:APP_DATE_FORMAT) )
+                         and (:P15_END_DATE is null or 
+                              trunc(to_date(to_char(e.event_date_time,'&APP_DATE_FORMAT.'),
+                                    '&APP_DATE_FORMAT.')) <= to_date(:P15_END_DATE,:APP_DATE_FORMAT) )
+                         and (:P15_TIMEFRAME is null or
+                              (trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                                  >= (select start_date from EBA_ca_timeframes
+                                       where :P15_TIMEFRAME = tf_id) and
+                               trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                                  <= (select end_date from EBA_ca_timeframes
+                                       where :P15_TIMEFRAME = tf_id))) 
+                        order by e.event_date_time )
+                   loop
+                      dbms_lob.append(l_body,'<tr style="font: normal 12px/16px Arial, sans-serif; vertical-align: top;">');
+                      dbms_lob.append(l_body,'<td style="padding: 5px 10px; background-color: #F4F4F4; border-bottom: 1px solid #E0E0E0">'||c1.event_date||'</td>');
+                      dbms_lob.append(l_body,'<td style="padding: 5px 10px; background-color: #F4F4F4; border-bottom: 1px solid #E0E0E0">'||c1.event_time||'</td>');
+                      dbms_lob.append(l_body,'<td style="padding: 5px 10px; background-color: #F4F4F4; border-bottom: 1px solid #E0E0E0">'||c1.event_name||'</td>');
+                      dbms_lob.append(l_body,'<td style="padding: 5px 10px; background-color: #F4F4F4; border-bottom: 1px solid #E0E0E0">'||c1.event_type||'</td>');
+                      dbms_lob.append(l_body,'<td style="padding: 5px 10px; background-color: #F4F4F4; border-bottom: 1px solid #E0E0E0">'||c1.event_desc||'</td>');
+                      dbms_lob.append(l_body,'</tr>'||crlf);
+                   end loop;
+                
+                   dbms_lob.append(l_body,'</table></div>'||crlf);
+                
+                   for c1 in (
+                      select email_address
+                        from EBA_ca_email_group_mbrs
+                       where group_id = :P15_GROUP_ID )
+                   loop
+                      l_email_to := l_email_to || c1.email_address || ',';
+                   end loop;
+                
+                   if :P15_TO is not null then 
+                      l_email_to := l_email_to || :P15_TO || ',';
+                   end if;
+                
+                   l_email_to := substr(l_email_to,1,length(l_email_to)-1);
+                
+                   apex_mail.send (
+                      p_to        => l_email_to,
+                      p_from      => :P15_FROM,
+                      p_replyto   => nvl(replace(replace(eba_ca_fw.get_preference_value('NOTIFICATION_EMAIL_REPLY_TO'),'N/A',null),'Preference does not exist',null), :P15_FROM),
+                      p_cc        => :P15_FROM,
+                      p_body      => to_clob(' '),
+                      p_body_html => l_body,
+                      p_subj      => apex_escape.html(:P15_SUBJECT));
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Email(s) sent.
+        }
+        error {
+            errorMessage: Email(s) failed to be sent.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8006875671930660842
+        }
+        serverSideCondition {
+            whenButtonPressed: @send-email
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        behavior {
+            target: {
+                page: 15
+                clearCache: 15
+                successMessage: false
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            whenButtonPressed: @p15-clear
+        }
+        comments {
+            comments: Created 18-OCT-2010 12:47 by SBKENNED
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 15
+            }
+            saveStateBeforeBranching: true
+        }
+    )
+
+)
+

@@ -1,0 +1,188 @@
+customAttribute attribute_01 (
+    apexlangName: parentElementColumn
+    attribute: 1
+    name: Parent Element Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: The column from the source query containing the name of the summary element of the Gantt chart.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: childElementColumn
+    attribute: 2
+    name: Child Element Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: The column from the source query containing the name of the terminal elements.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: childElementAltNameColumn
+    attribute: 3
+    name: Child Element Alt. Name Column
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 30
+    }
+    help {
+        helpText: The alternate title for the terminal element. Displayed when the user hovers over the terminal element with the mouse.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: childElementStyleColumn
+    attribute: 4
+    name: Child Element Style Column
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 40
+    }
+    help {
+        helpText: The CSS class to be applied to the terminal element.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: childElementStartColumn
+    attribute: 5
+    name: Child Element Start Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 50
+    }
+    supports {
+        dataTypes: [
+            date
+            timestamp
+            timestampWithTimeZone
+            timestampWithLocalTimeZone
+        ]
+    }
+    help {
+        helpText: The date the terminal element starts on.
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: childElementEndColumn
+    attribute: 6
+    name: Child Element End Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 60
+    }
+    supports {
+        dataTypes: [
+            date
+            timestamp
+            timestampWithTimeZone
+            timestampWithLocalTimeZone
+        ]
+    }
+    help {
+        helpText: The date the terminal element ends on.
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: parentElementLink
+    attribute: 7
+    name: Parent Element Link
+    type: linkToTargetPageUrl
+    appearance {
+        sequence: 70
+    }
+    builder {
+        includeColumnsInItemsPicker: true
+    }
+    help {
+        helpText: The link target for the summary element.
+    }
+)
+
+customAttribute attribute_08 (
+    apexlangName: childElementLink
+    attribute: 8
+    name: Child Element Link
+    type: linkToTargetPageUrl
+    appearance {
+        sequence: 80
+    }
+    builder {
+        includeColumnsInItemsPicker: true
+    }
+    help {
+        helpText: The link target for the terminal element.
+    }
+)
+
+customAttribute attribute_09 (
+    apexlangName: periodTypePageItem
+    attribute: 9
+    name: Period Type Page Item
+    appearance {
+        sequence: 90
+    }
+    help {
+        helpText:
+            ```
+            The name of the page item which allows the user to determine the view of the Gantt Chart. This page item must return one of the following values:
+            
+            D - Daily
+            W - Weekly
+            M - Monthly
+            Q - Quarterly
+            ```
+    }
+)
+
+customAttribute attribute_10 (
+    apexlangName: startDatePageItem
+    attribute: 10
+    name: Start Date Page Item
+    appearance {
+        sequence: 100
+    }
+    help {
+        helpText: The name of the page item which contains the start date for the chart. If no page item is provided, or if the page item has no value, the chart will start on the current date.
+    }
+)
+
+customAttribute attribute_11 (
+    apexlangName: periodsPerType
+    attribute: 11
+    name: Periods Per Type
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 110
+    }
+    default {
+        value: 30:22:18:8
+    }
+    help {
+        helpText: The number of periods to display for each of the different period types, separated by colons. The default value (30:22:18:8) provides for 30 days, 22 weeks, 18 months, and 8 quarters.
+    }
+)
+

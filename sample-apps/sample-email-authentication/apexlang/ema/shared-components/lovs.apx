@@ -1,0 +1,38 @@
+lov access-roles (
+    name: ACCESS_ROLES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select role_name d, role_id r
+              from APEX_APPL_ACL_ROLES
+             where application_id = :APP_ID 
+             order by 1 desc
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov yes-no (
+    name: YES_NO
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 2
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: Y
+    )
+
+)
+

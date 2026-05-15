@@ -1,0 +1,896 @@
+list advanced (
+    name: Advanced
+
+    entry charts (
+        label: Charts
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display charts inside cards using Oracle JET Data Visualizations
+        }
+    )
+
+    entry no-data-found (
+        label: No Data Found
+        icon {
+            imageIconCssClasses: fa-emoji-worry
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to define No Data Found messages for Cards regions
+        }
+    )
+
+    entry template-directives (
+        label: Template Directives
+        icon {
+            imageIconCssClasses: fa-file-brackets
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to define template directives for Cards regions
+        }
+    )
+
+)
+
+list basics (
+    name: Basics
+
+    entry color-coded-cards (
+        label: Color Coded Cards
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to color code cards based on a column value
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to combine a Cards region with a Faceted Search
+        }
+    )
+
+    entry star-icons (
+        label: Star Icons
+        icon {
+            imageIconCssClasses: fa-star-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to use CSS styling to change the default shape of each card's icon initials
+        }
+    )
+
+    entry styles (
+        label: Styles
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to use the A, B, and C styles of a Cards region display
+        }
+    )
+
+)
+
+list card-actions (
+    name: Card Actions
+
+    entry conditional-actions (
+        label: Conditional Actions
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to add multiple actions per card
+        }
+    )
+
+    entry full-card-action (
+        label: Full Card Action
+        icon {
+            imageIconCssClasses: fa-clipboard-check
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to define a single action for each card
+        }
+    )
+
+)
+
+list desktop-navigation-bar (
+    name: Desktop Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 40
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list desktop-navigation-menu (
+    name: Desktop Navigation Menu
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-ellipsis-h
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 19
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry application-static-files (
+        label: Application Static Files
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 140
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: 8
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry background-image (
+        label: Background Image
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 150
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry basics (
+        label: Basics
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                12
+                13
+                18
+                20
+            ]
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry blob-column (
+        label: BLOB Column
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 160
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry blob-column-as-url (
+        label: BLOB Column as URL
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 170
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry card-actions (
+        label: Card Actions
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                13
+                15
+                16
+                22
+            ]
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry charts (
+        label: Charts
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 70
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry color-coded-cards (
+        label: Color Coded Cards
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 100
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 18
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry conditional-actions (
+        label: Conditional Actions
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 200
+            parentEntry: @card-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 16
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+    entry embedded-video (
+        label: Embedded Video
+        icon {
+            imageIconCssClasses: fa-video-camera
+        }
+        layout {
+            sequence: 180
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6
+                10
+            ]
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 110
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry full-card-action (
+        label: Full Card Action
+        icon {
+            imageIconCssClasses: fa-clipboard-check
+        }
+        layout {
+            sequence: 210
+            parentEntry: @card-actions
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+            attributes: title="#LIST_LABEL#"
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry image-url (
+        label: Image URL
+        icon {
+            imageIconCssClasses: fa-camera
+        }
+        layout {
+            sequence: 190
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: 4
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry images-and-media (
+        label: Images and Media
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry no-data-found (
+        label: No Data Found
+        icon {
+            imageIconCssClasses: fa-emoji-worry
+        }
+        layout {
+            sequence: 80
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry rest-data-sources (
+        label: REST Data Sources
+        icon {
+            imageIconCssClasses: fa-download
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    entry star-icons (
+        label: Star Icons
+        icon {
+            imageIconCssClasses: fa-star-o
+        }
+        layout {
+            sequence: 120
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry styles (
+        label: Styles
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 130
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry template-directives (
+        label: Template Directives
+        icon {
+            imageIconCssClasses: fa-file-brackets
+        }
+        layout {
+            sequence: 90
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry video-images-with-durations (
+        label: Video Images with Durations
+        icon {
+            imageIconCssClasses: fa-play
+        }
+        layout {
+            sequence: 220
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+)
+
+list home (
+    name: Home
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-ellipsis-h
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to create a Cards region of charts, define a Cards region's No Data Found message, and use template directives to dynamically display information
+        }
+    )
+
+    entry basics (
+        label: Basics
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to create color coded cards, a Cards region with a Faceted Search, and several other Cards regions using various styles
+        }
+    )
+
+    entry card-actions (
+        label: Card Actions
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to make an each card link to a given URL or how to define different elements on each card that link to different URLs
+        }
+    )
+
+    entry images-and-media (
+        label: Images and Media
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display images and embedded videos in Cards regions
+        }
+    )
+
+)
+
+list images-and-media (
+    name: Images and Media
+
+    entry application-static-files (
+        label: Application Static Files
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to reference application static files as Cards images
+        }
+    )
+
+    entry background-image (
+        label: Background Image
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display movie posters as a Cards region's media background and as it's icon (for overlay effects)
+        }
+    )
+
+    entry blob-column (
+        label: BLOB Column
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display images in Cards regions that are sourced from a BLOB column
+        }
+    )
+
+    entry blob-column-as-url (
+        label: BLOB Column as URL
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display images in Cards regions that are sourced from a BLOB column as a URL
+        }
+    )
+
+    entry embedded-video (
+        label: Embedded Video
+        icon {
+            imageIconCssClasses: fa-video-camera
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to use the Cards region's Media Advanced Formatting option to add an HTML <code>&lt;iframe&gt;</code> tag that embeds a video player inline in each card
+        }
+    )
+
+    entry image-url (
+        label: Image URL
+        icon {
+            imageIconCssClasses: fa-camera
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to use Cards regions to display a photo gallery
+        }
+    )
+
+    entry video-images-with-durations (
+        label: Video Images with Durations
+        icon {
+            imageIconCssClasses: fa-play
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display cards that link to YouTube videos and display a background image along with a video duration overlay
+        }
+    )
+
+)
+
+list page-navigation (
+    name: Page Navigation
+
+    entry cards-demo (
+        label: Cards Demo
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+)
+

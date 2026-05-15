@@ -1,0 +1,31 @@
+page 0 (
+    name: Global Page - Desktop
+
+    dynamicAction title-the-navigation (
+        name: Title the navigation
+        execution {
+            sequence: 10
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('#t_TreeNav li div.a-TreeView-content').each(function() {
+                       $( this ).html("<span title=" + '"' + $( this ).text() + '"' + $( this ).html().substring(5, $( this ).html().length));
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+)
+

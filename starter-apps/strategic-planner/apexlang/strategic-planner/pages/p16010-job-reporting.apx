@@ -1,0 +1,1361 @@
+page 16010 (
+    name: Job Reporting
+    alias: JOB-REPORTING
+    title: Job Reporting
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: <p>This report includes all the jobs selected to be monitored by this application.  More details of each job can be viewed by clicking on the job name.</p>
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region job-reporting (
+        name: Job Reporting
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select JOB_NAME,
+                       JOB_CLASS,
+                       ENABLED,
+                       STATE,
+                       RUN_COUNT,
+                       FAILURE_COUNT,
+                       RETRY_COUNT,
+                       REPEAT_INTERVAL,
+                       LAST_START_DATE,
+                       LAST_START_DATE DATE_SINCE,
+                       LAST_RUN_DURATION,
+                       JOB_SUBNAME,
+                       JOB_STYLE,
+                       JOB_CREATOR,
+                       CLIENT_ID,
+                       GLOBAL_UID,
+                       PROGRAM_OWNER,
+                       PROGRAM_NAME,
+                       JOB_TYPE,
+                       JOB_ACTION,
+                       NUMBER_OF_ARGUMENTS,
+                       SCHEDULE_OWNER,
+                       SCHEDULE_NAME,
+                       SCHEDULE_TYPE,
+                       START_DATE,
+                       EVENT_QUEUE_OWNER,
+                       EVENT_QUEUE_NAME,
+                       EVENT_QUEUE_AGENT,
+                       EVENT_CONDITION,
+                       EVENT_RULE,
+                       FILE_WATCHER_OWNER,
+                       FILE_WATCHER_NAME,
+                       END_DATE,
+                       AUTO_DROP,
+                       RESTART_ON_RECOVERY,
+                       RESTART_ON_FAILURE,
+                       JOB_PRIORITY,
+                       MAX_RUNS,
+                       MAX_FAILURES,
+                       NEXT_RUN_DATE,
+                       SCHEDULE_LIMIT,
+                       MAX_RUN_DURATION,
+                       LOGGING_LEVEL,
+                       STORE_OUTPUT,
+                       STOP_ON_WINDOW_CLOSE,
+                       INSTANCE_STICKINESS,
+                       RAISE_EVENTS,
+                       SYSTEM,
+                       JOB_WEIGHT,
+                       NLS_ENV,
+                       SOURCE,
+                       NUMBER_OF_DESTINATIONS,
+                       DESTINATION_OWNER,
+                       DESTINATION,
+                       CREDENTIAL_OWNER,
+                       CREDENTIAL_NAME,
+                       INSTANCE_ID,
+                       DEFERRED_DROP,
+                       ALLOW_RUNS_IN_RESTRICTED_MODE,
+                       COMMENTS,
+                       FLAGS,
+                       RESTARTABLE,
+                       CONNECT_CREDENTIAL_OWNER,
+                       CONNECT_CREDENTIAL_NAME
+                  from user_scheduler_jobs  
+                 where job_name in ('SP_NOTIF_SUBSCRIPTIONS','SP_GENERATE_AI_PROJECT_SUMMARIES_JOB','SBK_TEST_SUMMAIRES')
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 11093375477859617334
+        }
+
+        column ALLOW_RUNS_IN_RESTRICTED_MODE (
+            type: plainText
+            heading {
+                heading: Allow Runs in Restricted Mode
+            }
+            layout {
+                sequence: 58
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BF
+            }
+        )
+
+        column AUTO_DROP (
+            type: plainText
+            heading {
+                heading: Auto Drop
+            }
+            layout {
+                sequence: 33
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AG
+            }
+        )
+
+        column CLIENT_ID (
+            type: plainText
+            heading {
+                heading: Client ID
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column COMMENTS (
+            type: plainText
+            heading {
+                heading: Comments
+            }
+            layout {
+                sequence: 59
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BG
+            }
+        )
+
+        column CONNECT_CREDENTIAL_NAME (
+            type: plainText
+            heading {
+                heading: Connect Credential Name
+            }
+            layout {
+                sequence: 63
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BK
+            }
+        )
+
+        column CONNECT_CREDENTIAL_OWNER (
+            type: plainText
+            heading {
+                heading: Connect Credential Owner
+            }
+            layout {
+                sequence: 62
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BJ
+            }
+        )
+
+        column CREDENTIAL_NAME (
+            type: plainText
+            heading {
+                heading: Credential Name
+            }
+            layout {
+                sequence: 55
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BC
+            }
+        )
+
+        column CREDENTIAL_OWNER (
+            type: plainText
+            heading {
+                heading: Credential Owner
+            }
+            layout {
+                sequence: 54
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BB
+            }
+        )
+
+        column DATE_SINCE (
+            type: plainText
+            heading {
+                heading: Last Started
+            }
+            layout {
+                sequence: 73
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: BL
+            }
+        )
+
+        column DEFERRED_DROP (
+            type: plainText
+            heading {
+                heading: Deferred Drop
+            }
+            layout {
+                sequence: 57
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BE
+            }
+        )
+
+        column DESTINATION (
+            type: plainText
+            heading {
+                heading: Destination
+            }
+            layout {
+                sequence: 53
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BA
+            }
+        )
+
+        column DESTINATION_OWNER (
+            type: plainText
+            heading {
+                heading: Destination Owner
+            }
+            layout {
+                sequence: 52
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AZ
+            }
+        )
+
+        column ENABLED (
+            type: plainText
+            heading {
+                heading: Enabled
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column END_DATE (
+            type: plainText
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 32
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AF
+            }
+        )
+
+        column EVENT_CONDITION (
+            type: plainText
+            heading {
+                heading: Event Condition
+            }
+            layout {
+                sequence: 28
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AB
+            }
+        )
+
+        column EVENT_QUEUE_AGENT (
+            type: plainText
+            heading {
+                heading: Event Queue Agent
+            }
+            layout {
+                sequence: 27
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column EVENT_QUEUE_NAME (
+            type: plainText
+            heading {
+                heading: Event Queue Name
+            }
+            layout {
+                sequence: 26
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column EVENT_QUEUE_OWNER (
+            type: plainText
+            heading {
+                heading: Event Queue Owner
+            }
+            layout {
+                sequence: 25
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column EVENT_RULE (
+            type: plainText
+            heading {
+                heading: Event Rule
+            }
+            layout {
+                sequence: 29
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AC
+            }
+        )
+
+        column FAILURE_COUNT (
+            type: plainText
+            heading {
+                heading: Failure Count
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column FILE_WATCHER_NAME (
+            type: plainText
+            heading {
+                heading: File Watcher Name
+            }
+            layout {
+                sequence: 31
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AE
+            }
+        )
+
+        column FILE_WATCHER_OWNER (
+            type: plainText
+            heading {
+                heading: File Watcher Owner
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AD
+            }
+        )
+
+        column FLAGS (
+            type: plainText
+            heading {
+                heading: Flags
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: BH
+            }
+        )
+
+        column GLOBAL_UID (
+            type: plainText
+            heading {
+                heading: Global Unique ID
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column INSTANCE_ID (
+            type: plainText
+            heading {
+                heading: Instance ID
+                alignment: end
+            }
+            layout {
+                sequence: 56
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: BD
+            }
+        )
+
+        column INSTANCE_STICKINESS (
+            type: plainText
+            heading {
+                heading: Instance Stickiness
+            }
+            layout {
+                sequence: 45
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AS
+            }
+        )
+
+        column JOB_ACTION (
+            type: plainText
+            heading {
+                heading: Job Action
+            }
+            layout {
+                sequence: 19
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column JOB_CLASS (
+            type: plainText
+            heading {
+                heading: Job Class
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column JOB_CREATOR (
+            type: plainText
+            heading {
+                heading: Job Creator
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column JOB_NAME (
+            type: link
+            heading {
+                heading: Job Name
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 16011
+                    items: {
+                        IR_JOB_NAME: #JOB_NAME#
+                    }
+                    action: resetRegions
+                }
+                linkText: #JOB_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column JOB_PRIORITY (
+            type: plainText
+            heading {
+                heading: Job Priority
+                alignment: end
+            }
+            layout {
+                sequence: 36
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column JOB_STYLE (
+            type: plainText
+            heading {
+                heading: Job Style
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column JOB_SUBNAME (
+            type: plainText
+            heading {
+                heading: Job Subname
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column JOB_TYPE (
+            type: plainText
+            heading {
+                heading: Job Type
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column JOB_WEIGHT (
+            type: plainText
+            heading {
+                heading: Job Weight
+                alignment: end
+            }
+            layout {
+                sequence: 48
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AV
+            }
+        )
+
+        column LAST_RUN_DURATION (
+            type: plainText
+            heading {
+                heading: Last Run Duration
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: OTHER
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column LAST_START_DATE (
+            type: plainText
+            heading {
+                heading: Last Start Date
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column LOGGING_LEVEL (
+            type: plainText
+            heading {
+                heading: Logging Level
+            }
+            layout {
+                sequence: 42
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AP
+            }
+        )
+
+        column MAX_FAILURES (
+            type: plainText
+            heading {
+                heading: Maximum Failures
+                alignment: end
+            }
+            layout {
+                sequence: 38
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AL
+            }
+        )
+
+        column MAX_RUNS (
+            type: plainText
+            heading {
+                heading: Maximum Runs
+                alignment: end
+            }
+            layout {
+                sequence: 37
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AK
+            }
+        )
+
+        column MAX_RUN_DURATION (
+            type: plainText
+            heading {
+                heading: Maximum Run Duration
+            }
+            layout {
+                sequence: 41
+            }
+            source {
+                dataType: OTHER
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: AO
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column NEXT_RUN_DATE (
+            type: plainText
+            heading {
+                heading: Next Run Date
+            }
+            layout {
+                sequence: 39
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY HH:MIPM
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AM
+            }
+        )
+
+        column NLS_ENV (
+            type: plainText
+            heading {
+                heading: NLS Environment
+            }
+            layout {
+                sequence: 49
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AW
+            }
+        )
+
+        column NUMBER_OF_ARGUMENTS (
+            type: plainText
+            heading {
+                heading: Number of Arguments
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column NUMBER_OF_DESTINATIONS (
+            type: plainText
+            heading {
+                heading: Number of Destinations
+                alignment: end
+            }
+            layout {
+                sequence: 51
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AY
+            }
+        )
+
+        column PROGRAM_NAME (
+            type: plainText
+            heading {
+                heading: Program Name
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column PROGRAM_OWNER (
+            type: plainText
+            heading {
+                heading: Program Owner
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column RAISE_EVENTS (
+            type: plainText
+            heading {
+                heading: Raise Events
+            }
+            layout {
+                sequence: 46
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AT
+            }
+        )
+
+        column REPEAT_INTERVAL (
+            type: plainText
+            heading {
+                heading: Repeat Interval
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column RESTARTABLE (
+            type: plainText
+            heading {
+                heading: Restartable
+            }
+            layout {
+                sequence: 61
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BI
+            }
+        )
+
+        column RESTART_ON_FAILURE (
+            type: plainText
+            heading {
+                heading: Restart on Failure
+            }
+            layout {
+                sequence: 35
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column RESTART_ON_RECOVERY (
+            type: plainText
+            heading {
+                heading: Restart on Recovery
+            }
+            layout {
+                sequence: 34
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AH
+            }
+        )
+
+        column RETRY_COUNT (
+            type: plainText
+            heading {
+                heading: Retry Count
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column RUN_COUNT (
+            type: plainText
+            heading {
+                heading: Run Count
+                alignment: end
+            }
+            layout {
+                sequence: 5
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column SCHEDULE_LIMIT (
+            type: plainText
+            heading {
+                heading: Schedule Limit
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: OTHER
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: AN
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column SCHEDULE_NAME (
+            type: plainText
+            heading {
+                heading: Schedule Name
+            }
+            layout {
+                sequence: 22
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column SCHEDULE_OWNER (
+            type: plainText
+            heading {
+                heading: Schedule Owner
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column SCHEDULE_TYPE (
+            type: plainText
+            heading {
+                heading: Schedule Type
+            }
+            layout {
+                sequence: 23
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        column SOURCE (
+            type: plainText
+            heading {
+                heading: Source
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AX
+            }
+        )
+
+        column START_DATE (
+            type: plainText
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 24
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: X
+            }
+        )
+
+        column STATE (
+            type: plainText
+            heading {
+                heading: State
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column STOP_ON_WINDOW_CLOSE (
+            type: plainText
+            heading {
+                heading: Stop on Window Close
+            }
+            layout {
+                sequence: 44
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AR
+            }
+        )
+
+        column STORE_OUTPUT (
+            type: plainText
+            heading {
+                heading: Store Output
+            }
+            layout {
+                sequence: 43
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AQ
+            }
+        )
+
+        column SYSTEM (
+            type: plainText
+            heading {
+                heading: System
+            }
+            layout {
+                sequence: 47
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AU
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Job Reporting
+        }
+
+        savedReport 110934220 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DATE_SINCE (
+                sequence: 8
+            )
+
+            displayColumn ENABLED (
+                sequence: 2
+            )
+
+            displayColumn FAILURE_COUNT (
+                sequence: 5
+            )
+
+            displayColumn JOB_NAME (
+                sequence: 1
+            )
+
+            displayColumn LAST_RUN_DURATION (
+                sequence: 9
+            )
+
+            displayColumn NEXT_RUN_DATE (
+                sequence: 10
+            )
+
+            displayColumn REPEAT_INTERVAL (
+                sequence: 7
+            )
+
+            displayColumn RETRY_COUNT (
+                sequence: 6
+            )
+
+            displayColumn RUN_COUNT (
+                sequence: 4
+            )
+
+            displayColumn STATE (
+                sequence: 3
+            )
+
+            sort (
+                column: JOB_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16010
+                clearCache: 16010
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

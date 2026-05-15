@@ -1,0 +1,130 @@
+legacyDataLoadDefinition aaa (
+    name: aaa
+    target {
+        tableOwner: #OWNER#
+        tableName: EBA_SALES_DEALS
+    }
+    uniqueKeys {
+        uniqueColumn1: ROW_KEY
+    }
+)
+
+legacyDataLoadDefinition upload-accounts (
+    name: Upload Accounts
+    target {
+        tableOwner: #OWNER#
+        tableName: EBA_SALES_CUSTOMERS
+    }
+    uniqueKeys {
+        uniqueColumn1: ID
+    }
+
+    tableLookup CUSTOMER_INDUSTRY_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_INDUSTRIES
+        }
+        compareUploadWith {
+            column: INDUSTRY_NAME
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+    tableLookup CUSTOMER_TERRITORY_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_TERRITORIES
+        }
+        compareUploadWith {
+            column: TERRITORY_NAME
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+    tableLookup DEFAULT_REP_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_SALESREPS
+        }
+        compareUploadWith {
+            column: REP_EBA_SALES_USERNAME
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+)
+
+legacyDataLoadDefinition upload-opportunities (
+    name: Upload Opportunities
+    target {
+        tableOwner: #OWNER#
+        tableName: EBA_SALES_DEALS
+    }
+    uniqueKeys {
+        uniqueColumn1: ROW_KEY
+        uniqueColumn2: DEAL_NAME
+    }
+    advanced {
+        columnAliasesLov: @lov-dataload-upload-opportunities
+    }
+
+    tableLookup ACCOUNT_STANDING_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_ACCOUNT_STANDING
+        }
+        compareUploadWith {
+            column: STANDING_TEXT
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+    tableLookup CUSTOMER_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_CUSTOMERS
+        }
+        compareUploadWith {
+            column: CUSTOMER_NAME
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+    tableLookup RISK_ASSESSMENT_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_RISK_ASSESSMENTS
+        }
+        compareUploadWith {
+            column: ASSESSMENT_TEXT
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+    tableLookup TERRITORY_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_TERRITORIES
+        }
+        compareUploadWith {
+            column: TERRITORY_NAME
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+)
+

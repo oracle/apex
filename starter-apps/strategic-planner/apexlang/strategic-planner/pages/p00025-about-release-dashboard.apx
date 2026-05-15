@@ -1,0 +1,65 @@
+page 25 (
+    name: About Release Dashboard
+    alias: ABOUT-RELEASE-DASHBOARD
+    title: About Release Dashboard
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The release dashboard provides a distribution of data by priority, size, and owner.  Use this dashboard to track release progress.<p>
+                
+                <strong>Column Descriptions</strong>
+                <ul>
+                <li><strong>Priority</strong>: P1 through P5 with P1 most important</li>
+                <li><strong>&NOMENCLATURE_PROJECT. Count</strong>>: Number of projects associated with the release that correspond to the grouping.</li>
+                </ul>
+                <ul>
+                <li><strong>Percent Complete</strong>: Distribution of &NOMENCLATURE_PROJECT. percent complete in 10% increments from 0% to 100%.</li>
+                <li><strong>Complete</strong>: For all &NOMENCLATURE_PROJECTS. in the grouping what is the overall percent complete.</li>
+                </ul>
+                <ul>
+                <li><strong>Budgeted Days of Effort</strong>: Each &NOMENCLATURE_PROJECT. has a size (S, M, L, XL, 2XL), 
+                    and each size has a budgeted level of effort in days.  
+                    The budgeted days of effort is the total number of days estimated to complete all &NOMENCLATURE_PROJECTS. in the grouping.</li>
+                <li><strong>Days Completed</strong>: Based on the percent complete for each project how much of the estimated days of effort have been completed.</li>
+                <li><strong>Days Outstanding</strong>: Budgeted days of effort <i>minus</i> days completed <i>equals</i> estimated days of effort outstanding.</li>
+                </ul>
+                <ul>
+                <li><strong>Last Comment</strong>: The most recent comment by any person about a &NOMENCLATURE_PROJECT. within the selected grouping.</li>
+                <li><strong>Current Activity</strong>: The count of distinct  &NOMENCLATURE_PROJECTS. that have active activity, 
+                    e.g. activity start and end dates intersect today's date.  
+                    Activity recorded with an end date before today does not count.  
+                    Activity recorded to start after today is also not counted.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

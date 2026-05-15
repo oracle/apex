@@ -1,0 +1,651 @@
+page 17 (
+    name: Refresh
+    alias: REFRESH
+    title: Refresh
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region employees (
+        name: Employees
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT e.ROWID
+                ,      e.EMPNO
+                ,      e.ENAME
+                ,      e.JOB
+                ,      m.ename MGR
+                ,      e.HIREDATE
+                ,      e.SAL
+                ,      e.COMM
+                ,      d.dname DEPTNO
+                FROM EBA_DEMO_DA_EMP e
+                ,    EBA_DEMO_DA_EMP m
+                ,    EBA_DEMO_DA_DEPT d
+                WHERE e.mgr = m.empno (+)
+                AND   e.deptno = d.deptno (+)
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        heading {
+            fixedTo: none
+        }
+        componentAdvanced {
+            reportIdItem: P17_REPORT_ID
+        }
+        advanced {
+            savedReportMappingIdentifier: 2020151519198772745
+        }
+
+        column COMM (
+            type: plainText
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column DEPTNO (
+            type: plainText
+            heading {
+                heading: Department
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column EMPNO (
+            type: plainText
+            heading {
+                heading: Employee #
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ENAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column HIREDATE (
+            type: plainText
+            heading {
+                heading: Hire date
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column JOB (
+            type: plainText
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column MGR (
+            type: plainText
+            heading {
+                heading: Manager
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ROWID (
+            type: hidden
+            heading {
+                heading: Rowid
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: OTHER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column SAL (
+            type: plainText
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        savedReport HIGH_PAY (
+            visibility: alternativeDefault
+            name: High Paid Staff
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn COMM (
+                sequence: 8
+            )
+
+            displayColumn CURRENT_TIMESTAMP (
+                sequence: 10
+            )
+
+            displayColumn DEPTNO (
+                sequence: 9
+            )
+
+            displayColumn EMPNO (
+                sequence: 2
+            )
+
+            displayColumn ENAME (
+                sequence: 3
+            )
+
+            displayColumn HIREDATE (
+                sequence: 6
+            )
+
+            displayColumn JOB (
+                sequence: 4
+            )
+
+            displayColumn MGR (
+                sequence: 5
+            )
+
+            displayColumn ROWID (
+                sequence: 1
+            )
+
+            displayColumn SAL (
+                sequence: 7
+            )
+
+            sort (
+                column: SAL
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: SAL
+                operator: >=
+                value: 5000
+            )
+
+        )
+
+        savedReport PRIMARY (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn COMM (
+                sequence: 8
+            )
+
+            displayColumn CURRENT_TIMESTAMP (
+                sequence: 10
+            )
+
+            displayColumn DEPTNO (
+                sequence: 9
+            )
+
+            displayColumn EMPNO (
+                sequence: 2
+            )
+
+            displayColumn ENAME (
+                sequence: 3
+            )
+
+            displayColumn HIREDATE (
+                sequence: 6
+            )
+
+            displayColumn JOB (
+                sequence: 4
+            )
+
+            displayColumn MGR (
+                sequence: 5
+            )
+
+            displayColumn ROWID (
+                sequence: 1
+            )
+
+            displayColumn SAL (
+                sequence: 7
+            )
+
+        )
+
+        savedReport SALESMEN (
+            visibility: alternativeDefault
+            name: Salesmen Report
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn COMM (
+                sequence: 8
+            )
+
+            displayColumn CURRENT_TIMESTAMP (
+                sequence: 10
+            )
+
+            displayColumn DEPTNO (
+                sequence: 9
+            )
+
+            displayColumn EMPNO (
+                sequence: 2
+            )
+
+            displayColumn ENAME (
+                sequence: 3
+            )
+
+            displayColumn HIREDATE (
+                sequence: 6
+            )
+
+            displayColumn JOB (
+                sequence: 4
+            )
+
+            displayColumn MGR (
+                sequence: 5
+            )
+
+            displayColumn ROWID (
+                sequence: 1
+            )
+
+            displayColumn SAL (
+                sequence: 7
+            )
+
+            filter ir-condition (
+                column: JOB
+                value: SALESMAN
+            )
+
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates an alternative way to provision a list of 'Saved Reports' to Interactive Report users, via a separate report on the page instead of the standard select list. Dynamic actions are required to refresh the list of 'Saved Reports', after the user has made changes to a report.</p>
+                <p>To achieve this, this page contains one dynamic action called 'REFRESH SAVED REPORTS'. This refreshes the 'Saved Interactive Reports' report after the user makes changes to the report. Try saving a new report and see the new report appear in the region after saving the report. This makes use of the 'After Refresh' event for the Interactive Report Region, see the item level help for the 'Event' field for further information.</p>
+                <p>It uses one native action ('Refresh'), to refresh the 'Saved Reports' report via Ajax.</p>
+                <p>The report includes the name of the saved report, its description if provided, and the visibility of the report-"Default" means created by an application developer, and is visible to all users; "Public" means created by an end user, but visible to all users; "Private" means created by an end user and only visible to that user.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+    )
+
+    region saved-interactive-reports (
+        name: Saved Interactive Reports
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'visiblity: '||case when report_type in ('PRIMARY_DEFAULT', 'ALTERNATIVE_DEFAULT') then
+                            'Default'
+                        when report_type = 'PRIVATE' then
+                            'Private'
+                        else
+                            'Public'
+                    end card_subtext,
+                    report_id,
+                    coalesce(report_name, 'Primary Report') card_title,
+                    report_description card_text,
+                    apex_util.prepare_url('f?p='||:APP_ID||':17:'||:APP_SESSION||':::RP,17,RIR:P17_REPORT_ID:'||report_id) card_link
+                from apex_application_page_ir_rpt
+                where application_id = :APP_ID
+                    and page_id = :APP_PAGE_ID
+                    and (status = 'PUBLIC' or
+                        (status = 'PRIVATE' and application_user = :APP_USER))
+                    and report_type != 'SESSION'
+                order by 1 asc, 3, 4
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                t-Cards--compact
+                t-Cards--5cols
+                u-colors
+                t-Cards--animColorFill
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CARD_LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column REPORT_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region server-side-refresh (
+        name: Server Side - Refresh
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P17_REPORT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @employees
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @employees
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    RIR
+                    &APP_PAGE_ID.
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-saved-report (
+        name: REFRESH SAVED REPORT
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @employees
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @saved-interactive-reports
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

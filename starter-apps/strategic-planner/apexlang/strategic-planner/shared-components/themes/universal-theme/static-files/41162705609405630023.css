@@ -1,0 +1,107 @@
+/*!
+ Copyright (c) 2020, 2024, Oracle and/or its affiliates.
+ */
+
+:root {
+  /* Reduce Redwood Padding */
+  --ut-footer-padding-x: var(--ut-body-content-padding-x);
+  --ut-body-content-padding-y: 2rem;
+  /* Unset badge font family */
+  --ut-treeview-badge-font-family: unset;
+  /* Better grid borders when backgrounds set on rows */
+  --a-gv-cell-border-color: rgba(0, 0, 0, .05);
+}
+
+.header-actions {
+  margin-inline-start: auto;
+}
+
+.header-actions .t-ContentRow-wrap {
+  padding: 0;
+  float: right;
+}
+
+.has-header-actions {
+  display: inline-flex;
+}
+
+.header-actions .t-ContentRow-wrap button {
+  --a-button-background-color: transparent;
+}
+
+.t-BreadcrumbRegion--showBreadcrumb .t-BreadcrumbRegion-breadcrumb {
+  display: flex;
+  align-items: center;
+}
+
+
+/* Clear the default fa-user icon for content row regions with the clear-avatar-icons class */
+.clear-avatar-icons .t-Avatar.t-Avatar--icon.fa-user:before {
+  display: none;
+}
+
+/* Adding initiative icon to the left of contextual info region */
+.initiative-icon {
+  margin: 0 -2rem .5rem 3rem;
+  max-inline-size: 2.5rem;
+}
+
+.t-PageBody--showLeft .initiative-icon {
+  margin: 0 0 .5rem 1rem;
+  max-inline-size: 2.5rem;
+}
+
+/* Setting max height for facets, otherwise it gets too big */
+.a-FS-bodyInner .apex-item-checkbox {
+  max-height: 320px;
+  overflow: auto;
+}
+
+/* Search Clear Button */
+.sp-ClearButton {
+  position: absolute;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  cursor: pointer;
+  inset-inline-end: .25rem;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  order: 4;
+}
+
+.sp-ClearButton:before {
+  content: "\e0a2";
+  font-size: 1rem;
+  speak: none;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--a-icon-font-family, "apex-5-icon-font");
+  opacity: .8;
+}
+
+.t-Form-itemWrapper {
+  position: relative;
+}
+
+.t-Form-fieldContainer:not(.t-Form-fieldContainer--floatingLabel):not(.t-Form-fieldContainer--hiddenLabel) .t-Form-itemWrapper {
+  display: inline-flex;
+}
+
+.t-Form-itemWrapper:has(:placeholder-shown) .sp-ClearButton {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.t-Comments-comment img {max-width: 100%; height: auto;}

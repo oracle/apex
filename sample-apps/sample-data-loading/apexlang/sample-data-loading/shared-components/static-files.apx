@@ -1,0 +1,45 @@
+file Employees.csv (
+    mimeType: text/csv
+    charSet: utf-8
+)
+
+file Employees.json (
+    mimeType: application/json
+    charSet: utf-8
+)
+
+file Employees.xlsx (
+    mimeType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    charSet: utf-8
+)
+
+file Employees.xml (
+    mimeType: application/xml
+    charSet: utf-8
+)
+
+file Employees_TransformNLookup.csv (
+    mimeType: text/csv
+    charSet: utf-8
+)
+
+file SalesData.zip (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+

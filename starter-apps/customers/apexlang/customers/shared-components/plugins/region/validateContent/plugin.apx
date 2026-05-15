@@ -1,0 +1,140 @@
+plugin validateContent (
+    name: Validate Content
+    staticId: COM.ORACLE.APEX.VALIDATOR
+    type: region
+    component {
+        standardAttributes: regionSourceIsSqlQuery
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function render
+            (
+                p_region              in apex_plugin.t_region,
+                p_plugin              in apex_plugin.t_plugin,
+                p_is_printer_friendly in boolean
+            ) return apex_plugin.t_region_render_result
+            is
+                c_region_link          constant varchar2(4000) := apex_util.prepare_url(p_region.attribute_01);
+                -- Constants for the columns of our region source query
+                c_verified_by_col constant pls_integer := 1;
+                c_created_col     constant pls_integer := 2;
+            
+                l_valid_data_type_list wwv_flow_global.vc_arr2;
+                l_column_value_list    apex_plugin_util.t_column_value_list2;
+                l_color                varchar2(30) := 'green';
+                l_verified_by          varchar2(300);
+                l_created              timestamp with time zone;
+                l_message              varchar2(4000);
+                c                      integer := 0;
+            begin
+                apex_css.add_file(
+                    p_name => 'validate',
+                    p_directory => p_plugin.file_prefix,
+                    p_version => null
+                );
+            
+                -- define the valid column data types for the region query
+                l_valid_data_type_list(c_verified_by_col) := apex_plugin_util.c_data_type_varchar2;
+                l_valid_data_type_list(c_created_col)     := apex_plugin_util.c_data_type_timestamp_tz;
+            
+                -- get the data to be displayed
+                l_column_value_list := apex_plugin_util.get_data2 (
+                p_sql_statement => p_region.source,
+                p_min_columns => 2,
+                p_max_columns => 2,
+                p_data_type_list => l_valid_data_type_list,
+                p_component_name => p_region.name);
+            
+                for i in 1 .. l_column_value_list(c_created_col).value_list.count
+                loop
+                    c := c + 1;
+                    l_verified_by := apex_escape.html(lower(l_column_value_list(c_verified_by_col).value_list(i).varchar2_value));
+                    l_created     := l_column_value_list(c_created_col).value_list(i).timestamp_tz_value;
+                    exit;
+                end loop;
+            
+                if l_created is null then
+                    l_color := 'red';
+                    l_verified_by := 'Unvalidated';
+                elsif l_created > (current_timestamp - interval '7' day) then
+                    l_color := 'green';
+                else
+                    l_color := 'yellow';
+                end if;
+            
+                sys.htp.p('<div class="t-Validation is-'
+                    ||case l_color when 'green' then 'valid'
+                        when 'yellow' then 'warning'
+                        else 'invalid'
+                    end||'">');
+                sys.htp.p('<div class="t-Validation-icon">');
+                sys.htp.p('<span class="a-Icon icon-'
+                    ||case l_color when 'green' then 'check'
+                        when 'yellow' then 'warning'
+                        else 'remove'
+                    end||'"></span>');
+                sys.htp.p('</div>');
+                sys.htp.p('<div class="t-Validation-body">');
+                sys.htp.p('<span class="t-Validation-date">'||apex_util.get_since(l_created)||'</span>');
+                sys.htp.p('<span class="t-Validation-user">'||l_verified_by||'</span>');
+                sys.htp.p('<span class="t-Validation-actions">');
+                sys.htp.prn('<button class="t-Button t-Button--pill t-Button--pillStart" '
+                    ||'onclick="apex.navigation.redirect('''||c_region_link||''');" type="button">Validate</button>');
+                sys.htp.p('<button class="t-Button t-Button--pill t-Button--pillEnd t-Button--icon t-Button--slim" '
+                    ||'onclick="apex.navigation.redirect('''||c_region_link||''');" type="button" alt="Validate">'
+                    ||'<span class="a-Icon icon-open-in-dialog"></span></button>');
+                sys.htp.p('</span>');
+                sys.htp.p('</div>');
+                sys.htp.p('</div>');
+            
+                return null;
+            end render;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    information {
+        version: 5.0.1
+        helpText:
+            ```
+            <p>
+            	This plugin displays when the page content was last validated and who validated the content. To implement this plugin correctly you will need to also do the following 3 things:</p>
+            <ol>
+              <li>Create a modal region on the page that has this plugin that does a report of past validations.</li>
+              <li>Create a validation page. This is a form that captures validation text entered by the end-user who is validating the content.</li>
+              <li>Create a button in the region that takes the user to the validation page (described above).</li>
+            </ol>
+            ```
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        sqlQuery {
+            minColumns: 2
+            maxColumns: 2
+        }
+        examples {
+            examples:
+                ```
+                select
+                    verified_by,
+                    to_char(created,'DD-MON-YYYY HH.MI.SS.FF PM') as created
+                from
+                    your_content_validation_table 
+                where
+                    primary_key_column = :P###_ID
+                order by
+                    created desc
+                
+                ```
+        }
+    )
+
+)
+

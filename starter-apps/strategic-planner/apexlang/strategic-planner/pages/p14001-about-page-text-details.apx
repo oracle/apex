@@ -1,0 +1,272 @@
+page 14001 (
+    name: About Page Text Details
+    alias: ABOUT-PAGE-TEXT-DETAILS
+    title: About Page Text Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-page-text-details (
+        name: About Page Text Details
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_CONFIGURABLE_TEXT
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P14001_CONFIGURABLE_CONTENT (
+        type: richTextEditor
+        label {
+            label: Content
+            alignment: left
+        }
+        settings {
+            minHeight: 180
+            allowCustomHtml: true
+        }
+        layout {
+            sequence: 40
+            region: @about-page-text-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @about-page-text-details
+            column: CONFIGURABLE_CONTENT
+            dataType: clob
+        }
+        sessionState {
+            dataType: clob
+        }
+    )
+
+    pageItem P14001_CONFIG_ID (
+        type: displayOnly
+        label {
+            label: Config ID
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @about-page-text-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @about-page-text-details
+            column: CONFIG_ID
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P14001_DESCRIPTION (
+        type: displayOnly
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @about-page-text-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @about-page-text-details
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P14001_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @about-page-text-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @about-page-text-details
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P14001_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 15509892715578193555
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form (
+        name: Initialize form 14010
+        type: formInitialization
+        formRegion: @about-page-text-details
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 15509890689520193552
+        }
+    )
+
+    process process-form (
+        name: Process form 14010
+        type: formAutoRowProcessing
+        formRegion: @about-page-text-details
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 15509891038137193552
+        }
+    )
+
+)
+

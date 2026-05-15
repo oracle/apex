@@ -1,0 +1,937 @@
+page 10210 (
+    name: Project Completeness Scale
+    alias: PROJECT-COMPLETENESS-SCALE
+    title: &NOMENCLATURE_PROJECT. Completeness Scale
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region nomenclature-project-completeness-scale (
+        name: &NOMENCLATURE_PROJECT. Completeness Scale
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_PROJECT_SCALES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P10210_IS_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: IS_ACTIVE_YN
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_MIN_PC_FOR_STATUS (
+        type: selectList
+        label {
+            label: Minimum % Complete for Status
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:0%;0,10%;10,20%;20,30%;30,40%;40,50%;50,60%;60,70%;70,80%;80,90%;90
+        }
+        layout {
+            sequence: 40
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: MIN_PC_FOR_STATUS
+            dataType: number
+        }
+        help {
+            helpText: If a &NOMENCLATURE_PROJECT. is at this percent complete or higher, the status must be set (status is never displayed for those at 100%).
+        }
+    )
+
+    pageItem P10210_PC0_DESC (
+        type: textarea
+        label {
+            label: 0% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC0_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC0_LABEL (
+        type: textField
+        label {
+            label: 0% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC0_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC100_DESC (
+        type: textarea
+        label {
+            label: 100% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 260
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC100_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC100_LABEL (
+        type: textField
+        label {
+            label: 100% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 250
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC100_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC10_DESC (
+        type: textarea
+        label {
+            label: 10% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC10_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC10_LABEL (
+        type: textField
+        label {
+            label: 10% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC10_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC20_DESC (
+        type: textarea
+        label {
+            label: 20% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC20_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC20_LABEL (
+        type: textField
+        label {
+            label: 20% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC20_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC30_DESC (
+        type: textarea
+        label {
+            label: 30% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC30_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC30_LABEL (
+        type: textField
+        label {
+            label: 30% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC30_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC40_DESC (
+        type: textarea
+        label {
+            label: 40% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC40_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC40_LABEL (
+        type: textField
+        label {
+            label: 40% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC40_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC50_DESC (
+        type: textarea
+        label {
+            label: 50% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 160
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC50_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC50_LABEL (
+        type: textField
+        label {
+            label: 50% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 150
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC50_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC60_DESC (
+        type: textarea
+        label {
+            label: 60% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 180
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC60_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC60_LABEL (
+        type: textField
+        label {
+            label: 60% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 170
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC60_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC70_DESC (
+        type: textarea
+        label {
+            label: 70% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 200
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC70_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC70_LABEL (
+        type: textField
+        label {
+            label: 70% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 190
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC70_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC80_DESC (
+        type: textarea
+        label {
+            label: 80% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 220
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC80_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC80_LABEL (
+        type: textField
+        label {
+            label: 80% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 210
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC80_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC90_DESC (
+        type: textarea
+        label {
+            label: 90% Complete Description
+            alignment: left
+        }
+        layout {
+            sequence: 240
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC90_DESC
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_PC90_LABEL (
+        type: textField
+        label {
+            label: 90% Complete Label
+            alignment: left
+        }
+        layout {
+            sequence: 230
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 60
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: PC90_LABEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10210_SCALE_LETTER (
+        type: displayOnly
+        label {
+            label: Scale Letter
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: SCALE_LETTER
+            dataType: varchar2
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10210_SCALE_NAME (
+        type: textField
+        label {
+            label: Scale Name
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @nomenclature-project-completeness-scale
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 50
+        }
+        source {
+            formRegion: @nomenclature-project-completeness-scale
+            column: SCALE_NAME
+            dataType: varchar2
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10210_SCALE_LETTER
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation all-pct-complete-labels-provided (
+        name: all pct complete labels provided
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                :P10210_PC0_LABEL is not null and
+                :P10210_PC10_LABEL is not null and
+                :P10210_PC20_LABEL is not null and
+                :P10210_PC30_LABEL is not null and
+                :P10210_PC40_LABEL is not null and
+                :P10210_PC50_LABEL is not null and
+                :P10210_PC60_LABEL is not null and
+                :P10210_PC70_LABEL is not null and
+                :P10210_PC80_LABEL is not null and
+                :P10210_PC90_LABEL is not null and
+                :P10210_PC100_LABEL is not null
+                ```
+        }
+        error {
+            errorMessage: Scale cannot be active without all Percent Complete labels provided.
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+            type: item=value
+            item: P10210_IS_ACTIVE_YN
+            value: Y
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 5390506805653762933
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form (
+        name: Initialize form
+        type: formInitialization
+        formRegion: @nomenclature-project-completeness-scale
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 5390500891958762923
+        }
+    )
+
+    process process-form (
+        name: Process form
+        type: formAutoRowProcessing
+        formRegion: @nomenclature-project-completeness-scale
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 5390501215020762924
+        }
+    )
+
+)
+

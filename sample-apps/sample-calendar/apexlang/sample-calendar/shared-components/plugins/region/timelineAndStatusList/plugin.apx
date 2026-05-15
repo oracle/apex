@@ -1,0 +1,648 @@
+plugin timelineAndStatusList (
+    name: Timeline and Status List
+    staticId: COM.ORACLE.APEX.TIMELINESTATUSLIST
+    type: region
+    component {
+        standardAttributes: [
+            regionSourceIsSqlQuery
+            pageItemsToSubmitAttr
+            noOfFetchedRowsAttr
+            noDataFoundMessageAttr
+            escapeSpecialCharsRegionAttr
+            regionColumns
+            headingColumnAttr
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            procedure render_list_calendar( p_region in apex_plugin.t_region ) is
+                c_group_col          constant varchar2(255) := p_region.attribute_01;
+                c_color_col          constant varchar2(255) := p_region.attribute_02;
+                c_title_col          constant varchar2(255) := p_region.attribute_03;
+                c_link_col           constant varchar2(255) := p_region.attribute_04;
+                c_row1_attr1_val_col constant varchar2(255) := p_region.attribute_05;
+                c_row1_attr2_val_col constant varchar2(255) := p_region.attribute_06;
+                c_row2_attr1_val_col constant varchar2(255) := p_region.attribute_07;
+                c_row2_attr2_val_col constant varchar2(255) := p_region.attribute_08;
+                c_description_1_col  constant varchar2(255) := p_region.attribute_09;
+                c_description_2_col  constant varchar2(255) := p_region.attribute_10;
+                c_description_3_col  constant varchar2(255) := p_region.attribute_11;
+                c_description_4_col  constant varchar2(255) := p_region.attribute_15;
+                c_group_type         constant varchar2(255) := p_region.attribute_12;
+                c_status_col         constant varchar2(255) := p_region.attribute_13;
+                c_color_label_col    constant varchar2(255) := p_region.attribute_14;
+            
+                l_group_col_no          pls_integer;
+                l_color_col_no          pls_integer;
+                l_title_col_no          pls_integer;
+                l_link_col_no           pls_integer;
+                l_row1_attr1_val_col_no pls_integer;
+                l_row1_attr2_val_col_no pls_integer;
+                l_row2_attr1_val_col_no pls_integer;
+                l_row2_attr2_val_col_no pls_integer;
+                l_description_1_col_no  pls_integer;
+                l_description_2_col_no  pls_integer;
+                l_description_3_col_no  pls_integer;
+                l_description_4_col_no  pls_integer;
+                l_status_col_no         pls_integer;
+                l_color_label_col_no    pls_integer;
+            
+                l_date           timestamp with local time zone;
+                l_last_day       varchar2(8);
+                l_group          varchar2(4000);
+                l_color          varchar2(4000);
+                l_color_label    varchar2(4000);
+                l_title          varchar2(4000);
+                l_link           varchar2(4000);
+                l_row1_attr1_val varchar2(4000);
+                l_row1_attr1_lbl varchar2(4000);
+                l_row1_attr2_val varchar2(4000);
+                l_row1_attr2_lbl varchar2(4000);
+                l_row2_attr1_val varchar2(4000);
+                l_row2_attr1_lbl varchar2(4000);
+                l_row2_attr2_val varchar2(4000);
+                l_row2_attr2_lbl varchar2(4000);
+                l_description_1  varchar2(4000);
+                l_description_2  varchar2(4000);
+                l_description_3  varchar2(4000);
+                l_description_4  varchar2(4000);
+                l_status         varchar2(4000);
+            
+                --
+                l_no_data_found     varchar2(32767) := p_region.no_data_found_message;
+                l_num_rows          pls_integer     := p_region.fetched_rows;
+                --
+                l_column_value_list    apex_plugin_util.t_column_value_list2;
+                l_region_source        varchar2(32767) := p_region.source;
+            
+                --
+                l_last_group  varchar2(255) := 'x';
+            
+                l_found boolean;
+                l_count pls_integer := 0;
+            
+                type vc2_aat is table of varchar2(32767) index by varchar2(255);
+                l_colors vc2_aat;
+                l_color_idx varchar2(255);
+            
+            begin
+                -- get the data to be displayed
+                l_column_value_list := apex_plugin_util.get_data2 (
+                                           p_sql_statement  => l_region_source,
+                                           p_min_columns    => 3,
+                                           p_max_columns    => null,
+                                           p_component_name => p_region.name,
+                                           p_max_rows       => null );
+            
+                -- Get the actual column number for the fields we want.
+                l_group_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Group column',
+                                    p_column_alias      => c_group_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => null -- might be date, timestamp, etc.
+                                );
+            
+                l_color_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Color column',
+                                    p_column_alias      => c_color_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_color_label_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Color Label column',
+                                    p_column_alias      => c_color_label_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_status_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Status column',
+                                    p_column_alias      => c_status_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_title_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Title column',
+                                    p_column_alias      => c_title_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => true,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_link_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Link column',
+                                    p_column_alias      => c_link_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_row1_attr1_val_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'First Attribute Value column',
+                                    p_column_alias      => c_row1_attr1_val_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_row1_attr2_val_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Second Attribute Value column',
+                                    p_column_alias      => c_row1_attr2_val_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_row2_attr1_val_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Third Attribute Value column',
+                                    p_column_alias      => c_row2_attr1_val_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_row2_attr2_val_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Fourth Attribute Value column',
+                                    p_column_alias      => c_row2_attr2_val_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_description_1_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'First Description column',
+                                    p_column_alias      => c_description_1_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_description_2_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Second Description column',
+                                    p_column_alias      => c_description_2_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_description_3_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Third Description column (allows HTML)',
+                                    p_column_alias      => c_description_3_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                l_description_4_col_no := apex_plugin_util.get_column_no (
+                                    p_attribute_label   => 'Fourth Description column (allows HTML)',
+                                    p_column_alias      => c_description_4_col,
+                                    p_column_value_list => l_column_value_list,
+                                    p_is_required       => false,
+                                    p_data_type         => apex_plugin_util.c_data_type_varchar2
+                                );
+            
+                -- Loop through the data
+                if c_group_type = 'D' then
+                    sys.htp.p('<div class="t-StatusList t-StatusList--dates">');
+                else
+                    sys.htp.p('<div class="t-StatusList t-StatusList--bullets">');
+                end if;
+            
+                for l_row_num in 1..l_column_value_list(1).value_list.count loop
+                    wwv_flow_plugin_util.set_component_values (
+                        p_column_value_list => l_column_value_list,
+                        p_row_num           => l_row_num );
+            
+                    l_found := true;
+            
+                    if l_group_col_no is not null then
+                        if c_group_type = 'D' then
+                            if l_column_value_list(l_group_col_no).value_list(l_row_num).date_value is not null then
+                                l_date := l_column_value_list(l_group_col_no).value_list(l_row_num).date_value;
+                            elsif l_column_value_list(l_group_col_no).value_list(l_row_num).timestamp_value is not null then
+                                l_date := l_column_value_list(l_group_col_no).value_list(l_row_num).timestamp_value;
+                            elsif l_column_value_list(l_group_col_no).value_list(l_row_num).timestamp_tz_value is not null then
+                                l_date := l_column_value_list(l_group_col_no).value_list(l_row_num).timestamp_tz_value;
+                            elsif l_column_value_list(l_group_col_no).value_list(l_row_num).timestamp_ltz_value is not null then
+                                l_date := l_column_value_list(l_group_col_no).value_list(l_row_num).timestamp_ltz_value;
+                            else
+                                -- Couldn't get a usable date value; ignore this row.
+                                l_found := false;
+                            end if;
+                        else
+                            l_group := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_group_col_no).data_type,
+                                            p_value     => l_column_value_list(l_group_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+                    end if;
+                    if l_found = true and l_count < nvl(l_num_rows,l_count) then
+                        l_count := l_count + 1;
+                        if l_color_col_no is not null then
+                            l_color := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_color_col_no).data_type,
+                                            p_value     => l_column_value_list(l_color_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+            
+                        if l_color_label_col_no is not null then
+                            l_color_label := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_color_label_col_no).data_type,
+                                            p_value     => l_column_value_list(l_color_label_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+            
+                        if l_status_col_no is not null then
+                            l_status := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_status_col_no).data_type,
+                                            p_value     => l_column_value_list(l_status_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+            
+                        if l_title_col_no is not null then
+                            l_title := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_title_col_no).data_type,
+                                            p_value     => l_column_value_list(l_title_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+            
+                        if l_link_col_no is not null then
+                            l_link := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_link_col_no).data_type,
+                                            p_value     => l_column_value_list(l_link_col_no).value_list(l_row_num) ),
+                                        false );
+                        end if;
+            
+                        if l_row1_attr1_val_col_no is not null then
+                            l_row1_attr1_lbl := apex_plugin_util.escape(
+                                        p_region.region_columns( l_row1_attr1_val_col_no ).heading,
+                                        p_region.escape_output );
+                            l_row1_attr1_val := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_row1_attr1_val_col_no).data_type,
+                                            p_value     => l_column_value_list(l_row1_attr1_val_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+            
+                        if l_row1_attr2_val_col_no is not null then
+                            l_row1_attr2_lbl := apex_plugin_util.escape(
+                                        p_region.region_columns( l_row1_attr2_val_col_no ).heading,
+                                        p_region.escape_output );
+                            l_row1_attr2_val := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_row1_attr2_val_col_no).data_type,
+                                            p_value     => l_column_value_list(l_row1_attr2_val_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+            
+                        if l_row2_attr1_val_col_no is not null then
+                            l_row2_attr1_lbl := apex_plugin_util.escape(
+                                        p_region.region_columns( l_row2_attr1_val_col_no ).heading,
+                                        p_region.escape_output );
+                            l_row2_attr1_val := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_row2_attr1_val_col_no).data_type,
+                                            p_value     => l_column_value_list(l_row2_attr1_val_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+            
+                        if l_row2_attr2_val_col_no is not null then
+                            l_row2_attr2_lbl := apex_plugin_util.escape(
+                                        p_region.region_columns( l_row2_attr2_val_col_no ).heading,
+                                        p_region.escape_output );
+                            l_row2_attr2_val := apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_row2_attr2_val_col_no).data_type,
+                                            p_value     => l_column_value_list(l_row2_attr2_val_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output );
+                        end if;
+            
+                        if l_description_1_col_no is not null then
+                            l_description_1 := substr(apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_description_1_col_no).data_type,
+                                            p_value     => l_column_value_list(l_description_1_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output ),0,2000);
+                        end if;
+            
+                        if l_description_2_col_no is not null then
+                            l_description_2 := substr(apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_description_2_col_no).data_type,
+                                            p_value     => l_column_value_list(l_description_2_col_no).value_list(l_row_num) ),
+                                        p_region.escape_output ),0,2000);
+                        end if;
+            
+                        if l_description_3_col_no is not null then
+                            l_description_3 := substr(apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_description_3_col_no).data_type,
+                                            p_value     => l_column_value_list(l_description_3_col_no).value_list(l_row_num) ),
+                                        false ),0,2000);
+                        end if;
+            
+                        if l_description_4_col_no is not null then
+                            l_description_4 := substr(apex_plugin_util.escape(
+                                        apex_plugin_util.get_value_as_varchar2(
+                                            p_data_type => l_column_value_list(l_description_4_col_no).data_type,
+                                            p_value     => l_column_value_list(l_description_4_col_no).value_list(l_row_num) ),
+                                        false ),0,2000);
+                        end if;
+            
+                        -- Start of the actual rendering code.
+                        if c_group_type = 'D' then
+                            if l_last_group != to_char(l_date,'YYYYMM') then
+                                l_last_group := to_char(l_date,'YYYYMM');
+            
+                                if l_count > 1 then
+                                    -- Not the first row; close the previous group.
+                                    sys.htp.p('</ul></div>');
+                                end if;
+            
+                                sys.htp.p('<div class="t-StatusList-block">');
+                                sys.htp.p('<div class="t-StatusList-blockHeader"><span class="t-StatusList-headerTextPrimary">'||trim(to_char(l_date,'Month'))||
+                                    '</span><span class="t-StatusList-headerTextAlt">'||to_char(l_date,'YYYY')||'</span></div>');
+                                sys.htp.p('<ul class="t-StatusList-list">');
+                            end if;
+                        else
+                            if l_last_group != l_group then
+                                l_last_group := l_group;
+                                if l_count > 1 then
+                                    -- Not the first row; close the previous group.
+                                    sys.htp.p('</ul></div>');
+                                end if;
+            
+                                sys.htp.p('<div class="t-StatusList-block" aria-labelledby="tl_'||trim(l_group)||'">');
+                                sys.htp.p('<div class="t-StatusList-blockHeader" id="tl_'||trim(l_group)||'">'
+                                    ||'<span class="t-StatusList-headerTextPrimary">'||trim(l_group)||'</span></div>');
+                                sys.htp.p('<ul class="t-StatusList-list">');
+                            end if;
+                        end if;
+            
+                        if l_color_col_no is not null then
+                            -- Limit it down to the colors we support.
+                            l_color := lower(l_color);
+                            if l_color = 'red' then
+                                l_color := 'is-danger';
+                            elsif l_color = 'black' then
+                                l_color := 'is-complete';
+                            elsif l_color = 'blue' then
+                                l_color := 'is-info';
+                            elsif l_color = 'yellow' then
+                                l_color := 'is-warning';
+                            elsif l_color = 'green' then
+                                l_color := 'is-success';
+                            end if;
+            
+                            l_colors(l_color) := l_color_label;
+                        end if;
+            
+                        if c_group_type = 'D' then
+                            sys.htp.p('<li class="t-StatusList-item '||l_color||'" aria-label="'
+                                ||to_char(l_date,'Month fmDD, YYYY')||'" aria-describedby="tl_'||to_char(l_date,'DD_MON_YYYY')||'">'
+                                ||'<div class="t-StatusList-itemMarker">');
+            
+                            if l_last_day is null or to_char(l_date,'YYYYMMDD') != l_last_day
+                            then
+                                sys.htp.p('<span class="t-StatusList-marker" role="presentation">'
+                                    ||to_char(l_date,'fmDD')||'</span>');
+                            end if;
+            
+                            sys.htp.p('</div>');
+            
+                            l_last_day := to_char(l_date, 'YYYYMMDD');
+            
+                            sys.htp.p('<div class="t-StatusList-itemBody" id="tl_'||to_char(l_date,'DD_MON_YYYY')||'_'||l_count||'_'|| p_region.static_id ||'">');
+                        else
+                            sys.htp.p('<li class="t-StatusList-item '||l_color||'" aria-label="'
+                                ||trim(l_title)||'" aria-describedby="tl_'||trim(l_title)||'">'
+                                ||'<div class="t-StatusList-itemMarker">'
+                                ||'<span class="t-StatusList-marker" role="presentation">'
+                                ||trim(l_title)||'</span></div>');
+            
+                            sys.htp.p('<div class="t-StatusList-itemBody" id="tl_'||trim(l_title)||'_'||l_count||'">');
+                        end if;
+            
+                        sys.htp.p('<h3 class="t-StatusList-itemTitle">'
+                            ||case when l_link is null then l_title
+                                else '<a href="'||apex_util.prepare_url(l_link)||'">'||l_title||'</a>'
+                                end
+                            ||'</h3>');
+            
+                        if l_row1_attr1_lbl is not null or l_row1_attr1_val is not null
+                                or l_row1_attr2_lbl is not null or l_row1_attr2_val is not null then
+                            sys.htp.prn('<div class="t-StatusList-itemAttrs">');
+            
+                            if l_status is not null then
+                                sys.htp.p('<span class="t-Badge t-Badge--basic t-Badge--xsmall '
+                                    ||l_color||'">'||l_status||'</span>');
+                            end if;
+            
+                            if l_row1_attr1_lbl is not null and l_row1_attr1_val is not null then
+                                sys.htp.prn('<span class="t-StatusList-attr"><span class="t-StatusList-attrLabel">'||l_row1_attr1_lbl||'</span> '
+                                    ||'<span class="t-StatusList-attrValue">'||l_row1_attr1_val||'</span></span>');
+                            elsif l_row1_attr1_lbl is null and l_row1_attr1_val is not null then
+                                sys.htp.prn('<span class="t-StatusList-attrValue">'||l_row1_attr1_val||'</span></span>');
+                            elsif l_row1_attr1_lbl is not null and l_row1_attr1_val is null then
+                                sys.htp.prn('<span><span class="t-StatusList-attrLabel"></span></span>');
+                            else
+                                -- No attr1.
+                                null;
+                            end if;
+            
+                            if l_row1_attr2_lbl is not null and l_row1_attr2_val is not null then
+                                sys.htp.prn('<span class="t-StatusList-attr"><span class="t-StatusList-attrLabel">'||l_row1_attr2_lbl||'</span> '
+                                    ||'<span class="t-StatusList-attrValue">'||l_row1_attr2_val||'</span></span>');
+                            elsif l_row1_attr2_lbl is null and l_row1_attr2_val is not null then
+                                sys.htp.prn('<span class="t-StatusList-attrValue">'||l_row1_attr2_val||'</span></span>');
+                            elsif l_row1_attr2_lbl is not null and l_row1_attr2_val is null then
+                                sys.htp.prn('<span class="t-StatusList-attr"><span class="t-StatusList-attrLabel"></span></span>');
+                            else
+                                -- No attr2.
+                                null;
+                            end if;
+                            -- sys.htp.prn('</div>');
+                        end if;
+            
+                        if l_row2_attr1_lbl is not null or l_row2_attr1_val is not null
+                                or l_row2_attr2_lbl is not null or l_row2_attr2_val is not null then
+                            -- sys.htp.prn('<p>');
+                            if l_row2_attr1_lbl is not null and l_row2_attr1_val is not null then
+                                sys.htp.prn('<span class="t-StatusList-attr"><span class="t-StatusList-attrLabel">'||l_row2_attr1_lbl||'</span> '
+                                    ||'<span class="t-StatusList-attrValue">'||l_row2_attr1_val||'</span></span>');
+                            elsif l_row2_attr1_lbl is null and l_row2_attr1_val is not null then
+                                sys.htp.prn('<span class="t-StatusList-attrValue">'||l_row2_attr1_val||'</span></span>');
+                            elsif l_row2_attr1_lbl is not null and l_row2_attr1_val is null then
+                                sys.htp.prn('<span class="t-StatusList-attr"><span class="t-StatusList-attrLabel"></span></span>');
+                            else
+                                -- No attr3.
+                                null;
+                            end if;
+            
+                            if l_row2_attr2_lbl is not null and l_row2_attr2_val is not null then
+                                sys.htp.prn('<span class="t-StatusList-attr"><span class="t-StatusList-attrLabel">'||l_row2_attr2_lbl||'</span> '
+                                    ||'<span class="t-StatusList-attrValue">'||l_row2_attr2_val||'</span></span>');
+                            elsif l_row2_attr2_lbl is null and l_row2_attr2_val is not null then
+                                sys.htp.prn('<span class="t-StatusList-attrValue">'||l_row2_attr2_val||'</span></span>');
+                            elsif l_row2_attr2_lbl is not null and l_row2_attr2_val is null then
+                                sys.htp.prn('<span class="t-StatusList-attr"><span class="t-StatusList-attrLabel"></span></span>');
+                            else
+                                -- No attr4.
+                                null;
+                            end if;
+                            sys.htp.prn('</div>');
+                        end if;
+            
+                        if l_description_1 is not null then
+                            sys.htp.prn('<p class="t-StatusList-textDesc">'||l_description_1||'</p>');
+                        end if;
+            
+                        if l_description_2 is not null then
+                            sys.htp.prn('<p class="t-StatusList-textDesc">'||l_description_2||'</p>');
+                        end if;
+            
+                        if l_description_3 is not null then
+                            sys.htp.prn('<p class="t-StatusList-textDesc">'||l_description_3||'</p>');
+                        end if;
+            
+                        if l_description_4 is not null then
+                            sys.htp.prn('<p class="t-StatusList-textDesc">'||l_description_4||'</p>');
+                        end if;
+            
+                        sys.htp.prn('</div></li>');
+                    end if;
+                end loop;
+                if l_count > 0 then
+                    -- Close the HTML.
+                    sys.htp.p('</ul></div>');
+            
+                    -- Print Legend
+                    if l_color_label_col_no is not null then
+                        sys.htp.p('<div class="t-StatusList-legend" style="padding: 8px; border-top: 1px solid rgba(0,0,0,.05); font-size: 11px;">');
+                        sys.htp.p('  <strong>Status Color Coding:</strong>');
+                        l_color_idx := l_colors.first;
+                        while l_color_idx is not null loop
+                            if l_colors(l_color_idx) is not null then
+                                sys.htp.p('  <span class="t-Badge t-Badge--basic t-Badge--small '||apex_escape.html(p_string => l_color_idx)||'">'||apex_escape.html(p_string => l_colors(l_color_idx))||'</span>');
+                            end if;
+                            l_color_idx := l_colors.next( l_color_idx );
+                        end loop;
+                        sys.htp.p('</div>');
+                    end if;
+                else
+                    sys.htp.p('<span class="nodatafound">'||l_no_data_found||'</span>');
+                end if;
+                sys.htp.p('</div>');
+            end render_list_calendar;
+            
+            function render ( p_region in apex_plugin.t_region,
+                p_plugin in apex_plugin.t_plugin, p_is_printer_friendly in boolean )
+                return apex_plugin.t_region_render_result is
+            begin
+                sys.htp.p('<div id="' || p_region.static_id || '_inner">');
+                render_list_calendar( p_region );
+                sys.htp.p('</div>');
+                
+                /* 
+                apex_javascript.add_onload_code (
+                    p_code => '(function( apex, util, server, $ ){
+              window.com_oracle_apex_timeline_status_list = function( regionId, details ) {
+                function _clear() {
+                  _inner$.empty();
+                }
+                function _render( markup ) {
+                  _inner$.html( markup );
+                }
+                function _debug( error ) {
+                        if ( error.status >= 200 && error.status < 300 ) {
+                            _render( error.responseText );
+                        } else {
+                            debugger;
+                        }
+                }
+                function _refresh() {
+                  server.plugin( details.ajaxIdentifier, { pageItems : details.pageItems }, {
+                    refreshObject : _region$,
+                    clear : _clear,
+                    success : _render,
+                    error : _debug,
+                    loadingIndicator : _inner$,
+                    loadingIndicatorPosition : "append"
+                  });
+                }
+            
+                var _region$ = $( "#" + regionId );
+                    var _inner$ = $( "#" + details.innerRegionId );
+                _region$.on( "apexrefresh", _refresh );
+              }
+            })( apex, apex.util, apex.server, apex.jQuery );'
+                );
+                */
+                
+                apex_javascript.add_onload_code (
+                    p_code => '(function(){ var a = com_oracle_apex_timeline_status_list(' ||
+                        apex_javascript.add_value(p_region.static_id) ||
+                        '{' ||
+                            apex_javascript.add_attribute('innerRegionId',  p_region.static_id || '_inner' ) ||
+                            apex_javascript.add_attribute('pageItems',      apex_plugin_util.page_item_names_to_jquery(p_region.ajax_items_to_submit)) ||
+                            apex_javascript.add_attribute('ajaxIdentifier', apex_plugin.get_ajax_identifier, false, false) ||
+                        '});})()' );
+                return null;
+            end render;
+            
+            function ajax (
+                p_region in apex_plugin.t_region,
+                p_plugin in apex_plugin.t_plugin )
+                return apex_plugin.t_region_ajax_result is
+            begin
+                render_list_calendar( p_region );
+                return null;
+            end ajax;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+        ajaxProcedureName: ajax
+    }
+    advanced {
+        filePrefix: #IMAGE_PREFIX#plugins/com.oracle.apex.timelinestatuslist/1.2/
+        substituteAttributeValues: true
+    }
+    javaScript {
+        fileUrls: #PLUGIN_FILES#timelinestatuslist#MIN#.js
+    }
+    information {
+        version: 5.1
+        helpText:
+            ```
+            <p>Timeline and Status lists are useful for displaying a region with calendar dates and summary information. </p>
+            <p>This plug-in is suitable for adding to Master / Detail pages to show important summary information with dates.</p>
+            ```
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        validation {
+            required: true
+        }
+        sqlQuery {
+            minColumns: 3
+        }
+    )
+
+)
+

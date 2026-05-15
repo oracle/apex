@@ -1,0 +1,12 @@
+substitution APP_DATETIME_FORMAT (
+)
+
+substitution APP_DATE_FORMAT (
+)
+
+substitution APP_NAME (
+)
+
+substitution GETTING_STARTED_URL (
+)
+

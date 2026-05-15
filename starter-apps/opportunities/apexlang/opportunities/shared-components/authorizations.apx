@@ -1,0 +1,51 @@
+authorization administration-rights (
+    name: ADMINISTRATION RIGHTS
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody: return eba_sales_acl_api.get_authorization_level(:APP_USER) = 3;
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not an Administrator
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+
+authorization application-sentry (
+    name: APPLICATION SENTRY
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            begin
+                if :APP_PAGE_ID = 101 then
+                    return true;
+                else
+                    return (eba_sales_acl_api.get_authorization_level(:APP_USER) > 0);
+                end if;
+            end;
+            ```
+    }
+    error {
+        errorMessage: You are not authorized to view this application, either because you have not been granted access, or your account has been locked. Please contact the application administrator.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+
+authorization contribution-rights (
+    name: CONTRIBUTION RIGHTS
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody: return eba_sales_acl_api.get_authorization_level(:APP_USER) >= 2;
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not a Contributor
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+

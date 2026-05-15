@@ -1,0 +1,445 @@
+page 110 (
+    name: Implementation Partner(s)
+    alias: IMPLEMENTATION-PARTNER-S
+    title: Implementation Partner(s)
+    pageGroup: @customers
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region implementation-partner (
+        name: Implementation Partner
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region select-implementation-partners (
+        name: Select Implementation Partners
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    apex_item.checkbox2(p_idx        => 1,
+                                        p_value      => ip.id,
+                                        p_attributes => case
+                                                            when exists (   select null
+                                                                            from eba_cust_cust_partner_ref rf
+                                                                            where rf.customer_id = :P110_CUSTOMER_ID
+                                                                                and rf.partner_id = ip.id )
+                                                                then 'CHECKED'
+                                                        else
+                                                            null
+                                                        end,
+                                        p_checked_values => null,
+                                        p_item_id    => 'P110_PARTNER_IDS',    
+                                        p_item_label => 'Select/Unselect' || name) as partner_id,
+                    ip.name,
+                    ( select count(*) from eba_cust_cust_partner_ref rf where rf.partner_id = ip.id ) references
+                from eba_cust_impl_partners ip
+                order by ip.name
+                ```
+            pageItemsToSubmit: P110_CUSTOMER_ID
+        }
+        layout {
+            sequence: 20
+            parentRegion: @implementation-partner
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        advanced {
+            htmlDomId: partnersIRR
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: <label for="P68_PRODUCT_IDS">Select applicable partners from the report below. Use the search field to find partners quickly.</label>
+            footerText: <br>
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        actionsMenu {
+            includeActionsMenu: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 16689780312474794170
+        }
+
+        column NAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column PARTNER_ID (
+            type: plainText
+            heading {
+                heading: <input type="checkbox" id="selectUnselectAll" title="Select/Unselect All">
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column REFERENCES (
+            type: plainText
+            heading {
+                heading: References
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        savedReport 166897813 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn NAME (
+                sequence: 2
+            )
+
+            displayColumn PARTNER_ID (
+                sequence: 1
+            )
+
+            displayColumn REFERENCES (
+                sequence: 3
+            )
+
+        )
+
+    )
+
+    pageItem P110_CUSTOMER_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @implementation-partner
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P110_REFRESHED (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 30
+            region: @implementation-partner
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button update-partners (
+        buttonName: UPDATE_PARTNERS
+        label: Update Partner(s)
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: cancel dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-region (
+        name: Refresh Region
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @select-implementation-partners
+        }
+        clientSideCondition {
+            type: item=value
+            item: P110_REFRESHED
+            value: N
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @select-implementation-partners
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: Y
+            }
+            affectedElements {
+                selectionType: items
+                items: P110_REFRESHED
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction select-unselect-all-partners (
+        name: Select/Unselect All Partners
+        execution {
+            sequence: 30
+            eventScope: dynamic
+            staticContainer: #partnersIRR
+        }
+        when {
+            selectionType: jQuerySelector
+            jquerySelector: #selectUnselectAll
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    if ( $( '#selectUnselectAll' ).is(':checked') ) {
+                      $('input[type=checkbox][name=f01]').attr('checked',true);
+                    }
+                    else {
+                      $('input[type=checkbox][name=f01]').attr('checked',false);
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 17745320264371270889
+        }
+    )
+
+    process update-partners (
+        name: Update Partners
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_collection varchar2(30) := 'IMP_PARTNERS';
+                begin
+                    apex_collection.create_or_truncate_collection( l_collection );
+                
+                    for i in 1..apex_application.g_f01.count loop
+                        apex_collection.add_member( p_collection_name => l_collection,
+                                                    p_n001 => to_number( apex_application.g_f01(i) ) );
+                    end loop;
+                
+                    delete from eba_cust_cust_partner_ref rf
+                    where rf.customer_id = :P110_CUSTOMER_ID
+                        and not exists (select null
+                                        from apex_collections c
+                                        where c.collection_name = l_collection
+                                            and c.n001 = rf.partner_id
+                                        );
+                
+                
+                    merge into eba_cust_cust_partner_ref rf using (
+                        select :P110_CUSTOMER_ID customer_id,
+                            c.n001 partner_id
+                        from apex_collections c
+                        where c.collection_name = l_collection
+                    ) src
+                        on ( rf.customer_id = src.customer_id and rf.partner_id = src.partner_id )
+                    when not matched then
+                        insert ( customer_id, partner_id )
+                        values ( src.customer_id, src.partner_id );
+                
+                    apex_collection.delete_collection( l_collection );
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 17745321726499270892
+        }
+    )
+
+)
+

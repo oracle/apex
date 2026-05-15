@@ -1,0 +1,667 @@
+page 10 (
+    name: Modify Subtask Information
+    alias: MODIFY-SUBTASK-INFORMATION
+    title: Modify Subtask Information
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: wizardButtons
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region subtask-information (
+        name: Subtask Information
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    pageItem P10_CREATED (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @subtask-information
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CREATED
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_PROJ_ID (
+        type: selectList
+        label {
+            label: Project:
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @projects
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PROJ_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_ROWID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @subtask-information
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ROWID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_ASSIGN (
+        type: textField
+        label {
+            label: Assignee
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 130
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 400
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_ASSIGN
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_COMP (
+        type: datePicker
+        label {
+            label: Completed
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_COMP
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_DESC (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 140
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 32000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_DESC
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_EST_COMP (
+        type: datePicker
+        label {
+            label: Estimated Completion
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_EST_COMP
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @subtask-information
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 5
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_NAME
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_PRIORITY (
+        type: selectList
+        label {
+            label: Priority
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @priority
+            nullDisplayValue: - None -
+        }
+        layout {
+            sequence: 90
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_PRIORITY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_START (
+        type: datePicker
+        label {
+            label: Start Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_START
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_SUB_STATUS (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @status
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 100
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUB_STATUS
+            used: always
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_TASK_ID (
+        type: selectList
+        label {
+            label: Task
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @tasks
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @subtask-information
+            slot: regionBody
+            alignment: left
+            columnAttributes: class="fielddatabold"
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TASK_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10_UPDATED (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @subtask-information
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: UPDATED
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Subtask
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10_ROWID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_ROWID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10_ROWID
+        }
+    )
+
+    dynamicAction cancel-modal (
+        name: Cancel Modal
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process fetch-row-from-eba-demo-tree-subtask (
+        name: Fetch Row from EBA_DEMO_TREE_SUBTASK
+        type: autoRowFetch
+        source {
+            tableName: EBA_DEMO_TREE_SUBTASK
+            pkColumn: ROWID
+            pkItem: P10_ROWID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3170851598008658432
+        }
+    )
+
+    process process-row-of-eba-demo-tree-subtask (
+        name: Process Row of EBA_DEMO_TREE_SUBTASK
+        type: autoRowProcessing
+        target {
+            tableName: EBA_DEMO_TREE_SUBTASK
+            pkColumn: ROWID
+            pkItem: P10_ROWID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 3170851789394658433
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 3170851983276658433
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process set-page-navigation (
+        name: Set Page Navigation
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :REQUEST = 'T' then 
+                    :LAST_VIEW := 3;
+                else
+                    :LAST_VIEW := 9;
+                end if;
+                ```
+        }
+        execution {
+            sequence: 50
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3174610883436072600
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 1
+        }
+        behavior {
+            target: {
+                page: &LAST_VIEW.
+            }
+        }
+    )
+
+)
+

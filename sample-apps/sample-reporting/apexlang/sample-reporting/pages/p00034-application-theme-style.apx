@@ -1,0 +1,263 @@
+page 34 (
+    name: Application Theme Style
+    alias: APPLICATION-THEME-STYLE
+    title: Application Theme Style
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>Select the look and feel of the application you would like to use for all users of this application.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region items (
+        name: items
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @set-user-interface-theme-style
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region set-user-interface-theme-style (
+        name: Set User Interface Theme Style
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    pageItem P34_DESKTOP_THEME_STYLE_ID (
+        type: selectList
+        label {
+            label: Desktop Theme Style
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select s.name d,
+                          s.theme_style_id r
+                from apex_application_theme_styles s, apex_application_themes t
+                where s.application_id = t.application_id
+                and s.theme_number = t.theme_number
+                and s.application_id = :app_id
+                and t.ui_type_name   = 'DESKTOP'
+                and t.is_current = 'Yes'
+                order by 1
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select s.theme_style_id
+                from apex_application_theme_styles s, apex_application_themes t
+                where s.application_id = t.application_id
+                and s.theme_number = t.theme_number
+                and s.application_id = :app_id
+                and t.ui_type_name   = 'DESKTOP'
+                and s.is_current = 'Yes'
+                ```
+            used: always
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from apex_application_theme_styles s, apex_application_themes t
+                where s.application_id = t.application_id
+                and s.theme_number = t.theme_number
+                and s.application_id = :app_id
+                and t.ui_type_name   = 'DESKTOP'
+                and t.is_current = 'Yes'
+                ```
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: close
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: settings
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: create
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process set-theme-style (
+        name: Set Theme Style
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :P34_DESKTOP_THEME_STYLE_ID is not null then
+                    for c1 in (select theme_number
+                               from apex_application_themes
+                               where application_id = :app_id
+                               and ui_type_name   = 'DESKTOP'
+                               and is_current = 'Yes')
+                    loop
+                        apex_theme.set_current_style (
+                            p_theme_number => c1.theme_number,
+                            p_id => :P34_DESKTOP_THEME_STYLE_ID
+                            );
+                    end loop;
+                end if;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Theme Style Set for All Users.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 1861959558900044750
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: settings
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

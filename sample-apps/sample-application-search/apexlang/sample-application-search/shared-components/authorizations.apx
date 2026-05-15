@@ -1,0 +1,25 @@
+authorization oracle-text-is-available (
+    name: Oracle Text is available
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody: return eba_demo_search_text_pkg.text_is_available;
+    }
+    error {
+        errorMessage: Oracle Text is not available in this workspace.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+
+authorization web-credentials-not-provided (
+    name: Web Credentials not provided
+    type: notExistsSqlQuery
+    settings {
+        sqlQuery: select * from eba_demo_search_web_creds where credential_static_id = 'tmdb_api_key'
+    }
+    error {
+        errorMessage: Required web credentials are not provided.
+    }
+)
+

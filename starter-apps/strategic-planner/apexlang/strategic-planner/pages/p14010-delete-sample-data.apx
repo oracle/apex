@@ -1,0 +1,390 @@
+page 14010 (
+    name: Delete Sample Data
+    alias: DELETE-SAMPLE-DATA
+    title: Delete Sample Data
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region delete-sample-data (
+        name: Delete Sample Data
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select label, cnt, details
+                  from 
+                (
+                select 1 ob, :NOMENCLATURE_AREAS label, count(*) cnt,
+                       listagg(area,', ') within group (order by id) details
+                  from SP_AREAS
+                 where id in (1,2)
+                union all
+                select 2 ob, :NOMENCLATURE_INITIATIVES label, count(*) cnt,
+                       listagg(initiative,', ') within group (order by id) details
+                  from SP_INITIATIVES
+                 where id in (1,2,3)
+                union all
+                select 3 ob, :NOMENCLATURE_PROJECTS label, count(*) cnt,
+                       listagg(project,', ') within group (order by id) details
+                  from SP_PROJECTS
+                 where id in (1,2,3,4,5,6)
+                union all
+                select 4 ob, 'Activities' label, count(*) cnt,
+                       listagg(comments,', ') within group (order by id) details
+                  from sp_activities
+                 where id in (1,2,3)
+                union all
+                select 5 ob, 'Releases' label, count(*) cnt,
+                       listagg(release_train||' ' ||release,', ') within group (order by id) details
+                  from sp_release_trains
+                 where id in (1,2)
+                union all
+                select 7 ob, :NOMENCLATURE_USERS label, count(*) cnt,
+                       listagg(first_name||' '||last_name,', ') within group (order by id) details
+                  from SP_TEAM_MEMBERS
+                 where id in (1,2,3)
+                )
+                where cnt > 0
+                order by ob
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        headerAndFooter {
+            headerText:
+                ```html
+                <p>This application installed with some sample data to help illustrate it's use.  
+                    Once deleted, this data cannot be installed again.
+                    Only the main attributes listed below will be deleted, not any of the Look Up Values.</p>
+                
+                ```
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--noBorders
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: Sample data has all been removed.
+        }
+        heading {
+            type: none
+        }
+
+        column CNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 30
+            }
+        )
+
+        column DETAILS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column LABEL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Label
+            }
+            layout {
+                sequence: 20
+            }
+            columnFormatting {
+                htmlExpression: #CNT# #LABEL# (#DETAILS#)
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: Do you really want to remove the sample data?
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_AREAS
+                 where id in (1,2)
+                union all
+                select 1
+                  from SP_INITIATIVES
+                 where id in (1,2,3)
+                union all
+                select 1
+                  from SP_PROJECTS
+                 where id in (1,2,3,4,5,6)
+                union all
+                select 1
+                  from sp_activities
+                 where id in (1,2,3)
+                union all
+                select 1
+                  from sp_release_trains
+                 where id in (1,2)
+                union all
+                select 1
+                  from SP_TEAM_MEMBERS
+                 where id in (1,2,3)
+                ```
+        }
+    )
+
+    button up (
+        buttonName: Up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process delete-sample-data (
+        name: delete sample data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                delete from SP_PROJ_INTERACTIONS_LOG 
+                 where project_id in (1,2,3,4,5,6);
+                
+                delete from sp_activities
+                 where project_id in (1,2,3,4,5,6);
+                
+                delete from sp_project_comments
+                 where project_id in (1,2,3,4,5,6);
+                
+                delete from sp_project_documents
+                 where project_id in (1,2,3,4,5,6);
+                
+                delete from sp_tasks
+                 where project_id in (1,2,3,4,5,6);
+                
+                delete from sp_project_contributors
+                 where project_id in (1,2,3,4,5,6);
+                
+                delete from sp_project_links
+                 where project_id in (1,2,3,4,5,6);
+                
+                delete from sp_project_related
+                 where project_id in (1,2,3,4,5,6)
+                    or related_project_id in (1,2,3,4,5,6);
+                
+                delete from sp_project_history
+                 where id in (1,2,3,4,5,6);
+                
+                delete from SP_PROJECTS
+                 where id in (1,2,3,4,5,6);
+                
+                delete from sp_release_comments
+                 where release_id in (1,2);
+                
+                delete from sp_release_documents
+                 where release_id in (1,2);
+                
+                delete from sp_release_links
+                 where release_id in (1,2);
+                
+                delete from sp_release_milestones
+                 where release_id in (1,2);
+                
+                delete from sp_release_history
+                 where release_id in (1,2);
+                
+                delete from sp_release_trains
+                 where id in (1,2);
+                
+                delete from sp_initiative_links
+                 where initiative_id in (1,2,3);
+                
+                delete from sp_initiative_comments
+                 where initiative_id in (1,2,3);
+                
+                delete from sp_initiative_documents
+                 where initiative_id in (1,2,3);
+                 
+                delete from SP_INITIATIVES
+                 where id in (1,2,3);
+                
+                delete from SP_AREAS
+                 where id in (1,2);
+                
+                delete from SP_TEAM_MEMBERS
+                 where id in (1,2,3);
+                
+                sp_util.add_app_log(
+                    p_activity => 'Sample Data Deleted', 
+                    p_details  => null );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Sample data deleted.
+        }
+        error {
+            errorMessage: Sample data failed to be deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 15510389703468257946
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process recalculate-counts (
+        name: recalculate counts
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (select count(*) c from sp_areas) loop
+                    :P1_AREAS := to_char(c1.c,'FM999G999G990'); 
+                end loop;
+                
+                for c1 in (select count(*) c from sp_initiatives)  loop
+                    :P1_INITIATIVES := to_char(c1.c,'FM999G999G990'); 
+                end loop;
+                
+                for c1 in (select count(*)  c
+                             from sp_projects p
+                            where p.ARCHIVED_YN = 'N' and 
+                                  p.DUPLICATE_OF_PROJECT_ID is null
+                ) loop
+                    :P1_PROJECTS := to_char(c1.c,'FM999G999G990'); 
+                end loop;
+                
+                for c1 in (select count(*) c 
+                             from sp_activities ap, sp_projects p
+                            where ap.project_id = p.id(+) and
+                                  p.DUPLICATE_OF_PROJECT_ID is null and
+                                  (p.ARCHIVED_YN = 'N' or p.archived_yn is null) -- need the is null to accomodate the outer join
+                ) loop
+                    :P1_ACTIVITIES := to_char(c1.c,'FM999G999G990'); 
+                end loop;
+                
+                for c1 in (select count(*) c from SP_RELEASE_TRAINS) loop
+                    :P1_RELEASES := to_char(c1.c,'FM999G999G990'); 
+                end loop;
+                
+                for c1 in (select count(*) c from SP_TEAM_MEMBERS) loop
+                    :P1_PEOPLE := to_char(c1.c,'FM999G999G990'); 
+                end loop;
+                
+                for c1 in (select count(*) c from SP_GROUPS) loop
+                    :P1_GROUPS := to_char(c1.c,'FM999G999G990'); 
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 14926173063092381524
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

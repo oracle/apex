@@ -1,0 +1,504 @@
+page 1406 (
+    name: Reports - Timeline
+    alias: TIMELINE-REPORTS
+    title: Activity Timeline - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region column-names (
+        name: Column Names
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select '#EVENT_MODIFIERS#'  , 'CSS Class-based modifiers for an event item'
+                  from dual union all
+                select '#EVENT_ATTRIBUTES#' , 'Custom attributes for an event item'
+                  from dual union all
+                select '#USER_COLOR#'       , 'Color applied to a user initials using u-color-XX classes or custom classes'
+                  from dual union all
+                select '#USER_AVATAR#'      , 'User initials or image'
+                  from dual union all
+                select '#USER_NAME#'        , 'User name'
+                  from dual union all
+                select '#EVENT_DATE#'       , 'Date of event displayed below user name'
+                  from dual union all
+                select '#EVENT_STATUS#'     , 'Type of event. Substitute with "is-new", "is-updated" or "is-removed" for default styling.'
+                  from dual union all
+                select '#EVENT_ICON#'       , 'Icon of event type.'
+                  from dual union all
+                select '#EVENT_TITLE#'      , 'Name of event'
+                  from dual union all
+                select '#EVENT_DESC#'       , 'Description of event displayed below event name'
+                  from dual union all
+                select '#EVENT_LINK#'       , 'Link for the event'
+                  from dual union all
+                select '#EVENT_TYPE#'       , 'Type of the event' 
+                  from dual
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 999
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-row
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column '#EVENT_MODIFIERS#' (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: &#x27;#event Modifiers#&#x27;
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column 'CSSCLASS-BASEDMODIFIERSFORANEVENTITEM' (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: &#x27;cssclass-basedmodifiersforaneventitem&#x27;
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    region demo (
+        name: Demo
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  p.id,
+                  substr(p.created_by,0,2) user_avatar,
+                  p.created event_date,
+                  lower(p.created_by) user_name,
+                  t.task_name event_title,
+                  t.created created,
+                  lower(t.created_by) owner,
+                  null event_desc,
+                  case status 
+                    when 'Open' then 'fa fa-clock-o'
+                    when 'Closed' then 'fa fa-check-circle-o'
+                    when 'On-Hold' then 'fa fa-exclamation-circle'
+                    when 'Pending' then 'fa fa-exclamation-triangle'
+                  end event_icon,
+                  case status 
+                    when 'Open' then 'is-new'
+                    when 'Closed' then 'is-removed'
+                    when 'On-Hold' then 'is-updated'
+                    when 'Pending' then 'is-updated'
+                  end event_status,
+                  status event_type,
+                  'u-color-'||( ora_hash(p.created_by,44) + 1 ) user_color
+                from
+                  eba_ut_chart_tasks t,
+                  eba_ut_chart_projects p
+                where
+                  t.project = p.id
+                order by p.created
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            htmlDomId: TimelineDemo
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 6
+        }
+        componentAppearance {
+            template: @/timeline
+            templateOptions: [
+                #DEFAULT#
+                t-Report--hideNoPagination
+            ]
+            cssClasses: dm-TemplateOption-previewTarget
+        }
+
+        column CREATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Event date
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_DESC (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Event desc
+            }
+            layout {
+                sequence: 6
+            }
+            columnFormatting {
+                htmlExpression: #CREATED#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_ICON (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Event icon
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_STATUS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Event status
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_TITLE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Event title
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_TYPE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Event type
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_AVATAR (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: User avatar
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_COLOR (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: User color
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: User name
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: TimelineDemo
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Timeline</strong> is a Classic Report template that is useful for displaying a series of events. It can be used to showcase the history of a given widget, recent updates, or new interactions within an application.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query (
+        name: Sample SQL Query
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 70
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            regionStaticId: TimelineDemo
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+            cssClasses: col-sm-12
+        }
+        settings {
+            staticId: TimelineDemo
+        }
+    )
+
+)
+

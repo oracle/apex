@@ -1,0 +1,172 @@
+app APEXTOGO (
+    name: APEXToGo
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: imageAndText
+        imageUrl: #APP_FILES#icons/app-icon-144-rounded.png
+        text: APEXToGo
+    }
+    navigation {
+        homeUrl: {
+            page: HOME
+        }
+        loginUrl: {
+            page: WELCOME
+        }
+    }
+    navigationMenu {
+        listTemplate: @/top-navigation-tabs
+        templateOptions: [
+            #DEFAULT#
+            t-NavTabs--inlineLabels-lg
+            t-NavTabs--hiddenLabels-sm
+        ]
+        listPosition: top
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        addBuiltWithApexToFooter: false
+        autoDismissSuccessMessages: true
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    javaScript {
+        fileUrls: #APP_FILES#js/apextogo#MIN#.js
+    }
+    css {
+        fileUrls: #APP_FILES#css/apextogo#MIN#.css
+    }
+    authentication {
+        scheme: @username-only
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        runOnPublicPages: true
+    }
+    security {
+        deepLinking: true
+    }
+    sessionStateProtection {
+        checksumSalt: C7E71733F576BB954140CF736C09A5056AC6644509742698AC9EA9FBB5CAA4DD
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+        maxSessionLength: 43200
+        maxSessionIdleTime: 28800
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        installable: true
+        themeColor: #ffffff
+        appDescription: Oracle APEX Mobile Sample Application
+        enablePushNotifications: true
+        pushNotificationsCredentials: @App_9500_Push_Notifications_Credentials
+    }
+    runtime {
+        accessibleReadOnlyItems: false
+    }
+    advanced {
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c)2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0 as shown 
+            at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: APEXToGo
+        }
+    )
+
+    pwaShortcut cart (
+        name: Cart
+        sequence: 30
+        shortcut {
+            target: {
+                page: 7
+            }
+            iconUrl: pwa/shortcut-icon-30.png
+        }
+    )
+
+    pwaShortcut home (
+        name: Home
+        sequence: 10
+        shortcut {
+            target: {
+                page: 1
+            }
+            iconUrl: pwa/shortcut-icon-10.png
+        }
+    )
+
+    pwaShortcut orders (
+        name: Orders
+        sequence: 40
+        shortcut {
+            target: {
+                page: 4
+            }
+            iconUrl: pwa/shortcut-icon-40.png
+        }
+    )
+
+    pwaScreenshot screenshot-1-png (
+        label: screenshot-1.png
+        layout {
+            sequence: 10
+        }
+        screenshot {
+            url: pwa/screenshot-1.png
+        }
+    )
+
+    pwaScreenshot screenshot-2-png (
+        label: screenshot-2.png
+        layout {
+            sequence: 20
+        }
+        screenshot {
+            url: pwa/screenshot-2.png
+        }
+    )
+
+    pwaScreenshot screenshot-3-png (
+        label: screenshot-3.png
+        layout {
+            sequence: 30
+        }
+        screenshot {
+            url: pwa/screenshot-3.png
+        }
+    )
+
+    pwaScreenshot screenshot-4-png (
+        label: screenshot-4.png
+        layout {
+            sequence: 40
+        }
+        screenshot {
+            url: pwa/screenshot-4.png
+        }
+    )
+
+)
+

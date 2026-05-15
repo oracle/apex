@@ -1,0 +1,584 @@
+page 10151 (
+    name: Initiative Focus Area
+    alias: INITIATIVE-FOCUS-AREA
+    title: Initiative Focus Area
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region initiative-focus-area (
+        name: Initiative Focus Area
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_INITIATIVE_FOCUS_AREAS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P10151_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @initiative-focus-area
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: ACTIVE_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+    )
+
+    pageItem P10151_CREATED (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @initiative-focus-area
+            slot: regionBody
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: CREATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10151_CREATED_BY (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @initiative-focus-area
+            slot: regionBody
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: CREATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10151_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @initiative-focus-area
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10151_DEVELOPMENT_OWNER_ID (
+        type: selectOne
+        label {
+            label: Development Owner
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-team-members
+        }
+        layout {
+            sequence: 90
+            region: @initiative-focus-area
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: DEVELOPMENT_OWNER_ID
+            dataType: number
+        }
+    )
+
+    pageItem P10151_DISPLAY_SEQUENCE (
+        type: numberField
+        label {
+            label: Display Sequence
+            alignment: left
+        }
+        settings {
+            minValue: 0
+        }
+        layout {
+            sequence: 120
+            region: @initiative-focus-area
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: DISPLAY_SEQUENCE
+            dataType: number
+        }
+        default {
+            type: static
+            staticValue: 10
+        }
+    )
+
+    pageItem P10151_FOCUS_AREA (
+        type: textField
+        label {
+            label: Focus Area
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @initiative-focus-area
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 60
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: FOCUS_AREA
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10151_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @initiative-focus-area
+            slot: regionBody
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10151_INITIATIVE_ID (
+        type: selectOne
+        label {
+            label: Initiative
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select a.area ||' / '|| i.initiative d, i.id r
+                  from sp_areas a,
+                       sp_initiatives i
+                 where a.id = i.area_id
+                 order by 1
+                ```
+        }
+        layout {
+            sequence: 20
+            region: @initiative-focus-area
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: INITIATIVE_ID
+            dataType: number
+        }
+    )
+
+    pageItem P10151_UPDATED (
+        type: hidden
+        layout {
+            sequence: 150
+            region: @initiative-focus-area
+            slot: regionBody
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: UPDATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10151_UPDATED_BY (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @initiative-focus-area
+            slot: regionBody
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10151_ID
+        }
+    )
+
+    button create-another (
+        buttonName: CREATE_ANOTHER
+        label: Add and Add Another
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10151_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10151_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10151_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation dups (
+        name: dups
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_focus_areas
+                 where initiative_id = :P10151_INITIATIVE_ID
+                   and lower(focus_area) = lower(:P10151_FOCUS_AREA)
+                   and (:P10151_ID is null or id != :P10151_ID)
+                ```
+        }
+        error {
+            errorMessage: This Focus Area already exists for this &NOMENCLATURE_INITIATIVE..
+            associatedItem: @P10151_FOCUS_AREA
+        }
+    )
+
+    validation prevent-delete-of-existing (
+        name: prevent delete of existing
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery: select 1 from sp_projects where focus_area_id = :P10151_ID
+        }
+        error {
+            errorMessage: Focus Area is in use can not be deleted.  You can hide from the user interface by setting the active flag to No.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 3393758607852008076
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form (
+        name: Initialize form
+        type: formInitialization
+        formRegion: @initiative-focus-area
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3393755394060008072
+        }
+    )
+
+    process process-form-project-size (
+        name: Process form Project Size
+        type: formAutoRowProcessing
+        formRegion: @initiative-focus-area
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 3393755796893008073
+        }
+    )
+
+    branch (
+        name: Add Another
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 10151
+                items: {
+                    P10151_INITIATIVE_ID: &P10151_INITIATIVE_ID.
+                }
+                clearCache: 10151
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-another
+        }
+    )
+
+)
+

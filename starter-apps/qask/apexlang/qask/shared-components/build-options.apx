@@ -1,0 +1,56 @@
+buildOption commented-out (
+    name: Commented Out
+)
+
+buildOption feature-about-page (
+    name: Feature: About Page
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_ABOUT_PAGE
+    }
+    comments {
+        comments: About this application page.
+    }
+)
+
+buildOption feature-access-control (
+    name: Feature: Access Control
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_ACCESS_CONTROL
+    }
+    comments {
+        comments: Incorporate role based user authentication within your application and manage username mappings to application roles.
+    }
+)
+
+buildOption feature-activity-reporting (
+    name: Feature: Activity Reporting
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_ACTIVITY_REPORTING
+    }
+    comments {
+        comments: Include numerous reports and charts on end user activity.
+    }
+)
+
+buildOption feature-email-reporting (
+    name: Feature: Email Reporting
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_EMAIL_REPORTING
+    }
+    comments {
+        comments: Includes a report displaying the mail to be sent joined with the log of emails already sent.
+    }
+)
+

@@ -1,0 +1,54 @@
+page 78 (
+    name: AI Summary Information
+    alias: AI-SUMMARY-INFORMATION
+    title: AI Summary Information
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region information (
+        name: Information
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                return apex_markdown.to_html (
+                    p_markdown => sp_summary_util.ai_summary_info(p_type => :P78_TYPE) );
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P78_TYPE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @information
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+)
+

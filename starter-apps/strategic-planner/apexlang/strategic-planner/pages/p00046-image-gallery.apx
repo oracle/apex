@@ -1,0 +1,363 @@
+page 46 (
+    name: Image Gallery
+    alias: IMAGE-GALLERY
+    title: Image Gallery
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region facets (
+        name: Facets
+        type: facetedSearch
+        source {
+            filteredRegion: @image-gallery
+        }
+        layout {
+            sequence: 30
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P46_AUTHOR (
+            type: checkboxGroup
+            label {
+                label: Contributor
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: AUTHOR
+            }
+        )
+
+        facet P46_FOCUS_AREA (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_AREA.
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: FOCUS_AREA
+            }
+        )
+
+        facet P46_INITIATIVE (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_INITIATIVE.
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: INITIATIVE
+            }
+        )
+
+        facet P46_PROJECT (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_PROJECT.
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                display: addFilterDialog
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PROJECT
+            }
+        )
+
+        facet P46_PROJECT_TAGS (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_PROJECT. Tags
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                display: addFilterDialog
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PROJECT_TAGS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+        facet P46_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        facet P46_TAGS (
+            type: checkboxGroup
+            label {
+                label: Image Tags
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: TAGS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+    )
+
+    region image-gallery (
+        name: Image Gallery
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.ID,
+                       f.area focus_area,
+                       i.initiative,
+                       p.PROJECT,
+                       d.DOCUMENT_FILENAME,
+                       d.document_mimetype,
+                       d.document_lastupd,
+                       d.UPDATED,
+                       d.created,
+                       d.tags,
+                       p.tags project_tags,
+                       case when length(d.doc_description) > 200
+                            then substr(d.doc_description,1,200)||'...'
+                            else d.doc_description
+                            end doc_description,
+                       d.DOCUMENT_BLOB,
+                       lower(d.created_by) author,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) doc_size,
+                       apex_util.get_since(d.created) created_since,
+                       d.created date_created,
+                       lower(substr(d.DOCUMENT_FILENAME,instr(d.DOCUMENT_FILENAME,'.',-1)+1,length(d.DOCUMENT_FILENAME)-instr(d.DOCUMENT_FILENAME,'.',-1))) file_extension,
+                       to_char(d.created,'YYYY.MM') month_created
+                  from SP_PROJECT_DOCUMENTS d,
+                       sp_projects p,
+                       sp_initiatives i,
+                       sp_areas f
+                 where d.project_id = p.id and
+                       p.initiative_id = i.id and
+                       i.area_id = f.id and
+                       p.DUPLICATE_OF_PROJECT_ID is null and
+                       p.ARCHIVED_YN = 'N' and
+                       (
+                           lower(d.DOCUMENT_FILENAME) like '%.png' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.avif' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                order by d.created desc
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: DOCUMENT_FILENAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: &AUTHOR. - &CREATED_SINCE.
+        }
+        secondaryBody {
+            advancedFormatting: true
+            htmlExpression: &DOC_DESCRIPTION.
+        }
+        media {
+            source: blobColumn
+            blobColumn: DOCUMENT_BLOB
+        }
+        blobAttributes {
+            mimeTypeColumn: DOCUMENT_MIMETYPE
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 30
+                    items: {
+                        P30_ID: &ID.
+                    }
+                    clearCache: 30
+                }
+            }
+        )
+
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 46
+                clearCache: 46
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

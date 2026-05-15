@@ -1,0 +1,32 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 100
+        systemPrivileges: [
+            createProcedure
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            EBA_DEMO_TREE_SUBTASK
+            EBA_DEMO_TREE_TASK
+            EBA_DEMO_TREE_STOCKS
+            EBA_DEMO_TREE_EMP
+            EBA_DEMO_TREE_DEPT
+            EBA_DEMO_TREE_POPULATION
+            EBA_DEMO_TREE_PROJ_FILES
+            EBA_DEMO_TREE_PROJECTS
+            EBA_DEMO_TREE_DEF_ST_CODES
+            EBA_DEMO_TREE_DATA
+        ]
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

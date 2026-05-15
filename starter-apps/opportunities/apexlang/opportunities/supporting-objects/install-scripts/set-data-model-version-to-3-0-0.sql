@@ -1,0 +1,1 @@
+insert into eba_sales_preferences (preference_name, preference_value) values ('DATA_MODEL_VERSION', '3.0.0');

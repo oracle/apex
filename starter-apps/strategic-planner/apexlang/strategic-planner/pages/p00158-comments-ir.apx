@@ -1,0 +1,546 @@
+page 158 (
+    name: Comments Interactive Report
+    alias: COMMENTS-IR
+    title: Comments
+    pageGroup: @users
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .no-item-ui {
+              --a-field-input-border-width: 0px;
+              --a-field-input-background-color: transparent;
+            }
+            
+            .overline {
+              color: var(--ut-region-text-color, var(--ut-component-text-default-color));
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: All Comments with this application along with what object they are associated with (e.g. &NOMENCLATURE_INITIATIVE., &NOMENCLATURE_PROJECT.) and by whom and when they were added.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region nomenclature-project-comments (
+        name: &NOMENCLATURE_PROJECT. Comments
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                       created comment_date,
+                       created created_full,
+                       comment_type,
+                       area,
+                       initiative,
+                       release,
+                       project,
+                       author,
+                       private_yn private,
+                       context,
+                       body comment_text,
+                       body_html,
+                       view_link
+                from (
+                select :NOMENCLATURE_PROJECT comment_type,
+                       a.area,
+                       i.initiative,
+                       '' Release,
+                       p.project,
+                       p.project context,
+                       substr(c.body_no_images,1,4000) body,
+                       c.body_html,
+                       nvl((select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id),'system') author,
+                       c.CREATED,
+                       decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       apex_util.prepare_URL(
+                           p_url => 'f?p='||:APP_ID||':3:'||:APP_SESSION||'::NO:3:P3_PROJECT_ID:'||p.id,
+                           p_checksum_type => '3') view_link
+                  from SP_PROJECT_COMMENTS_V c,
+                       sp_projects p,
+                       sp_initiatives i,
+                       sp_areas a 
+                 where c.author_id is not null and
+                       p.id = c.project_id and
+                       p.initiative_id = i.id and
+                       i.area_id = a.id and
+                       p.DUPLICATE_OF_PROJECT_ID is null and
+                       p.ARCHIVED_YN = 'N' and 
+                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:app_user) )
+                 union all
+                select :NOMENCLATURE_INITIATIVE comment_type,
+                       a.area,
+                       i.initiative,
+                       '' Release,
+                       '' project,
+                       i.initiative context,
+                       substr(c.body_no_images,1,4000) body,
+                       c.body_html,
+                       (select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id) author,
+                       c.CREATED,
+                       decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       apex_util.prepare_URL(
+                           p_url => 'f?p='||:APP_ID||':94:'||:APP_SESSION||'::NO:94:P94_INITIATIVE_ID:'||i.id,
+                           p_checksum_type => '3')view_link
+                from SP_INITIATIVE_COMMENTS_V c,
+                     sp_initiatives i,
+                     sp_areas a 
+                 where c.author_id is not null and
+                       c.initiative_id = i.id and
+                       i.area_id = a.id and
+                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:app_user) )
+                union all
+                select 'Release' comment_type,
+                       '' area,
+                       '' initiative,
+                       r.release_train||' '||release release,
+                       '' project,
+                       r.release_train||' '||release context,
+                       substr(c.body_no_images,1,4000) body,
+                       c.body_html,
+                       (select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id) author,
+                       c.CREATED,
+                       decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       apex_util.prepare_URL(
+                           p_url => 'f?p='||:APP_ID||':117:'||:APP_SESSION||'::NO:117:P117_RELEASE_ID:'||r.id,
+                           p_checksum_type => '3') view_link
+                from SP_RELEASE_COMMENTS_V c,
+                     sp_release_trains r
+                 where c.release_id = r.id and
+                       c.author_id is not null and
+                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:app_user) )
+                union all
+                select 'Task' comment_type,
+                       a.area,
+                       i.initiative,
+                       '' Release,
+                       p.project,
+                       (select task_type from sp_task_types rt where rt.id = t.task_type_id)||
+                           case when t.task_sub_type_id is not null then ': ' end ||
+                           (select task_type from sp_task_types rt where rt.id = t.task_sub_type_id) ||
+                           case when t.task is not null then ' - '||t.task end context,
+                       substr(c.body_no_images,1,4000) body,
+                       c.body_html,
+                       (select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id) author,
+                       c.CREATED,
+                       decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                      apex_util.prepare_URL(
+                          p_url => 'f?p='||:APP_ID||':502:'||:APP_SESSION||'::NO:502:P502_PREV_PAGE,P502_PROJECT_ID,P502_TASK_ID:3,'||p.id||','||t.id,
+                          p_checksum_type => '3') view_link
+                  from SP_TASK_COMMENTS_V c,
+                       sp_tasks t,
+                       sp_projects p,
+                       sp_initiatives i,
+                       sp_areas a 
+                 where c.author_id is not null and
+                       t.id = c.task_id and
+                       t.project_id = p.id and
+                       p.initiative_id = i.id and
+                       i.area_id = a.id and
+                       p.DUPLICATE_OF_PROJECT_ID is null and
+                       p.ARCHIVED_YN = 'N' and 
+                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:app_user) )
+                ) 
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                type: url
+                url: #VIEW_LINK#
+            }
+            linkIcon: <img src="#APEX_FILES#app_ui/img/icons/apex-edit-view.png" class="apex-edit-view" alt="View in Context">
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 24158962019757031206
+        }
+
+        column AREA (
+            type: plainText
+            heading {
+                heading: Area
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column AUTHOR (
+            type: plainText
+            heading {
+                heading: Author
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column BODY_HTML (
+            type: hidden
+            heading {
+                heading: Body Html
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: CLOB
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column COMMENT_DATE (
+            type: plainText
+            heading {
+                heading: Comment Date
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column COMMENT_TEXT (
+            type: plainText
+            heading {
+                heading: Comment
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: CLOB
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column COMMENT_TYPE (
+            type: plainText
+            heading {
+                heading: Associated With
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column CONTEXT (
+            type: plainText
+            heading {
+                heading: Comment On
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column CREATED_FULL (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 140
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY HH:MIPM
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column INITIATIVE (
+            type: plainText
+            heading {
+                heading: Initiative
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column PRIVATE (
+            type: plainText
+            heading {
+                heading: Private
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column PROJECT (
+            type: plainText
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column VIEW_LINK (
+            type: hidden
+            heading {
+                heading: View Link
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 241627347 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn AUTHOR (
+                sequence: 4
+            )
+
+            displayColumn COMMENT_DATE (
+                sequence: 5
+            )
+
+            displayColumn COMMENT_TEXT (
+                sequence: 3
+            )
+
+            displayColumn COMMENT_TYPE (
+                sequence: 1
+            )
+
+            displayColumn CONTEXT (
+                sequence: 2
+            )
+
+            sort (
+                column: COMMENT_DATE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button filter-report (
+        buttonName: Filter-Report
+        label: Filter Report
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 7
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 158
+                clearCache: [
+                    158
+                    CIR
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,519 @@
+page 9998 (
+    name: User Verification
+    alias: VERIFICATION
+    title: qAsk Verification
+    appearance {
+        pageTemplate: @/login
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .app-Form-fieldContainer--verificationCode input.apex-item-text { height: 72px; font-size: 40px; line-height: 72px; }
+            .apex-item-text.apex-page-item-error:focus { border-color: #ff6448 !important; }
+            #P1_VERIFICATION_CODE_CONTAINER .t-Form-error { color: #ff6448 !important; font-weight: bold; }
+            .t-Alert--wizard .t-Alert-title { font-weight: 700; font-size: 32px; }
+            .t-Alert--wizard .t-Alert-body { text-align: center; margin-left: auto; margin-right: auto; }
+            ```
+    }
+    security {
+        authentication: public
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region account-locked (
+        name: account locked
+        type: staticContent
+        source {
+            htmlCode: Maximum verification attempts exceeded.   Account will reset in &P9998_RESET_VERIFY_AFTER_X_HOURS. hours.
+        }
+        layout {
+            sequence: 30
+            parentRegion: @qask-user-verification
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--danger
+                t-Alert--removeHeading js-removeLandmark
+            ]
+            icon: fa-exclamation-circle
+            renderComponents: belowContent
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression: :P9998_IS_ACCOUNT_LOCKED_YN = 'Y'
+        }
+    )
+
+    region for-cancel (
+        name: for cancel
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @qask-user-verification
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            icon: fa-exclamation-circle
+            renderComponents: belowContent
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region for-token (
+        name: for token
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @qask-user-verification
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :P9998_IS_ACCOUNT_LOCKED_YN = 'N' and
+                :P9998_IS_TOKEN_MAXED_YN = 'N'
+                ```
+        }
+    )
+
+    region qask-user-verification (
+        name: qAsk User Verification
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/login
+            templateOptions: #DEFAULT#
+            icon: app-icon
+        }
+    )
+
+    region token-maxed (
+        name: token maxed
+        type: staticContent
+        source {
+            htmlCode: <p>No more access attempts left, request a new token.</p>
+        }
+        layout {
+            sequence: 20
+            parentRegion: @qask-user-verification
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--warning
+                t-Alert--removeHeading js-removeLandmark
+            ]
+            icon: fa-exclamation-circle
+            renderComponents: belowContent
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :P9998_IS_ACCOUNT_LOCKED_YN = 'N' and
+                :P9998_IS_TOKEN_MAXED_YN = 'Y'
+                ```
+        }
+    )
+
+    pageItem P9998_CODE (
+        type: textField
+        label {
+            label: Verification Code
+            alignment: left
+        }
+        settings {
+            submitWhenEnterPressed: true
+        }
+        layout {
+            sequence: 40
+            region: @for-token
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            cssClasses: app-Form-fieldContainer--verificationCode
+            width: 6
+            valuePlaceholder: 000000
+        }
+        validation {
+            maxLength: 6
+        }
+        advanced {
+            cssClasses: [
+                w260
+                margin-auto
+                u-tC
+            ]
+            customAttributes: "inputmode=\"numeric\" pattern=\"[0-9]*\" autocomplete=\"one-time-code\""
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :P9998_IS_ACCOUNT_LOCKED_YN = 'N' and
+                :P9998_IS_TOKEN_MAXED_YN = 'N'
+                ```
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P9998_IS_ACCOUNT_LOCKED_YN (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @for-token
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P9998_IS_TOKEN_MAXED_YN (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @for-token
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P9998_RESET_VERIFY_AFTER_X_HOURS (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @account-locked
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P9998_USERNAME (
+        type: displayOnly
+        label {
+            label: Username
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @for-token
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button cancel (
+        buttonName: cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @for-cancel
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--stretch
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                clearCache: 9998
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button verify (
+        buttonName: VERIFY
+        label: Verify
+        layout {
+            sequence: 50
+            region: @for-token
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--stretch
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction only-allow-numbers (
+        name: Only Allow Numbers
+        execution {
+            sequence: 10
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P9998_CODE
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    if (this.browserEvent.key.length === 1 && /\D/.test(this.browserEvent.key)) {
+                        this.browserEvent.preventDefault();
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p9998-code (
+        itemName: P9998_CODE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+        }
+    )
+
+    computation p9998-is-account-locked-yn (
+        itemName: P9998_IS_ACCOUNT_LOCKED_YN
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: qask_util.is_account_locked_yn (p_username => :P9998_USERNAME)
+        }
+    )
+
+    computation p9998-is-token-maxed-yn (
+        itemName: P9998_IS_TOKEN_MAXED_YN
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: qask_util.is_token_maxed_yn (p_username => :P9998_USERNAME)
+        }
+    )
+
+    computation p9998-reset-verify-after-x-hours (
+        itemName: P9998_RESET_VERIFY_AFTER_X_HOURS
+        execution {
+            sequence: 10
+        }
+        computation {
+            type: expression
+            plsqlExpression: qask_util.get_setting('reset_verify_after_x_hours')
+        }
+    )
+
+    process login (
+        name: login
+        type: invokeApi
+        invoke {
+            package: APEX_AUTHENTICATION
+            procedureOrFunction: LOGIN
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 9036718926827608721
+        }
+
+        parameter p_password (
+            value {
+                type: item
+                item: P9998_CODE
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+        parameter p_set_persistent_auth (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 40
+            }
+        )
+
+        parameter p_uppercase_username (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_username (
+            value {
+                type: item
+                item: P9998_USERNAME
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+    )
+
+    process redirect-to-login-when-token-maxed (
+        name: redirect to login when token maxed
+        type: executeCode
+        source {
+            plsqlCode: "apex_util.redirect_url(apex_util.prepare_url('f?p='||:APP_ID||':login:'||:APP_SESSION||':NEWCODE:::P9999_USERNAME:'||:P9998_USERNAME)); "
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 12028457082298620445
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :P9998_IS_ACCOUNT_LOCKED_YN = 'N' and
+                :P9998_IS_TOKEN_MAXED_YN = 'Y'
+                ```
+        }
+    )
+
+    process set-username-cookie (
+        name: Set Username Cookie
+        type: invokeApi
+        invoke {
+            package: APEX_AUTHENTICATION
+            procedureOrFunction: SEND_LOGIN_USERNAME_COOKIE
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 8995788349198855689
+        }
+
+        parameter p_username (
+            value {
+                type: expression
+                plsqlExpression: :P9998_USERNAME
+            }
+            advanced {
+                displaySequence: 1
+            }
+        )
+
+    )
+
+    branch (
+        name: go to login if P9998_USERNAME is null
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 9999
+                clearCache: [
+                    9998
+                    9999
+                ]
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P9998_USERNAME
+        }
+    )
+
+)
+

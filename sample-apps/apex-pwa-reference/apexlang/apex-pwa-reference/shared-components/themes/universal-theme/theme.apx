@@ -1,0 +1,71 @@
+theme universal-theme (
+    name: Universal Theme
+    themeNumber: 42
+    baseTheme: ut-26.1
+    style {
+        currentThemeStyle: @apex-pwa
+    }
+    javaScript {
+        fileUrls: [
+            #APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#
+            #THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#
+        ]
+    }
+    css {
+        fileUrls: #THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#
+    }
+    componentDefaults {
+        page: @/standard
+        navigationBarList: @/navigation-bar
+        navigationMenuListPosition: side
+        navigationMenuListTop: @/top-navigation-menu
+        navigationMenuListSide: @/side-navigation-menu
+        loginPage: @/login
+        errorPage: @/login
+        printerFriendlyPage: @/standard
+        breadcrumb: @/breadcrumb
+        button: @/text
+        defaultLabel: @/optional-floating
+        optionalLabel: @/optional-floating
+        requiredLabel: @/required-floating
+        list: @/links-list
+        region: @/standard
+        classicReport: @/standard
+    }
+    regionDefaults {
+        breadcrumbs: @/title-bar
+        charts: @/standard
+        forms: @/standard
+        lists: @/standard
+        reports: @/standard
+        wizards: @/standard
+        interactiveReports: @/interactive-report
+    }
+    dialogDefaults {
+        dialogContentRegion: @/blank-with-attributes
+        dialogButtonRegion: @/buttons-container
+        dialogPage: @/modal-dialog
+    }
+    icons {
+        library: fontApex
+    }
+    advanced {
+        filePrefix: #APEX_FILES#themes/theme_42/26.1/
+        identifier: UNIVERSAL_THEME
+    }
+
+    style apex-pwa (
+        name: APEX PWA
+        themeRollerAttributes {
+            inputParameterFileUrls: #THEME_FILES#less/theme/Vita.less
+            outputCssFileUrl: #THEME_DB_FILES#1360959280316855639.css
+            jsonConfig: "{\"classes\":[],\"vars\":{\"@g_Accent-BG\":\"#7c5095\",\"@g_Accent-OG\":\"#ffffff\",\"@g_Color-Palette-1\":\"#4a2337\",\"@g_Color-Palette-1-FG\":\"#ffffff\",\"@g_Color-Palette-2\":\"#663c6e\",\"@g_Color-Palette-2-FG\":\"#ffffff\",\"@g_Color-Palette-3\":\"#7b638a\",\"@g_Color-Palette-3-FG\":\"#ffffff\",\"@g_Color-Palette-4\":\"#656e9d\",\"@g_Color-Palette-4-FG\":\"#ffffff\",\"@g_Color-Palette-5\":\"#3f79a8\",\"@g_Color-Palette-5-FG\":\"#ffffff\",\"@g_Color-Palette-6\":\"#0084a8\",\"@g_Color-Palette-6-FG\":\"#ffffff\",\"@g_Color-Palette-7\":\"#008d9c\",\"@g_Color-Palette-7-FG\":\"#ffffff\",\"@g_Color-Palette-8\":\"#009485\",\"@g_Color-Palette-8-FG\":\"#ffffff\",\"@g_Color-Palette-9\":\"#549400\",\"@g_Color-Palette-9-FG\":\"#ffffff\",\"@g_Color-Palette-10\":\"#929400\",\"@g_Color-Palette-10-FG\":\"#ffffff\",\"@g_Color-Palette-11\":\"#946500\",\"@g_Color-Palette-11-FG\":\"#ffffff\",\"@g_Color-Palette-12\":\"#944300\",\"@g_Color-Palette-12-FG\":\"#f6f0f8\",\"@g_Color-Palette-13\":\"#942000\",\"@g_Color-Palette-13-FG\":\"#ffffff\",\"@g_Color-Palette-14\":\"#3d0d00\",\"@g_Color-Palette-14-FG\":\"#ffffff\",\"@g_Color-Palette-15\":\"#000000\",\"@g_Color-Palette-15-FG\":\"#ffffff\",\"@g_Form-Item-BG\":\"#e9e7e7\",\"@g_Form-Item-FG\":\"#202020\",\"@g_Nav-BG\":\"#333333\",\"@g_Nav-FG\":\"#ffffff\",\"@g_Nav-Active-BG\":\"#111111\",\"@g_Nav-Active-FG\":\"#ffffff\",\"@g_Info-BG\":\"#f2eef4\",\"@g_Info-FG\":\"#7c5095\"},\"customCSS\":\".t-ContentBlock--h3 {\\n    --ut-content-block-header-font-size: 1.125rem;\\n    --a-base-font-weight-semibold: 500;\\n}\\n.t-MediaList-icon.u-color {\\n    background: var(--ut-palette-primary-shade);\\n    color: var(--ut-palette-primary);\\n}\\n.flex-center {\\n    display: flex;\\n    align-items: center;\\n    justify-content: center;\\n} \",\"useCustomLess\":\"N\"}"
+        }
+        advanced {
+            endUserCanPick: true
+            accessibilityTested: true
+        }
+    )
+
+)
+

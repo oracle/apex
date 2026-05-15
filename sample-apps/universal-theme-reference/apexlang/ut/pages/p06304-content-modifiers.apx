@@ -1,0 +1,828 @@
+page 6304 (
+    name: Content Modifiers
+    alias: CONTENT-MODIFIERS
+    title: Content Modifiers - &APP_TITLE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .class,
+            .class-value,
+            .class-desc {
+                display: inline-block;
+                font-size: 12px;
+                font-family: 'Menlo','Consolas',monospace;
+            }
+            .class {
+                color: #9C27B0;
+            }
+            .class.tag {
+                padding: 4px 8px;
+                background-color: #FFF;
+                border-radius: 2px;
+                box-shadow: inset rgba(225, 190, 231, .25) 0 0 0 1px;
+            }
+            .class-value {
+                color: #008676;
+                min-width: 40px;
+            }
+            .class-var {
+                font-weight: bold;
+                color: #008676;
+            }
+            .dm-Report--doc {
+                background: #FFF;
+                border: 1px solid rgba(0,0,0,.05);
+            }
+            .dm-Report--doc th, 
+            .dm-Report--doc td {
+                padding: 8px;
+                min-height: 32px;
+                background-color: transparent;
+                border-width: 0 0 1px 0;
+                border-style: solid;
+                border-color: rgba(0,0,0,.05);
+            }
+            .dm-Report--doc td {
+                --a-base-font-weight-semibold: 500 !important;
+                vertical-align: top;
+            }
+            .dm-Report--alignMiddle td {
+                vertical-align: middle;
+            }
+            .dm-Report--doc tr:last-child td {
+                border-bottom-width: 0;
+            }
+            .dm-Report--doc .class {
+                min-width: 40px;
+            }
+            .dm-Report--doc .class-desc {
+                width: 48px;
+                text-align: right;
+                color: rgba(0,0,0,.55);
+                border-radius: 2px;
+            }
+            .dm-Code {
+                border-radius: var(--ut-component-border-radius);
+                border: var(--ut-component-border-width) solid var(--ut-component-border-color);
+            }
+            
+            .u-truncate {
+                max-inline-size: 15rem;
+            }
+            
+            @media (min-width: 640px) {
+                .dm-Report--doc td:first-child {
+                    inline-size: 350px;
+                }
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region accessibility (
+        name: Accessibility
+        type: staticContent
+        source {
+            htmlCode: <p>These classes can help you build more accessible apps and help you design a more usable experience for all users.</p>
+        }
+        layout {
+            sequence: 100
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region classes (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <!-- <p>Use the following class name structure with the options listed below to set the size of your headings.</p> -->
+                <!-- <p><span class="class tag">u-text-heading-<span class="class-var">size</span></span></p> -->
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--alignMiddle">
+                  <thead>
+                    <tr>
+                      <th class="u-textStart">Class</th>
+                      <th class="u-textStart">Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td><span class="class">u-text-heading-2xl<br />u-text-title-1</span></td>
+                        <td><span class="u-text-heading-2xl">Heading 2XL</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-heading-xl<br />u-text-title-2</span></td>
+                        <td><span class="u-text-heading-xl">Heading XL</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-heading-lg<br />u-text-title-3</span></td>
+                        <td><span class="u-text-heading-lg">Heading LG</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-heading-md<br />u-text-title-4</span></td>
+                        <td><span class="u-text-heading-md">Heading MD</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-heading-sm<br />u-text-title-5</span></td>
+                        <td><span class="u-text-heading-sm">Heading SM</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-heading-xs<br />u-text-title-6</span></td>
+                        <td><span class="u-text-heading-xs">Heading XS</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-subheading-2xl<br />u-text-subtitle-1</span></td>
+                        <td><span class="u-text-subheading-2xl">Subheading 2XL</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-subheading-xl<br />u-text-subtitle-2</span></td>
+                        <td><span class="u-text-subheading-xl">Subheading XL</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-subheading-lg<br />u-text-subtitle-3</span></td>
+                        <td><span class="u-text-subheading-lg">Subheading LG</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-subheading-md<br />u-text-subtitle-4</span></td>
+                        <td><span class="u-text-subheading-md">Subheading MD</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-subheading-sm<br />u-text-subtitle-5</span></td>
+                        <td><span class="u-text-subheading-sm">Subheading SM</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-subheading-xs<br />u-text-subtitle-6</span></td>
+                        <td><span class="u-text-subheading-xs">Subheading XS</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @headings
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+    )
+
+    region classes-2 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <!-- <p>Use the following class name structure with the options listed below to set the size of your headings.</p> -->
+                <!-- <p><span class="class tag">u-text-body-<span class="class-var">size</span></span></p> -->
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--alignMiddle">
+                  <thead>
+                    <tr>
+                      <th class="u-textStart">Class</th>
+                      <th class="u-textStart">Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td><span class="class">u-text-body-xl</span></td>
+                        <td><span class="u-text-body-xl">Body XL</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-body-lg<br />u-text-body-1</span></td>
+                        <td><span class="u-text-body-lg">Body LG</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-body-md<br />u-text-body-2</span></td>
+                        <td><span class="u-text-body-md">Body MD</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-body-sm<br />u-text-body-3</span></td>
+                        <td><span class="u-text-body-sm">Body SM</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-body-xs</span></td>
+                        <td><span class="u-text-body-xs">Body XS</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-body-2xs</span></td>
+                        <td><span class="u-text-body-2xs">Body 2XS</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @content
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+    )
+
+    region classes-3 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th class="u-textStart">Class</th>
+                      <th class="u-textStart">Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-lineclamp-1</span></td><td><p class="u-lineclamp-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat diam ut venenatis tellus in metus. Scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper. Rhoncus est pellentesque elit ullamcorper. Sapien nec sagittis aliquam malesuada bibendum. Interdum varius sit amet mattis vulputate enim nulla. Vehicula ipsum a arcu cursus vitae congue mauris. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Congue nisi vitae suscipit tellus mauris.</p></td></tr>
+                    <tr><td><span class="class">u-lineclamp-2</span></td><td><p class="u-lineclamp-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat diam ut venenatis tellus in metus. Scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper. Rhoncus est pellentesque elit ullamcorper. Sapien nec sagittis aliquam malesuada bibendum. Interdum varius sit amet mattis vulputate enim nulla. Vehicula ipsum a arcu cursus vitae congue mauris. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Congue nisi vitae suscipit tellus mauris.</p></td></tr>
+                    <tr><td><span class="class">u-lineclamp-3</span></td><td><p class="u-lineclamp-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat diam ut venenatis tellus in metus. Scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper. Rhoncus est pellentesque elit ullamcorper. Sapien nec sagittis aliquam malesuada bibendum. Interdum varius sit amet mattis vulputate enim nulla. Vehicula ipsum a arcu cursus vitae congue mauris. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Congue nisi vitae suscipit tellus mauris.</p></td></tr>
+                    <tr><td><span class="class">u-lineclamp-4</span></td><td><p class="u-lineclamp-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat diam ut venenatis tellus in metus. Scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper. Rhoncus est pellentesque elit ullamcorper. Sapien nec sagittis aliquam malesuada bibendum. Interdum varius sit amet mattis vulputate enim nulla. Vehicula ipsum a arcu cursus vitae congue mauris. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Congue nisi vitae suscipit tellus mauris.</p></td></tr>
+                    <tr><td><span class="class">u-lineclamp-5</span></td><td><p class="u-lineclamp-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat diam ut venenatis tellus in metus. Scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper. Rhoncus est pellentesque elit ullamcorper. Sapien nec sagittis aliquam malesuada bibendum. Interdum varius sit amet mattis vulputate enim nulla. Vehicula ipsum a arcu cursus vitae congue mauris. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Congue nisi vitae suscipit tellus mauris.</p></td></tr>
+                    <tr><td><span class="class">u-hyphenate<br />u-hyphen</span></td><td><p class="u-hyphenate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat diam ut venenatis tellus in metus. Scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper. Rhoncus est pellentesque elit ullamcorper. Sapien nec sagittis aliquam malesuada bibendum. Interdum varius sit amet mattis vulputate enim nulla. Vehicula ipsum a arcu cursus vitae congue mauris. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Congue nisi vitae suscipit tellus mauris.</p></td></tr>
+                    <tr><td><span class="class">u-truncate</span></td><td><p class="u-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat diam ut venenatis tellus in metus. Scelerisque fermentum dui faucibus in ornare quam viverra. Mattis ullamcorper velit sed ullamcorper. Rhoncus est pellentesque elit ullamcorper. Sapien nec sagittis aliquam malesuada bibendum. Interdum varius sit amet mattis vulputate enim nulla. Vehicula ipsum a arcu cursus vitae congue mauris. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Congue nisi vitae suscipit tellus mauris.</p></td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @line-clamp-truncate-hyphenate
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        accessibility {
+            landmarkLabel: Style Classes
+        }
+    )
+
+    region classes-4 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <!-- <p>Use the following class name structure with the options listed below to set the size of your headings.</p> -->
+                <!-- <p><span class="class tag">u-text-heading-<span class="class-var">size</span></span></p> -->
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--alignMiddle">
+                  <thead>
+                    <tr>
+                      <th class="u-textStart">Class</th>
+                      <th class="u-textStart">Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td><span class="class">u-text-default-color</td>
+                        <td><span class="u-text-default-color">Default</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-title-color</span></td>
+                        <td><span class="u-text-title-color">Title & Headings</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-subtitle-color</span></td>
+                        <td><span class="u-text-subtitle-color">Sub Title & Sub Headings</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">u-text-muted-color</span></td>
+                        <td><span class="u-text-muted-color">Descriptions & Secondary Text</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @colors
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+    )
+
+    region classes-5 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th class="u-textStart">Class</th>
+                      <th class="u-textStart">Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-nowrap</span></td><td class="u-nowrap">Text stays on one line and does not wrap</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @text-wrap
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        accessibility {
+            landmarkLabel: Wrap Classes
+        }
+    )
+
+    region classes-6 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-VisuallyHidden</span></td><td>This will make any text visually hidden, but still accessible for screen readers and other assistive technologies.</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @accessibility
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        accessibility {
+            landmarkLabel: Accessibility Classes
+        }
+    )
+
+    region classes-7 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--alignMiddle">
+                  <thead>
+                    <tr>
+                      <th class="u-textStart">Class</th>
+                      <th class="u-textStart">Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-textUpper<br />u-text-uppercase</span></td><td class="u-textUpper">Sets the text to use all uppercase</td></tr>
+                    <tr><td><span class="class">u-textLower<br />u-text-lowercase</span></td><td class="u-textLower">Sets the text to use all lowercase</td></tr>
+                    <tr><td><span class="class">u-textInitCap</span></td><td class="u-textInitCap">Sets the first letter in each word to use uppercase</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @text-transform
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        accessibility {
+            landmarkLabel: Transform Classes
+        }
+    )
+
+    region classes-8 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--alignMiddle">
+                  <thead>
+                    <tr>
+                      <th class="u-textStart">Class</th>
+                      <th class="u-textStart">Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-text-serif</span></td><td class="u-text-serif">Serif</td></tr>
+                    <tr><td><span class="class">u-text-sansserif<br />u-text-sans-serif</span></td><td class="u-text-sansserif">Sans-Serif</td></tr>
+                    <tr><td><span class="class">u-text-mono</span></td><td class="u-text-mono">Monospace</td></tr>
+                    <tr><td><span class="class">u-text-ultralight<br />u-text-lighter</span></td><td class="u-text-ultralight">Ultralight</td></tr>
+                    <tr><td><span class="class">u-text-light</span></td><td class="u-text-light">Light</td></tr>
+                    <tr><td><span class="class">u-text-normal</span></td><td class="u-text-normal">Normal</td></tr>
+                    <tr><td><span class="class">u-text-semibold<br />u-text-semi-bold</span></td><td class="u-text-semibold">Semi-Bold</td></tr>
+                    <tr><td><span class="class">u-bold<br />u-text-bold</span></td><td class="u-text-bold">Bold</td></tr>
+                    <tr><td><span class="class">u-text-heavy<br />u-text-bolder</span></td><td class="u-text-heavy">Heavy</td></tr>
+                    <tr><td><span class="class">u-italics</span></td><td class="u-italics">Italicize</td></tr>
+                    <tr><td><span class="class">u-underline</span></td><td class="u-underline">Underline</td></tr>
+                    <tr><td><span class="class">u-fixedFont</span></td><td class="u-fixedFont">Use a fixed-letter-space font</td></tr>
+                    <tr><td><span class="class">u-tabular-nums</span></td><td>Makes all numbers the same width so they align neatly in columns. Ex: <span class="u-tabular-nums">1 2 3 4</span></td></tr>
+                    <tr><td><span class="class">u-hidden</span></td><td>Hide text</td></tr>
+                    <tr><td><span class="class">u-visible</span></td><td>Show text</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @text-style
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        accessibility {
+            landmarkLabel: Style Classes
+        }
+    )
+
+    region classes-9 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th class="u-textStart">Class</th>
+                      <th class="u-textStart">Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-textStart</span></td><td class="u-textStart">Align text to the start of the container</td></tr>
+                    <tr><td><span class="class">u-textCenter</span></td><td class="u-textCenter">Align text to the center of the container</td></tr>
+                    <tr><td><span class="class">u-textEnd</span></td><td class="u-textEnd">Align text to the end of the container</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @text-alignment
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        accessibility {
+            landmarkLabel: Alignment Classes
+        }
+    )
+
+    region colors (
+        name: Colors
+        type: staticContent
+        source {
+            htmlCode: <!-- <p>Use these classes as simple modifiers to restrict a block of text control to a specified number of lines. If a block of text surpasses the specified number of lines then an ellipses (...) is added and the remaining text is hidden.</p> -->
+        }
+        layout {
+            sequence: 90
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region content (
+        name: Content
+        type: staticContent
+        source {
+            htmlCode: <!-- <p>Use these classes to set the font size, font weight, and line height properties of your text elements.</p> -->
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region headings (
+        name: Headings
+        type: staticContent
+        source {
+            htmlCode: <!-- <p>Use these classes to set the font size, font weight, and line height properties of your text elements.</p> -->
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region introduction (
+        name: Introduction
+        type: staticContent
+        source {
+            htmlCode: <p>You can use the following utility classes anywhere in your app to fine-tune the layout of your page and components. For most Oracle APEX components, you can simply populate the <b>CSS Classes</b> property to apply these modifiers to your page components.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region line-clamp-truncate-hyphenate (
+        name: Line Clamp, Truncate & Hyphenate
+        type: staticContent
+        source {
+            htmlCode: <!-- <p>Use these classes as simple modifiers to restrict a block of text control to a specified number of lines. If a block of text surpasses the specified number of lines then an ellipses (...) is added and the remaining text is hidden.</p> -->
+        }
+        layout {
+            sequence: 80
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region text-alignment (
+        name: Text Alignment
+        type: staticContent
+        source {
+            htmlCode: <p>These classes are direction aware, meaning the text direction will be based on the direction of the language. For example, text using the <span class="class tag">u-text<span class="class-var">Start</span></span> class will align text to the left for Left-to-Right languages, and will align text to the right for Right-to-Left languages.</p>
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region text-style (
+        name: Text Style
+        type: staticContent
+        source {
+            htmlCode: <p>Use these classes as simple modifiers to control the text style of a given component. For example, you may want to use the <span class="class tag">u-bold</span> to make the text of a button have a stronger weight.</p>
+        }
+        layout {
+            sequence: 60
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region text-transform (
+        name: Text Transform
+        type: staticContent
+        source {
+            htmlCode: <p>These classes are useful when you want to control the text case for a given component. For example, an input field where you want characters to display in upper case. </p>
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region text-wrap (
+        name: Text Wrap
+        type: staticContent
+        source {
+            htmlCode: <p>Use this class to force text not to wrap inside its container.</p>
+        }
+        layout {
+            sequence: 70
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

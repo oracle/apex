@@ -1,0 +1,338 @@
+page 4 (
+    name: Time Line
+    alias: TIME-LINE
+    title: Time Line
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            div.ebaTimeline{border-bottom:1px solid #DDD;clear:both;position:relative;}
+            div.ebaTimeline:last-child{border-bottom:none;}
+            div.ebaTimeline h3{font:bold 11px/12px Arial,sans-serif;margin:0;padding:9px 10px;width:80px;color:#333;position:absolute;top:0;left:0;}
+            div.ebaTimeline h3 + ul{margin:0;list-style:none;padding:0;margin:0 0 0 80px;}
+            div.ebaTimeline ul li{display:table;width:100%;position:relative;}
+            div.ebaTimeline ul.ebaNoHover li:hover span.eS,
+            div.ebaTimeline ul.ebaNoHover li:hover span.eL{background:transparent;}
+            div.ebaTimeline ul li:hover span.eS{background-color:#F8F8F8;}
+            div.ebaTimeline ul li:hover span.eL{background:#F8F8F8;}
+            div.ebaTimeline ul li:hover span.eL a.eN span{text-decoration:underline;}
+            div.ebaTimeline ul li span.eD,
+            div.ebaTimeline ul li span.eS,
+            div.ebaTimeline ul li span.eL{display:table-cell;vertical-align:top;}
+            div.ebaTimeline ul li span.eD{width:20px;padding:0 10px 0 0;font:normal 11px/30px Arial,sans-serif;border-right:1px solid #EEE;text-align:right;color:#666;}
+            div.ebaTimeline ul li span.eS{padding:5px;width:20px;border-bottom:1px dotted #EEE;;}
+            div.ebaTimeline ul li:last-child span.eS,
+            div.ebaTimeline ul li:last-child span.eL{border-bottom:none;}
+            div.ebaTimeline ul li span.eS span{display:block;width:12px;height:12px;border-radius:10px;-moz-border-radius:10px;-webkit-box-shadow:0 1px 1px rgba(255,255,255,.75),0 0 2px rgba(0,0,0,.5) inset;-moz-box-shadow:0 1px 1px rgba(255,255,255,.75),0 0 2px rgba(0,0,0,.5) inset;box-shadow:0 1px 1px rgba(255,255,255,.75),0 0 2px rgba(0,0,0,.5) inset;background:-webkit-gradient(linear,0 0,0 100%,from(transparent),to(rgba(0,0,0,.25)));background:-moz-linear-gradient(top,transparent,rgba(0,0,0,.25));margin:4px;}
+            div.ebaTimeline ul li span.eS span.ebaRed{background-color:#F00;}
+            div.ebaTimeline ul li span.eS span.ebaYellow{background-color:#FCE709;}
+            div.ebaTimeline ul li span.eS span.ebaGreen{background-color:#22C615;}
+            div.ebaTimeline ul li span.eS span.ebaBlack{background-color:#444;}
+            div.ebaTimeline ul li span.eS span.ebaNull{background-color:#CCC;}
+            div.ebaTimeline ul li span.eL{border-bottom:1px dotted #EEE;}
+            div.ebaTimeline ul li a.eN{display:block;padding:7px 0;text-decoration:none;}
+            div.ebaTimeline ul li a.eN span{display:block;font:bold 12px/16px Arial,sans-serif;color:#333;}
+            div.ebaTimeline ul li a.eN em,
+            div.ebaTimeline ul li span.eL em{display:block;font:normal 11px/16px Arial,sans-serif;color:#666;}
+            div.ebaTimeline ul li a.ebaEditLink{position:absolute;right:0;top:0;display:block;margin:7px 7px 0 0;font:normal 11px/12px Arial,sans-serif;text-decoration:none;color:#666;padding:2px 10px;border-radius:4px;-moz-border-radius:4px;border:1px solid #EEE;-webkit-transition:background .2s linear,border .2s linear,color .2s linear;}
+            div.ebaTimeline ul li a.ebaEditLink:hover{border:1px solid #BBB;background:#FFF;color:#333;}
+            </style>
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>This page uses an Oracle APEX plugin region to display this custom hand crafted timeline. The HTML is generated in a PL/SQL function and is displayed using the PL/SQL web toolkit via the <strong>HTP</strong> package.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region project-tasks (
+        name: Project Tasks
+        type: plugin/timelineAndStatusList
+        source {
+            sqlQuery:
+                ```sql
+                select id,
+                    '#'         the_link,
+                    null color,
+                    project,
+                    task_name   primary_label,
+                    status,
+                    assigned_to,
+                    cost,
+                    end_date
+                from eba_demo_cal_projects
+                where (nvl(:P4_PROJECTS,'0') = '0' or project = :P4_PROJECTS)
+                order by end_date
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: project_tasks
+            regionDisplaySelector: true
+        }
+        settings {
+            groupByColumn: END_DATE
+            statusColumn: STATUS
+            titleColumn: PRIMARY_LABEL
+            linkColumn: THE_LINK
+            firstValue: PROJECT
+            secondValue: ASSIGNED_TO
+            thirdValue: COST
+        }
+
+        column ASSIGNED_TO (
+            source {
+                dataType: ASSIGNED_TO
+            }
+            heading {
+                heading: Assigned to
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+        column COLOR (
+            source {
+                dataType: COLOR
+            }
+            heading {
+                heading: Color
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column COST (
+            source {
+                dataType: COST
+            }
+            heading {
+                heading: Cost
+            }
+            layout {
+                sequence: 80
+            }
+        )
+
+        column END_DATE (
+            source {
+                dataType: END_DATE
+            }
+            heading {
+                heading: End date
+            }
+            layout {
+                sequence: 90
+            }
+        )
+
+        column ID (
+            source {
+                dataType: ID
+            }
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column PRIMARY_LABEL (
+            source {
+                dataType: PRIMARY_LABEL
+            }
+            heading {
+                heading: Primary label
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column PROJECT (
+            source {
+                dataType: PROJECT
+            }
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column STATUS (
+            source {
+                dataType: STATUS
+            }
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column THE_LINK (
+            source {
+                dataType: THE_LINK
+            }
+            heading {
+                heading: The link
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    pageItem P4_PROJECTS (
+        type: selectList
+        label {
+            label: Project
+            alignment: left
+        }
+        settings {
+            pageActionOnSelection: redirectSetValue
+        }
+        lov {
+            type: sharedComponent
+            lov: @distinct-projects
+            nullDisplayValue: - All Projects -
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: 0
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+                clearCache: 4
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

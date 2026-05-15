@@ -1,0 +1,69 @@
+taskDefinition BANK_ACCOUNT_CHANGE (
+    name: Bank Account Change
+    type: approval
+    task {
+        subject: Bank Account Change for &INITCAP_ENAME. from &BANK_ACCOUNT. to &P_NEW_BANK_ACCOUNT.
+        initiatorCanComplete: true
+    }
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select ename, bank_account, initcap(ename) as initcap_ename
+            from eba_demo_appr_emp
+            where empno = :APEX$TASK_PK
+            ```
+    }
+    advanced {
+        detailsPage: {
+            page: 2
+            items: {
+                P2_TASK_ID: &TASK_ID.
+            }
+            clearCache: 2
+            action: resetPagination
+        }
+    }
+
+    parameter P_NEW_BANK_ACCOUNT (
+        label: New Bank Account
+    )
+
+    action on-approve (
+        name: On Approve
+        type: executeCode
+        source {
+            plsqlCode: update eba_demo_appr_emp set bank_account = :P_NEW_BANK_ACCOUNT where empno = :APEX$TASK_PK;
+        }
+        execution {
+            onEvent: complete
+            outcome: approved
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Bank Account change approved
+        }
+    )
+
+    participant (
+        value {
+            staticValue: STEVE,BO,JANE
+        }
+    )
+
+    participant (
+        type: businessAdministrator
+        value {
+            staticValue: PAT
+        }
+    )
+
+    participant (
+        value {
+            type: expression
+            plsqlExpression: :APEX$TASK_INITIATOR
+        }
+    )
+
+)
+

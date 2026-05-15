@@ -1,0 +1,36 @@
+installScript "create tables and view" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: create-tables-and-view.sql
+    }
+)
+
+installScript "table and column comments" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: table-and-column-comments.sql
+    }
+)
+
+installScript "util body" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: util-body.sql
+    }
+)
+
+installScript "util spec" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: util-spec.sql
+    }
+)
+

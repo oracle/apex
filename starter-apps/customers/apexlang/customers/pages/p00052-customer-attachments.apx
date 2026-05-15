@@ -1,0 +1,561 @@
+page 52 (
+    name: Customer Attachments
+    alias: CUSTOMER-ATTACHMENTS
+    title: Customer Attachments
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region customer-files (
+        name: Customer Files
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region customer-files-2 (
+        name: Customer Files
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select customer_id, 
+                id,
+                '<a href="'||APEX_UTIL.GET_BLOB_FILE_SRC('P50_FILE',id)||'">'||apex_escape.html(file_name)||'</a>' filename,
+                substr(file_comments,1,50)||decode(greatest(length(file_comments),50),50,'','...') description,
+                TAGS,
+                dbms_lob.getlength(FILE_BLOB) file_size,
+                FILE_MIMETYPE mimetype,
+                created, lower(created_by) created_by,
+                updated, lower(updated_by) updated_by,
+                '#' delete_file
+                from EBA_CUST_FILES
+                where customer_id = :P52_ID
+                  
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 64
+                items: {
+                    P64_ID: #ID#
+                }
+            }
+            linkIcon: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">
+            authorizationScheme: @contribution-rights
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No attachments found
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2524599122112449418
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Date Added
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CUSTOMER_ID (
+            type: hidden
+            heading {
+                heading: Customer Id
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column DELETE_FILE (
+            type: link
+            heading {
+                heading: Delete
+                alignment: center
+            }
+            layout {
+                sequence: 18
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 52
+                    items: {
+                        P52_DELETE_FILE_ID: #ID#
+                    }
+                    request: DELETE_FILE
+                }
+                linkText: <span class="t-Icon fa fa-trash-o" aria-hidden="true"></span>
+                linkAttributes: class="t-Button t-Button--danger t-Button--simple t-Button--small" title="Delete File"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column FILENAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column FILE_SIZE (
+            type: plainText
+            heading {
+                heading: Size
+                alignment: end
+            }
+            layout {
+                sequence: 16
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column MIMETYPE (
+            type: plainText
+            heading {
+                heading: Mimetype
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+            serverSideCondition {
+                type: never
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 10
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        savedReport 25246020 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CREATED (
+                sequence: 4
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 5
+            )
+
+            displayColumn DELETE_FILE (
+                sequence: 7
+            )
+
+            displayColumn DESCRIPTION (
+                sequence: 3
+            )
+
+            displayColumn FILENAME (
+                sequence: 1
+            )
+
+            displayColumn FILE_SIZE (
+                sequence: 2
+            )
+
+            displayColumn TAGS (
+                sequence: 6
+            )
+
+            aggregate (
+                column: FILE_SIZE
+            )
+
+        )
+
+    )
+
+    pageItem P52_DELETE_FILE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @customer-files-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P52_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @customer-files-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-file (
+        buttonName: Add_FILE
+        label: Add Attachment
+        layout {
+            sequence: 10
+            region: @customer-files
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 64
+                items: {
+                    P64_CUSTOMER_ID: &P52_ID.
+                }
+                clearCache: 64
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @customer-files-2
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 52
+                clearCache: RIR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-irr-on-close (
+        name: Refresh IRR on close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @add-file
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-files-2
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-irr-on-edit-close (
+        name: Refresh IRR on Edit Close
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @customer-files-2
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-files-2
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p50-id (
+        itemName: P50_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: item
+            itemName: P52_ID
+        }
+    )
+
+    process delete-file (
+        name: delete file
+        type: executeCode
+        source {
+            plsqlCode: delete from eba_cust_files where id = :P52_DELETE_FILE_ID;
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        successMessage {
+            successMessage: Attachment deleted
+        }
+        advanced {
+            executionMappingIdentifier: 16589395900398459484
+        }
+        serverSideCondition {
+            type: request=Value
+            value: DELETE_FILE
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+)
+

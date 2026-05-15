@@ -1,0 +1,810 @@
+page 41 (
+    name: Box Plot
+    alias: BOX-PLOT
+    title: Box Plot
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>&PRODUCT_NAME. native Box Plot charts, using Oracle JET Data Visualizations, are showcased on this page. The Box Plot chart is useful for reading statistical data, and follows a specific formula for representing the data on the chart.</p><br/><strong>How to Read a Box Plot chart</strong><p/>
+                Review the image explaining the sections of a <a href="#APP_IMAGES#box-plot-explained.gif" target="_blank">Box Plot chart</a>.
+                Here are the main components of a Box Plot:<p/>
+                
+                <ul>
+                <li><strong>High/Maximum Value</strong><br/>
+                <li><strong>1st Quartile</strong> - i.e. the 25% percentile of data. This means that 25% of the data are below this value.</li>
+                <li><strong>Median/2nd Quartile</strong> - middle of the dataset i.e 50% of the data is greater than this value.</li>
+                <li><strong>3rd Quartile</strong> - i.e. the 75% percentile of data. This means that 25% of the data are above this value.</li>
+                <li><strong>Low/Minimum Value</strong></li>
+                <li><strong>Outliers</strong> - values that fall outside of the quartile ranges. The Upper Outliers are more than 3/2 of the 3rd Quartile. The Lower Outliers are less than 3/2 times the 1st Quartile.</li>
+                </ul>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-box-plot-chart
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region grades-custom-q2-q3-colours (
+        name: Grades - Custom Q2 & Q3 Colours
+        type: chart
+        layout {
+            sequence: 100
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: The Q2 and Q3 segments of the Box Plot can have custom colours defined, via columns of the series SQL query. The <strong>Q2 Color</strong> and <strong>Q3 Color</strong> series-level attributes reference the columns using &amp;COLUMN_VALUE. syntax.  Where those series-level attribute are not set, then the default series colour will be applied to them.  The y-axis Format has also be set, to apply formatting to the values rendered in the tooltip - without decimal places.
+        }
+        chart {
+            type: boxPlot
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series median-grades (
+            name: Median Grades
+            type: line
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select course, median(schoola) 
+                    from eba_demo_chart_grades
+                    group by course
+                    ```
+            }
+            columnMapping {
+                label: COURSE
+                value: MEDIAN(SCHOOLA)
+            }
+            line {
+                type: curved
+            }
+        )
+
+        series school-a (
+            name: School A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery: select course, schoola, 'navy' q2_color, 'gold' q3_color from eba_demo_chart_grades
+            }
+            columnMapping {
+                label: COURSE
+                value: SCHOOLA
+            }
+            appearance {
+                q2Color: &Q2_COLOR.
+                q3Color: &Q3_COLOR.
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region grades-mixed-series-types (
+        name: Grades - Mixed Series Types
+        type: chart
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: The visibility of the joined line will only work when there is 1 x 'Box Plot' series defined for the given chart.  Where there is more than 1 series of type 'Box Plot', alongside a 'Line' series, then the line will not be joined.
+        }
+        chart {
+            type: boxPlot
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series median-grades (
+            name: Median Grades
+            type: line
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select course, median(schoola) 
+                    from eba_demo_chart_grades
+                    group by course
+                    ```
+            }
+            columnMapping {
+                label: COURSE
+                value: MEDIAN(SCHOOLA)
+            }
+            line {
+                type: curved
+            }
+            marker {
+                show: true
+            }
+        )
+
+        series school-a (
+            name: School A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery: select course, schoola from eba_demo_chart_grades
+            }
+            columnMapping {
+                label: COURSE
+                value: SCHOOLA
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region grades-multi-series (
+        name: Grades - Multi-Series
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select * from eba_demo_chart_grades
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: boxPlot
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series school-a (
+            name: School A
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: COURSE
+                value: SCHOOLA
+            }
+        )
+
+        series school-b (
+            name: School B
+            execution {
+                sequence: 20
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: COURSE
+                value: SCHOOLB
+            }
+        )
+
+        series school-c (
+            name: School C
+            execution {
+                sequence: 30
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: COURSE
+                value: SCHOOLC
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region grades-single-series (
+        name: Grades - Single Series
+        type: chart
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: boxPlot
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series school-a (
+            name: School A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery: select course, schoola from eba_demo_chart_grades
+            }
+            columnMapping {
+                label: COURSE
+                value: SCHOOLA
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region information (
+        name: Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p/><p/><p/><p/>
+                The underlying table structure is not normalised, storing the results of each new sample in a new column.  This structure may be common to some customers, so this example demonstrates how to generate a Box Plot on such a table structure.  This chart also uses the 'Series Name' column mapping, to treat each row returned as a separate series, thus applying a different colour to each series represented on the chart.
+                <p/>
+                The sample data used here has been obtained from an external Box Plot utility site.<p/>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @survey-results
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--textContent
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region samples-report-data (
+        name: Samples Report Data
+        type: classicReport
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CHART_SAMPLES
+            includeRowidColumn: true
+        }
+        layout {
+            sequence: 10
+            parentRegion: @survey-results
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 5
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+
+        column SAMPLE1 (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Sample1
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column SAMPLE2 (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Sample2
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column SAMPLE3 (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Sample3
+                alignment: center
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+        column SAMPLE4 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Sample4
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+        )
+
+        column SAMPLE5 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Sample5
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+        )
+
+    )
+
+    region survey-results (
+        name: Survey Results
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: boxPlot
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series samples (
+            name: Samples
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select * from eba_demo_chart_samples 
+                    unpivot (value for sample in (sample1 as 'Sample 1', 
+                                                  sample2 as 'Sample 2' , 
+                                                  sample3 as 'Sample 3', 
+                                                  sample4 as 'Sample 4', 
+                                                  sample5 as 'Sample 5'))
+                    ```
+            }
+            columnMapping {
+                seriesName: SAMPLE
+                label: SAMPLE
+                value: VALUE
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 1
+                    action: resetPagination
+                }
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region survey-results-normalised-tables (
+        name: Survey Results - Normalised Tables
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: The underlying table structure is normalised, storing the results of each new sample in one column, identified by a unique ID. This example demonstrates how to generate a Box Plot on such a table structure.<p/>
+        }
+        chart {
+            type: boxPlot
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series survey (
+            name: "Survey "
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.sample_name, a.response 
+                    from eba_demo_chart_sample_data a, eba_demo_chart_sample_names b
+                    where a.sample_id = b.id
+                    ```
+            }
+            columnMapping {
+                label: SAMPLE_NAME
+                value: RESPONSE
+            }
+            appearance {
+                color: #93F0B8
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region survey-sample-data-time-axis (
+        name: Survey Sample Data - Time Axis
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: The underlying table structure is  normalised, storing the results of each new sample in one column, identified by a unique ID date.  This example demonstrates how to generate a Box Plot, with Time Axis enabled.
+        }
+        chart {
+            type: boxPlot
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            timeAxisType: enabled
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series surveys-by-date (
+            name: Surveys by Date
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.sample_date, a.response 
+                    from eba_demo_chart_sample_data a, eba_demo_chart_sample_names b
+                    where a.sample_id = b.id
+                    ```
+            }
+            columnMapping {
+                label: SAMPLE_DATE
+                value: RESPONSE
+            }
+            appearance {
+                color: #3589e3
+                q2Color: #b0dea6
+                q3Color: #edd976
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+)
+

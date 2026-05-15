@@ -1,0 +1,977 @@
+page 3 (
+    name: Account Details
+    alias: ACCOUNT-DETAILS
+    title: Account Details
+    pageGroup: @accounts
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <script language="JavaScript" type="text/javascript">
+            <!--
+            
+             htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            
+            //-->
+            </script>
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region account (
+        name: Account
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region classification (
+        name: Classification
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P3_CUSTOMER_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+        }
+        layout {
+            sequence: 80
+            region: @account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 60
+            height: 3
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_DESCRIPTION
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Enter a description of this account.
+        }
+    )
+
+    pageItem P3_CUSTOMER_DUNS (
+        type: numberField
+        label {
+            label: DUNS#
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 90
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 9
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_DUNS
+            used: always
+        }
+        help {
+            helpText: If this account has a Dun & Bradstreet number, enter the 9 digit number here. <a href="https://fedgov.dnb.com/webform/pages/CCRSearch.jsp" target="_blank">Search Dun & Bradstreet Codes</a>
+        }
+    )
+
+    pageItem P3_CUSTOMER_FACEBOOK (
+        type: textField
+        label {
+            label: Facebook
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 130
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-facebook-square
+            width: 80
+            valuePlaceholder: https://www.facebook.com/account-name
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_FACEBOOK
+            used: always
+        }
+        help {
+            helpText: Enter the account's unique Facebook URL here.
+        }
+    )
+
+    pageItem P3_CUSTOMER_IS_KEY_ACCOUNT_YN (
+        type: selectList
+        label {
+            label: Key Account
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Yes;Y,No;N
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_IS_KEY_ACCOUNT_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Choose whether this account is a key account or not.
+        }
+    )
+
+    pageItem P3_CUSTOMER_LINKEDIN (
+        type: textField
+        label {
+            label: LinkedIn
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 120
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-linkedin-square
+            width: 80
+            valuePlaceholder: https://www.linkedin.com/company/account-name
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_LINKEDIN
+            used: always
+        }
+        help {
+            helpText: Enter the account's unique LinkedIn URL here.
+        }
+    )
+
+    pageItem P3_CUSTOMER_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_NAME
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Enter the account's name.
+        }
+    )
+
+    pageItem P3_CUSTOMER_SIC (
+        type: numberField
+        label {
+            label: SIC
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 100
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_SIC
+            used: always
+        }
+        help {
+            helpText: Enter the 4 digit Standard Industrial Classification code that represents this account. <a href="https://www.osha.gov/pls/imis/sicsearch.html" target="_blank">Search SIC Codes</a>
+        }
+    )
+
+    pageItem P3_CUSTOMER_STOCK_SYMB (
+        type: textField
+        label {
+            label: Stock Symbol
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_STOCK_SYMB
+            used: always
+        }
+        help {
+            helpText: If this account has stock that is publicly traded, enter their stock symbol here.
+        }
+    )
+
+    pageItem P3_CUSTOMER_TERRITORY_ID (
+        type: selectList
+        label {
+            label: Territory
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @territory
+            displayExtraValues: false
+            nullDisplayValue: - Select a Territory -
+        }
+        layout {
+            sequence: 30
+            region: @account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_TERRITORY_ID
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Select the account's territory.
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+    pageItem P3_CUSTOMER_TWITTER (
+        type: textField
+        label {
+            label: Twitter
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 140
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-twitter-square
+            width: 80
+            valuePlaceholder: https://twitter.com/account-name
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_TWITTER
+            used: always
+        }
+        help {
+            helpText: Enter the account's unique Twitter URL here.
+        }
+    )
+
+    pageItem P3_CUSTOMER_WEB_SITE (
+        type: textField
+        label {
+            label: Web Site
+            alignment: left
+        }
+        settings {
+            subtype: url
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-link
+            width: 80
+            valuePlaceholder: http://account-name.com
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_WEB_SITE
+            used: always
+        }
+        help {
+            helpText: Enter the URL to this account's public-facing website here.
+        }
+    )
+
+    pageItem P3_DEFAULT_REP_ID (
+        type: popupLov
+        label {
+            label: Default &REP_TITLE.
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select REP_LAST_NAME||', '|| REP_FIRST_NAME n, id r
+                from EBA_SALES_SALESREPS
+                order by 1
+                ```
+            nullDisplayValue: - Select Rep -
+        }
+        layout {
+            sequence: 70
+            region: @account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEFAULT_REP_ID
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Click the <strong>^</strong> button to pop up a window of &REP_TITLE.s and then select a &REP_TITLE. from the list to populate this field.
+        }
+    )
+
+    pageItem P3_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @account
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_INDUSTRY_ID (
+        type: selectList
+        label {
+            label: Industry
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @industries
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 50
+            region: @account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_INDUSTRY_ID
+            used: always
+        }
+        help {
+            helpText: Select the industry that best matches this account's industry.
+        }
+    )
+
+    pageItem P3_SALES_LEADER (
+        type: textField
+        label {
+            label: Default &SALES_LDR_TITLE.
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 69
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SECONDARY_REP
+            used: always
+        }
+        help {
+            helpText: Enter the name and/or email address of the account's sales leader.
+        }
+    )
+
+    pageItem P3_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                  from eba_sales_tags_type_sum
+                 where content_type = 'ACCOUNT'
+                ```
+        }
+        layout {
+            sequence: 90
+            region: @account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Enter a comma-separated list of words that will help flag this account in the future.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Account
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P3_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P3_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P3_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation fb-must-start-with-http (
+        name: FB must start with http
+        execution {
+            sequence: 50
+        }
+        validation {
+            plsqlExpression: substr(:P3_CUSTOMER_FACEBOOK, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P3_CUSTOMER_FACEBOOK
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P3_CUSTOMER_FACEBOOK
+        }
+    )
+
+    validation linkedin-must-start-with-http (
+        name: LinkedIn must start with http
+        execution {
+            sequence: 40
+        }
+        validation {
+            plsqlExpression: substr(:P3_CUSTOMER_LINKEDIN, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P3_CUSTOMER_LINKEDIN
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P3_CUSTOMER_LINKEDIN
+        }
+    )
+
+    validation p3-customer-name-not-duplicated (
+        name: P3_CUSTOMER_NAME not duplicated
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_customers
+                where (:P3_ID is null or :P3_ID != id)
+                    and upper(customer_name) = upper(:P3_CUSTOMER_NAME)
+                ```
+        }
+        error {
+            errorMessage: An account with that name already exists.
+            associatedItem: @P3_CUSTOMER_NAME
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: SAVE,CREATE
+        }
+    )
+
+    validation twitter-must-start-with-http (
+        name: Twitter must start with http
+        execution {
+            sequence: 60
+        }
+        validation {
+            plsqlExpression: substr(:P3_CUSTOMER_TWITTER, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P3_CUSTOMER_TWITTER
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P3_CUSTOMER_TWITTER
+        }
+    )
+
+    validation valid-tag-characters (
+        name: Valid Tag Characters
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P3_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P3_TAGS
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    validation website-must-start-with-http (
+        name: Website must start with http
+        execution {
+            sequence: 30
+        }
+        validation {
+            plsqlExpression: substr(:P3_CUSTOMER_WEB_SITE, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P3_CUSTOMER_WEB_SITE
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P3_CUSTOMER_WEB_SITE
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 6563082311880594992
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: SAVE,CREATE
+        }
+    )
+
+    process fetch-row-from-eba-sales-customers (
+        name: Fetch Row from eba_sales_CUSTOMERS
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_CUSTOMERS
+            pkColumn: ID
+            pkItem: P3_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 10495479489471633872
+        }
+    )
+
+    process process-row-of-eba-sales-customers (
+        name: Process Row of eba_sales_CUSTOMERS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_CUSTOMERS
+            pkColumn: ID
+            pkItem: P3_ID
+            returnKeyIntoItem: P3_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table eba_sales_CUSTOMERS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 10495479709305633880
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    branch (
+        name: Branch to Accounts on delete
+        execution {
+            sequence: 40
+        }
+        behavior {
+            target: {
+                page: 2
+                clearCache: 2
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+        comments {
+            comments: Created 17-JAN-2012 10:41 by MIKE
+        }
+    )
+
+)
+

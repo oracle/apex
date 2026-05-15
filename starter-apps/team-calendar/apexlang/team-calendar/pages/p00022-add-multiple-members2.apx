@@ -1,0 +1,419 @@
+page 22 (
+    name: Add Multiple Members
+    alias: ADD-MULTIPLE-MEMBERS2
+    title: Add Multiple Members
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>
+                Review the members listed below. If the Group and members look correct, click the <strong>Add Members</strong> button. Click the <strong>Previous (<)</strong> button to edit your list of new members. Click the <strong>Cancel</strong> button to leave the Add Multiple Members wizard.
+            </p>
+            ```
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region invalid-data (
+        name: Invalid Data
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c001 email, c002 error
+                  from apex_collections
+                 where collection_name = 'BULK_MBRS_INVALID'
+                 order by c001
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No invalid data found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Data
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ERROR (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Error
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region valid-emails (
+        name: Valid Emails
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c001 email
+                  from apex_collections
+                 where collection_name = 'BULK_MBRS_CREATE'
+                 order by 1
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No valid email addresses found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: EMAIL
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P22_GROUP_ID (
+        type: displayOnly
+        label {
+            label: Group:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 10
+            region: @valid-emails
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select group_name
+                  from EBA_ca_email_groups
+                 where group_id = :P21_GROUP_ID
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Group the Members will be added to.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button finish (
+        buttonName: FINISH
+        label: Add Members
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'BULK_MBRS_CREATE'
+                ```
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:history.back();
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process clear-collections (
+        name: Clear Collections
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.delete_collection (
+                   p_collection_name => 'BULK_MBRS_CREATE' );
+                apex_collection.delete_collection (
+                   p_collection_name => 'BULK_MBRS_INVALID' );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 7389040657107276092
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: FINISH,CANCEL
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 26873655560758351
+        }
+    )
+
+    process create-members (
+        name: create members
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                EBA_ca_api.create_mbrs_from_collection (
+                    p_group_id => :P21_GROUP_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Members created.
+        }
+        error {
+            errorMessage: Unexpected error creating Members.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8013246963897362465
+        }
+        serverSideCondition {
+            whenButtonPressed: @finish
+        }
+    )
+
+)
+

@@ -1,0 +1,484 @@
+page 26 (
+    name: Prepare Custom Data (Step 2: Upload Data)
+    alias: PREPARE-CUSTOM-DATA-2
+    title: Prepare Custom Data
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline: .t-Report-colHead {white-space: nowrap }
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region loaded-file (
+        name: Loaded File
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @upload-file
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P25_FILE
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region preview (
+        name: Preview
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select col001 as TITLE,
+                       col002 as SUBTITLE,
+                       col003 as DESCRIPTION,
+                       col004 as COL4,
+                       col005 as COL5,
+                       col006 as COL6,
+                       col007 as COL7,
+                       col008 as COL8,
+                       col009 as COL9,
+                       col010 as COL10
+                  from apex_application_temp_files f, 
+                       TABLE( apex_data_parser.parse(
+                                  p_content          => f.blob_content,
+                                  p_file_name        => f.filename,
+                                  p_add_headers_row  => 'Y',
+                                  p_csv_enclosed     => '"',
+                                  p_file_charset     => 'WE8ISO8859P1',
+                                  p_max_rows         => 10 )
+                            ) p
+                 where f.name = :P25_FILE
+                   and p.line_number > 1;
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @upload-file
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P25_FILE
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column COL10 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Column 10
+            }
+            layout {
+                sequence: 100
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL4 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Column 4
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL5 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Column 5
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL6 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Column 6
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL7 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Column 7
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL8 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Column 8
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL9 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Column 9
+            }
+            layout {
+                sequence: 90
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column SUBTITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Subtitle
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column TITLE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 10
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+    )
+
+    region progress (
+        name: Progress
+        type: list
+        source {
+            list: @upload-data-progress
+        }
+        layout {
+            sequence: 10
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayCurrentLabelOnly
+            ]
+        }
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region upload-file (
+        name: Upload File
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P26_FILE_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @loaded-file
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: 'EBA_VECTOR_DATATABLE'
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Load Data
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Back
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-left
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p26-file-name (
+        itemName: P26_FILE_NAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select filename
+                  from apex_application_temp_files 
+                 where name = :P25_FILE;
+                ```
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P25_FILE is not null and :REQUEST = 'LOAD_FILE'
+        }
+    )
+
+    process clear-file-cache (
+        name: Clear File Cache
+        type: clearSessionState
+        executionChain: @upload-sample-data
+        clear {
+            type: pages
+            pages: [
+                25
+                26
+            ]
+        }
+        execution {
+            sequence: 90
+        }
+        advanced {
+            executionMappingIdentifier: 2748778281243980
+        }
+    )
+
+    process clear-success-message (
+        name: Clear Success Message
+        type: executeCode
+        executionChain: @upload-sample-data
+        source {
+            plsqlCode: apex_application.g_print_success_message := null;
+        }
+        execution {
+            sequence: 100
+        }
+        advanced {
+            executionMappingIdentifier: 11202358748643442
+        }
+    )
+
+    process load-file-data (
+        name: Load File Data
+        type: dataLoading
+        executionChain: @upload-sample-data
+        dataLoading {
+            dataLoadDefinition: @manual_csv_load
+        }
+        sourceData {
+            fileBrowseItem: P25_FILE
+        }
+        execution {
+            sequence: 80
+        }
+        advanced {
+            executionMappingIdentifier: 3693919421834612
+        }
+    )
+
+    process upload-sample-data (
+        name: Upload Sample Data
+        type: executionChain
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 3692637774827129
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    branch (
+        name: Go Back To File Upload
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 25
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @prev
+        }
+    )
+
+    branch (
+        name: Go To File Vector Embeddings
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: 27
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+)
+

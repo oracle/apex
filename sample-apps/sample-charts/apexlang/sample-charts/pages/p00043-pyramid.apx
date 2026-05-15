@@ -1,0 +1,291 @@
+page 43 (
+    name: Pyramid
+    alias: PYRAMID
+    title: Pyramid
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var gAppImages = "#APP_IMAGES#";
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Pyramid charts, using Oracle JET Data Visualizations, are showcased on this page. Pyramid charts are useful for visualizing hierarchical, proportional and foundation-based relationships, process steps, organizational layers or topics interconnections. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your charts.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-pyramid-chart
+        }
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region pyramid-chart (
+        name: Pyramid Chart
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: pyramid1
+            regionDisplaySelector: true
+        }
+        chart {
+            type: pyramid
+        }
+        chartLayout {
+            maxWidth: 500
+            height: 400
+        }
+        dataCursor {
+            cursor: true
+            behavior: smooth
+            dimOnHover: false
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+        animation {
+            onDisplay: alphaFade
+        }
+
+        series deli (
+            name: Deli
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Deli'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+    )
+
+    region pyramid-chart-information (
+        name: Pyramid Chart Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of a Pyramid chart.<p/>
+                
+                <strong>Hide and Show Behavior</strong> - Use this chart-level attribute to support hide and show behavior using the chart legend. The legend uses the <strong>With Rescale</strong> Hide and Show behavior, allowing a user to hide and unhide a series by clicking the chart legend markers. This allows the user to focus on specific series that are interesting to them. The chart will rescale as the minimum and maximum values of the visible data increase or decrease. This can be useful for series with largely varying values.<p/>
+                <strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the 2D/3D buttons to the top left of the chart to change the three dimensional effect of the chart.<p/>
+                <p>
+                For more information on the Pyramid chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=default" target="_blank">Pyramid Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=legend" target="_blank">Pyramid Chart: Legend</a> examples.
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @pyramid-chart
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    button 2d (
+        buttonName: 2D
+        label: 2D
+        layout {
+            sequence: 30
+            region: @pyramid-chart
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button 3d (
+        buttonName: 3D
+        label: 3D
+        layout {
+            sequence: 40
+            region: @pyramid-chart
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction 2d (
+        name: 2D
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @2d
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    apex.region("pyramid1").widget().ojChart({styleDefaults: { 'threeDEffect': 'off' }});
+                    
+                    ```
+            }
+            affectedElements {
+                selectionType: region
+                region: @pyramid-chart
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction 3d (
+        name: 3D
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @3d
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("pyramid1").widget().ojChart({styleDefaults: { 'threeDEffect': 'on' }});
+            }
+            affectedElements {
+                selectionType: region
+                region: @pyramid-chart
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

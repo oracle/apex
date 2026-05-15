@@ -1,0 +1,571 @@
+list administration-options (
+    name: Administration Options
+
+    entry reset-data (
+        label: Reset Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Reset the sample data provided in this application to the default.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-laptop
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+
+list data-load-process-train-load-employees (
+    name: Data Load Process Train - Load Employees
+)
+
+list data-load-wizard-progress-load-employees (
+    name: Data Load Wizard Progress - Load Employees
+
+    entry data-load-results (
+        label: Data Load Results
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry data-load-source (
+        label: Data Load Source
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry data-table-mapping (
+        label: Data / Table Mapping
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry data-validation (
+        label: Data Validation
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+)
+
+list data-loading (
+    name: Data Loading
+
+    entry background-loading (
+        label: Background Loading
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 17
+                clearCache: 17
+            }
+        }
+        userDefinedAttributes {
+            1: For a large data load, use the <strong>Execution Chain</strong> process type to perform loading in the background.
+        }
+    )
+
+    entry csv-load (
+        label: CSV Load
+        icon {
+            imageIconCssClasses: fa-file-csv
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+                clearCache: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Upload or copy and paste CSV data.
+        }
+    )
+
+    entry legacy-data-loading (
+        label: Legacy Data Loading
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+        userDefinedAttributes {
+            1: Allow end users to specify column mappings using the <strong>Legacy Data Loading Wizard</strong>.
+        }
+    )
+
+    entry multiple-file-types-load (
+        label: Multiple File Types Load
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 16
+                clearCache: 16
+            }
+        }
+        userDefinedAttributes {
+            1: Use <strong>APEX_DATA_LOADING</strong> package to support loading multiple file types.
+        }
+    )
+
+    entry transformation-and-lookup (
+        label: Transformation and Lookup
+        icon {
+            imageIconCssClasses: fa-dynamic-content
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Define <strong>Transformation Rules</strong> and <strong>Lookups</strong> to convert the data when loading.
+        }
+    )
+
+)
+
+list home (
+    name: Home
+
+    entry data-loading (
+        label: Data Loading
+        icon {
+            imageIconCssClasses: fa-database-arrow-up
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Load data using declarative data loading process type.
+        }
+    )
+
+    entry manual-data-loading (
+        label: Manual Data Loading
+        icon {
+            imageIconCssClasses: fa-wrench
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 32
+        }
+        link {
+            target: {
+                page: 30
+                clearCache: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Parse upload data manually using APEX_DATA_PARSER package and upload the data maually with DML.
+        }
+    )
+
+)
+
+list manual-data-loading (
+    name: Manual Data Loading
+
+    entry pl-sql-load (
+        label: PL/SQL Load
+        icon {
+            imageIconCssClasses: fa-upload
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Use a SQL INSERT statement in combination with the APEX_DATA_PARSER.PARSE table function to upload a file directly into a table.
+        }
+    )
+
+    entry pl-sql-parser (
+        label: PL/SQL Parser
+        icon {
+            imageIconCssClasses: fa-file-sql
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: Parse uploaded file and discover the columns manually using APEX_DATA_PARSER package.
+        }
+    )
+
+)
+
+list navigation-bar-top (
+    name: Navigation Bar (Top)
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry background-load (
+        label: Background Load
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 130
+            parentEntry: @data-loading
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                17
+                18
+            ]
+        }
+        link {
+            target: {
+                page: 17
+                clearCache: 17
+            }
+        }
+    )
+
+    entry csv-load (
+        label: CSV Load
+        icon {
+            imageIconCssClasses: fa-file-csv
+        }
+        layout {
+            sequence: 100
+            parentEntry: @data-loading
+        }
+        link {
+            target: {
+                page: 11
+                clearCache: 11
+            }
+        }
+    )
+
+    entry data-loading (
+        label: Data Loading
+        icon {
+            imageIconCssClasses: fa-database-arrow-up
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                6
+                8
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry legacy-data-loading (
+        label: Legacy Data Loading
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 150
+            parentEntry: @data-loading
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                21
+                22
+                23
+                24
+            ]
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry manual-data-loading (
+        label: Manual Data Loading
+        icon {
+            imageIconCssClasses: fa-wrench
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 30
+                clearCache: 32
+            }
+        }
+    )
+
+    entry multiple-file-type-load (
+        label: Multiple File Type Load
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 120
+            parentEntry: @data-loading
+        }
+        isCurrent {
+            type: pages
+            pages: 16
+        }
+        link {
+            target: {
+                page: 16
+                clearCache: 16
+            }
+        }
+    )
+
+    entry pl-sql-data-load (
+        label: PL/SQL Data Load
+        layout {
+            sequence: 90
+            parentEntry: @manual-data-loading
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry pl-sql-parser (
+        label: PL/SQL Parser
+        layout {
+            sequence: 80
+            parentEntry: @manual-data-loading
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry reset-data (
+        label: Reset Data
+        layout {
+            sequence: 60
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        layout {
+            sequence: 70
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry transformation-and-lookup (
+        label: Transformation and Lookup
+        icon {
+            imageIconCssClasses: fa-dynamic-content
+        }
+        layout {
+            sequence: 110
+            parentEntry: @data-loading
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+    )
+
+)
+

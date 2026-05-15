@@ -1,0 +1,249 @@
+page 49 (
+    name: Mark as Dupliate
+    alias: MARK-AS-DUPLIATE
+    title: Mark as Dupliate
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region archive (
+        name: Archive
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region button-container (
+        name: Button Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P49_DUPLICATE_OF (
+        type: popupLov
+        label {
+            label: Duplicate of Primary &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select project d, id r
+                  from sp_projects
+                 where id != :P49_PROJECT_ID
+                 order by 1
+                ```
+        }
+        layout {
+            sequence: 30
+            region: @archive
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P49_PROJECT (
+        type: displayOnly
+        label {
+            label: &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @archive
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @archive
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button mark-as-duplicate (
+        buttonName: mark_as_duplicate
+        label: Mark as Duplicate
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: close dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p49-project (
+        itemName: P49_PROJECT
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project
+                from sp_projects p
+                where id = :P49_PROJECT_ID
+                ```
+        }
+    )
+
+    process log (
+        name: log
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_log.log_interaction(
+                    p_project_id => :P49_PROJECT_ID);
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeRegions
+        }
+        advanced {
+            executionMappingIdentifier: 1352978903793126402
+        }
+    )
+
+    process mark-as-dupicate (
+        name: mark as dupicate
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.mark_proj_as_duplidate (
+                    p_project_id       => :P49_PROJECT_ID,
+                    p_dup_of_project   => :P49_DUPLICATE_OF);
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Marked as Duplidate
+        }
+        advanced {
+            executionMappingIdentifier: 11626723969574497970
+        }
+        serverSideCondition {
+            whenButtonPressed: @mark-as-duplicate
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 3
+                items: {
+                    P3_PROJECT_ID: &P49_PROJECT_ID.
+                }
+            }
+        }
+    )
+
+)
+

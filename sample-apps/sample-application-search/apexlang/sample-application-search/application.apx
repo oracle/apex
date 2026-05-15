@@ -1,0 +1,81 @@
+app SAMPLE-APPLICATION-SEARCH (
+    name: Sample Application Search
+    version: 26.1.0
+    logo {
+        type: text
+        text: Sample Application Search
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: mustNotBePublicUser
+    }
+    security {
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        checksumSalt: 8A84FC1071741C365A195F8FE040E6359ECE023FCED6C977EE0FDE5C14EFA9E7
+    }
+    sessionManagement {
+        sessionStateCommits: immediate
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    runtime {
+        allowFeedback: true
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Application Search
+        }
+    )
+
+)
+

@@ -1,0 +1,1853 @@
+installScript "Package Bodies" (
+    execution {
+        sequence: 590
+    }
+    script {
+        type: packageBody
+        contentFile: package-bodies.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_SALES_FW
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_SALES_ACL_API
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_SALES_DATA
+    )
+
+)
+
+installScript "Package Specs" (
+    execution {
+        sequence: 10
+    }
+    script {
+        type: packageSpec
+        contentFile: package-specs.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_SALES_FW
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_SALES_ACL_API
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_SALES_DATA
+    )
+
+)
+
+installScript "Set First Run Preference" (
+    execution {
+        sequence: 660
+    }
+    script {
+        contentFile: set-first-run-preference.sql
+    }
+)
+
+installScript data (
+    execution {
+        sequence: 650
+    }
+    script {
+        contentFile: data.sql
+    }
+)
+
+installScript eba_sales_access_levels (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: eba-sales-access-levels.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_ACCESS_LEVELS
+    )
+
+)
+
+installScript eba_sales_account_standing (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: eba-sales-account-standing.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_ACCOUNT_STANDING
+    )
+
+)
+
+installScript eba_sales_act_competition (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: eba-sales-act-competition.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_ACT_COMPETITION
+    )
+
+)
+
+installScript eba_sales_agreement_types (
+    execution {
+        sequence: 520
+    }
+    script {
+        contentFile: eba-sales-agreement-types.sql
+    }
+)
+
+installScript eba_sales_agreements (
+    execution {
+        sequence: 530
+    }
+    script {
+        contentFile: eba-sales-agreements.sql
+    }
+)
+
+installScript eba_sales_clicks (
+    execution {
+        sequence: 230
+    }
+    script {
+        contentFile: eba-sales-clicks.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_CLICKS
+    )
+
+)
+
+installScript eba_sales_comments (
+    execution {
+        sequence: 240
+    }
+    script {
+        contentFile: eba-sales-comments.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_COMMENTS
+    )
+
+)
+
+installScript eba_sales_competitor_threats (
+    execution {
+        sequence: 90
+    }
+    script {
+        contentFile: eba-sales-competitor-threats.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_COMPETITOR_THREATS
+    )
+
+)
+
+installScript eba_sales_competitors (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: eba-sales-competitors.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_COMPETITORS
+    )
+
+)
+
+installScript eba_sales_countries (
+    execution {
+        sequence: 250
+    }
+    script {
+        contentFile: eba-sales-countries.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_COUNTRIES
+    )
+
+)
+
+installScript eba_sales_currencies (
+    execution {
+        sequence: 260
+    }
+    script {
+        contentFile: eba-sales-currencies.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_CURRENCIES
+    )
+
+)
+
+installScript eba_sales_cust_agrmnt_map (
+    execution {
+        sequence: 540
+    }
+    script {
+        contentFile: eba-sales-cust-agrmnt-map.sql
+    }
+)
+
+installScript eba_sales_cust_spt_amt_map (
+    execution {
+        sequence: 570
+    }
+    script {
+        contentFile: eba-sales-cust-spt-amt-map.sql
+    }
+)
+
+installScript eba_sales_customer_contacts (
+    execution {
+        sequence: 170
+    }
+    script {
+        contentFile: eba-sales-customer-contacts.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_CUSTOMER_CONTACTS
+    )
+
+)
+
+installScript eba_sales_customer_locations (
+    execution {
+        sequence: 270
+    }
+    script {
+        contentFile: eba-sales-customer-locations.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_CUSTOMER_LOCATIONS
+    )
+
+)
+
+installScript eba_sales_customers (
+    execution {
+        sequence: 80
+    }
+    script {
+        contentFile: eba-sales-customers.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_CUSTOMERS
+    )
+
+)
+
+installScript "eba_sales_data package body" (
+    execution {
+        sequence: 600
+    }
+    script {
+        contentFile: eba-sales-data-package-body.sql
+    }
+)
+
+installScript eba_sales_deal_competition (
+    execution {
+        sequence: 280
+    }
+    script {
+        contentFile: eba-sales-deal-competition.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_DEAL_COMPETITION
+    )
+
+)
+
+installScript eba_sales_deal_products (
+    execution {
+        sequence: 290
+    }
+    script {
+        contentFile: eba-sales-deal-products.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_DEAL_PRODUCTS
+    )
+
+)
+
+installScript eba_sales_deal_stages (
+    execution {
+        sequence: 300
+    }
+    script {
+        contentFile: eba-sales-deal-stages.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_DEAL_STAGES
+    )
+
+)
+
+installScript eba_sales_deal_status_codes (
+    execution {
+        sequence: 310
+    }
+    script {
+        contentFile: eba-sales-deal-status-codes.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_DEAL_STATUS_CODES
+    )
+
+)
+
+installScript eba_sales_deal_team (
+    execution {
+        sequence: 320
+    }
+    script {
+        contentFile: eba-sales-deal-team.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_DEAL_TEAM
+    )
+
+)
+
+installScript eba_sales_deals (
+    execution {
+        sequence: 180
+    }
+    script {
+        contentFile: eba-sales-deals.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_DEALS
+    )
+
+)
+
+installScript eba_sales_error_lookup (
+    execution {
+        sequence: 340
+    }
+    script {
+        contentFile: eba-sales-error-lookup.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_ERROR_LOOKUP
+    )
+
+)
+
+installScript eba_sales_errors (
+    execution {
+        sequence: 330
+    }
+    script {
+        contentFile: eba-sales-errors.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_ERRORS
+    )
+
+)
+
+installScript eba_sales_files (
+    execution {
+        sequence: 350
+    }
+    script {
+        contentFile: eba-sales-files.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_FILES
+    )
+
+)
+
+installScript eba_sales_fin_assessments (
+    execution {
+        sequence: 130
+    }
+    script {
+        contentFile: eba-sales-fin-assessments.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_FIN_ASSESSMENTS
+    )
+
+)
+
+installScript eba_sales_history (
+    execution {
+        sequence: 360
+    }
+    script {
+        contentFile: eba-sales-history.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_HISTORY
+    )
+
+)
+
+installScript eba_sales_industries (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: eba-sales-industries.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_INDUSTRIES
+    )
+
+)
+
+installScript eba_sales_lead_sources (
+    execution {
+        sequence: 190
+    }
+    script {
+        contentFile: eba-sales-lead-sources.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_LEAD_SOURCES
+    )
+
+)
+
+installScript eba_sales_lead_status_codes (
+    execution {
+        sequence: 200
+    }
+    script {
+        contentFile: eba-sales-lead-status-codes.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_LEAD_STATUS_CODES
+    )
+
+)
+
+installScript eba_sales_leads (
+    execution {
+        sequence: 210
+    }
+    script {
+        contentFile: eba-sales-leads.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_LEADS
+    )
+
+)
+
+installScript eba_sales_links (
+    execution {
+        sequence: 370
+    }
+    script {
+        contentFile: eba-sales-links.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_LINKS
+    )
+
+)
+
+installScript eba_sales_notifications (
+    execution {
+        sequence: 380
+    }
+    script {
+        contentFile: eba-sales-notifications.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_NOTIFICATIONS
+    )
+
+)
+
+installScript eba_sales_preferences (
+    execution {
+        sequence: 55
+    }
+    script {
+        contentFile: eba-sales-preferences.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_PREFERENCES
+    )
+
+)
+
+installScript eba_sales_product_families (
+    execution {
+        sequence: 150
+    }
+    script {
+        contentFile: eba-sales-product-families.sql
+    }
+)
+
+installScript eba_sales_product_lobs (
+    execution {
+        sequence: 140
+    }
+    script {
+        contentFile: eba-sales-product-lobs.sql
+    }
+)
+
+installScript eba_sales_products (
+    execution {
+        sequence: 160
+    }
+    script {
+        contentFile: eba-sales-products.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_PRODUCTS
+    )
+
+)
+
+installScript eba_sales_risk_assessments (
+    execution {
+        sequence: 110
+    }
+    script {
+        contentFile: eba-sales-risk-assessments.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_RISK_ASSESSMENTS
+    )
+
+)
+
+installScript eba_sales_sales_periods (
+    execution {
+        sequence: 410
+    }
+    script {
+        contentFile: eba-sales-sales-periods.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_SALES_PERIODS
+    )
+
+)
+
+installScript eba_sales_salesrep_roles (
+    execution {
+        sequence: 400
+    }
+    script {
+        contentFile: eba-sales-salesrep-roles.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_SALESREP_ROLES
+    )
+
+)
+
+installScript eba_sales_salesreps (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: eba-sales-salesreps.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_SALESREPS
+    )
+
+)
+
+installScript eba_sales_states (
+    execution {
+        sequence: 420
+    }
+    script {
+        contentFile: eba-sales-states.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_STATES
+    )
+
+)
+
+installScript eba_sales_status_assessments (
+    execution {
+        sequence: 120
+    }
+    script {
+        contentFile: eba-sales-status-assessments.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_STATUS_ASSESSMENTS
+    )
+
+)
+
+installScript eba_sales_support_amts (
+    execution {
+        sequence: 560
+    }
+    script {
+        contentFile: eba-sales-support-amts.sql
+    }
+)
+
+installScript eba_sales_suprt_amt_types (
+    execution {
+        sequence: 550
+    }
+    script {
+        contentFile: eba-sales-suprt-amt-types.sql
+    }
+)
+
+installScript eba_sales_svps (
+    execution {
+        sequence: 430
+    }
+    script {
+        contentFile: eba-sales-svps.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_SVPS
+    )
+
+)
+
+installScript eba_sales_tags (
+    execution {
+        sequence: 440
+    }
+    script {
+        contentFile: eba-sales-tags.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_TAGS
+    )
+
+)
+
+installScript eba_sales_tags_sum (
+    execution {
+        sequence: 450
+    }
+    script {
+        contentFile: eba-sales-tags-sum.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_TAGS_SUM
+    )
+
+)
+
+installScript eba_sales_tags_type_sum (
+    execution {
+        sequence: 460
+    }
+    script {
+        contentFile: eba-sales-tags-type-sum.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_TAGS_TYPE_SUM
+    )
+
+)
+
+installScript eba_sales_terms (
+    execution {
+        sequence: 510
+    }
+    script {
+        contentFile: eba-sales-terms.sql
+    }
+)
+
+installScript eba_sales_terr_map (
+    execution {
+        sequence: 480
+    }
+    script {
+        contentFile: eba-sales-terr-map.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_TERR_MAP
+    )
+
+)
+
+installScript eba_sales_territories (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: eba-sales-territories.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_TERRITORIES
+    )
+
+)
+
+installScript eba_sales_territory_acl (
+    execution {
+        sequence: 470
+    }
+    script {
+        contentFile: eba-sales-territory-acl.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_TERRITORY_ACL
+    )
+
+)
+
+installScript eba_sales_tz_pref (
+    execution {
+        sequence: 490
+    }
+    script {
+        contentFile: eba-sales-tz-pref.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_TZ_PREF
+    )
+
+)
+
+installScript eba_sales_users (
+    execution {
+        sequence: 220
+    }
+    script {
+        contentFile: eba-sales-users.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_USERS
+    )
+
+)
+
+installScript eba_sales_verifications (
+    execution {
+        sequence: 500
+    }
+    script {
+        contentFile: eba-sales-verifications.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_SALES_VERIFICATIONS
+    )
+
+)
+
+installScript indexes (
+    execution {
+        sequence: 620
+    }
+    script {
+        contentFile: indexes.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_ACCESS_LEVELS_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_ACT_COMPETITION_1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_ACT_COMPETITION_2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_ACT_COMPETITION_3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CLICKS_IDX1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CLICKS_IDX2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CLICKS_IDX3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CLICKS_IDX4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CLICKS_IDX5
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CLICKS_IDX6
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CLICKS_IDX7
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_COMMENTS_IDX1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_COMMENTS_IDX2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_COMMENTS_IDX3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_COMMENTS_IDX4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_COMMENTS_IDX5
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_COMMENTS_IDX6
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CUSTOMERS_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CUSTOMERS_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CUSTOMERS_I3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CUSTOMERS_I4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CUSTOMERS_I5
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_CUSTOMER_LOC_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_CFK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I10
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I11
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I12
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I5
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I6
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I7
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I8
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEALS_I9
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEAL_COMPETITION_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEAL_COMPETITION_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEAL_COMPETITION_I3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEAL_PROD_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEAL_PROD_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEAL_STATCOD_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEAL_TEAM_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_DEAL_TEAM_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_ERRORS_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_ERROR_LOOKUP_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_FILES_IDX1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_FILES_IDX2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_FILES_IDX3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_FILES_IDX4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_FILES_IDX5
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_FILES_IDX6
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_HISTORY_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LEADS_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LEADS_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LEADS_I3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LEAD_STAT_CDI1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LINKS_IDX1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LINKS_IDX2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LINKS_IDX3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LINKS_IDX4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LINKS_IDX5
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_LINKS_IDX6
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_PREFERENCES_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_PRODUCTS_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_PRODUCTS_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_PRODUCTS_I3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_SALESREPS_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_SALESREPS_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_SALESREPS_I3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_SALESREPS_I4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_SALESREP_ROLENAME
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_SALES_PER_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_STATES_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_STATES_I2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_SVPS_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_TERRITORY_ACL_N1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_TERR_MAP_I1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_TERR_MAP_I3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_TERR_MAP_I4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_USERS_ACC_LVL_IDX
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_USERS_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_VERIFY_IDX1
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_VERIFY_IDX2
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_VERIFY_IDX3
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_VERIFY_IDX4
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_VERIFY_IDX5
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: EBA_SALES_VERIFY_IDX6
+    )
+
+)
+
+installScript procedures (
+    execution {
+        sequence: 610
+    }
+    script {
+        contentFile: procedures.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: procedure
+        name: EBA_SALES_TZ_INIT
+    )
+
+)
+
+installScript sequences (
+    execution {
+        sequence: 580
+    }
+    script {
+        contentFile: sequences.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: sequence
+        name: EBA_SALES_ROWKEY_SEQ
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: sequence
+        name: EBA_SALES_SEQUENCE
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: sequence
+        name: EBA_SALES_SEQUENCE2
+    )
+
+)
+
+installScript "set data model version to 3.0.0" (
+    execution {
+        sequence: 670
+    }
+    script {
+        contentFile: set-data-model-version-to-3-0-0.sql
+    }
+)
+
+installScript triggers (
+    execution {
+        sequence: 630
+    }
+    script {
+        contentFile: triggers.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BD_EBA_SALES_COMPETITORS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BD_EBA_SALES_CUST
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BD_EBA_SALES_CUST_CONTACTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BD_EBA_SALES_DEALS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BD_EBA_SALES_LEADS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BD_EBA_SALES_PRODUCTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BD_EBA_SALES_TERR
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_EBA_SALES_ACT_COMPET
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_EBA_SALES_DEAL_COMPET
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_ACCOUNT_STANDING
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_COMMENTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_COMPETITORS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_COMP_THREATS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_COUNTRIES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_CURRENCIES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_CUST
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_CUSTOMERS_LOCS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_CUST_CONTACTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_DEALS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_DEAL_PRODUCTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_DEAL_STAGES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_DEAL_STAT_CODES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_DEAL_TEAM
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_FILES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_FIN_ASSESSMENTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_HISTORY
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_INDUSTRIES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_LEADS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_LEAD_SOURCES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_LEAD_ST_CDS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_LINKS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_PRODUCTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_RISK_ASSESSMENTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_SALESREPS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_SALESREP_ROLES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_SALES_PERIODS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_STATES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_STATUS_ASSESS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_SVPS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_TAGS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_TERR
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_TERRITORY_ACL
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_TERR_MAP
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: BIU_EBA_SALES_TZ_PREF
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: EBA_SALES_CLICKS_BIU
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: EBA_SALES_ERRORS_BI
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: EBA_SALES_NOTE_BIU
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: EBA_SALES_PREFERENCES_BIU
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: EBA_SALES_USERS_BD
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: EBA_SALES_USERS_BIU
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: EBA_SALES_VERIFY_BIU_FER
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: biu_eba_sales_product_families
+    )
+
+)
+
+installScript views (
+    execution {
+        sequence: 640
+    }
+    script {
+        contentFile: views.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: view
+        name: EBA_SALES_OPPORTUNITIES_V
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: view
+        name: EBA_SALES_OPP_V
+    )
+
+)
+

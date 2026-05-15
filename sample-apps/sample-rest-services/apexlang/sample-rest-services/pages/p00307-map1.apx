@@ -1,0 +1,333 @@
+page 307 (
+    name: Map
+    alias: MAP1
+    title: Map
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                
+                    This page visualizes data from the REST data source on a <em>map</em>. The map region can display
+                    latitude and longitude data, as well as GeoJSON data, coming from the REST Data Source. In this example,
+                    each row from the REST Data Source is represented by a marker on the map, additional information is shown as
+                    <em>Tool Tip</em> when hovering over a marker on the map.
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region stores-data (
+        name: Stores Data
+        type: interactiveReport
+        source {
+            location: restSource
+            restSource: @eba_rest_stores
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        componentAdvanced {
+            maxRowsPerPageInSelector: 14
+        }
+        advanced {
+            savedReportMappingIdentifier: 2802417557477103
+        }
+
+        column LATITUDE (
+            type: plainText
+            heading {
+                heading: Latitude
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G990D0
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column LONGITUDE (
+            type: plainText
+            heading {
+                heading: Longitude
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G990D0
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column PHYSICAL_ADDRESS (
+            type: plainText
+            heading {
+                heading: Physical Address
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column STORE_ID (
+            type: hidden
+            heading {
+                heading: Store Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column STORE_NAME (
+            type: plainText
+            heading {
+                heading: Store Name
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 47563 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn LATITUDE (
+                sequence: 4
+            )
+
+            displayColumn LONGITUDE (
+                sequence: 5
+            )
+
+            displayColumn PHYSICAL_ADDRESS (
+                sequence: 3
+            )
+
+            displayColumn STORE_ID (
+                sequence: 1
+            )
+
+            displayColumn STORE_NAME (
+                sequence: 2
+            )
+
+        )
+
+    )
+
+    region stores-map (
+        name: Stores Map
+        type: map
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        controls {
+            options: [
+                rectangleZoom
+                scaleBar
+            ]
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer stores (
+            name: Stores
+            layout {
+                sequence: 10
+            }
+            source {
+                location: restSource
+                restSource: @eba_rest_stores
+            }
+            columnMapping {
+                geometryColumnDataType: longitudeLatitude
+                longitudeColumn: LONGITUDE
+                latitudeColumn: LATITUDE
+            }
+            pointObjects {
+                shape: Home
+                shapeScale: 2
+            }
+            appearance {
+                fillColor: #bc1c1c
+                strokeColor: #fef6f6
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <strong>&STORE_NAME.</strong><br>
+                    &PHYSICAL_ADDRESS.<br>
+                    ```
+            }
+        )
+
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 308
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 306
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

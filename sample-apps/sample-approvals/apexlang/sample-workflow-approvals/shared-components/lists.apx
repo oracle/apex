@@ -1,0 +1,538 @@
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: HELP
+            }
+        }
+    )
+
+    entry install-app (
+        label: Install App
+        icon {
+            imageIconCssClasses: fa-cloud-download
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #action$a-pwa-install
+            }
+        }
+        userDefinedAttributes {
+            2: a-pwaInstall
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 40
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry appraisal-history (
+        label: Appraisal History
+        icon {
+            imageIconCssClasses: fa-server-clock
+        }
+        layout {
+            sequence: 35
+        }
+        isCurrent {
+            type: pages
+            pages: 29
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry employees (
+        label: Employees
+        icon {
+            imageIconCssClasses: fa-users-alt
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry laptop-order-management (
+        label: Laptop Order Management
+        icon {
+            imageIconCssClasses: fa-laptop
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 23
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+        security {
+            authorizationScheme: @operations-team
+        }
+    )
+
+    entry login (
+        label: Login
+        icon {
+            imageIconCssClasses: fa-lock-user
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        serverSideCondition {
+            type: userIsPublicUser
+        }
+    )
+
+    entry manage-vacation-rules (
+        label: Manage Vacation Rules
+        icon {
+            imageIconCssClasses: fa-plane
+        }
+        layout {
+            sequence: 120
+        }
+        isCurrent {
+            type: pages
+            pages: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        security {
+            authorizationScheme: @operations-team
+        }
+    )
+
+    entry more-information (
+        label: More Information
+        icon {
+            imageIconCssClasses: fa-info-square-o
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: pages
+            pages: 14
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry my-requests (
+        label: My Requests
+        icon {
+            imageIconCssClasses: fa-tasks
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry my-tasks (
+        label: My Tasks
+        icon {
+            imageIconCssClasses: fa-tasks
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 3
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry pending-actions (
+        label: Pending Actions
+        icon {
+            imageIconCssClasses: fa-user-clock
+        }
+        layout {
+            sequence: 55
+        }
+        isCurrent {
+            type: pages
+            pages: 25
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry pending-approvals (
+        label: Pending Approvals
+        icon {
+            imageIconCssClasses: fa-hourglass-2
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry setup (
+        label: Setup
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 130
+        }
+        isCurrent {
+            type: pages
+            pages: 21
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry switch-user (
+        label: Switch User
+        icon {
+            imageIconCssClasses: fa-user-pointer
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry task-administration (
+        label: Task Administration
+        icon {
+            imageIconCssClasses: fa-tasks
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 6
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry workflow-dashboard (
+        label: Workflow Dashboard
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 105
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        security {
+            authorizationScheme: @operations-team
+        }
+    )
+
+    entry workflow-debug-messages (
+        label: Workflow Debug Messages
+        icon {
+            imageIconCssClasses: fa-bug
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+        security {
+            authorizationScheme: @operations-team
+        }
+    )
+
+    entry workflow-status (
+        label: Workflow Status
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        security {
+            authorizationScheme: @operations-team
+        }
+    )
+
+)
+
+list user-interface (
+    name: User Interface
+    config {
+        buildOption: @feature-theme-style-selection
+    }
+
+    entry email-settings (
+        label: Email Settings
+        icon {
+            imageIconCssClasses: fa-envelope-wrench
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Configure an email address to notify for job changes as well as laptop approval and delivery.
+        }
+    )
+
+    entry manage-laptop-stock (
+        label: Manage Laptop Stock
+        icon {
+            imageIconCssClasses: fa-laptop
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Manage laptop stock amounts
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-pencil-square-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: Reset the data for the sample
+        }
+    )
+
+    entry salary-change-approvers (
+        label: Salary Change Approvers
+        icon {
+            imageIconCssClasses: fa-badge-check
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Manage and test salary change approver assignments
+        }
+    )
+
+    entry theme-style-selection (
+        label: Theme Style Selection
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10010
+                clearCache: 10010
+            }
+        }
+        userDefinedAttributes {
+            1: Set the default application look and feel
+        }
+    )
+
+)
+

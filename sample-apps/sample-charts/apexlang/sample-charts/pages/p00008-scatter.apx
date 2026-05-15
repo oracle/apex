@@ -1,0 +1,488 @@
+page 8 (
+    name: Scatter
+    alias: SCATTER
+    title: Scatter
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Scatter charts, using Oracle JET Data Visualizations,is showcased on this page. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your charts. Scatter charts define data items using x and y values, making them useful for viewing relationships between 2 dimensions. Scatter charts are commonly used for displaying and comparing numeric values, such as scientific, statistical, and engineering data. These charts are useful to show the relationships among the numeric values in several data series, and they can plot two groups of numbers as one series of xy coordinates.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-scatter-chart
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region new (
+        name: New
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region scatter-dynamic-y-axis-min-max-information (
+        name: Scatter (Dynamic Y-Axis Min/Max) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates how to dynamically change the y-axis minimum and maximum values, based upon values selected by the end user.<p/>
+                
+                <strong>JavaScript Code</strong> - Use the chart-level advanced attribute to initialize the chart using JavaScript code that uses the values of page items to set the y-axis minimum and maximum values.
+                <pre>
+                function (options) {
+                    options.yAxis = { 
+                        min: $v('P1_Y_MIN'),
+                        max: $v('P1_Y_MAX')
+                    };
+                    return options;
+                }
+                </pre>
+                ... where P1_Y_MAX and P1_Y_MIN would be the two page items used for setting the values.
+                <p/>
+                <strong>Dynamic Action</strong> - Use a dynamic action, triggerd by the click of a button, to update the chart with y-axis minimum and maximum values selected by the end user.<p/>
+                
+                <p>
+                For more information on the Oracle JET ojChart yAxis object, refer to the Oracle JET ojChart API <a href="&OJCHART_API_URL.#yAxis.min" target="_blank">ojChart: yAxis object</a>.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @scatter-dynamic-y-axis-min-max-via-javascript-code
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region scatter-dynamic-y-axis-min-max-via-javascript-code (
+        name: Scatter (Dynamic Y-Axis Min/Max via JavaScript Code)
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: scatterChart
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: Use the select lists below to change the Y-Axis minimum and maximum values of the chart.  Click <b>Set</b> to see the values reflected on the chart.<p/>
+        }
+        chart {
+            type: scatter
+        }
+        title {
+            title: Dummy Corp Stock Value
+        }
+        chartLayout {
+            height: 400
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function (options) {
+                    options.yAxis = { 
+                        min: $v('P8_Y_MIN'),
+                        max: $v('P8_Y_MAX')
+                    };    
+                    
+                    return options;
+                }
+                ```
+        }
+
+        series value (
+            name: Value
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT pricing_date LABEL, 
+                           OPENING_VAL X_VALUE, 
+                           CLOSING_VAL Y_VALUE
+                    FROM EBA_DEMO_CHART_STOCKS
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                x: X_VALUE
+                y: Y_VALUE
+            }
+            marker {
+                shape: star
+            }
+        )
+
+        axis x (
+            name: x
+            title: Opening Value
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+        axis y (
+            name: y
+            title: Closing Value
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region scatter-percent-format (
+        name: Scatter (Percent Format)
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: scatter
+        }
+        title {
+            title: OECD Members Pension Contribution Revenues, 2011
+        }
+        chartLayout {
+            height: 400
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+
+        series jet_chart_series (
+            name: 2011
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select country country,
+                           name,
+                           (employee/100) employee,
+                           (employer/100) employer,
+                           country||' - Total Contribution:'||total||'%' tooltip
+                     from eba_demo_chart_stats
+                    ```
+            }
+            columnMapping {
+                label: COUNTRY
+                x: EMPLOYEE
+                y: EMPLOYER
+                customTooltip: TOOLTIP
+                labelTooltip: NAME
+            }
+            line {
+                style: dashed
+                type: none
+            }
+            marker {
+                shape: star
+            }
+        )
+
+        axis x (
+            name: x
+            title: Employee Contribution (% of GDP)
+            value {
+                format: percent
+                decimalPlaces: 1
+                formatScaling: none
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+        axis y (
+            name: y
+            title: Employer Contribution (% of GDP)
+            value {
+                format: percent
+                decimalPlaces: 1
+                formatScaling: none
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region scatter-percent-format-information (
+        name: Scatter (Percent Format) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of a Scatter chart.<p/>
+                
+                <strong>Marker</strong> - Use the series-level attribute to define the marker representing the data information for the chart.<p/>
+                <strong>Format</strong> - Use the axis-level attribute to define date/time and numeric formatting, such as currency, decimal places and date formatting. The <strong>Percent</strong> Format allows a user to format the numeric values on the axes and tooltips as percent values. When a number is formatted as a percent, the values on the chart are multiplied by 100.<p/>
+                <strong>Custom Tooltip</strong> - Use this series-level attribute to include custom data in the tooltips displayed as the mouse moves over the data points of the chart.<p/>
+                
+                <p>
+                For more information on the Oracle JET Scatter chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=scatterChart&demo=attrGroups" target="_blank">Scatter Chart: Attribute Groups</a> example. The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank">OECD Pensions at a Glance 2013</a> report.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @scatter-percent-format
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    pageItem P8_Y_MAX (
+        type: selectList
+        label {
+            label: Maximum Value
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:130;130,170;170,200;200,250;250,300;300
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @scatter-dynamic-y-axis-min-max-via-javascript-code
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 2
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 300
+        }
+    )
+
+    pageItem P8_Y_MIN (
+        type: selectList
+        label {
+            label: Minimum Value
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:0;0,50;50,90;90
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @scatter-dynamic-y-axis-min-max-via-javascript-code
+            slot: regionBody
+            alignment: left
+            columnSpan: 2
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    button set (
+        buttonName: Set
+        label: Set
+        layout {
+            sequence: 40
+            region: @scatter-dynamic-y-axis-min-max-via-javascript-code
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--small
+                t-Button--primary
+                t-Button--padRight
+                t-Button--padTop
+                t-Button--padBottom
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction set-y-axis-settings (
+        name: Set Y Axis Settings
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @set
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $("#scatterChart_jet").ojChart({ 
+                      yAxis: { 
+                        min: $v('P8_Y_MIN'),
+                        max: $v('P8_Y_MAX')
+                      }
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

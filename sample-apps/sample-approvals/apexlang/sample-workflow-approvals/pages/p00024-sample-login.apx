@@ -1,0 +1,524 @@
+page 24 (
+    name: Sample Login
+    alias: SAMPLE-LOGIN
+    title: Sample Login
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            table.overview td:first-child {
+              text-align: right;
+            }
+            table.overview td {
+              padding: 1em;
+            }
+            .left-side {
+              min-width: 150px
+            }
+            
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region demo-purposes-only-login (
+        name: Demo Purposes Only Login
+        type: tree
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select case when connect_by_isleaf = 1 then 0
+                            when level = 1             then 1
+                            else                           -1
+                       end          as status, 
+                       level, 
+                       e.ename      as title, 
+                       'fa '||case when d.deptno = 40 
+                                   then 'fa-user-headset' 
+                                   else 'fa-user'
+                              end   as icon, 
+                       e.empno      as value, 
+                       null         as tooltip, 
+                       null         as link 
+                from eba_demo_appr_emp e
+                left outer join eba_demo_appr_dept d
+                             on d.deptno = e.deptno 
+                start with mgr is null
+                connect by prior empno = mgr
+                order siblings by ename
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 4
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: userTree
+        }
+        settings {
+            nodeLabelColumn: TITLE
+            nodeValueColumn: VALUE
+            hierarchy: notComputed
+            nodeStatusColumn: STATUS
+            hierarchyLevelColumn: LEVEL
+            linkColumn: LINK
+            iconCssClassColumn: ICON
+            defaultIconCssClass: icon-tree-folder
+            iconTypeCssClass: a-Icon
+            selectedNodePageItem: P24_SELECTED_EMPNO
+        }
+    )
+
+    region info (
+        name: Info
+        type: staticContent
+        source {
+            htmlCode: <p>You are not currently logged in. To login, select a user and click the (Login) button.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Alert--accessibleHeading
+            ]
+        }
+        serverSideCondition {
+            type: userIsPublicUser
+        }
+    )
+
+    region info-2 (
+        name: Info
+        type: staticContent
+        source {
+            htmlCode: <p>You are currently logged in as &APP_USER.. To switch user, select a different user and click the (Login) button.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Alert--accessibleHeading
+            ]
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    region operations-team (
+        name: Operations Team
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @right-side
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 8
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            icon: fa-user-headset
+        }
+    )
+
+    region right-side (
+        name: Right Side
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region team-members (
+        name: Team Members
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Everyone on the operations team helps with laptop order management and can review the status of workflows.</p>
+                <table class="overview">
+                    <tr>
+                        <td><strong>JANE</strong></td>
+                        <td>Initial assignee for laptop approvals. </td>
+                    </tr>
+                    <tr>
+                        <td><strong>STEVE</strong></td>
+                        <td>Second assignee for laptop approvals when first approval expires.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BO</strong></td>
+                        <td>Third assignee for laptop approvals when second approval expires.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PAT</strong></td>
+                        <td>Workflow and task administrator.</td>
+                    </tr>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @right-side
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P24_SELECTED_EMPNO (
+        type: hidden
+        layout {
+            sequence: 70
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P24_SELECTED_USERNAME (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button login (
+        buttonName: LOGIN
+        label: Login
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            cssClasses: margin-top-md
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: loginButton
+        }
+    )
+
+    dynamicAction expand-tree (
+        name: Expand Tree
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+
+        action expand-tree (
+            name: Expand Tree
+            action: expandTree
+            affectedElements {
+                selectionType: region
+                region: @demo-purposes-only-login
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction when-node-changed (
+        name: When Node Changed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: region/tree/treeviewselectionchange
+            selectionType: region
+            region: @demo-purposes-only-login
+        }
+
+        action hide-login-button-for-current-user (
+            name: Hide Login Button for Current User
+            action: hide
+            affectedElements {
+                selectionType: button
+                button: @login
+            }
+            execution {
+                sequence: 30
+            }
+            clientSideCondition {
+                type: item=value
+                item: P24_SELECTED_USERNAME
+                value: &APP_USER.
+            }
+        )
+
+        action refresh-login-button (
+            name: Refresh Login Button
+            action: show
+            affectedElements {
+                selectionType: jquerySelector
+                jquerySelector: #loginButton
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P24_SELECTED_USERNAME
+                value: &APP_USER.
+            }
+        )
+
+        action save-selected-emp-in-page-item (
+            name: Save Selected Emp in Page Item
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: "apex.region(\"userTree\").call(\"getSelectedNodes\")[0]?.label"
+            }
+            affectedElements {
+                selectionType: items
+                items: P24_SELECTED_USERNAME
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action show-login-button-for-other-user (
+            name: Show Login Button for Other User
+            action: show
+            affectedElements {
+                selectionType: button
+                button: @login
+            }
+            execution {
+                sequence: 40
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P24_SELECTED_USERNAME
+                value: &APP_USER.
+            }
+        )
+
+        action update-login-button-label (
+            name: Update Login Button Label
+            action: executeJsCode
+            settings {
+                jsCode: $("#loginButton span").text('Login as '+$v('P24_SELECTED_USERNAME'));
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P24_SELECTED_USERNAME
+                value: &APP_USER.
+            }
+        )
+
+    )
+
+    computation p24-selected-empno (
+        itemName: P24_SELECTED_EMPNO
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: item
+            itemName: CURRENT_USER_EMPNO
+        }
+    )
+
+    computation p24-selected-username (
+        itemName: P24_SELECTED_USERNAME
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_USER.
+        }
+        serverSideCondition {
+            type: userIsPublicUser
+        }
+    )
+
+    process login (
+        name: Login
+        type: invokeApi
+        invoke {
+            package: APEX_AUTHENTICATION
+            procedureOrFunction: LOGIN
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 817220863614729748
+        }
+
+        parameter p_password (
+            value {
+                type: null
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+        parameter p_set_persistent_auth (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 40
+            }
+        )
+
+        parameter p_uppercase_username (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: staticValue
+                staticValue: true
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_username (
+            value {
+                type: item
+                item: P24_SELECTED_USERNAME
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+    )
+
+    process set-username-cookie (
+        name: Set Username Cookie
+        type: invokeApi
+        invoke {
+            package: APEX_AUTHENTICATION
+            procedureOrFunction: SEND_LOGIN_USERNAME_COOKIE
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 817220467612729744
+        }
+
+        parameter p_consent (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: staticValue
+                staticValue: false
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_cookie_name (
+            parameter {
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+        parameter p_username (
+            value {
+                type: expression
+                plsqlExpression: lower( :P24_SELECTED_USERNAME )
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+    )
+
+)
+

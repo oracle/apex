@@ -1,0 +1,667 @@
+page 31 (
+    name: Notification
+    alias: NOTIFICATION
+    title: Notification
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Please enter a useful notification and optionally a description. The notification will be shown in bold on the top line of the notification box. If a description is entered it will be in plain text in the line below the notification. The type selected will determine the icon and color of the notification. If you have multiple notifications they will be ordered based on the display sequence.  You can enter specific dates and times to limit when the notification is first displayed and/or when it is no longer visible. To create a new notification, supply the required values and click the <strong>Create Notification</strong> button. When editing a notification, update the notification's attribute values accordingly and click the <strong>Apply Changes</strong> button. Click the <strong>Delete</strong> button to delete a notification.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region existing-notifications (
+        name: Existing Notifications
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select notification_name,
+                    notification_type,
+                    display_sequence,
+                    display_from,
+                    display_until,
+                    created
+                from eba_qpoll_notifications
+                order by updated
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @form-items
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from eba_qpoll_notifications
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CREATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DISPLAY_FROM (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Display From
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: Day DD-MON-YYYY HH24:MI
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Display Sequence
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DISPLAY_UNTIL (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Display Until
+            }
+            layout {
+                sequence: 5
+            }
+            appearance {
+                formatMask: Day DD-MON-YYYY HH24:MI
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NOTIFICATION_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Headline
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NOTIFICATION_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Display Color
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region form-items (
+        name: Form Items
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    pageItem P31_DISPLAY_FROM (
+        type: datePicker
+        label {
+            label: Display From
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY HH24:MI:SS
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DISPLAY_FROM
+            used: always
+        }
+    )
+
+    pageItem P31_DISPLAY_SEQUENCE (
+        type: textField
+        label {
+            label: Display Sequence
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @form-items
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 8
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DISPLAY_SEQUENCE
+            used: always
+        }
+    )
+
+    pageItem P31_DISPLAY_UNTIL (
+        type: datePicker
+        label {
+            label: Display Until
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @form-items
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY HH24:MI:SS
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DISPLAY_UNTIL
+            used: always
+        }
+    )
+
+    pageItem P31_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @form-items
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P31_NOTIFICATION_DESCRIPTION (
+        type: textarea
+        label {
+            label: Details
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 70
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NOTIFICATION_DESCRIPTION
+            used: always
+        }
+    )
+
+    pageItem P31_NOTIFICATION_NAME (
+        type: textField
+        label {
+            label: Headline
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NOTIFICATION_NAME
+            used: always
+        }
+    )
+
+    pageItem P31_NOTIFICATION_TYPE (
+        type: selectList
+        label {
+            label: Display Color
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @notification-type
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NOTIFICATION_TYPE
+            used: always
+        }
+        default {
+            type: static
+            staticValue: YELLOW
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Notification
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P31_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P31_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P31_ID
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation end-after-beginning (
+        name: End after Beginning
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if :P31_DISPLAY_FROM is not null and :P31_DISPLAY_UNTIL is not null then
+                    return to_timestamp(:P31_DISPLAY_FROM,'DD-MON-YYYY HH24:MI:SS') < to_timestamp(:P31_DISPLAY_UNTIL,'DD-MON-YYYY HH24:MI:SS');
+                else
+                    return true;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: Display From and To dates must be in proper chronological order.
+            displayLocation: inlineInNotification
+        }
+    )
+
+    validation p31-display-from-must-be-timestamp (
+        name: P31_DISPLAY_FROM must be timestamp
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsAValidTimestamp
+            item: P31_DISPLAY_FROM
+        }
+        error {
+            errorMessage: #LABEL# must be a valid timestamp.
+            associatedItem: @P31_DISPLAY_FROM
+        }
+    )
+
+    validation p31-display-until-must-be-timestamp (
+        name: P31_DISPLAY_UNTIL must be timestamp
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsAValidTimestamp
+            item: P31_DISPLAY_UNTIL
+        }
+        error {
+            errorMessage: #LABEL# must be a valid timestamp.
+            associatedItem: @P31_DISPLAY_UNTIL
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 7162016438031814509
+        }
+    )
+
+    process fetch-row-from-eba-qpoll-notifications (
+        name: Fetch Row from EBA_QPOLL_NOTIFICATIONS
+        type: autoRowFetch
+        source {
+            tableName: EBA_QPOLL_NOTIFICATIONS
+            pkColumn: ID
+            pkItem: P31_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 16132160321638331411
+        }
+    )
+
+    process process-row-of-eba-qpoll-notifications (
+        name: Process Row of EBA_QPOLL_NOTIFICATIONS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_QPOLL_NOTIFICATIONS
+            pkColumn: ID
+            pkItem: P31_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 16132160523283331412
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 16132160699396331412
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

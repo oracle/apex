@@ -1,0 +1,418 @@
+page 405 (
+    name: Nested JSON & Dynamic Actions
+    alias: NESTED-JSON-DYNAMIC-ACTIONS
+    title: Nested JSON & Dynamic Actions
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region number-of-line-items-per-product-in-selected-purchase-order (
+        name: Number of Line Items per Product in Selected Purchase Order
+        type: chart
+        source {
+            location: restSource
+            restSource: @eba_rest_purchase_order
+            pageItemsToSubmit: PO_P_NUMBER
+        }
+        dataProfile {
+            nestedRows: @po-lineitems
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: chart-region
+        }
+        chartLayout {
+            height: 400
+        }
+        legend {
+            show: false
+        }
+
+        series series (
+            name: Series
+            execution {
+                sequence: 10
+            }
+            source {
+                location: restSource
+                restSource: @eba_rest_purchase_order
+                pageItemsToSubmit: PO_P_NUMBER
+            }
+            dataProfile {
+                nestedRows: @po-lineitems
+            }
+            localPostProcessing {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select part_description as label,
+                           quantity         as value,
+                           'Product: ' || part_description || '<br/>Quantity: ' || quantity as custom_tooltip
+                      from #APEX$SOURCE_DATA#
+                     where po_ponumber = :PO_P_NUMBER
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+                customTooltip: CUSTOM_TOOLTIP
+                customColumn: VALUE
+            }
+            appearance {
+                color: #34aadc
+            }
+            advanced {
+                javaScriptStaticId: chart-region
+            }
+        )
+
+        axis x (
+            name: x
+            title: Product
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            showAxis: false
+            minorTicks {
+                show: false
+            }
+            tickLabel {
+                show: false
+            }
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div>
+                  <p>
+                    This page demonstrates how to consume nested data from the 
+                    <strong>EBA_REST_PURCHASE_ORDER</strong> REST Data Source. 
+                    By configuring a Data Profile that maps the parent purchase order details 
+                    and nested line items, we can display a two-tier layout:
+                  </p>
+                  <ul>
+                    <li>
+                      <strong>Parent Region</strong>: Shows general purchase order information 
+                      (PO number, shipping instructions).
+                    </li>
+                    <li>
+                      <strong>Child Region</strong>: Displays the associated line items 
+                      (part details, quantity, etc.) for the selected PO.
+                    </li>
+                  </ul>
+                  <p>
+                    A dynamic action triggers when you click a PO number in the parent region, 
+                    updating the child region to show only the nested data (line items) for 
+                    that specific purchase order. This highlights the power of Oracle APEX in 
+                    handling nested JSON responses and binding them to interactive reports or 
+                    charts through Data Profiles.
+                  </p>
+                </div>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region parent-nested-json (
+        name: Parent Nested JSON
+        type: interactiveReport
+        source {
+            location: restSource
+            restSource: @eba_rest_purchase_order
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        componentAdvanced {
+            maxRowsPerPageInSelector: 10
+        }
+        advanced {
+            savedReportMappingIdentifier: 12485776353059556
+        }
+
+        column PO_PONUMBER (
+            type: link
+            heading {
+                heading: Purchase Order Number
+            }
+            layout {
+                sequence: 20
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    type: url
+                    url: #
+                }
+                linkText: <span class="t-Button-label">PO - #PO_PONUMBER#</span>
+                linkAttributes: class="po-link t-Button t-Button--hot t-Button--small t-Button--primary t-Button--simple t-Button--gapLeft" data-po-number="#PO_PONUMBER#"
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PO_REFERENCE (
+            type: plainText
+            heading {
+                heading: Order Reference
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column PO_REQUESTOR (
+            type: plainText
+            heading {
+                heading: Requestor Full Name
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column PO_USER (
+            type: plainText
+            heading {
+                heading: Ordered By
+            }
+            layout {
+                sequence: 10
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 51674 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn PO_PONUMBER (
+                sequence: 2
+            )
+
+            displayColumn PO_REFERENCE (
+                sequence: 3
+            )
+
+            displayColumn PO_REQUESTOR (
+                sequence: 4
+            )
+
+            displayColumn PO_USER (
+                sequence: 1
+            )
+
+        )
+
+    )
+
+    pageItem PO_P_NUMBER (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 406
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 404
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction set-page-item (
+        name: Set Page Item
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: .po-link
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var poNumber = $(this.triggeringElement).attr("data-po-number");
+                    apex.item('PO_P_NUMBER').setValue(poNumber);
+                    apex.region('chart-region').refresh();
+                    apex.message.ariaMessage(apex.lang.formatMessage('P303.PROCESS.SUCCESS'));
+                    
+                    
+                    
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

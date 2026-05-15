@@ -1,0 +1,586 @@
+page 16020 (
+    name: Email Reporting
+    alias: EMAIL-REPORTING
+    title: Email Reporting
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: <p>This report shows all email queued to be sent and those already sent.</p>
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region email-reporting (
+        name: Email Reporting
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select apex_lang.message('APEX.FEATURE.EMAIL_REPORTING.QUEUED') mail_status,
+                       id,
+                       mail_to,
+                       mail_from,
+                       mail_replyto,
+                       mail_subj,
+                       mail_cc,
+                       mail_bcc,
+                       mail_send_count,
+                       mail_send_error,
+                       last_updated_by,
+                       last_updated_on,
+                       mail_message_created, 
+                       lower(mail_message_created_by) message_created_by,
+                       app_id,
+                       dbms_lob.getlength(mail_body) text_body_size,
+                       dbms_lob.getlength(mail_body_html) html_body_size,
+                       null send_begin,
+                       null send_end,
+                       null mail_attachment_count,
+                       null mail_attachment_size
+                  from apex_mail_queue
+                 where app_id = :APP_ID
+                union all
+                select apex_lang.message('APEX.FEATURE.EMAIL_REPORTING.SENT') mail_status,
+                       mail_id id,
+                       mail_to,
+                       mail_from,
+                       mail_replyto,
+                       mail_subj,
+                       mail_cc,
+                       mail_bcc,
+                       null mail_send_count,
+                       mail_send_error,
+                       null last_updated_by,
+                       last_updated_on,
+                       mail_message_created,
+                       null message_created_by,
+                       app_id,
+                       mail_body_size text_body_size,
+                       mail_body_html_size html_body_size,
+                       mail_message_send_begin send_begin,
+                       mail_message_send_end   send_end,
+                       mail_attachment_count,
+                       mail_attachment_size
+                  from apex_mail_log
+                 where app_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 11873708320148250914
+        }
+
+        column APP_ID (
+            type: plainText
+            heading {
+                heading: Application ID
+                alignment: end
+            }
+            layout {
+                sequence: 15
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column HTML_BODY_SIZE (
+            type: plainText
+            heading {
+                heading: HTML Body Size
+                alignment: end
+            }
+            layout {
+                sequence: 17
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: ID
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column LAST_UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column LAST_UPDATED_ON (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column MAIL_ATTACHMENT_COUNT (
+            type: plainText
+            heading {
+                heading: Attachment Count
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column MAIL_ATTACHMENT_SIZE (
+            type: plainText
+            heading {
+                heading: Attachment Size
+                alignment: end
+            }
+            layout {
+                sequence: 21
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column MAIL_BCC (
+            type: plainText
+            heading {
+                heading: BCC
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column MAIL_CC (
+            type: plainText
+            heading {
+                heading: CC
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column MAIL_FROM (
+            type: plainText
+            heading {
+                heading: From
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column MAIL_MESSAGE_CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 13
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column MAIL_REPLYTO (
+            type: plainText
+            heading {
+                heading: Reply To
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column MAIL_SEND_COUNT (
+            type: plainText
+            heading {
+                heading: Send Count
+                alignment: end
+            }
+            layout {
+                sequence: 9
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column MAIL_SEND_ERROR (
+            type: plainText
+            heading {
+                heading: Send Error
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column MAIL_STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column MAIL_SUBJ (
+            type: plainText
+            heading {
+                heading: Subject
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column MAIL_TO (
+            type: plainText
+            heading {
+                heading: To
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column MESSAGE_CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column SEND_BEGIN (
+            type: plainText
+            heading {
+                heading: Send Begin
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column SEND_END (
+            type: plainText
+            heading {
+                heading: Send End
+            }
+            layout {
+                sequence: 19
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column TEXT_BODY_SIZE (
+            type: plainText
+            heading {
+                heading: Text Body Size
+                alignment: end
+            }
+            layout {
+                sequence: 16
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Email Reporting
+        }
+
+        savedReport 118737241 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 20
+            }
+
+            displayColumn HTML_BODY_SIZE (
+                sequence: 6
+            )
+
+            displayColumn MAIL_FROM (
+                sequence: 3
+            )
+
+            displayColumn MAIL_MESSAGE_CREATED (
+                sequence: 5
+            )
+
+            displayColumn MAIL_STATUS (
+                sequence: 1
+            )
+
+            displayColumn MAIL_SUBJ (
+                sequence: 4
+            )
+
+            displayColumn MAIL_TO (
+                sequence: 2
+            )
+
+            sort (
+                column: MAIL_MESSAGE_CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16020
+                clearCache: 16020
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

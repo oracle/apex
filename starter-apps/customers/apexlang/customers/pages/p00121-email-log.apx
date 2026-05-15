@@ -1,0 +1,253 @@
+page 121 (
+    name: Email Log
+    alias: EMAIL-LOG
+    title: Email Log
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+            t-Dialog--noPadding
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>Use this Interactive Report to view the log of emails sent from this application. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.</p>
+    }
+    config {
+        buildOption: @feedback
+    }
+
+    region status-update-requests (
+        name: Status Update Requests
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select email_from, email_to, email_first_to, 
+                    body_size, created, initcap(replace(email_type,'_',' ')) as email_type
+                from eba_cust_email_log
+                where created is not null
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No sent emails found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 17678314000680038760
+        }
+
+        column BODY_SIZE (
+            type: plainText
+            heading {
+                heading: Message Length (bytes)
+                alignment: end
+            }
+            layout {
+                sequence: 18
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Update Request
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column EMAIL_FIRST_TO (
+            type: plainText
+            heading {
+                heading: To
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column EMAIL_FROM (
+            type: plainText
+            heading {
+                heading: Email From
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column EMAIL_TO (
+            type: plainText
+            heading {
+                heading: Full Email To List
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column EMAIL_TYPE (
+            type: plainText
+            heading {
+                heading: Email Type
+            }
+            layout {
+                sequence: 28
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        savedReport 176783166 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn BODY_SIZE (
+                sequence: 2
+            )
+
+            displayColumn CREATED (
+                sequence: 3
+            )
+
+            displayColumn EMAIL_FIRST_TO (
+                sequence: 1
+            )
+
+            displayColumn EMAIL_TYPE (
+                sequence: 4
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @status-update-requests
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 121
+                clearCache: [
+                    56
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,52 @@
+page 0 (
+    name: 0
+
+    region css-override (
+        name: CSS Override
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <style type="text/css">
+                .infoTextRegion.padded {
+                  padding: 8px 0;
+                  margin: 8px 8px 12px 8px;
+                }
+                
+                .infoTextRegion {
+                  padding: 0;
+                }
+                .infoTextRegion p,
+                .infoTextRegion li {
+                  font-size: 14px;
+                  color: #707070;
+                  padding: 0 0 12px 0;
+                  margin: 0;
+                  line-height: 20px;
+                }
+                .infoTextRegion ul,
+                .infoTextRegion ol {
+                margin: 8px 8px 8px 24px !important;
+                padding-bottom: 12px;
+                }
+                .infoTextRegion ul {
+                list-style: disc outside;
+                }
+                .infoTextRegion ol {
+                list-style: decimal outside;
+                }
+                .infoTextRegion li {
+                padding-bottom: 0;
+                }
+                
+                </style>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: afterHeader
+        }
+    )
+
+)
+

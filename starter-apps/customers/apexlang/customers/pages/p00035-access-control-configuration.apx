@@ -1,0 +1,511 @@
+page 35 (
+    name: Access Control Configuration
+    alias: ACCESS-CONTROL-CONFIGURATION
+    title: Access Control Configuration
+    pageGroup: @acl
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p><strong>Enabling Access Control</strong> allows the application and its features to be controlled by the <strong>Access Control List</strong>, as defined by the application administrator. This application has 3 access levels available that can be granted to a user; Administrator, Contributor and Reader. Please see the Manage Access Control List page for further details on what each level provides.</p>
+            
+            <p>In addition, if you want to make every authenticated user a 'Reader' of your application, you can select Reader access for any authenticated user from the Access Control Scope configuration option. Similarly, selecting Contributor access for any authenticated user will provide contributor access to any user who can authenticate into your application.</p>
+            
+            <br>
+            <p><b>Disabling Access Control</b> means that access to the application and all of its features including Administration are open to any user who can authenticate to the application.</p>
+            <br>
+            <p>Note: Irrespective of whether Access Control is enabled or disabled, a user still has to authenticate successfully into the application.</p>
+            ```
+    }
+
+    region about-access-control (
+        name: About Access Control
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                htp.prn(replace(
+                    apex_lang.message('ACL_CONFIGURATION_INFO'),
+                    '#IMAGE_PREFIX'||'#',
+                    :image_prefix));
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: AC_ENABLED
+        }
+    )
+
+    region access-control-configuration (
+        name: Access Control Configuration
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region access-control-configuration-2 (
+        name: Access Control Configuration
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P35_ACCESS_CONTROL_SCOPE (
+        type: radioGroup
+        label {
+            label: Access Control Scope
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-control-scope
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @access-control-configuration
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('ACCESS_CONTROL_SCOPE');
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P35_AC_ENABLED (
+        type: checkbox
+        label {
+            label: Enable Access Control
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @access-control-configuration
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody: return eba_cust_fw.get_preference_value('ACCESS_CONTROL_ENABLED');
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P35_HIDDEN_AC_ENABLED (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @access-control-configuration
+            slot: regionBody
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody: return eba_cust_fw.get_preference_value('ACCESS_CONTROL_ENABLED');
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY_CHANGES
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @access-control-configuration-2
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @access-control-configuration-2
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 12
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction apply-changes-when-ac-disabled (
+        name: APPLY CHANGES WHEN AC DISABLED
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @apply-changes
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                ($v('P35_HIDDEN_AC_ENABLED') !== $v('P35_AC_ENABLED') &&
+                 $v('P35_AC_ENABLED') === 'N')
+                
+                ```
+        }
+
+        action native-confirm (
+            action: confirm
+            settings {
+                message: Disabling Access Control means that all application features are available to any user who can authenticate. Are you sure you want to disable Access Control?
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: APPLY_CHANGES_AC_DISABLED
+                showProcessing: false
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction apply-changes-when-ac-enabled (
+        name: APPLY CHANGES WHEN AC ENABLED
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @apply-changes
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                ($v('P35_HIDDEN_AC_ENABLED') !== $v('P35_AC_ENABLED') &&
+                 $v('P35_AC_ENABLED') === 'Y')
+                
+                ```
+        }
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: APPLY_CHANGES_AC_ENABLED
+                showProcessing: false
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction apply-changes-when-ac-unchanged (
+        name: APPLY CHANGES WHEN AC UNCHANGED
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @apply-changes
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                ($v('P35_HIDDEN_AC_ENABLED') === $v('P35_AC_ENABLED'))
+                
+                ```
+        }
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: APPLY_CHANGES_AC_UNCHANGED
+                showProcessing: false
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction enable-access-control-changed (
+        name: ENABLE ACCESS CONTROL CHANGED
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P35_AC_ENABLED
+        }
+        clientSideCondition {
+            type: item=value
+            item: P35_AC_ENABLED
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P35_ACCESS_CONTROL_SCOPE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P35_ACCESS_CONTROL_SCOPE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process access-control-disabled (
+        name: ACCESS CONTROL DISABLED
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_ENABLED',
+                        p_preference_value => :P35_AC_ENABLED);
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_SCOPE',
+                        p_preference_value => (case 
+                                                   when :P35_AC_ENABLED = 'Y' then :P35_ACCESS_CONTROL_SCOPE
+                                                   else 'ACL_ONLY' 
+                                               end) );
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Access Control disabled. All application features are now available to any user who can authenticate.
+        }
+        error {
+            errorMessage: Error trying to disable Access Control.
+        }
+        advanced {
+            executionMappingIdentifier: 15964413285277122370
+        }
+        serverSideCondition {
+            type: request=Value
+            value: APPLY_CHANGES_AC_DISABLED
+        }
+    )
+
+    process access-control-enabled (
+        name: ACCESS CONTROL ENABLED
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_ENABLED',
+                        p_preference_value => :P35_AC_ENABLED);
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_SCOPE',
+                        p_preference_value => (case 
+                                                   when :P35_AC_ENABLED = 'Y' then :P35_ACCESS_CONTROL_SCOPE
+                                                   else 'ACL_ONLY' 
+                                               end) );
+                
+                    -- Seed user table with current user as an administrator or set the current user as administrator
+                    declare
+                       l_count number;
+                    begin
+                        select count(*) 
+                            into l_count 
+                        from eba_cust_users
+                        where username = :APP_USER;
+                        if l_count = 0 then
+                            insert into eba_cust_users(username, access_level_id) values (:APP_USER, 3);   
+                        else
+                            update eba_cust_users
+                            set access_level_id = 3
+                            where username = :APP_USER;
+                        end if;
+                    end;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Access Control enabled. Access to the application and its features are defined by an administrator in the <a href="f?p=&APP_ID.:MANAGE_ACL:&APP_SESSION.:::RP::">Access Control List</a>.
+        }
+        error {
+            errorMessage: Error trying to enable Access Control.
+        }
+        advanced {
+            executionMappingIdentifier: 15964413106894122369
+        }
+        serverSideCondition {
+            type: request=Value
+            value: APPLY_CHANGES_AC_ENABLED
+        }
+    )
+
+    process access-control-unchanged (
+        name: ACCESS CONTROL UNCHANGED
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_ENABLED',
+                        p_preference_value => :P35_AC_ENABLED);
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_SCOPE',
+                        p_preference_value => (case 
+                                                   when :P35_AC_ENABLED = 'Y' then :P35_ACCESS_CONTROL_SCOPE
+                                                   else 'ACL_ONLY' 
+                                               end) );
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Access Control Configuration saved.
+        }
+        error {
+            errorMessage: Error trying to save Access Control Configuration.
+        }
+        advanced {
+            executionMappingIdentifier: 15964413495163122370
+        }
+        serverSideCondition {
+            type: request=Value
+            value: APPLY_CHANGES_AC_UNCHANGED
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 12
+            }
+        }
+        comments {
+            comments: Created 18-NOV-2011 11:02 by ANTHONY
+        }
+    )
+
+)
+

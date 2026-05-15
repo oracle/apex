@@ -1,0 +1,700 @@
+page 3003 (
+    name: Components - Comments
+    alias: COMMENTS-COMPONENT
+    title: Comments - &APP_TITLE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region comments-b (
+        name: Comments B
+        type: themeTemplateComponent/comments
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       p.CREATED as COMMENT_DATE,
+                       lower(p.CREATED_BY) as USER_NAME,
+                       t.CREATED as TASK_CREATED,
+                       t.TASK_NAME || ' - ' || t.CREATED_BY as COMMENT_TEXT
+                  from EBA_UT_CHART_TASKS t,
+                       EBA_UT_CHART_PROJECTS p
+                 where t.PROJECT = p.ID
+                 order by t.CREATED
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo-chat
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: ChatDemo
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            commentText: COMMENT_TEXT
+            userName: USER_NAME
+            date: COMMENT_DATE
+            attributes: (&TASK_CREATED.)
+            style: chatSpeechBubbles
+        }
+        pagination {
+            entitiesPerPage: 5
+            showTotalCount: true
+        }
+        entityTitle {
+            singular: comment
+            plural: comments
+        }
+
+        column COMMENT_DATE (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: COMMENT_DATE
+                dataType: timestamp
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+        )
+
+        column COMMENT_TEXT (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: COMMENT_TEXT
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column TASK_CREATED (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: TASK_CREATED
+                dataType: timestamp
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column USER_NAME (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: USER_NAME
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: userNameLink
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        action delete (
+            position: actions
+            label: Delete
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region comments-c (
+        name: Comments C
+        type: themeTemplateComponent/comments
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                  select p.ID,
+                         p.CREATED as COMMENT_DATE,
+                         lower(p.CREATED_BY) as USER_NAME,
+                         t.CREATED as TASK_CREATED,
+                         t.TASK_NAME || ' - ' || t.CREATED_BY as COMMENT_TEXT,
+                         'inbound' as ALIGNMENT
+                    from EBA_UT_CHART_TASKS t,
+                         EBA_UT_CHART_PROJECTS p
+                   where t.PROJECT = p.ID
+                     and rownum = 1
+                
+                  union all
+                
+                  select p.ID,
+                         p.CREATED as COMMENT_DATE,
+                         lower(p.CREATED_BY) as USER_NAME,
+                         t.CREATED as TASK_CREATED,
+                         t.TASK_NAME || ' - ' || t.CREATED_BY as COMMENT_TEXT,
+                         'outbound' as ALIGNMENT
+                    from EBA_UT_CHART_TASKS t,
+                         EBA_UT_CHART_PROJECTS p
+                   where t.PROJECT = p.ID
+                     and rownum = 1
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @demo-thread
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            commentText: COMMENT_TEXT
+            userName: USER_NAME
+            date: COMMENT_DATE
+            attributes: (&TASK_CREATED.)
+            style: chatSpeechBubbles
+            alignment: &ALIGNMENT.
+        }
+        pagination {
+            entitiesPerPage: 5
+            showTotalCount: true
+        }
+        entityTitle {
+            singular: comment
+            plural: comments
+        }
+
+        column ALIGNMENT (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: ALIGNMENT
+                dataType: varchar2
+            }
+        )
+
+        column COMMENT_DATE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: COMMENT_DATE
+                dataType: timestamp
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+        )
+
+        column COMMENT_TEXT (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: COMMENT_TEXT
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column TASK_CREATED (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: TASK_CREATED
+                dataType: timestamp
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column USER_NAME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: USER_NAME
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region components-comments (
+        name: Components - Comments
+        type: themeTemplateComponent/comments
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 1 as ID,
+                       'JK' as AVATAR_INITIALS,
+                       '15 minutes ago' as COMMENT_DATE,
+                       'Praesent vel felis rutrum erat elementum viverra sit amet non odio. Cras vel auctor eros, 
+                        in malesuada dolor. Nulla tellus magna, ornare consectetur purus id, volutpat egestas felis. 
+                        Proin lobortis risus massa, nec faucibus arcu malesuada a. Nunc sed gravida urna. Fusce at 
+                        ligula sed erat consequat pharetra.' as COMMENT_TEXT,
+                       'Joel' as USER_NAME
+                  from sys.dual
+                union all
+                select 2 as ID,
+                       'JK' as AVATAR_INITIALS,
+                       '10 minutes ago' as COMMENT_DATE,
+                       'Praesent vel felis rutrum erat elementum viverra sit amet non odio. Cras vel auctor eros, 
+                        in malesuada dolor. Nulla tellus magna, ornare consectetur purus id, volutpat egestas felis. 
+                        Proin lobortis risus massa, nec faucibus arcu malesuada a. Nunc sed gravida urna. Fusce at 
+                        ligula sed erat consequat pharetra.' as COMMENT_TEXT,
+                       'Joel' as USER_NAME
+                  from sys.dual
+                union all
+                select 3 as ID,
+                       'JK' as AVATAR_INITIALS,
+                       '5 minutes ago' as COMMENT_DATE,
+                       'Praesent vel felis rutrum erat elementum viverra sit amet non odio. Cras vel auctor eros, 
+                        in malesuada dolor. Nulla tellus magna, ornare consectetur purus id, volutpat egestas felis. 
+                        Proin lobortis risus massa, nec faucibus arcu malesuada a. Nunc sed gravida urna. Fusce at 
+                        ligula sed erat consequat pharetra.' as COMMENT_TEXT,
+                       'Joel' as USER_NAME
+                  from sys.dual
+                ```
+        }
+        layout {
+            sequence: 35
+            parentRegion: @demo-basic
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: CommentsDemo
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            commentText: COMMENT_TEXT
+            userName: USER_NAME
+            date: COMMENT_DATE
+            applyThemeColors: false
+        }
+        plugin-avatar {
+            type: initials
+            initials: AVATAR_INITIALS
+            shape: circular
+        }
+
+        column AVATAR_INITIALS (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: AVATAR_INITIALS
+                dataType: varchar2
+            }
+        )
+
+        column COMMENT_DATE (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: COMMENT_DATE
+                dataType: varchar2
+            }
+        )
+
+        column COMMENT_TEXT (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: COMMENT_TEXT
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column USER_NAME (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: USER_NAME
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region configuration-basic (
+        name: Configuration: Basic
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Comments<br>
+                <strong>Template:</strong> Blank with Attributes (No Grid)<br>
+                
+                <h4>Attributes</h4>
+                Each row has <em>Comment Text</em>, a <em>User Name,</em> and a <em>Date</em>. <em>Avatar</em> is displayed, <em>Apply Theme Colors</em> is set to No, and <em>Style</em> is set to Basic.
+                
+                <h4>Avatar</h4>
+                <strong>Type:</strong> Initials<br>
+                <strong>Initials:</strong> <em>the AVATAR_INITIALS column</em><br>
+                <strong>Shape:</strong> Circular<br>
+                ```
+        }
+        layout {
+            sequence: 45
+            parentRegion: @demo-basic
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region configuration-chat (
+        name: Configuration: Chat
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Comments<br>
+                <strong>Template:</strong> Blank with Attributes (No Grid)<br>
+                
+                <h4>Attributes</h4>
+                Each row has <em>Comment Text</em>, a <em>User Name,</em> a <em>Date</em>, and <em>Attributes</em>. <em>Avatar</em> is displayed, <em>Apply Theme Colors</em> is set to Yes, and <em>Style</em> is set to Chat (Speech Bubbles).
+                
+                <h4>Avatar</h4>
+                <strong>Type:</strong> Icon<br>
+                <strong>Initials:</strong> fa-user<br>
+                <strong>Shape:</strong> Rounded<br>
+                
+                <h4>Actions</h4>
+                Each row has a <em>User Name Link</em> and a <em>Delete</em> button configured.
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @demo-chat
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region configuration-chat_1 (
+        name: Configuration: Thread
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Comments<br>
+                <strong>Template:</strong> Blank with Attributes (No Grid)<br>
+                
+                <h4>Attributes</h4>
+                Each row has <em>Comment Text</em>, a <em>User Name,</em> a <em>Date</em>, and <em>Attributes</em>. <em>Avatar</em> is displayed, <em>Apply Theme Colors</em> is set to Yes, and <em>Style</em> is set to Chat (Speech Bubbles). <em>Alignment</em> is set to either "inbound" or "outbound" to achieve the message thread style.
+                
+                <h4>Avatar</h4>
+                <strong>Type:</strong> Icon<br>
+                <strong>Initials:</strong> fa-user<br>
+                <strong>Shape:</strong> Rounded<br>
+                
+                <h4>Actions</h4>
+                Each row has a <em>User Name Link</em> and a <em>Delete</em> button configured.
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @demo-thread
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region demo-basic (
+        name: Demo: Basic
+        type: staticContent
+        layout {
+            sequence: 25
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region demo-chat (
+        name: Demo: Chat
+        type: staticContent
+        layout {
+            sequence: 35
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region demo-thread (
+        name: Demo: Thread
+        type: staticContent
+        layout {
+            sequence: 45
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 15
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: CommentsDemo
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    The <strong>Comments</strong> component is used to display user comments and status updates.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query (
+        name: Sample SQL Query
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 55
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            regionStaticId: ChatDemo
+        }
+    )
+
+)
+

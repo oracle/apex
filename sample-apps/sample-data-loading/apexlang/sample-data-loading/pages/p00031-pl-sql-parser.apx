@@ -1,0 +1,681 @@
+page 31 (
+    name: PL/SQL Parser
+    alias: PL-SQL-PARSER
+    title: APEX_DATA_PARSER PL/SQL API
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        executeWhenPageLoads: $("#parsed-data table.t-Report-report tr:first td").css( "font-weight","bold" );
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region discovered-columns (
+        name: Discovered Columns
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select column_position, column_name, data_type, format_mask
+                  from apex_collections c, 
+                       table( apex_data_parser.get_columns( p_profile => c.clob001 ) )
+                 where c.collection_name = 'FILE_PARSER_COLLECTION' 
+                   and c.seq_id = 1
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @parsed-data
+            slot: tabs
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column COLUMN_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Column Name
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COLUMN_POSITION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: #
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            sorting {
+                defaultSequence: 1
+                sortable: false
+            }
+        )
+
+        column DATA_TYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Data Type
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FORMAT_MASK (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Format Mask
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region information (
+        name: Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                The <strong>APEX_DATA_PARSER.PARSE</strong> table function allows to parse XML, JSON, XLSX or CSV files. File contents are returned as columns <strong>COL001</strong> to <strong>COL300</strong>. Since the parser is implemented as a table function, parsing is invoked using a SELECT statement, like selecting data from a table (see report source below). Developers can thus perform arbitrary processing logic on the parser results.</p>
+                <p>Typical CSV column separators like comma, colon or tab are detected automatically. For more information on APEX_DATA_PARSER.PARSE review the Application Express API Reference.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region parsed-data (
+        name: Parsed Data
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/tabs-container
+            templateOptions: [
+                #DEFAULT#
+                t-TabsRegion-mod--simple
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P31_FILE
+        }
+    )
+
+    region parsed-data-2 (
+        name: Parsed Data
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                -- The APEX_DATA_PARSER.PARSE function allows to "select" up to 300 columns (COL001 to COL300) from the
+                -- parsed file. This example uses the following parameters.
+                --
+                --     P_CONTENT             the file content to be parsed as a BLOB
+                --     P_FILE_NAME           the name of the file; only used to derive the file type. 
+                --     P_ADD_HEADERS_ROW     add the detected attribute names for XML or JSON files as the first row
+                --     P_XLSX_SHEET_NAME     For XLSX workbooks. The name of the worksheet to parse. If omitted or NULL, the function will
+                --                           use the first worksheet found.
+                --      
+                select line_number, col001, col002, col003, col004, col005, col006, col007, col008, col009, col010
+                       -- more columns (col011 to col300) can be selected here.
+                  from apex_application_temp_files f, 
+                       table( apex_data_parser.parse(
+                                  p_content                     => f.blob_content,
+                                  p_add_headers_row             => 'Y',
+                                  p_xlsx_sheet_name             => :P31_XLSX_WORKSHEET,
+                                  p_max_rows                    => 500,
+                                  p_store_profile_to_collection => 'FILE_PARSER_COLLECTION',
+                                  p_file_name                   => f.filename ) ) p
+                 where f.name = :P31_FILE
+                 and line_number > 1
+                ```
+            pageItemsToSubmit: [
+                P31_XLSX_WORKSHEET
+                P31_FILE
+            ]
+        }
+        layout {
+            sequence: 40
+            parentRegion: @parsed-data
+            slot: tabs
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: parsed-data
+        }
+        headerAndFooter {
+            headerText: Showing the first 10 columns only. Adjust the report SQL Query to show more columns.
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+            ]
+        }
+        messages {
+            whenNoDataFound: No data parsed. Please upload a file.
+        }
+        componentAdvanced {
+            sortNulls: first
+        }
+        heading {
+            type: plsqlFunctionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_col_headers varchar2(32000);
+                begin
+                    select p.line_number || ':' || p.col001 || ':' || p.col002 || ':' || p.col003 || ':' || p.col004 || ':' || p.col005 || ':' || 
+                           p.col006 || ':' || p.col007 || ':' || p.col008 || ':' || p.col009 || ':' || p.col010
+                      into l_col_headers
+                      from apex_application_temp_files f, 
+                           table( apex_data_parser.parse(
+                                  p_content                     => f.blob_content,
+                                  p_add_headers_row             => 'Y',
+                                  p_xlsx_sheet_name             => :P31_XLSX_WORKSHEET,
+                                  p_max_rows                    => 500,
+                                  p_store_profile_to_collection => 'FILE_PARSER_COLLECTION',
+                                  p_file_name                   => f.filename ) ) p
+                     where f.name = :P31_FILE
+                     and p.line_number = 1;
+                
+                    return l_col_headers;
+                end;
+                ```
+        }
+        download {
+            csvExportEnabled: true
+        }
+
+        column COL001 (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Col001
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL002 (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Col002
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL003 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Col003
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL004 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Col004
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL005 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Col005
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL006 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Col006
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL007 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Col007
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL008 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Col008
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL009 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Col009
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL010 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Col010
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINE_NUMBER (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Line Number
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            sorting {
+                defaultSequence: 1
+                sortable: false
+            }
+        )
+
+    )
+
+    region report-source (
+        name: Report Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P31_FILE
+        }
+        settings {
+            regionStaticId: parsed-data
+        }
+    )
+
+    region upload-a-file (
+        name: Upload a file
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+                t-Form--large
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P31_FILE (
+        type: fileUpload
+        label {
+            label: Upload a File
+            alignment: left
+        }
+        storage {
+            type: appTempFiles
+        }
+        layout {
+            sequence: 10
+            region: @upload-a-file
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 100
+        }
+        help {
+            inlineHelpText: Valid extensions: .xlsx, .txt, .csv, .js, .json, .xml
+            helpText: Upload a file to be parsed by the APEX_DATA_PARSER PL/SQL API. After upload, file contents can be reviewed in an APEX report. No data will be stored.
+        }
+    )
+
+    pageItem P31_XLSX_WORKSHEET (
+        type: selectList
+        label {
+            label: XLSX Worksheet
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select sheet_display_name, sheet_file_name
+                  from apex_application_temp_files f,
+                       table( apex_data_parser.get_xlsx_worksheets( p_content => blob_content ) ) p
+                 where f.name = :P31_FILE
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @upload-a-file
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: lower(:P31_FILE) like '%xlsx'
+        }
+    )
+
+    button upload (
+        buttonName: UPLOAD
+        label: Upload File
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-columns (
+        name: Refresh Columns
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @parsed-data-2
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @discovered-columns
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction worksheet-chosen (
+        name: Worksheet chosen
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P31_XLSX_WORKSHEET
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @parsed-data-2
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation must-be-a-valid-file-type (
+        name: Must be a valid file type
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                lower( :P31_FILE ) like '%.xlsx' or
+                lower( :P31_FILE ) like '%.xml' or
+                lower( :P31_FILE ) like '%.csv' or
+                lower( :P31_FILE ) like '%.txt' or
+                lower( :P31_FILE ) like '%.js' or
+                lower( :P31_FILE ) like '%.json' or
+                lower( :P31_FILE ) like '%.geojson'
+                ```
+        }
+        error {
+            errorMessage: Only XML, JSON, XLSX or delimited (CSV) files are supported.
+        }
+    )
+
+    computation p31-xlsx-worksheet (
+        itemName: P31_XLSX_WORKSHEET
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: staticValue
+        }
+        serverSideCondition {
+            type: request=Value
+            value: UPLOAD
+        }
+    )
+
+)
+

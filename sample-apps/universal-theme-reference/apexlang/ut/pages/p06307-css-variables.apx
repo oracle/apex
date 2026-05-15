@@ -1,0 +1,897 @@
+page 6307 (
+    name: CSS Variables
+    alias: CSS-VARIABLES
+    title: CSS Variables
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .red {color:red;}
+            
+            .color-border {
+                border-width: 1px;
+                border-style: solid;
+                padding: 7px;
+            }
+            
+            .color-cell-block {
+                display: block;
+                padding: 8px;
+                text-align: center;
+                border-radius: 2px;
+            }
+            
+            .sample-code .t-Region-body {
+              --ut-region-body-padding-y: 48px;
+              --ut-region-body-padding-x: 48px;
+              background-color: rgba(125, 125, 125, .5);
+            }
+            
+            .preview {
+              display: inline-flex;
+              inline-size: 56px;
+              block-size: 32px;
+              font-size: 20px;
+              align-items: center;
+              justify-content: center;
+            }
+            
+            .exampleCard {
+              border-width: var(--ut-component-border-width);
+              border-style: solid;
+              border-color: var(--ut-component-border-color);
+              border-radius: var(--ut-component-border-radius);
+              box-shadow: var(--ut-component-box-shadow);
+              background-color: var(--ut-component-background-color);
+              color: var(--ut-component-text-default-color);
+              padding: 20px;
+              margin: auto;
+              max-width: 320px;
+            }
+            
+            .exampleCard-icon {
+              background-color: var(--ut-component-icon-background-color);
+              color: var(--ut-component-icon-color);
+              inline-size: 48px;
+              block-size: 48px;
+              font-size: 24px;
+              border-radius: inherit;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-block-end: 12px;
+            }
+            
+            .exampleCard-title {
+              color: var(--ut-component-text-title-color);
+              margin: 0;
+            }
+            
+            .exampleCard-subtitle {
+              color: var(--ut-component-text-subtitle-color);
+              margin-block-start: 0;
+              margin-block-end: 12px;
+            }
+            
+            .exampleCard-misc {
+              color: var(--ut-component-text-muted-color);
+              font-size: 12px;
+              margin-block-start: 12px;
+              margin-block-end: 0;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region color-palette-variables (
+        name: Color Palette Variables
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT LEVEL num, 
+                    null variable, 
+                    null preview, 
+                    null variable_contrast,
+                    null preview_contrast,
+                    null color_block
+                  FROM DUAL
+                CONNECT BY LEVEL <= 45
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @color-variables
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        reportLayout {
+            numberOfRows: 999
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column COLOR_BLOCK (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+        column NUM (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column PREVIEW (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Color Preview
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                htmlExpression: <span class="preview" style="background-color: var(--u-color-#NUM#)"></span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PREVIEW_CONTRAST (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Contrast Preview
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            columnFormatting {
+                htmlExpression: <span class="preview" style="background: var(--u-color-#NUM#); color: var(--u-color-#NUM#-contrast)">Abc</span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VARIABLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Variable
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            columnFormatting {
+                htmlExpression: --u-color-#NUM#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VARIABLE_CONTRAST (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Variable Contrast
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            columnFormatting {
+                htmlExpression: --u-color-#NUM#-contrast
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region color-variables (
+        name: Color Variables
+        type: staticContent
+        source {
+            htmlCode: <p>Component variables are generic variables that are used across the Universal Theme as the base styles, and can be used by plugin developers to hook into theme roller.</p>
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region component-variables (
+        name: Component Variables
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="t-Report t-Report--stretch t-Report--staticRowColors t-Report--rowHighlightOff t-Report--horizontalBorders">
+                <table class="t-Report-report" width="100%">
+                  <thead>
+                    <tr>
+                      <th class="t-Report-colHead" align="left">Variable</th>
+                      <th class="t-Report-colHead">Preview</th>
+                      <th class="t-Report-colHead" align="left">Description</th>
+                      <th class="t-Report-colHead" align="left">Default Value (Vita)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-background-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-background-color);"></span></td>
+                      <td class="t-Report-cell">Component Background Color</td>
+                      <td class="t-Report-cell">#fff</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-border-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-border-color);"></span></td>
+                      <td class="t-Report-cell">Component Border Color</td>
+                      <td class="t-Report-cell">rgba(0,0,0,.1)</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-border-width</td>
+                      <td class="t-Report-cell"><span class="preview" style="border-color:var(--ut-component-border-color);border-width:var(--ut-component-border-width);border-style: solid;"></span></td>
+                      <td class="t-Report-cell">Component Border Width</td>
+                      <td class="t-Report-cell">1px</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-border-radius</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-border-color);border-color:var(--ut-component-border-color);border-width:var(--ut-component-border-width);border-style: solid;border-radius:var(--ut-component-border-radius);"></span></td>
+                      <td class="t-Report-cell">Component Border Radius</td>
+                      <td class="t-Report-cell">2px</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-box-shadow</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-background-color); box-shadow:var(--ut-component-box-shadow);"></span></td>
+                      <td class="t-Report-cell">Component Shadow</td>
+                      <td class="t-Report-cell">var(--ut-shadow-lg)</td>
+                    </tr>
+                
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-highlight-background-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-highlight-background-color);"></span></td>
+                      <td class="t-Report-cell">Component Highlight Background Color (example: hover state)</td>
+                      <td class="t-Report-cell">rgba(0, 0, 0, .025)</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-toolbar-background-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-toolbar-background-color);"></span></td>
+                      <td class="t-Report-cell">Component Toolbar Background Color</td>
+                      <td class="t-Report-cell">rgba(0, 0, 0, .025)</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-inner-border-width</td>
+                      <td class="t-Report-cell"><span class="preview" style="border-color:var(--ut-component-inner-border-color);border-width:var(--ut-component-inner-border-width);border-style: solid;"></span></td>
+                      <td class="t-Report-cell">Component Inner Border Width</td>
+                      <td class="t-Report-cell">1px</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-inner-border-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-inner-border-color);"></span></td>
+                      <td class="t-Report-cell">Component Inner Border Color</td>
+                      <td class="t-Report-cell">rgba(0, 0, 0, 0.05)</td>
+                    </tr>
+                
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-text-default-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="color:var(--ut-component-text-default-color)">Abc</span></td>
+                      <td class="t-Report-cell">Component Default Text Color</td>
+                      <td class="t-Report-cell">#000</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-text-title-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="color:var(--ut-component-text-title-color)">Abc</span></td>
+                      <td class="t-Report-cell">Component Default Title Color</td>
+                      <td class="t-Report-cell">#000</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-text-subtitle-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="color:var(--ut-component-text-subtitle-color)">Abc</span></td>
+                      <td class="t-Report-cell">Component Default Subtitle Color</td>
+                      <td class="t-Report-cell">rgba(0, 0, 0, .85)</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-text-muted-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="color:var(--ut-component-text-muted-color)">Abc</span></td>
+                      <td class="t-Report-cell">Component Default Muted Color (example: description text)</td>
+                      <td class="t-Report-cell">rgba(0, 0, 0, .65)</td>
+                    </tr>
+                
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-icon-background-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-icon-background-color);"></span></td>
+                      <td class="t-Report-cell">Component Icon Background Color</td>
+                      <td class="t-Report-cell">var(--ut-palette-primary)</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-icon-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="color:var(--ut-component-icon-color)"><span class="fa fa-apex"></span></span></td>
+                      <td class="t-Report-cell">Component Icon Color</td>
+                      <td class="t-Report-cell">var(--ut-palette-primary-contrast)</td>
+                    </tr>
+                
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-badge-background-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-badge-background-color);"></span></td>
+                      <td class="t-Report-cell">Component Badge Background Color</td>
+                      <td class="t-Report-cell">rgba(0, 0, 0, .05)</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-badge-text-color</td>
+                      <td class="t-Report-cell"><span class="preview" style="color:var(--ut-component-badge-text-color)">Abc</span></td>
+                      <td class="t-Report-cell">Component Badge Text Color</td>
+                      <td class="t-Report-cell">var(--ut-component-text-default-color)</td>
+                    </tr>
+                
+                    <tr>
+                      <td class="t-Report-cell">--ut-component-badge-border-radius</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-badge-background-color);border-radius:var(--ut-component-badge-border-radius);"></span></td>
+                      <td class="t-Report-cell">Component Badge Border Radius</td>
+                      <td class="t-Report-cell">2px</td>
+                    </tr>
+                
+                  </tbody>
+                </table>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                You can use these CSS variables, instead of hard-coded values, in your custom CSS definitions.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 80
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-component-css (
+        name: Sample Component CSS
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <code>
+                .exampleCard {
+                  border-width: <span class="red">var(--ut-component-border-width)</span>;
+                  border-style: solid;
+                  border-color: <span class="red">var(--ut-component-border-color)</span>;
+                  border-radius: <span class="red">var(--ut-component-border-radius)</span>;
+                  box-shadow: <span class="red">var(--ut-component-box-shadow)</span>;
+                  background-color: <span class="red">var(--ut-component-background-color)</span>;
+                  color: <span class="red">var(--ut-component-text-default-color)</span>;
+                  padding: 20px;
+                  margin: auto;
+                  max-width: 320px;
+                }
+                
+                .exampleCard-icon {
+                  background-color: <span class="red">var(--ut-component-icon-background-color)</span>;
+                  color: <span class="red">var(--ut-component-icon-color)</span>;
+                  inline-size: 48px;
+                  block-size: 48px;
+                  font-size: 24px;
+                  border-radius: inherit;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  margin-block-end: 12px;
+                }
+                
+                .exampleCard-title {
+                  color: <span class="red">var(--ut-component-text-title-color)</span>;
+                  margin: 0;
+                }
+                
+                .exampleCard-subtitle {
+                  color: <span class="red">var(--ut-component-text-subtitle-color)</span>;
+                  margin-block-start: 0;
+                  margin-block-end: 12px;
+                }
+                
+                .exampleCard-misc {
+                  color: <span class="red">var(--ut-component-text-muted-color)</span>;
+                  font-size: 12px;
+                  margin-block-start: 12px;
+                  margin-block-end: 0;
+                }
+                </code>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @sample-component-preview
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+                margin-top-lg
+            ]
+        }
+    )
+
+    region sample-component-preview (
+        name: Sample Component Preview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="exampleCard">
+                  <div class="exampleCard-icon fa fa-apex"></div>
+                  <h3 class="exampleCard-title">Example Title</h3>
+                  <h4 class="exampleCard-subtitle">Example Subtitle</h4>
+                  <div class="exampleCard-body">
+                    This is just an example of a component's body text.
+                  </div>
+                  <div class="exampleCard-misc">Example Muted Text</div>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region shadow-variables (
+        name: Shadow Variables
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="t-Report-report" width="100%">
+                  <thead>
+                    <tr>
+                      <th class="t-Report-colHead" align="left">Variable</th>
+                      <th class="t-Report-colHead">Preview</th>
+                      <th class="t-Report-colHead" align="left">Description</th>
+                      <th class="t-Report-colHead" align="left">Default Value (Vita)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="t-Report-cell">--ut-shadow-sm</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-background-color);box-shadow:var(--ut-shadow-sm);"></span></td>
+                      <td class="t-Report-cell">Shadow Small</td>
+                      <td class="t-Report-cell">0 2px 4px -2px rgba(0, 0, 0, 0.1)</td>
+                    </tr>
+                    <tr>
+                      <td class="t-Report-cell">--ut-shadow-md</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-background-color);box-shadow:var(--ut-shadow-md);"></span></td>
+                      <td class="t-Report-cell">Shadow Medium</td>
+                      <td class="t-Report-cell">0 12px 24px -12px rgba(0, 0, 0, 0.3)</td>
+                    </tr>
+                    <tr>
+                      <td class="t-Report-cell">--ut-shadow-lg</td>
+                      <td class="t-Report-cell"><span class="preview" style="background-color:var(--ut-component-background-color);box-shadow:var(--ut-shadow-lg);"></span></td>
+                      <td class="t-Report-cell">Shadow Large</td>
+                      <td class="t-Report-cell">0 24px 48px -24px rgba(0, 0, 0, 0.3)</td>
+                    </tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region stateful-color-variables (
+        name: Stateful Color Variables
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT 1 seq,
+                       'primary' class, 
+                       null variable, 
+                       null preview, 
+                       null variable_contrast,
+                       null preview_contrast,
+                       null variable_shade,
+                       null preview_shade,
+                       null color_block
+                  FROM DUAL
+                union all
+                SELECT 2 seq,
+                       'danger' class, 
+                       null variable, 
+                       null preview, 
+                       null variable_contrast,
+                       null preview_contrast,
+                       null variable_shade,
+                       null preview_shade,
+                       null color_block
+                  FROM DUAL
+                union all
+                SELECT 3 seq,
+                       'warning' class, 
+                       null variable, 
+                       null preview, 
+                       null variable_contrast,
+                       null preview_contrast,
+                       null variable_shade,
+                       null preview_shade,
+                       null color_block
+                  FROM DUAL
+                union all
+                SELECT 4 seq,
+                       'success' class, 
+                       null variable, 
+                       null preview, 
+                       null variable_contrast,
+                       null preview_contrast,
+                       null variable_shade,
+                       null preview_shade,
+                       null color_block
+                  FROM DUAL
+                union all
+                SELECT 5 seq,
+                       'info' class, 
+                       null variable, 
+                       null preview, 
+                       null variable_contrast,
+                       null preview_contrast,
+                       null variable_shade,
+                       null preview_shade,
+                       null color_block
+                  FROM DUAL
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @color-variables
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                js-headingLevel-3
+            ]
+        }
+        reportLayout {
+            numberOfRows: 999
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column CLASS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 20
+            }
+        )
+
+        column COLOR_BLOCK (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 90
+            }
+        )
+
+        column PREVIEW (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Preview
+            }
+            layout {
+                sequence: 40
+            }
+            columnFormatting {
+                htmlExpression: <span class="preview" style="background-color: var(--ut-palette-#CLASS#)"></span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PREVIEW_CONTRAST (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Preview Contrast
+            }
+            layout {
+                sequence: 60
+            }
+            columnFormatting {
+                htmlExpression: <span class="preview" style="background-color: var(--ut-palette-#CLASS#);  color: var(--ut-palette-#CLASS#-contrast)">Abc</span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PREVIEW_SHADE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Preview Shade
+            }
+            layout {
+                sequence: 80
+            }
+            columnFormatting {
+                htmlExpression: <span class="preview" style="background-color: var(--ut-palette-#CLASS#-shade)"></span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SEQ (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column VARIABLE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Variable
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                htmlExpression: --ut-palette-#CLASS#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VARIABLE_CONTRAST (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Variable Contrast
+            }
+            layout {
+                sequence: 50
+            }
+            columnFormatting {
+                htmlExpression: --ut-palette-#CLASS#-contrast
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VARIABLE_SHADE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Variable Shade
+            }
+            layout {
+                sequence: 70
+            }
+            columnFormatting {
+                htmlExpression: --ut-palette-#CLASS#-shade
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+)
+

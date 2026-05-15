@@ -1,0 +1,93 @@
+app SAMPLE-INTERACTIVE-GRIDS (
+    name: Sample Interactive Grids
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: text
+        text: &APP_NAME.
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @desktop-navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar-top
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css
+    }
+    authentication {
+        scheme: @apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: mustNotBePublicUser
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        checksumSalt: 92E41D1C738095B7834060B566F9DC54C5ED9A5237BED7CB0A73E93C3CEEE436
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Interactive Grids
+        }
+    )
+
+    substitution GETTING_STARTED_URL (
+        value {
+            staticValue: http://www.oracle.com/technetwork/developer-tools/apex/index.html
+        }
+    )
+
+)
+

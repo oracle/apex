@@ -1,0 +1,533 @@
+page 37 (
+    name: Access Request Details
+    alias: ACCESS-REQUEST-DETAILS
+    title: Access Request Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region access-request-details (
+        name: Access Request Details
+        type: staticContent
+        layout {
+            sequence: 11
+            slot: body-3
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 1
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P37_ACTIONED_BY (
+        type: displayOnly
+        label {
+            label: Actioned By
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 80
+            region: @access-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACTIONED_BY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P37_ACTIONED_REASON (
+        type: textarea
+        label {
+            label: Actioned Reason
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 100
+            region: @access-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 5
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACTIONED_REASON
+            used: always
+        }
+        quickPicks {
+            type: static
+            label1: Approved
+            value1: Approved
+            label2: Declined
+            value2: Declined
+        }
+    )
+
+    pageItem P37_ALREADY_APP_USER (
+        type: displayOnly
+        label {
+            label: Already App User
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 90
+            region: @access-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: staticValue
+            staticValue: This email address is already authorized to access this self-service system but they do not have an Application Express account.  If you approve, one will be created for them.
+            used: always
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from 
+                (
+                select 'Y' apex_auth,
+                       nvl((select 'Y'  
+                              from apex_appl_acl_users
+                             where application_id = :APP_ID
+                               and user_name_lc = lower(:P37_EMAIL_ADDRESS)),'N') is_app_user
+                  from apex_applications
+                 where application_id = :APP_ID
+                   and authentication_scheme_type = 'Application Express Accounts'
+                )
+                 where apex_auth = 'Y'
+                   and is_app_user = 'Y'
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P37_CREATED (
+        type: displayOnly
+        label {
+            label: Created
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 60
+            region: @access-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: fmMonth DDfm, RRRR HH24:MI AM
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CREATED
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P37_EMAIL_ADDRESS (
+        type: displayOnly
+        label {
+            label: Email Address
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 40
+            region: @access-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: EMAIL_ADDRESS
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P37_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @access-request-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P37_JUSTIFICATION (
+        type: displayOnly
+        label {
+            label: Justification
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 50
+            region: @access-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: JUSTIFICATION
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P37_STATUS (
+        type: displayOnly
+        label {
+            label: Status
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 70
+            region: @access-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STATUS
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P37_USERNAME (
+        type: displayOnly
+        label {
+            label: Username
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 20
+            region: @access-request-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: USERNAME
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button approve (
+        buttonName: APPROVE
+        label: Approve Request for Access
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 22
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button decline (
+        buttonName: DECLINE
+        label: Decline
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            cssClasses: uButtonAlt
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction hide-actioned-by-when-no-action-yet (
+        name: hide actioned_by when no action yet
+        execution {
+            sequence: 10
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P37_ACTIONED_BY
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P37_ACTIONED_BY
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process approve-requests (
+        name: Approve requests
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_qpoll_account.approve_access_request (
+                   p_app_id          => :APP_ID,
+                   p_app_title       => :APPLICATION_TITLE,
+                   p_app_link        => '<a href="'||:APP_PATH||'/f?p='||:APP_ID||'">'||:APPLICATION_TITLE||'</a>',
+                   p_request_id      => :P37_ID,
+                   p_actioned_reason => :P37_ACTIONED_REASON );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Request approved.
+        }
+        error {
+            errorMessage:
+                ```
+                Request failed to be approved.
+                #SQLERRM#
+                ```
+        }
+        advanced {
+            executionMappingIdentifier: 13902822575180409676
+        }
+        serverSideCondition {
+            whenButtonPressed: @approve
+        }
+    )
+
+    process decline-requests (
+        name: Decline requests
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_qpoll_account.decline_access_request (
+                   p_app_id          => :APP_ID,
+                   p_app_title       => :APPLICATION_TITLE,
+                   p_request_id      => :P37_ID,
+                   p_actioned_reason => :P37_ACTIONED_REASON );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Request declined.
+        }
+        error {
+            errorMessage:
+                ```
+                Request failed to be declined.
+                #SQLERRM#
+                ```
+        }
+        advanced {
+            executionMappingIdentifier: 13902822774618419015
+        }
+        serverSideCondition {
+            whenButtonPressed: @decline
+        }
+    )
+
+    process fetch-row-from-eba-qpoll-access-requests (
+        name: Fetch Row from EBA_QPOLL_ACCESS_REQUESTS
+        type: autoRowFetch
+        source {
+            tableName: EBA_QPOLL_ACCESS_REQUESTS
+            pkColumn: ID
+            pkItem: P37_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 13902747686358951196
+        }
+    )
+
+    process reset-page (
+        name: Reset Page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 13902823471632427637
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+)
+

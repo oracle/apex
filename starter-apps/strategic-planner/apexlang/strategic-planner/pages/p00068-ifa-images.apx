@@ -1,0 +1,549 @@
+page 68 (
+    name: Initiative Focus Area Images
+    alias: IFA-IMAGES
+    title: &P68_FOCUS_AREA. - Images
+    pageGroup: @initiatives
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region details (
+        name: details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select f.area, 
+                       fa.initiative_id,
+                       i.initiative,
+                       fa.focus_area,
+                       fa.development_owner_id,
+                       (select first_name||' '||last_name 
+                          from sp_team_members tm 
+                         where tm.id = fa.development_owner_id) dev_owner,
+                       --
+                       fa.updated
+                  from SP_INITIATIVES i,
+                       SP_AREAS f,
+                       sp_initiative_focus_areas fa
+                 where i.area_id = f.id
+                   and i.id = fa.initiative_id  
+                   and fa.id = :P68_INIT_FOCUS_AREA_ID
+                     
+                ```
+            pageItemsToSubmit: P68_INITIATIVE_ID
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column AREA (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: &NOMENCLATURE_AREA.
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_FOCUS_AREA: #FOCUS_AREA#
+                    }
+                    clearCache: 23
+                }
+                linkText: #AREA#
+            }
+        )
+
+        column DEVELOPMENT_OWNER_ID (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column DEV_OWNER (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Development Owner
+            }
+            layout {
+                sequence: 40
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: #DEVELOPMENT_OWNER_ID#
+                    }
+                    clearCache: 73
+                }
+                linkText: #DEV_OWNER#
+            }
+        )
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: &NOMENCLATURE_INITIATIVE.
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_INITIATIVE_ID: #INITIATIVE_ID#
+                    }
+                    clearCache: 94
+                }
+                linkText: #INITIATIVE#
+            }
+        )
+
+        column INITIATIVE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
+    region facets (
+        name: Facets
+        type: facetedSearch
+        source {
+            filteredRegion: @images
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P68_AUTHOR (
+            type: checkboxGroup
+            label {
+                label: Contributor
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: AUTHOR
+            }
+        )
+
+        facet P68_FILE_EXTENSION (
+            type: checkboxGroup
+            label {
+                label: File Extension
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: FILE_EXTENSION
+            }
+        )
+
+        facet P68_MONTH_CREATED (
+            type: checkboxGroup
+            label {
+                label: Month Created
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: MONTH_CREATED
+            }
+        )
+
+        facet P68_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        facet P68_TAGS (
+            type: checkboxGroup
+            label {
+                label: Tags
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: TAGS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+    )
+
+    region images (
+        name: Images
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.ID,
+                       d.DOCUMENT_FILENAME,
+                       d.document_mimetype,
+                       d.document_lastupd,
+                       d.UPDATED,
+                       d.created,
+                       d.tags,
+                       case when length(d.doc_description) > 200
+                            then substr(d.doc_description,1,200)||'...'
+                            else d.doc_description
+                            end doc_description,
+                       d.DOCUMENT_BLOB,
+                       lower(d.created_by) author,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) doc_size,
+                       apex_util.get_since(d.created) created_since,
+                       d.created date_created,
+                       lower(substr(d.DOCUMENT_FILENAME,instr(d.DOCUMENT_FILENAME,'.',-1)+1,length(d.DOCUMENT_FILENAME)-instr(d.DOCUMENT_FILENAME,'.',-1))) file_extension,
+                       to_char(d.created,'YYYY.MM') month_created
+                  from SP_INIT_FOCUS_AREA_DOCUMENTS d
+                 where d.init_focus_area_id = :P68_INIT_FOCUS_AREA_ID and 
+                       (
+                           lower(d.DOCUMENT_FILENAME) like '%.png' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                order by created desc
+                
+                ```
+            pageItemsToSubmit: P68_INIT_FOCUS_AREA_ID
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: DOCUMENT_FILENAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: &AUTHOR. - &CREATED_SINCE.
+        }
+        secondaryBody {
+            advancedFormatting: true
+            htmlExpression: &DOC_DESCRIPTION.
+        }
+        media {
+            source: blobColumn
+            blobColumn: DOCUMENT_BLOB
+        }
+        blobAttributes {
+            mimeTypeColumn: DOCUMENT_MIMETYPE
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 59
+                    items: {
+                        P59_ID: &ID.
+                        P59_PREV_PAGE: 68
+                    }
+                    clearCache: 59
+                }
+            }
+        )
+
+    )
+
+    pageItem P68_FOCUS_AREA (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @images
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P68_INIT_FOCUS_AREA_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @images
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button add-document (
+        buttonName: add_document
+        label: Add Document
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 56
+                items: {
+                    P56_INIT_FOCUS_AREA_ID: &P68_INIT_FOCUS_AREA_ID.
+                }
+                clearCache: 56
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 33
+                items: {
+                    P33_INIT_FOCUS_AREA_ID: &P68_INIT_FOCUS_AREA_ID.
+                }
+                clearCache: 33
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dc (
+        name: DC
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @images
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p68-focus-area (
+        itemName: P68_FOCUS_AREA
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select focus_area
+                  from sp_initiative_focus_areas
+                 where id = :P68_INIT_FOCUS_AREA_ID
+                ```
+        }
+    )
+
+)
+

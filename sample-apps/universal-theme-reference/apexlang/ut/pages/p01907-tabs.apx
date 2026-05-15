@@ -1,0 +1,448 @@
+page 1907 (
+    name: Tabs
+    alias: TABS
+    title: Tabs - &APP_TITLE.
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads: apex.theme42demo.jump('&REQUEST.');
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 21
+            parentRegion: @tabs-as-regions
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Tab Regions
+        }
+    )
+
+    region demo-2 (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @tabs-as-a-list
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkLabel: Demo Tab List
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 1
+            parentRegion: @tabs-as-regions
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Tab Regions Instructions
+        }
+        settings {
+            staticId: Demo1
+            additionalText:
+                ```
+                <p>Then create or move sub regions into the Tabs Container, one for each tab you want to have.</p>
+                <p><strong>Tip:</strong> You can easily nest tabs by creating another Tabs Container region within a sub region of an existing Tabs Container region.</p>
+                ```
+        }
+    )
+
+    region instructions-2 (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 10
+            parentRegion: @tabs-as-a-list
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Tab List Instructions
+        }
+        settings {
+            staticId: Demo2
+            additionalText: <p><strong>Tip:</strong> You can add icons to these tabs simply by modifying the icon attribute of the list entry.</p>
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>You can use Tabs Container within your application pages to improve navigation, flow and usability of your pages. The Tabs Container provides similar functionality to the Region Display Selector, but has different implementations and use cases.</p>
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: dialog_fixed
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region tab (
+        name: Tab 1
+        type: staticContent
+        source {
+            htmlCode: Content 1
+        }
+        layout {
+            sequence: 20
+            parentRegion: @tabs-container
+            slot: tabs
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region tab-2 (
+        name: Tab 2
+        type: staticContent
+        source {
+            htmlCode: Content 2
+        }
+        layout {
+            sequence: 30
+            parentRegion: @tabs-container
+            slot: tabs
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region tab-3 (
+        name: Tab 3
+        type: staticContent
+        source {
+            htmlCode: Content 3
+        }
+        layout {
+            sequence: 40
+            parentRegion: @tabs-container
+            slot: tabs
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region tabs-as-a-list (
+        name: Tabs as a List
+        type: staticContent
+        source {
+            htmlCode: <p>The <strong>Tabs</strong> List Template can be used to create a set of tabs where each tab links to another page. This is especially useful for applications that require nested or complex navigation hierarchies.</p>
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            htmlDomId: tab_list
+            regionDisplaySelector: true
+        }
+    )
+
+    region tabs-as-regions (
+        name: Tabs as Regions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The <strong>Tabs Container</strong> Region Template can be used to create a set of tabs within your page. Simply place sub regions within the Tabs Container and they will appear as a tab.</p>
+                <p>This control is useful when you want to display different regions or information, but utilise the same space on a page.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            htmlDomId: tab_container
+            regionDisplaySelector: true
+        }
+    )
+
+    region tabs-container (
+        name: Tabs Container
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/tabs-container
+            templateOptions: [
+                #DEFAULT#
+                t-TabsRegion-mod--pill
+            ]
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+    )
+
+    region tabs-list (
+        name: Tabs List
+        type: list
+        source {
+            list: @ut-sample-tabs-list
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            htmlDomId: Demo2
+        }
+        componentAppearance {
+            listTemplate: @/tabs
+            templateOptions: [
+                #DEFAULT#
+                t-Tabs--simple
+            ]
+            cssClasses: dm-TemplateOption-previewTarget
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 31
+            parentRegion: @tabs-as-regions
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Tab Region Template Options
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region template-options-2 (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 70
+            parentRegion: @tabs-as-a-list
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Tab List Template Options
+        }
+        settings {
+            staticId: Demo2
+        }
+    )
+
+    dynamicAction customevent-templateoptionchanged (
+        name: customEvent templateOptionChanged
+        execution {
+            sequence: 10
+        }
+        when {
+            event: custom
+            customEvent: templateOptionChanged
+            selectionType: jsExpression
+            javaScriptExpression: document
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    let tabsRegion$ = $(`#${this.data.componentStaticId}.t-TabsRegion`);
+                    
+                    if ($.apex.aTabs && tabsRegion$.length > 0) {
+                        $(`#${this.data.componentStaticId} .apex-rds-slider, #${this.data.componentStaticId} .t-Tabs` ).remove();
+                        tabsRegion$.utTabs();
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

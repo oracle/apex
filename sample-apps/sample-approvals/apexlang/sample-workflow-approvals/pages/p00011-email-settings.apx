@@ -1,0 +1,143 @@
+page 11 (
+    name: Email Settings
+    alias: EMAIL-SETTINGS
+    title: Email Settings
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>The Job Change task definition conditionally sends an email notification upon task completion with an Approved outcome. The email will go to the address you configure on this page as an application setting. If this setting is blank, the Job Change approval email is skipped by evaluating an application item whose value is computed from this setting.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region email-settings (
+        name: Email Settings
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P11_DEMO_NOTIFICATION_EMAIL (
+        type: textField
+        label {
+            label: Email for Demo Notification
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            slot: body
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    button save (
+        buttonName: Save
+        label: Save
+        layout {
+            sequence: 30
+            slot: body
+            column: 1
+            columnSpan: 1
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation valid-email (
+        name: Valid Email
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: "regexp_like (:P11_DEMO_NOTIFICATION_EMAIL, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$')"
+        }
+        error {
+            errorMessage: Please provide a valid email address.
+        }
+    )
+
+    computation p11-demo-notification-email (
+        itemName: P11_DEMO_NOTIFICATION_EMAIL
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL');
+        }
+    )
+
+    process update-app-setting (
+        name: Update App Setting
+        type: executeCode
+        source {
+            plsqlCode: apex_app_setting.set_value('DEMO_NOTIFICATION_EMAIL',:P11_DEMO_NOTIFICATION_EMAIL);
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 584383060744672813
+        }
+    )
+
+)
+

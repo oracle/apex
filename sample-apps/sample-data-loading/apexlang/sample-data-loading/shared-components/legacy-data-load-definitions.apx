@@ -1,0 +1,49 @@
+legacyDataLoadDefinition load-employees (
+    name: Load Employees
+    target {
+        tableOwner: #OWNER#
+        tableName: EBA_DEMO_LOAD_EMP
+    }
+    uniqueKeys {
+        uniqueColumn1: ENAME
+    }
+
+    transformationRule name-in-uppercase (
+        name: Name in Uppercase
+        execution {
+            sequence: 10
+        }
+        transformation {
+            columnNames: ENAME
+            type: upperCase
+        }
+    )
+
+    tableLookup DEPTNO (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_DEMO_LOAD_DEPT
+        }
+        compareUploadWith {
+            column: DNAME
+        }
+        lookup {
+            returnColumn: DEPTNO
+        }
+    )
+
+    tableLookup MGR (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_DEMO_LOAD_EMP
+        }
+        compareUploadWith {
+            column: ENAME
+        }
+        lookup {
+            returnColumn: EMPNO
+        }
+    )
+
+)
+

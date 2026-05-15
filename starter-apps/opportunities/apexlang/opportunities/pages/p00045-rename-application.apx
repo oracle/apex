@@ -1,0 +1,260 @@
+page 45 (
+    name: Rename Application
+    alias: RENAME-APPLICATION
+    title: Rename Application
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Change the application name, displayed on the top left of each page, to one of your choosing. By default, the application name is "Opportunities". You can also change the application's subtitle text (displayed on the home page).
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region rename-application (
+        name: Rename Application
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P45_APPLICATION_SUBTITLE (
+        type: textField
+        label {
+            label: Application Subtitle
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @rename-application
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select preference_value
+                from eba_sales_preferences
+                where preference_name = 'APPLICATION_SUBTITLE'
+                union all
+                select 'Manage Opportunities'
+                from dual
+                where not exists ( select null
+                                   from eba_sales_preferences
+                                   where preference_name = 'APPLICATION_SUBTITLE')
+                ```
+        }
+        default {
+            type: static
+            staticValue: &APP_NAME.
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P45_APPLICATION_TITLE (
+        type: textField
+        label {
+            label: Application Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 10
+            region: @rename-application
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: staticValue
+            staticValue: &APPLICATION_TITLE.
+            used: always
+        }
+        default {
+            type: static
+            staticValue: &APP_NAME.
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process set-application-title (
+        name: Set Application Title
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :APPLICATION_TITLE := :P45_APPLICATION_TITLE;
+                
+                merge into eba_sales_preferences dst
+                using ( select 'APPLICATION_TITLE' preference_name, :P45_APPLICATION_TITLE preference_value from dual ) src
+                on ( dst.preference_name = src.preference_name )
+                when matched then
+                    update set dst.preference_value = src.preference_value
+                when not matched then
+                    insert ( preference_name, preference_value )
+                    values ( src.preference_name, src.preference_value );
+                
+                merge into eba_sales_preferences dst
+                using ( select 'APPLICATION_SUBTITLE' preference_name, :P45_APPLICATION_SUBTITLE preference_value from dual ) src
+                on ( dst.preference_name = src.preference_name )
+                when matched then
+                    update set dst.preference_value = src.preference_value
+                when not matched then
+                    insert ( preference_name, preference_value )
+                    values ( src.preference_name, src.preference_value );
+                
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Application renamed.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 7356126946694575717
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: settings
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

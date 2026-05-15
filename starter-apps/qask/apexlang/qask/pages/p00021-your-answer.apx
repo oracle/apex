@@ -1,0 +1,501 @@
+page 21 (
+    name: Your Answer
+    alias: YOUR-ANSWER
+    title: Your Answer
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            var checkNextAvailable = function() {
+                apex.server.process( 'nextAvailable', {}, {
+                    success: function( pData ) {
+                        if (pData.status === 'OPEN') {
+                            apex.page.submit('OPEN');
+                        } else if (pData.status === 'SESSION_CLOSED') {
+                            apex.page.submit('SESSION_CLOSED');
+                        }
+                    },
+                    error: function( pData ) {
+                        console.log(pData);
+                        apex.message.showErrors([
+                            {
+                                type:       "error",
+                                location:   "page",
+                                message:    "Woops! Something went wrong.",
+                                unsafe:     false
+                            }
+                        ]);
+                    }
+                });
+            }
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .answer {
+                padding: 4px 16px; 
+                background-color: var(--rw-palette-neutral-190);
+                color:#FFF;
+                font-weight: 700;
+                font-size: 1rem;
+                margin: 0 8px;
+                border-radius: 4px;
+            }
+            .multiple-answers {
+                max-width: 320px;
+                margin: 24px auto;
+            }
+            
+            .multiple-answers .answer {
+                display: inline-block;
+                margin: 0;
+            }
+            .multiple-answers ul {
+                margin: 0;
+                list-style: none;
+            }
+            .multiple-answers li {
+                margin: 8px;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    comments {
+        comments: Confirms the users answer to a question was counted and provides navigation to the next question if and when it becomes available
+    }
+
+    region container (
+        name: Container
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--noIcon
+                t-Alert--success
+                t-Alert--removeHeading js-removeLandmark
+            ]
+            cssClasses: u-tC
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region last-question-closed (
+        name: Last Question Closed
+        type: staticContent
+        source {
+            htmlCode: The question closed before your answer was submitted.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @container
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: margin-top-sm
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: request=Value
+            value: QCLOSED
+        }
+    )
+
+    region next-question-available (
+        name: Next Question Available
+        type: staticContent
+        source {
+            htmlCode: Ready to answer the next question?
+        }
+        layout {
+            sequence: 50
+            parentRegion: @container
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: margin-top-sm
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.get_next_question_id (
+                    p_session_id  => :SESSION_ID,
+                    p_question_id => :QUESTION_ID) is not null
+                ```
+        }
+    )
+
+    region next-question-unavailable (
+        name: Next Question Unavailable
+        type: staticContent
+        source {
+            htmlCode: The next question is not yet available!
+        }
+        layout {
+            sequence: 40
+            parentRegion: @container
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: margin-top-sm
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.get_session_status (p_session_id => :SESSION_ID) != 'CLOSED'
+                and
+                qask_util.get_next_question_id (
+                    p_session_id  => :SESSION_ID,
+                    p_question_id => :QUESTION_ID) is null
+                ```
+        }
+    )
+
+    region p20-question (
+        name: &P20_QUESTION.
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                if :P20_ANSWER_TYPE = 'MULTI' then
+                    sys.htp.p('<div class="multiple-answers">You answered:<ul>');
+                    for c1 in (
+                        select answer_text
+                          from qask_response_answers
+                         where question_id = :QUESTION_ID 
+                           and response_id = :RESPONSE_ID
+                    ) loop
+                        sys.htp.p('<li><span class="answer">'||apex_escape.html(c1.answer_text)||'</span></li>');
+                    end loop;
+                    sys.htp.p('</ul></div>');
+                else
+                    for c1 in (
+                        select a.answer_text, a.comment_text, q.answer_type
+                          from qask_response_answers a,
+                               qask_session_questions q
+                         where a.question_id = :QUESTION_ID 
+                           and a.response_id = :RESPONSE_ID
+                           and a.question_id = q.id
+                    ) loop
+                        if c1.answer_type = 'FREEFORM' then
+                            sys.htp.p('You answered<br/>'||apex_escape.html(c1.answer_text));
+                        else
+                            sys.htp.p('You answered<br/><span class="answer">'||apex_escape.html(c1.answer_text)||'</span>');
+                        end if;
+                        if c1.comment_text is not null then
+                        sys.htp.p('<br>'||apex_escape.html(c1.comment_text));
+                
+                        end if;
+                    end loop;
+                end if;
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--noIcon
+                t-Alert--success
+            ]
+            cssClasses: u-tC
+            icon: fa-check-circle fa-2x
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'Y'
+                ```
+        }
+    )
+
+    region session-closed (
+        name: Session Closed
+        type: staticContent
+        source {
+            htmlCode: This session is now closed.
+        }
+        layout {
+            sequence: 20
+            parentRegion: @container
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: margin-top-sm
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: qask_util.get_session_status (p_session_id => :SESSION_ID) = 'CLOSED'
+        }
+    )
+
+    region session-session-code (
+        name: Session &SESSION_CODE.
+        type: staticContent
+        layout {
+            sequence: 5
+            slot: body
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useRegionTitle
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: SESSION_CODE
+        }
+    )
+
+    button home (
+        buttonName: home
+        label: Join Another Session
+        layout {
+            sequence: 10
+            region: @session-closed
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                clearCache: [
+                    1
+                    20
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button next-question (
+        buttonName: next_question
+        label: Next Question
+        layout {
+            sequence: 50
+            region: @next-question-available
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--iconRight
+            ]
+            cssClasses: margin-top-md
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 20
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button refresh (
+        buttonName: REFRESH
+        label: Refresh
+        layout {
+            sequence: 10
+            region: @next-question-unavailable
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            cssClasses: u-hidden
+            icon: fa-refresh
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: refresh_button
+        }
+    )
+
+    dynamicAction auto-reload (
+        name: Auto Reload
+        execution {
+            sequence: 10
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var i = 0;
+                    var interval = setInterval(function(){
+                        i += 1;
+                        if(i === 30){
+                            clearInterval(interval);
+                            $("#refresh_button").removeClass('u-hidden');
+                        }
+                        checkNextAvailable();
+                    }, 5000);
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process nextavailable (
+        name: nextAvailable
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.get_next_question_status_json (
+                    p_session_id  => :SESSION_ID,
+                    p_question_id => :QUESTION_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+            point: ajaxCallback
+        }
+        advanced {
+            executionMappingIdentifier: 63879909507423505321
+        }
+    )
+
+    branch (
+        name: go home if no SESSION_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 1
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :SESSION_ID is null
+        }
+    )
+
+    branch (
+        name: Session Ended
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 12
+                clearCache: 12
+            }
+        }
+        serverSideCondition {
+            type: request=Value
+            value: SESSION_CLOSED
+        }
+    )
+
+    branch (
+        name: Next Question Available
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 20
+                clearCache: 20
+            }
+        }
+        serverSideCondition {
+            type: request=Value
+            value: OPEN
+        }
+    )
+
+    branch (
+        name: Next Question Available
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 20
+                clearCache: 20
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.get_next_question_id (
+                    p_session_id  => :SESSION_ID,
+                    p_question_id => :QUESTION_ID) is not null
+                ```
+        }
+    )
+
+)
+

@@ -1,0 +1,58 @@
+lov deptno-lov (
+    name: DEPTNO LOV
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct deptno d, deptno r
+              from eba_demo_cs_emp
+             order by 1
+            ```
+    }
+)
+
+lov job-lov (
+    name: JOB LOV
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+              from eba_demo_cs_emp
+             order by 1
+            ```
+    }
+)
+
+lov status-lov (
+    name: STATUS LOV
+    source {
+        location: staticValues
+    }
+
+    entry deleted (
+        sequence: 1
+        display: Deleted
+        return: D
+    )
+
+    entry new (
+        sequence: 2
+        display: New
+        return: N
+    )
+
+    entry original (
+        sequence: 3
+        display: Original
+        return: O
+    )
+
+    entry updated (
+        sequence: 4
+        display: Updated
+        return: U
+    )
+
+)
+

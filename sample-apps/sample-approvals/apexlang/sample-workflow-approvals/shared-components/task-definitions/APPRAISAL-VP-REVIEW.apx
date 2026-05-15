@@ -1,0 +1,48 @@
+taskDefinition APPRAISAL_VP_REVIEW (
+    name: Appraisal - VP Review
+    type: action
+    task {
+        subject: Review Evaluation for &ENAME.
+    }
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select e.ename
+            from eba_demo_appr_appraisals a
+            left join eba_demo_appr_emp e on e.empno = a.empno
+            where a.id = :APEX$TASK_PK
+            ```
+    }
+    advanced {
+        vacationRuleProcedureName: eba_demo_appr.appraisal_vp_review_handler
+        detailsPage: {
+            page: 17
+            items: {
+                P17_TASK_ID: &TASK_ID.
+            }
+            clearCache: 17
+            action: resetPagination
+        }
+    }
+
+    parameter P_VP_USERNAME (
+        label: P Vp Username
+    )
+
+    participant (
+        type: businessAdministrator
+        value {
+            staticValue: PAT
+        }
+    )
+
+    participant (
+        value {
+            type: expression
+            plsqlExpression: :P_VP_USERNAME
+        }
+    )
+
+)
+

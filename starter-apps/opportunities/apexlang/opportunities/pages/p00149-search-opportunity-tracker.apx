@@ -1,0 +1,125 @@
+page 149 (
+    name: Search Opportunities
+    alias: SEARCH-OPPORTUNITY-TRACKER
+    title: Search Opportunities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        width: 480
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .t-Button.search-button {padding: 12px 16px;}
+            
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--noPadding
+                t-Form--xlarge
+                t-Form--stretchInputs
+            ]
+            cssClasses: search-dialog
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P149_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            submitWhenEnterPressed: true
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+            columnCssClasses: col-xxs-9
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search Leads, Opportunities, and more...
+        }
+    )
+
+    button search (
+        buttonName: Search
+        label: Search
+        layout {
+            sequence: 20
+            region: @search
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+            columnCssClasses: col-xxs-3
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--stretch
+            ]
+            cssClasses: search-button
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    branch (
+        name: Go to search
+        execution {
+            sequence: 10
+            point: processing
+        }
+        behavior {
+            target: {
+                page: 116
+                items: {
+                    P116_SEARCH: &P149_SEARCH.
+                }
+                clearCache: 116
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

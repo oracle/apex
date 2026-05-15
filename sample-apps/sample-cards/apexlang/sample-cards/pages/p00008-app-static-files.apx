@@ -1,0 +1,336 @@
+page 8 (
+    name: Application Static Files
+    alias: APP-STATIC-FILES
+    title: &APP_NAME. - Application Static Files
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .urlImages .a-CardView-media--widescreen:before {
+                padding-top: 20%;
+            }
+            
+            .urlImages .a-CardView-iconWrap {
+                margin-top: calc(var(--a-cv-icon-container-size) / 2 * -1 - var(--a-cv-header-padding-y));
+            }
+            .urlImages .a-CardView-icon {
+                box-shadow: #fff 0 0 0 4px;
+            }
+            
+            .apex-theme-redwood-light .urlImages .a-CardView-icon {
+                background-color: #508223;
+                color: #fff;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>You can reference application static files as Cards images.  Please note Cards expects ampersand (&) substitution syntax. Usual way of referencing application static files cannot be used. i.e. <em>#APP_IMAGE#myAppImage.png</em>. Also, <strong>APP_IMAGES</strong> substituion needs to be substituted from the server as it is not one of the built-in substitutions client-side supports to render the value.</p>
+                
+                <p>Let's say you are using <em>IMAGE_URL</em> column as Cards media image, use the following query to reference the application static file:</p>
+                
+                <pre>
+                select :APP_IMAGES || file_name as image_url
+                from apex_application_static_files
+                where file_name = 'myAppImage.png'
+                and application_id = :APP_ID
+                </pre>
+                
+                <p>You can also define your own CSS classes to customize Cards styles. <strong>Float with Custom CSS</strong> example displays Cards Icon and Media differently using page inline CSS.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-file-image-o
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region float-with-custom-css (
+        name: Float with Custom CSS
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'fa-apex'  icon_class,
+                       :APP_IMAGES || file_name image_url
+                from apex_application_static_files
+                where file_name = 'apex-mountain-range_light.png'
+                and application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            layout: float
+        }
+        card {
+            cssClasses: urlImages
+        }
+        title {
+            advancedFormatting: true
+            htmlExpression: <h3 class="a-CardView-title ">What is Oracle APEX?</h3>
+        }
+        body {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                <p>Oracle Application Express (APEX) is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.</p>
+                
+                <p>Using APEX, developers can quickly develop and deploy compelling apps that solve real problems and provide immediate value. You won't need to be an expert in a vast array of technologies to deliver sophisticated solutions. Focus on solving the problem and let APEX take care of the rest.</p>
+                ```
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_CLASS
+            iconCssClasses: fa
+        }
+        media {
+            source: imageUrl
+            url: &IMAGE_URL!ATTR.
+            position: first
+            appearance: widescreen
+            sizing: cover
+            imageDescription: Redwood Mountain
+        }
+
+        action action (
+            type: title
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: https://apex.oracle.com
+                linkAttributes: target="_blank"
+            }
+        )
+
+    )
+
+    region horizontal-media-background (
+        name: Horizontal Media Background
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'fa-apex'  icon_class,
+                       :APP_IMAGES || file_name image_url
+                from apex_application_static_files
+                where file_name = 'apex-mountain-range_light.png'
+                and application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleC
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            layout: horizontal
+        }
+        title {
+            advancedFormatting: true
+            htmlExpression: <h3 class="a-CardView-title ">What is Oracle APEX?</h3>
+        }
+        body {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                <p>Oracle Application Express (APEX) is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.</p>
+                
+                <p>Using APEX, developers can quickly develop and deploy compelling apps that solve real problems and provide immediate value. You won't need to be an expert in a vast array of technologies to deliver sophisticated solutions. Focus on solving the problem and let APEX take care of the rest.</p>
+                ```
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_CLASS
+            iconCssClasses: fa
+        }
+        media {
+            source: urlColumn
+            urlColumn: IMAGE_URL
+            position: background
+            sizing: cover
+            imageDescription: Redwood Mountain
+        }
+
+        action action (
+            type: title
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: https://apex.oracle.com
+                linkAttributes: target="_blank"
+            }
+        )
+
+    )
+
+    region horizontal-media-first (
+        name: Horizontal Media First
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'fa-apex'  icon_class,
+                       :APP_IMAGES || file_name image_url
+                from apex_application_static_files
+                where file_name = 'apex-mountain-range_light.png'
+                and application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            layout: horizontal
+        }
+        title {
+            advancedFormatting: true
+            htmlExpression: <h3 class="a-CardView-title ">What is Oracle APEX?</h3>
+        }
+        body {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                <p>Oracle Application Express (APEX) is a low-code development platform that enables you to build scalable, secure enterprise apps, with world-class features, that can be deployed anywhere.</p>
+                
+                <p>Using APEX, developers can quickly develop and deploy compelling apps that solve real problems and provide immediate value. You won't need to be an expert in a vast array of technologies to deliver sophisticated solutions. Focus on solving the problem and let APEX take care of the rest.</p>
+                ```
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_CLASS
+            iconCssClasses: fa
+        }
+        media {
+            source: urlColumn
+            urlColumn: IMAGE_URL
+            position: first
+            appearance: widescreen
+            sizing: cover
+            imageDescription: Redwood Mountain
+        }
+
+        action action (
+            type: title
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: https://apex.oracle.com
+                linkAttributes: target="_blank"
+            }
+        )
+
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            includeShowAll: false
+            rememberSelection: false
+        }
+    )
+
+)
+

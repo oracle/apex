@@ -1,0 +1,37 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 100
+        systemPrivileges: [
+            createProcedure
+            createTable
+            createTrigger
+        ]
+    }
+    installation {
+        objectNames: [
+            QASK_SERVICE_TERMS
+            QASK_SERVICE_TERM_ACCEPTS
+            QASK_RESTRICTED_EMAIL_DOMAINS
+            QASK_SETTINGS
+            QASK_ACCOUNT_REQUESTS
+            QASK_VERIFY_TOKENS
+            QASK_ANSWER_SETS
+            QASK_ASET_ANSWERS
+            QASK_SESSIONS
+            QASK_SESSION_QUESTIONS
+            QASK_SESS_QUESTION_ANSWERS
+            QASK_RESPONSES
+            QASK_RESPONSE_ANSWERS
+            QASK_UTIL
+            QASK_CLOSE_OLD_SESSIONS
+            QASK_LOG
+        ]
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

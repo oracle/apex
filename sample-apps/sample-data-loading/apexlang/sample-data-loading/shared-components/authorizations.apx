@@ -1,0 +1,14 @@
+authorization create-job-priv-available (
+    name: CREATE JOB priv available
+    type: existsSqlQuery
+    settings {
+        sqlQuery: select 1 from session_privs where privilege = 'CREATE JOB'
+    }
+    error {
+        errorMessage: CREATE JOB privilege is not available.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+

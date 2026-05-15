@@ -1,0 +1,30 @@
+authentication demo-purposes-only-custom-auth-scheme (
+    name: Demo Purposes Only Custom Auth Scheme
+    type: custom
+    settings {
+        authFunctionName: is_authenticated_for_demo
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            --===========================================================
+            -- Return true for any username in eba_demo_story_users table
+            --===========================================================
+            
+            function is_authenticated_for_demo(
+                p_username in varchar2,
+                p_password in varchar2)
+                return        boolean
+            is
+            begin
+                for j in (select ename 
+                            from eba_demo_appr_emp
+                           where upper(ename) = upper(p_username)) loop
+                   return true;
+                end loop;
+                return false; 
+            end;
+            ```
+    }
+)
+

@@ -1,0 +1,344 @@
+appProcess initialize-nomenclature (
+    name: Initialize nomenclature
+    type: executeCode
+    source {
+        plsqlCode: sp_util.set_nomenclature;
+    }
+    execution {
+        sequence: 1
+        point: newSession
+    }
+)
+
+appProcess load-counts (
+    name: Load Counts
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+                l_ok_to_re_count boolean := false;
+                l_last_refresh   date;
+            begin
+                if :LAST_COUNT_REFRESH is null then
+                    l_ok_to_re_count := true;
+                else
+                    l_last_refresh := to_date(:LAST_COUNT_REFRESH,'YYYY.MM.DD-HH24:MI:SS');
+                    if l_last_refresh < (sysdate - (1/96)) then
+                        l_ok_to_re_count := true; -- refresh if 15 minutes stale
+                    end if;
+                end if;
+                if l_ok_to_re_count then
+                    for c1 in (select count(*) c from sp_areas) loop
+                        :P1_AREAS := to_char(c1.c,'FM999G999G990'); 
+                    end loop;
+                    
+                    for c1 in (select count(*) c from sp_project_groups) loop
+                        :P1_PROJECT_GROUPS := to_char(c1.c,'FM999G999G990'); 
+                    end loop;
+                    
+                    for c1 in (select count(*) c from sp_initiatives)  loop
+                        :P1_INITIATIVES := to_char(c1.c,'FM999G999G990'); 
+                    end loop;
+                    
+                    for c1 in (select count(*)  c
+                                 from sp_projects p
+                                where p.ARCHIVED_YN = 'N' and 
+                                      p.DUPLICATE_OF_PROJECT_ID is null
+                    ) loop
+                        :P1_PROJECTS := to_char(c1.c,'FM999G999G990'); 
+                    end loop;
+                    
+                    for c1 in (select count(*) c 
+                                 from sp_activities ap, sp_projects p
+                                where ap.project_id = p.id(+) and
+                                      p.DUPLICATE_OF_PROJECT_ID is null and
+                                      (p.ARCHIVED_YN = 'N' or p.archived_yn is null) -- need the is null to         accomodate the outer join
+                    ) loop
+                        :P1_ACTIVITIES := to_char(c1.c,'FM999G999G990'); 
+                    end loop;
+                    
+                    for c1 in (select count(*) c from SP_RELEASE_TRAINS) loop
+                        :P1_RELEASES := to_char(c1.c,'FM999G999G990'); 
+                    end loop;
+                    
+                    for c1 in (select count(*) c from SP_TEAM_MEMBERS) loop
+                        :P1_PEOPLE := to_char(c1.c,'FM999G999G990'); 
+                    end loop;
+                    
+                    for c1 in (select count(*) c from SP_GROUPS) loop
+                        :P1_GROUPS := to_char(c1.c,'FM999G999G990'); 
+                    end loop;
+                    
+                    :LAST_COUNT_REFRESH := to_char(sysdate,'YYYY.MM.DD-HH24:MI:SS');
+                end if;
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: currentPageInList
+        pages: [
+            1
+            3
+            502
+        ]
+    }
+)
+
+appProcess post-comment-image (
+    name: POST_COMMENT_IMAGE
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            sp_comment_util.upload_image (
+                p_file_base64  => apex_application.g_clob_01,
+                p_filename     => apex_application.g_x02,
+                p_mimetype     => apex_application.g_x03,
+                p_image_ref_id => json_value(apex_application.g_x01, '$.imageRefId') );
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+    }
+)
+
+appProcess set-app-home-url-if-null (
+    name: set APP_HOME_URL (if null)
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            if sp_util.get_setting(p_static_id => 'APP_HOME_URL') is null then
+               sp_util.set_setting (p_static_id     => 'APP_HOME_URL',   
+                                    p_setting_value => APEX_UTIL.HOST_URL('SCRIPT')); 
+            end if;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: newSession
+    }
+)
+
+appProcess set-get-comment-image-prefix-if-null (
+    name: set GET_COMMENT_IMAGE_PREFIX (if null)
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            if sp_util.get_setting(p_static_id => 'GET_COMMENT_IMAGE_PREFIX') is null then
+               sp_util.set_setting (p_static_id     => 'GET_COMMENT_IMAGE_PREFIX',   
+                                    p_setting_value => substr(APEX_UTIL.HOST_URL('SCRIPT'),length(APEX_UTIL.HOST_URL())+1)); 
+            end if;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: newSession
+    }
+)
+
+appProcess set-navigation-strings (
+    name: set navigation strings
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            :FOCUS_AREA := 'Focus Areas';
+            :INITIATIVE := 'Initiatives';
+            :PROJECT := 'Projects';
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+)
+
+appProcess viewinitfocusareapdf (
+    name: viewInitFocusAreaPDF
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+                l_doc blob;
+            begin
+            for c1 in (
+                select DOCUMENT_BLOB, DOCUMENT_FILENAME, DOCUMENT_MIMETYPE, dbms_lob.getlength(DOCUMENT_BLOB) doc_length
+                from SP_INIT_FOCUS_AREA_DOCUMENTS
+                where id = :P59_ID
+             ) loop
+            
+                l_doc := c1.DOCUMENT_BLOB;
+            
+                sys.htp.init;
+                sys.owa_util.mime_header( 'application/pdf', FALSE );
+                sys.htp.p('Content-length: ' || c1.doc_length);
+                sys.htp.p('Content-Disposition: ' || 'inline' || '; filename="'|| wwv_flow_utilities.escape_url(c1.DOCUMENT_FILENAME) || '"' );
+                sys.htp.p('Cache-Control: max-age=1');  
+                sys.owa_util.http_header_close;
+                sys.wpg_docload.download_file(l_doc);
+            
+             end loop;
+             apex_application.stop_apex_engine;
+             end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+)
+
+appProcess viewinitiativepdf (
+    name: viewInitiativePDF
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+                l_doc blob;
+            begin
+            for c1 in (
+                select DOCUMENT_BLOB, DOCUMENT_FILENAME, DOCUMENT_MIMETYPE, dbms_lob.getlength(DOCUMENT_BLOB) doc_length
+                from SP_INITIATIVE_DOCUMENTS
+                where id = :P53_ID
+             ) loop
+            
+                l_doc := c1.DOCUMENT_BLOB;
+            
+                sys.htp.init;
+                sys.owa_util.mime_header( 'application/pdf', FALSE );
+                sys.htp.p('Content-length: ' || c1.doc_length);
+                sys.htp.p('Content-Disposition: ' || 'inline' || '; filename="'|| wwv_flow_utilities.escape_url(c1.DOCUMENT_FILENAME) || '"' );
+                sys.htp.p('Cache-Control: max-age=1');  
+                sys.owa_util.http_header_close;
+                sys.wpg_docload.download_file(l_doc);
+            
+             end loop;
+             apex_application.stop_apex_engine;
+             end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+)
+
+appProcess viewprojectpdf (
+    name: viewProjectPDF
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+                l_doc blob;
+            begin
+            for c1 in (
+                select DOCUMENT_BLOB, DOCUMENT_FILENAME, DOCUMENT_MIMETYPE, dbms_lob.getlength(DOCUMENT_BLOB) doc_length
+                from SP_PROJECT_DOCUMENTS
+                where id = :P30_ID
+             ) loop
+            
+                l_doc := c1.DOCUMENT_BLOB;
+            
+                sys.htp.init;
+                sys.owa_util.mime_header( 'application/pdf', FALSE );
+                sys.htp.p('Content-length: ' || c1.doc_length);
+                sys.htp.p('Content-Disposition: ' || 'inline' || '; filename="'|| wwv_flow_utilities.escape_url(c1.DOCUMENT_FILENAME) || '"' );
+                sys.htp.p('Cache-Control: max-age=1');  
+                sys.owa_util.http_header_close;
+                sys.wpg_docload.download_file(l_doc);
+            
+             end loop;
+             apex_application.stop_apex_engine;
+             end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+)
+
+appProcess viewreleasepdf (
+    name: viewReleasePDF
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+                l_doc blob;
+            begin
+            for c1 in (
+                select DOCUMENT_BLOB, DOCUMENT_FILENAME, DOCUMENT_MIMETYPE, dbms_lob.getlength(DOCUMENT_BLOB) doc_length
+                from SP_RELEASE_DOCUMENTS
+                where id = :P42_ID
+             ) loop
+            
+                l_doc := c1.DOCUMENT_BLOB;
+            
+                sys.htp.init;
+                sys.owa_util.mime_header( 'application/pdf', FALSE );
+                sys.htp.p('Content-length: ' || c1.doc_length);
+                sys.htp.p('Content-Disposition: ' || 'inline' || '; filename="'|| wwv_flow_utilities.escape_url(c1.DOCUMENT_FILENAME) || '"' );
+                sys.htp.p('Cache-Control: max-age=1');  
+                sys.owa_util.http_header_close;
+                sys.wpg_docload.download_file(l_doc);
+            
+             end loop;
+             apex_application.stop_apex_engine;
+             end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+)
+
+appProcess viewtaskpdf (
+    name: viewTaskPDF
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+                l_doc blob;
+            begin
+            for c1 in (
+                select DOCUMENT_BLOB, DOCUMENT_FILENAME, DOCUMENT_MIMETYPE, dbms_lob.getlength(DOCUMENT_BLOB) doc_length
+                from SP_TASK_DOCUMENTS
+                where id = :P42_ID
+             ) loop
+            
+                l_doc := c1.DOCUMENT_BLOB;
+            
+                sys.htp.init;
+                sys.owa_util.mime_header( 'application/pdf', FALSE );
+                sys.htp.p('Content-length: ' || c1.doc_length);
+                sys.htp.p('Content-Disposition: ' || 'inline' || '; filename="'|| wwv_flow_utilities.escape_url(c1.DOCUMENT_FILENAME) || '"' );
+                sys.htp.p('Cache-Control: max-age=1');  
+                sys.owa_util.http_header_close;
+                sys.wpg_docload.download_file(l_doc);
+            
+             end loop;
+             apex_application.stop_apex_engine;
+             end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+)
+

@@ -1,0 +1,719 @@
+page 126 (
+    name: Clarification Requested
+    alias: CLARIFICATION-REQUESTED
+    title: Clarification Requested
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @approvals
+    }
+
+    region approval-history (
+        name: Approval History
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.id,
+                       t.initials user_icon,
+                       apex_util.get_since(c.last_status_on) comment_date,
+                       t.first_name || ' ' || t.last_name user_name,
+                       '<strong>'||initcap(replace(c.status,'-',' '))||'</strong>' comment_text,
+                       case when c.comments is not null
+                            then '<br/>'||c.comments 
+                            end attribute_1,
+                       null attribute_2,
+                       null attribute_3,
+                       null attribute_4,
+                       null actions,
+                       case c.status 
+                            when 'PENDING' then 'u-normal-bg'
+                            when 'APPROVED' then 'u-success-bg'
+                            when 'REJECTED' then 'u-danger-bg'
+                            when 'CLARIFICATION-REQUESTED' then 'u-warning-bg'
+                            end icon_modifier,
+                       c.updated,
+                       null ob
+                  from sp_project_approval_chain c,
+                       sp_team_members t
+                 where c.project_approval_id = :P126_PROJECT_APPROVAL_ID
+                   and c.team_member_id = t.id
+                 union all
+                select a.id,
+                       t.initials user_icon,
+                       apex_util.get_since(a.updated) comment_date,
+                       t.first_name || ' ' || t.last_name user_name,
+                       '<strong>'||initcap(a.status)||'</strong>' comment_text,
+                       null attribute_1,
+                       null attribute_2,
+                       null attribute_3,
+                       null attribute_4,
+                       null actions,
+                       'u-warning-bg' icon_modifier,
+                       a.updated,
+                       null ob
+                  from sp_project_approvals a,
+                       sp_team_members t  
+                 where a.id = :P126_PROJECT_APPROVAL_ID
+                   and a.withdrawn_by_team_member_id = t.id
+                   and a.status = 'WITHDRAWN' 
+                 union all
+                select a.id,
+                       t.initials user_icon,
+                       apex_util.get_since(a.submitted) comment_date,
+                       t.first_name || ' ' || t.last_name user_name,
+                       '<strong>Submitted</strong>' comment_text,
+                       '<br/>'||a.justification attribute_1,
+                       null attribute_2,
+                       null attribute_3,
+                       null attribute_4,
+                       null actions,
+                       'u-info-bg' icon_modifier,
+                       a.submitted updated,
+                       null ob
+                  from sp_project_approvals a,
+                       sp_team_members t  
+                 where a.id = :P126_PROJECT_APPROVAL_ID
+                   and a.submitted_by_team_member_id = t.id
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: updated desc nulls first, ob
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P126_PROJECT_APPROVAL_ID
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: t-Comments--chat
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Actions
+            }
+            layout {
+                sequence: 130
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Attribute 1
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Attribute 2
+            }
+            layout {
+                sequence: 100
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Attribute 3
+            }
+            layout {
+                sequence: 110
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Attribute 4
+            }
+            layout {
+                sequence: 120
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Comment Date
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Comment Text
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Icon Modifier
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OB (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Ob
+                alignment: end
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: User Icon
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: User Name
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region p126-approval-type-review (
+        name: &P126_APPROVAL_TYPE. Review
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P126_PROJECT_APPROVAL_CHAIN_ID
+        }
+    )
+
+    region project (
+        name: Project
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.project,
+                       t.approval_type,
+                       a.justification,
+                       c.comments info_requested,
+                       apex_util.get_since(c.last_status_on) request_on,
+                       m.first_name || ' ' || m.last_name request_by
+                  from sp_project_approvals a,
+                       sp_project_approval_chain c,
+                       sp_projects p,
+                       sp_approval_types t,
+                       sp_team_members m
+                 where a.project_id = p.id
+                   and a.id = :P126_PROJECT_APPROVAL_ID
+                   and a.approval_type_id = t.id
+                   and c.id = :P126_PROJECT_APPROVAL_CHAIN_ID
+                   and c.project_approval_id = :P126_PROJECT_APPROVAL_ID
+                   and c.team_member_id = m.id
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column APPROVAL_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Approval Type
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column INFO_REQUESTED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Request
+            }
+            layout {
+                sequence: 60
+            }
+            columnFormatting {
+                htmlExpression: <strong>#INFO_REQUESTED#</strong>
+            }
+        )
+
+        column JUSTIFICATION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Justification
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column REQUEST_BY (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Requested
+            }
+            layout {
+                sequence: 40
+            }
+            columnFormatting {
+                htmlExpression: #REQUEST_ON# by #REQUEST_BY#
+            }
+        )
+
+        column REQUEST_ON (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 50
+            }
+        )
+
+    )
+
+    pageItem P126_APPROVAL_TYPE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @p126-approval-type-review
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P126_COMMENTS (
+        type: textarea
+        label {
+            label: Response
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @p126-approval-type-review
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 3
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    pageItem P126_PROJECT_APPROVAL_CHAIN_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @p126-approval-type-review
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P126_PROJECT_APPROVAL_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @p126-approval-type-review
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P126_WF_TASK_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @p126-approval-type-review
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button submit (
+        buttonName: SUBMIT
+        label: Submit
+        layout {
+            sequence: 100
+            region: @p126-approval-type-review
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button withdraw (
+        buttonName: Withdraw
+        label: Withdraw Review
+        layout {
+            sequence: 10
+            region: @approval-history
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from sp_project_approvals
+                 where id = :P126_PROJECT_APPROVAL_ID
+                   and submitted_by_team_member_id = :APP_USER_ID
+                   and status in ('PENDING','CLARIFICATION-REQUESTED')
+                ```
+        }
+    )
+
+    validation must-have-comments (
+        name: must have comments
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P126_COMMENTS
+        }
+        error {
+            errorMessage: You must provide comments.
+            associatedItem: @P126_COMMENTS
+        }
+    )
+
+    computation p126-project-approval-id (
+        itemName: P126_PROJECT_APPROVAL_ID
+        execution {
+            sequence: 140
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project_approval_id
+                  from sp_project_approval_chain
+                 where id = :P126_PROJECT_APPROVAL_CHAIN_ID
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P126_PROJECT_APPROVAL_CHAIN_ID
+        }
+    )
+
+    computation p126-wf-task-id (
+        itemName: P126_WF_TASK_ID
+        execution {
+            sequence: 160
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select task_id
+                  from apex_tasks
+                 where to_char(detail_pk) = :P126_PROJECT_APPROVAL_CHAIN_ID
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P126_PROJECT_APPROVAL_CHAIN_ID
+        }
+    )
+
+    process clarify (
+        name: Clarify
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_approvals.clarify (
+                    p_project_approval_chain_id => :P126_PROJECT_APPROVAL_CHAIN_ID,
+                    p_team_member_id            => :APP_USER_ID,
+                    p_response                  => :P126_COMMENTS );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 12100446782550617629
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit
+        }
+    )
+
+    process close-window (
+        name: Close window
+        type: closeDialog
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 12576318309353861171
+        }
+    )
+
+    process provide-info (
+        name: Provide Info
+        type: humanTaskManage
+        action {
+            type: submitInfo
+        }
+        humanTask {
+            taskIdItem: P126_WF_TASK_ID
+            commentText: &P126_COMMENTS.
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Information submitted.
+        }
+        advanced {
+            executionMappingIdentifier: 12576319113936861172
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit
+        }
+    )
+
+    process withdraw (
+        name: Withdraw
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select workflow_id 
+                      from apex_workflows
+                     where detail_pk = :P126_PROJECT_APPROVAL_ID
+                       and application_id = :APP_ID  
+                       and workflow_def_static_id = 'PROJECT-REVIEW'
+                ) loop
+                   apex_workflow.terminate(p_instance_id => c1.workflow_id);
+                end loop;
+                
+                sp_approvals.withdraw (
+                    p_project_approval_id => :P126_PROJECT_APPROVAL_ID,
+                    p_team_member_id      => :APP_USER_ID );
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Request withdrawn.
+        }
+        advanced {
+            executionMappingIdentifier: 12576318799340861171
+        }
+        serverSideCondition {
+            whenButtonPressed: @withdraw
+        }
+    )
+
+)
+

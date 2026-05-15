@@ -1,0 +1,27 @@
+customAttribute attribute_01 (
+    apexlangName: administrationPageLink
+    attribute: 1
+    name: Administration Page Link
+    type: linkToTargetPageUrl
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: <p>Enter a target page to be called when the user clicks the associated link.</p>
+    }
+    examples {
+        examples:
+            ```
+            <p>Example 1: URL to navigate to page 10 and set P10_EMPNO to the EMPNO value of the clicked entry.
+            <pre>f?p=&amp;APP_ID.:10:&amp;APP_SESSION.::&amp;DEBUG.:RP,10:P10_EMPNO:&amp;EMPNO.</pre>
+            </p>
+            <p>Example 2: Display the EMPNO value of the clicked entry in a JavaScript alert
+            <pre>javascript:alert('current empno: &amp;EMPNO.');</pre>
+            </p>
+            ```
+    }
+)
+

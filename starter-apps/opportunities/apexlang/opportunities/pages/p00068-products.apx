@@ -1,0 +1,1725 @@
+page 68 (
+    name: Products
+    alias: PRODUCTS
+    title: Products
+    pageGroup: @products
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            // standard, cacheable elements
+            var timeout = 0; // used for debounce on search
+            var CONTAINER_SEL = '.t-Form-fieldContainer';
+            var pagePrefix = 'P' + $('#pFlowStepId').val();
+            var displayAsId = pagePrefix + '_DISPLAY_AS';
+            var $displayAs = $('#' + displayAsId);
+            var $body = $('.t-PageBody');
+            var $search = $('#' + pagePrefix + '_SEARCH');
+            var $sort = $('#' + pagePrefix + '_SORT');
+            var $reset = $('#reset_button');
+            var $cardsReg = $('#cards_region');
+            var $reportReg = $('#report_region');
+            var $gridReg = $('#grid_region');
+            
+            // custom items (will vary by page)
+            var $territory = $('#' + pagePrefix + '_TERRITORY_ID');
+            var $account = $('#' + pagePrefix + '_ACCOUNT_ID');
+            var $quarter = $('#' + pagePrefix + '_QUARTER');
+            
+            function showLeftColumn() {
+              $body
+                .removeClass('t-PageBody--hideLeft')
+                .addClass('t-PageBody--showLeft');
+                
+              // Takes 200ms to hide column
+              setTimeout(function() {
+                // Ensure column headers align correctly
+                $(window).trigger('apexwindowresized');
+              }, 250);
+            }
+            
+            function hideLeftColumn() {
+              $body
+                .removeClass('t-PageBody--showLeft')
+                .addClass('t-PageBody--hideLeft');
+                
+              // Takes 200ms to hide column
+              setTimeout(function() {
+                // Ensure column headers align correctly
+                $(window).trigger('apexwindowresized');
+              }, 250);
+            }
+              
+            // applyFilters triggers the refresh event on the correct region
+            function applyFilters() {
+              var display = $v(displayAsId);
+              
+              if (display === 'CARDS') {
+                $cardsReg.trigger('apexrefresh');
+              } else if (display === 'REPORT') {
+                $reportReg.trigger('apexrefresh');
+              } else if (display === 'GRID') {
+                $gridReg.trigger('apexrefresh');
+              }
+            }
+            
+            // toggleRegionDisplay is similar to applyFilters except that it also
+            // takes into account what regions or items need to be displayed or hidden
+            function toggleRegionDisplay(refresh) {
+              var display = $v(displayAsId);
+              
+              refresh = (refresh === false) ? false : true;
+              
+              if (display === 'CARDS') {
+                $reportReg.hide();
+                $gridReg.hide();
+            
+                showLeftColumn();
+            
+                $sort.closest(CONTAINER_SEL).show();
+            
+                if (refresh) {
+                  $cardsReg.trigger('apexrefresh');
+                }
+                
+                $cardsReg.show();
+              } else if (display === 'REPORT') {
+                $sort.closest(CONTAINER_SEL).hide();
+                $cardsReg.hide();
+                $gridReg.hide();
+            
+                showLeftColumn();
+            
+                if (refresh) {
+                  $reportReg.trigger('apexrefresh');
+                }
+            
+                $reportReg.show();
+              } else if (display === 'GRID') {
+                $sort.closest(CONTAINER_SEL).hide();
+                $cardsReg.hide();
+                $reportReg.hide();
+            
+                hideLeftColumn();
+            
+                if (refresh) {
+                  $gridReg.trigger('apexrefresh');
+                }
+            
+                $gridReg.show();
+              }
+            }
+              
+            function debounceSearch(e) {
+                /*
+                 * Prevent search for following keys:
+                 * TAB:     9
+                 * SHIFT:   16
+                 * LEFT:    37
+                 * RIGHT:   39
+                 */
+                if ( e.which === 9 || e.which === 16 || e.which === 37 || e.which === 39 ) {
+                    return false;
+                }
+                clearTimeout(timeout);
+                timeout = setTimeout(applyFilters, 250);
+            }
+              
+            function preventSubmitOnEnter(e) {
+              if (e.which === 13) {
+                return false;
+              }
+            }
+            
+            function resetFilters() {
+              $search.val(null);
+              $territory.val(null);
+              $account.val(null);
+              $quarter.val(null);
+              
+              $sort.val('NAME');
+            
+              applyFilters();
+            }
+            
+            // standard search event bindings
+            $search.keydown(preventSubmitOnEnter);
+            $search.keyup(debounceSearch);
+            
+            // dynamic event bindings (will vary by filter page)
+            $territory.change(applyFilters);
+            $account.change(applyFilters);
+            $quarter.change(applyFilters);
+            
+            // standard display, sort, reset event bindings
+            $displayAs.change(toggleRegionDisplay);
+            $sort.change(applyFilters);
+            $reset.click(resetFilters);
+              
+            toggleRegionDisplay(false);
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .t-Card-initials {
+              font-size: 14px;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            
+            Use the filters on the left to show different results in the region on the right. The right region can be displayed in one of three ways (Cards View, Report View, and Customizable Grid) by using the display-mode buttons located just to the left of the <strong>Manage Products</strong> button. Filters are not displayed in the Customizable Grid view.
+            ```
+    }
+    config {
+        buildOption: @products
+    }
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region page-settings (
+        name: Page Settings
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @products
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region product-cards (
+        name: Product Cards
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with base_products as (
+                  select p.id,
+                    p.product_name,
+                    p.product_description,
+                    p.row_key, 
+                    p.product_sku,
+                    f.product_family,
+                    p.updated,
+                    (
+                      select count(*)
+                      from eba_sales_deals
+                      where id in (
+                        select deal_id
+                        from eba_sales_deal_products
+                        where product_id = p.id
+                      )
+                    ) opportunities,
+                    (
+                      select count(*)
+                      from eba_sales_customers
+                      where id in (
+                        select customer_id
+                        from eba_sales_deals
+                        where id in (
+                          select deal_id
+                          from eba_sales_deal_products
+                          where product_id = p.id
+                        )
+                      )
+                    ) customers
+                  from eba_sales_products p,
+                       eba_sales_product_families f
+                  where p.product_family_id = f.id (+)
+                    and :P68_DISPLAY_AS = 'CARDS'
+                    and (
+                      :P68_ACCOUNT_ID is null 
+                        or p.id in (
+                          select product_id
+                          from eba_sales_deal_products dp
+                          where deal_id in (
+                            select id
+                            from eba_sales_deals
+                            where customer_id = :P68_ACCOUNT_ID
+                          )
+                        )
+                    )
+                    and (
+                      :P68_QUARTER is null 
+                        or p.id in (
+                          select product_id
+                          from eba_sales_deal_products dp
+                          where deal_id in (
+                            select id
+                            from eba_sales_deals
+                            where qtr = :P68_QUARTER
+                          )
+                        )   
+                    )
+                ),
+                card_details as (
+                  select product_name card_title,
+                    null card_icon,
+                    row_key card_initials,
+                    null card_text,
+                    case when product_family is not null and product_description is not null then
+                            product_family || ', '  || product_description
+                        when product_family is not null and product_description is null then
+                            product_family
+                        when product_family is null and product_description is not null then
+                            product_description
+                        else
+                            null
+                    end as card_text_p1,
+                    'SKU: ' || product_sku card_text_p2,
+                    to_char(opportunities,'999G999G999G990') ||
+                      ' opportunities, ' ||
+                      to_char(customers,'999G999G999G990') ||
+                      ' accounts' card_text_p3,
+                    apex_util.prepare_url(
+                      'f?p=' ||
+                      :APP_ID ||
+                      ':61:' ||
+                      :APP_SESSION ||
+                      ':::61,RP:P61_ID:' ||
+                      id
+                    ) card_link,
+                    id,
+                    updated card_subtext,
+                    opportunities,
+                    customers,
+                    updated,
+                    product_name,
+                    product_family
+                  from base_products
+                )
+                select *
+                from card_details
+                where (
+                  :P68_SEARCH is null
+                    or instr(upper(card_title), upper(:P68_SEARCH)) > 0
+                    or instr(upper(card_initials), upper(:P68_SEARCH)) > 0
+                    or instr(upper(card_text_p1), upper(:P68_SEARCH)) > 0
+                    or instr(upper(card_text_p2), upper(:P68_SEARCH)) > 0
+                    or instr(upper(card_text_p3), upper(:P68_SEARCH)) > 0
+                    or instr(upper('Updated: ' || apex_util.get_since(card_subtext)), upper(:P68_SEARCH)) > 0
+                )
+                order by
+                  case :P68_SORT
+                    when 'NAME' then product_name
+                  end,
+                  case :P68_SORT
+                    when 'OPPORTUNITIES' then opportunities
+                  end desc,
+                  case :P68_SORT
+                    when 'CUSTOMERS' then customers
+                  end desc,
+                  case :P68_SORT
+                    when 'UPDATED' then updated
+                  end desc
+                ```
+            pageItemsToSubmit: [
+                P68_SEARCH
+                P68_ACCOUNT_ID
+                P68_QUARTER
+                P68_DISPLAY_AS
+                P68_SORT
+            ]
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: cards_region
+            customAttributes: style="display:none"
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--basic
+                t-Cards--3cols
+                t-Cards--desc-3ln
+                t-Cards--animColorFill
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No products found
+        }
+
+        column CARD_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Card icon
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_INITIALS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card initials
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_LINK (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 2
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: Updated: #CARD_SUBTEXT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 3
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    #CARD_TEXT_P1#<br >
+                    <small>
+                    #CARD_TEXT_P2#<br >
+                    #CARD_TEXT_P3#
+                    </small>
+                    
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P1 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card text p1
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P2 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Card text p2
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P3 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Card text p3
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CUSTOMERS (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Customers
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 14
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OPPORTUNITIES (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Opportunities
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRODUCT_FAMILY (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Product family
+                alignment: center
+            }
+            layout {
+                sequence: 15
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRODUCT_NAME (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Product name
+            }
+            layout {
+                sequence: 13
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region products (
+        name: Products
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+            icon: fa-archive
+        }
+    )
+
+    region products-grid (
+        name: Products Grid
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.id,
+                  p.product_name,
+                  p.row_key, 
+                  p.product_sku,
+                  p.product_family_id,
+                  p.product_description,
+                  p.tags,
+                  (
+                    select count(*)
+                    from eba_sales_links
+                    where product_id = p.id
+                  ) links,
+                  (
+                    select count(*)
+                    from eba_sales_files
+                    where product_id = p.id
+                  ) attachments,
+                  (
+                    select count(*)
+                    from eba_sales_comments
+                    where product_id = p.id
+                  ) comments,
+                  (
+                    select count(*)
+                    from eba_sales_verifications
+                    where product_id = p.id
+                  ) validations,
+                  (
+                    select max(created)
+                    from eba_sales_verifications
+                    where product_id = p.id
+                  ) last_validation,
+                  (
+                    select count(*)
+                    from eba_sales_clicks
+                    where product_id = p.id
+                      and view_timestamp >= sysdate - 90
+                  ) views_90_days,
+                    (   select count(distinct(app_username))
+                        from eba_sales_clicks
+                        where product_id = p.id
+                            and view_timestamp >= sysdate - 90
+                    ) users_90_days,
+                  p.created,
+                  p.created_by,
+                  p.updated,
+                  p.updated_by,
+                  (
+                    select count(*)
+                    from eba_sales_deals
+                    where id in (
+                      select deal_id
+                      from eba_sales_deal_products
+                      where product_id = p.id
+                    )
+                  ) opportunities,
+                  (
+                    select count(*)
+                    from eba_sales_customers
+                    where id in (
+                      select customer_id
+                      from eba_sales_deals
+                      where id in (
+                        select deal_id
+                        from eba_sales_deal_products
+                        where product_id = p.id
+                      )
+                    )
+                  ) customers
+                from eba_sales_products p
+                ```
+            pageItemsToSubmit: P68_DISPLAY_AS
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: grid_region
+            customAttributes: style="display:none"
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 686324521160772642
+        }
+
+        column ATTACHMENTS (
+            type: plainText
+            heading {
+                heading: Attachments
+                alignment: end
+            }
+            layout {
+                sequence: 140
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column COMMENTS (
+            type: plainText
+            heading {
+                heading: Comments
+                alignment: end
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column CUSTOMERS (
+            type: plainText
+            heading {
+                heading: Accounts
+                alignment: end
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LAST_VALIDATION (
+            type: plainText
+            heading {
+                heading: Last Validation
+            }
+            layout {
+                sequence: 170
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Validations'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column LINKS (
+            type: plainText
+            heading {
+                heading: Links
+                alignment: end
+            }
+            layout {
+                sequence: 130
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column OPPORTUNITIES (
+            type: link
+            heading {
+                heading: Opportunities
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 135
+                    items: {
+                        IR_PRODUCT_ID: #ID#
+                    }
+                    clearCache: [
+                        RIR
+                        CIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #OPPORTUNITIES#
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column PRODUCT_DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column PRODUCT_FAMILY_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Family
+            }
+            lov {
+                lov: @product-families
+            }
+            layout {
+                sequence: 200
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column PRODUCT_NAME (
+            type: link
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 61
+                    items: {
+                        P61_ID: #ID#
+                    }
+                    clearCache: 61
+                    action: resetPagination
+                }
+                linkText: #PRODUCT_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PRODUCT_SKU (
+            type: plainText
+            heading {
+                heading: SKU
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column ROW_KEY (
+            type: plainText
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column USERS_90_DAYS (
+            type: plainText
+            heading {
+                heading: 90 Day Users
+                alignment: end
+            }
+            layout {
+                sequence: 190
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Usage Metrics'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column VALIDATIONS (
+            type: plainText
+            heading {
+                heading: Validations
+                alignment: end
+            }
+            layout {
+                sequence: 160
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Validations'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column VIEWS_90_DAYS (
+            type: plainText
+            heading {
+                heading: 90 Day Views
+                alignment: end
+            }
+            layout {
+                sequence: 180
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Usage Metrics'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        page {
+            width: 8.5
+            height: 11
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 7209308 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CUSTOMERS (
+                sequence: 7
+            )
+
+            displayColumn OPPORTUNITIES (
+                sequence: 6
+            )
+
+            displayColumn PRODUCT_DESCRIPTION (
+                sequence: 5
+            )
+
+            displayColumn PRODUCT_FAMILY_ID (
+                sequence: 3
+            )
+
+            displayColumn PRODUCT_NAME (
+                sequence: 1
+            )
+
+            displayColumn PRODUCT_SKU (
+                sequence: 4
+            )
+
+            displayColumn ROW_KEY (
+                sequence: 2
+            )
+
+            sort (
+                column: PRODUCT_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region products-report (
+        name: Products Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with base_products as (
+                  select p.id,
+                    p.product_name,
+                    p.row_key, 
+                    p.product_sku,
+                    p.product_family_id,
+                    p.updated,
+                    (
+                      select count(*)
+                      from eba_sales_deals
+                      where id in (
+                        select deal_id
+                        from eba_sales_deal_products
+                        where product_id = p.id
+                      )
+                    ) opportunities,
+                    (
+                      select count(*)
+                      from eba_sales_customers
+                      where id in (
+                        select customer_id
+                        from eba_sales_deals
+                        where id in (
+                          select deal_id
+                          from eba_sales_deal_products
+                          where product_id = p.id
+                        )
+                      )
+                    ) customers
+                  from eba_sales_products p
+                )
+                select *
+                from base_products
+                where :P68_DISPLAY_AS = 'REPORT'
+                  and (
+                    :P68_ACCOUNT_ID is null 
+                      or id in (
+                        select product_id
+                        from eba_sales_deal_products dp
+                        where deal_id in (
+                          select id
+                          from eba_sales_deals
+                          where customer_id = :P68_ACCOUNT_ID
+                        )
+                      )
+                  )
+                  and (
+                    :P68_QUARTER is null 
+                      or id in (
+                        select product_id
+                        from eba_sales_deal_products dp
+                        where deal_id in (
+                          select id
+                          from eba_sales_deals
+                          where qtr = :P68_QUARTER
+                        )
+                      )   
+                  )
+                  and (
+                    :P68_SEARCH is null
+                      or instr(upper(product_name), upper(:P68_SEARCH)) > 0
+                      or instr(upper(row_key), upper(:P68_SEARCH)) > 0
+                      or instr(upper(product_sku), upper(:P68_SEARCH)) > 0
+                      or instr(opportunities, upper(:P68_SEARCH)) > 0
+                      or instr(customers, upper(:P68_SEARCH)) > 0
+                      or instr(upper(apex_util.get_since(updated)), upper(:P68_SEARCH)) > 0
+                  )
+                ```
+            pageItemsToSubmit: [
+                P68_SEARCH
+                P68_ACCOUNT_ID
+                P68_QUARTER
+                P68_DISPLAY_AS
+                P68_SORT
+            ]
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: report_region
+            customAttributes: style="display:none"
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column CUSTOMERS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Accounts
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column OPPORTUNITIES (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Opportunities
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 135
+                    items: {
+                        IR_PRODUCT_ID: #ID#
+                    }
+                    clearCache: [
+                        RIR
+                        CIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #OPPORTUNITIES#
+            }
+        )
+
+        column PRODUCT_FAMILY_ID (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Family
+            }
+            lov {
+                type: sharedComponent
+                lov: @product-families
+            }
+            layout {
+                sequence: 4
+            }
+        )
+
+        column PRODUCT_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 61
+                    items: {
+                        P61_ID: #ID#
+                    }
+                    clearCache: 61
+                    action: resetPagination
+                }
+                linkText: #PRODUCT_NAME#
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column PRODUCT_SKU (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: SKU
+            }
+            layout {
+                sequence: 5
+            }
+        )
+
+        column ROW_KEY (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
+    pageItem P68_ACCOUNT_ID (
+        type: selectList
+        label {
+            label: Account
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @accounts
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 30
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P68_DISPLAY_AS (
+        type: radioGroup
+        label {
+            label: Display
+            alignment: left
+        }
+        settings {
+            noOfCols: 4
+        }
+        lov {
+            type: sharedComponent
+            lov: @pill-display-as
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @page-settings
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: CARDS
+        }
+        sessionState {
+            storage: user
+        }
+        security {
+            escapeSpecialChars: false
+        }
+    )
+
+    pageItem P68_QUARTER (
+        type: selectList
+        label {
+            label: Quarter
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select	 distinct d.qtr d, d.qtr r
+                 from	 "EBA_SALES_DEALS" d
+                where d.qtr is not null
+                order by substr(d.qtr,3), substr(d.qtr,1,2)
+                ```
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 40
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P68_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 10
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search Products
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    pageItem P68_SORT (
+        type: selectList
+        label {
+            label: Sort
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Product;NAME,Opportunities;OPPORTUNITIES,Customers;CUSTOMERS,Updated;UPDATED
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: NAME
+        }
+        sessionState {
+            storage: user
+        }
+    )
+
+    button manage-products (
+        buttonName: MANAGE_PRODUCTS
+        label: Manage Products
+        layout {
+            sequence: 10
+            region: @products
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+                clearCache: 4
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @filters
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: reset_button
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 20
+            region: @products-grid
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,202 @@
+lov link-types (
+    name: LINK TYPES
+    source {
+        location: staticValues
+    }
+
+    entry application (
+        sequence: 2
+        display: Application
+        return: Application
+    )
+
+    entry url (
+        sequence: 1
+        display: URL
+        return: URL
+    )
+
+)
+
+lov milestones (
+    name: MILESTONES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name || ' [' || due_date || ']' as display
+            , id as return
+            from eba_demo_md_milestones
+            order by due_date
+            ```
+    }
+)
+
+lov p18-milestones (
+    name: P18_MILESTONES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name || ' [' || due_date || ']' as display
+            , id as return
+            from eba_demo_md_milestones
+            where project_id = :P18_PROJECT_ID
+            order by due_date
+            ```
+    }
+)
+
+lov projects (
+    name: PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as display
+            , id as return
+            from eba_demo_md_projects
+            order by 1
+            ```
+    }
+)
+
+lov status (
+    name: STATUS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select description d, cd r
+            from eba_demo_md_status
+            order by display_order
+            ```
+    }
+)
+
+lov tasks (
+    name: TASKS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as display
+            , id as return
+            from eba_demo_md_tasks
+            order by start_date
+            ```
+    }
+)
+
+lov tasks-with-dates (
+    name: TASKS WITH DATES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name || ' [' || start_date || ' - ' || end_date || ']' as display
+            , id as return
+            from eba_demo_md_tasks
+            order by start_date
+            ```
+    }
+)
+
+lov team-members (
+    name: TEAM MEMBERS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select full_name as display
+            , id as return
+            from eba_demo_md_team_members
+            order by 1
+            ```
+    }
+)
+
+lov timeframe (
+    name: TIMEFRAME
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select '15 '||wwv_flow_lang.system_message(initcap('MINUTES')) d, 
+            trim(to_char(15/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '30 '||wwv_flow_lang.system_message(initcap('MINUTES')) d, 
+            trim(to_char(30/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '1 '||wwv_flow_lang.system_message(initcap('HOUR')) d, 
+            trim(to_char(1/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '90 '||wwv_flow_lang.system_message(initcap('MINUTES')) d, 
+            trim(to_char(90/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '2 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(1/12,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual union all 
+            select '3 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(3/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual union all 
+            select '4 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(4/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual union all 
+            select '5 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(5/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual union all 
+            select '6 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(6/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '8 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(8/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '10 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(10/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '12 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(12/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '16 '||wwv_flow_lang.system_message(initcap('HOURS')) d, 
+            trim(to_char(16/24,'00000.9999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual union all 
+            select '1 '||wwv_flow_lang.system_message(initcap('DAY')) d, trim(to_char(1,'00000.9999999999')) t 
+            from dual union all 
+            select '2 '||wwv_flow_lang.system_message(initcap('DAYS')) d, trim(to_char(2,'00000.9999999999')) t 
+            from dual union all 
+            select '3 '||wwv_flow_lang.system_message(initcap('DAYS')) d, trim(to_char(3,'00000.9999999999')) t 
+            from dual union all 
+            select '4 '||wwv_flow_lang.system_message(initcap('DAYS')) d, trim(to_char(4,'00000.9999999999')) t 
+            from dual union all 
+            select '5 '||wwv_flow_lang.system_message(initcap('DAYS')) d, trim(to_char(5,'00000.9999999999')) t 
+            from dual union all 
+            select '1 '||wwv_flow_lang.system_message(initcap('WEEK')) d, trim(to_char(7,'00000.9999999999')) t   
+            from dual union all 
+            select '2 '||wwv_flow_lang.system_message(initcap('WEEKS')) d, trim(to_char(14,'00000.9999999999')) t   
+            from dual order by 2
+            ```
+    }
+)
+
+lov username (
+    name: USERNAME
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select full_name as display
+            , username as return
+            from eba_demo_md_team_members
+            order by 1
+            ```
+    }
+)
+
+lov yes-no (
+    name: YES NO
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 2
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: Y
+    )
+
+)
+

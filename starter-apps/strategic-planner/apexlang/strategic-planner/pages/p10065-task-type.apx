@@ -1,0 +1,649 @@
+page 10065 (
+    name: Task Type
+    alias: TASK-TYPE
+    title: Task Type
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region task-type (
+        name: Task Type
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_TASK_TYPES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region used-as-default-for (
+        name: Used as Default for
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select f.area ||' / '|| i.initiative d
+                  from sp_areas f,
+                       sp_initiatives i,
+                       sp_initiative_default_tasks t
+                 where i.id = t.initiative_id
+                   and t.type_id = :P10065_ID
+                   and i.area_id = f.id
+                  order by 1
+                ```
+            pageItemsToSubmit: P10065_ID
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_default_tasks
+                 where type_id = :P10065_ID
+                   and :P10065_ID is not null
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlightOff
+                t-Report--noBorders
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        heading {
+            type: none
+        }
+
+        column D (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: D
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P10065_CREATED (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @task-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @task-type
+            column: CREATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10065_CREATED_BY (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @task-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @task-type
+            column: CREATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10065_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @task-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @task-type
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10065_DISPLAY_SEQ (
+        type: numberField
+        label {
+            label: Display Sequence
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @task-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 22
+        }
+        source {
+            formRegion: @task-type
+            column: DISPLAY_SEQ
+            dataType: number
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue: select max(display_seq) + 10 from SP_TASK_TYPES
+        }
+    )
+
+    pageItem P10065_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @task-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @task-type
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10065_INCLUDE_YN (
+        type: switch
+        label {
+            label: Include
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @task-type
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @task-type
+            column: INCLUDE_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: Included types are current and new tasks can be created with this type.
+        }
+    )
+
+    pageItem P10065_PARENT_TYPE_ID (
+        type: selectList
+        label {
+            label: Parent Type
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select task_type d, id r
+                  from sp_task_types
+                 where parent_type_id is null
+                  order by display_seq
+                ```
+        }
+        layout {
+            sequence: 20
+            region: @task-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @task-type
+            column: PARENT_TYPE_ID
+            dataType: number
+        }
+    )
+
+    pageItem P10065_STATIC_ID (
+        type: textField
+        label {
+            label: Static ID
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @task-type
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        source {
+            formRegion: @task-type
+            column: STATIC_ID
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: The static ID is provided for reporting purposes. MILESTONE and REVIEW prefixes are coded to be used within this application for custom reporting and should remain.
+        }
+    )
+
+    pageItem P10065_TASK_NAME_REQ_YN (
+        type: switch
+        label {
+            label: Task Name Required
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @task-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @task-type
+            column: TASK_NAME_REQ_YN
+            dataType: varchar2
+        }
+        help {
+            helpText: Indicates if tasks of this type will be required to have names in order to be created.  Should be required for more general task types (e.g. Development).
+        }
+    )
+
+    pageItem P10065_TASK_TYPE (
+        type: textField
+        label {
+            label: Task Type
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @task-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        source {
+            formRegion: @task-type
+            column: TASK_TYPE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10065_UPDATED (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @task-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @task-type
+            column: UPDATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10065_UPDATED_BY (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @task-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @task-type
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Task Type
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10065_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10065_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10065_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-change-parent-if-refs (
+        name: Cannot change parent if refs
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from sp_tasks
+                 where task_sub_type_id = :P10065_ID
+                ```
+        }
+        error {
+            errorMessage: Cannot change parent if the task type is referenced.
+            associatedItem: @P10065_PARENT_TYPE_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from sp_task_types
+                 where nvl(:P10065_PARENT_TYPE_ID,-1) != nvl(parent_type_id,-1)
+                   and id = :P10065_ID
+                ```
+        }
+    )
+
+    validation static-id-no-spaces (
+        name: static id no spaces
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: instr(:P10065_STATIC_ID,' ') = 0
+        }
+        error {
+            errorMessage: Static ID cannot contain spaces
+            associatedItem: @P10065_STATIC_ID
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 18245373136251743787
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form (
+        name: Initialize form
+        type: formInitialization
+        formRegion: @task-type
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 18245370278253743784
+        }
+    )
+
+    process process-form (
+        name: "Process form "
+        type: formAutoRowProcessing
+        formRegion: @task-type
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 18245370639083743785
+        }
+    )
+
+)
+

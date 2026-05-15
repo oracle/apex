@@ -1,0 +1,1185 @@
+page 70 (
+    name: Add Community / Members
+    alias: ADD-COMMUNITY-MEMBERS
+    title: Add Community / Members
+    pageGroup: @communities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>Select an "Action" and provide the required data. You may optionally enter (or paste) email addresses in any format. When you copy and paste email addresses from email messages, extraneous text will be filtered out. Existing or duplicate email addresses will be ignored.  Do NOT Use email mailing lists only include individual people.</p>
+    }
+
+    region footer (
+        name: footer
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region provide-respondent-community-details (
+        name: Provide Respondent Community Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--hiddenOverflow
+                t-Form--labelsAbove
+            ]
+        }
+    )
+
+    pageItem P70_COMMUNITY_ACTION (
+        type: radioGroup
+        label {
+            label: Action
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @community-actions
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @provide-respondent-community-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: -2
+        }
+    )
+
+    pageItem P70_COMMUNITY_ID (
+        type: selectList
+        label {
+            label: "From" Respondent Community
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @community-from
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 20
+            region: @provide-respondent-community-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P70_COMMUNITY_ID_TO (
+        type: selectList
+        label {
+            label: "To" Community
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @community-to
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 40
+            region: @provide-respondent-community-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        readOnly {
+            type: expression
+            plsqlExpression: (:P70_COMMUNITY_ACTION = '-3' and :P70_COMMUNITY_ID_TO is not null) or :P70_COMMUNITY_ID_TO is not null
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P70_COMMUNITY_NAME (
+        type: textField
+        label {
+            label: Community Name
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @provide-respondent-community-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P70_RESPONDENT_EMAIL_ADDRESSES (
+        type: textarea
+        label {
+            label: Email Addresses (paste any text that contains emails)
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 60
+            region: @provide-respondent-community-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 5
+        }
+        validation {
+            maxLength: 32767
+        }
+    )
+
+    pageItem P70_RESPONDENT_ID (
+        type: selectList
+        label {
+            label: Existing Member
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p70-available-respondents
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 50
+            region: @provide-respondent-community-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @footer
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+                clearCache: [
+                    70
+                    71
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @footer
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction change-emails-textarea-label-to-required-for-add-new-respondents (
+        name: Change Emails textarea label to required for add new respondents
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P70_COMMUNITY_ACTION
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -4
+                -5
+            ]
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code-2 (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('label[for="P70_RESPONDENT_EMAIL_ADDRESSES"]').removeClass('uRequired');
+                    
+                    ```
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-javascript-code-2 (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('label[for="P70_RESPONDENT_EMAIL_ADDRESSES"] img.uAsterisk').remove();
+                    $('label[for="P70_RESPONDENT_EMAIL_ADDRESSES"]').removeClass('uOptional');
+                    $('label[for="P70_RESPONDENT_EMAIL_ADDRESSES"]').addClass('uRequired');
+                    $('label[for="P70_RESPONDENT_EMAIL_ADDRESSES"]').append('<img class="uAsterisk" alt="Value Required" src="#IMAGE_PREFIX#f_spacer.gif">');
+                    ```
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P70_RESPONDENT_EMAIL_ADDRESSES
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction clear-errors (
+        name: Clear Errors
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P70_COMMUNITY_ACTION
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P70_COMMUNITY_ACTION
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('span.uLabelError').hide();
+                    $('section#uNotificationMessage').hide();
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-from-community-id (
+        name: Set From Community id
+        execution {
+            sequence: 80
+        }
+        when {
+            selectionType: items
+            items: P70_COMMUNITY_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P70_COMMUNITY_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: items
+                items: P70_COMMUNITY_ID_TO
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-community-id (
+        name: Show/Hide Community ID
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P70_COMMUNITY_ACTION
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -1
+                0
+            ]
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code-2 (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P70_COMMUNITY_ID
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P70_COMMUNITY_ID
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-community-id-to (
+        name: Show/Hide Community ID To
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P70_COMMUNITY_ACTION
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -1
+                -3
+                -4
+            ]
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code-2 (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P70_COMMUNITY_ID_TO
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P70_COMMUNITY_ID_TO
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-community-name (
+        name: Show/Hide Community Name
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P70_COMMUNITY_ACTION
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -2
+                0
+            ]
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code-2 (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P70_COMMUNITY_NAME
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P70_COMMUNITY_NAME
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-respondent (
+        name: Show/Hide Respondent
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: P70_COMMUNITY_ACTION
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P70_COMMUNITY_ACTION
+            list: -3
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code-2 (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P70_RESPONDENT_ID
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P70_RESPONDENT_ID
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-respondent-email-addresses (
+        name: Show/Hide RESPONDENT_EMAIL_ADDRESSES
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: P70_COMMUNITY_ACTION
+        }
+        clientSideCondition {
+            type: item=value
+            item: P70_COMMUNITY_ACTION
+            value: -3
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code-2 (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P70_COMMUNITY_ACTION
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P70_RESPONDENT_EMAIL_ADDRESSES
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: "$('html body form#wwvFlowForm div#uBodyContainer div#uOneCol div.cWizard div.cWizardContentContainer div.cWizardContent div table.formlayout tbody tr td label[for=\"P70_RESPONDENT_EMAIL_ADDRESSES\"]').parent().show();"
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-javascript-code-2 (
+            action: executeJsCode
+            settings {
+                jsCode: "$('html body form#wwvFlowForm div#uBodyContainer div#uOneCol div.cWizard div.cWizardContentContainer div.cWizardContent div table.formlayout tbody tr td label[for=\"P70_RESPONDENT_EMAIL_ADDRESSES\"]').parent().hide();"
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P70_RESPONDENT_EMAIL_ADDRESSES
+            }
+            execution {
+                sequence: 30
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    validation p70-community-id-not-null (
+        name: P70_COMMUNITY_ID Not Null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P70_COMMUNITY_ID
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P70_COMMUNITY_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: itemIsInColonDelimitedList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -1
+                0
+            ]
+        }
+    )
+
+    validation p70-community-id-to-not-null (
+        name: P70_COMMUNITY_ID_TO Not Null
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P70_COMMUNITY_ID_TO
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: itemIsInColonDelimitedList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -1
+                -3
+                -4
+            ]
+        }
+    )
+
+    validation p70-community-name-not-null (
+        name: P70_COMMUNITY_NAME Not Null
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P70_COMMUNITY_NAME
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P70_COMMUNITY_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: itemIsInColonDelimitedList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -2
+                0
+            ]
+        }
+    )
+
+    validation p70-respondent-email-addresses-not-null (
+        name: P70_RESPONDENT_EMAIL_ADDRESSES Not Null
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: itemIsNotNull
+            item: P70_RESPONDENT_EMAIL_ADDRESSES
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P70_RESPONDENT_EMAIL_ADDRESSES
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: itemIsInColonDelimitedList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -4
+                -5
+            ]
+        }
+    )
+
+    validation p70-respondent-id-not-null (
+        name: P70_RESPONDENT_ID Not Null
+        execution {
+            sequence: 50
+        }
+        validation {
+            type: itemIsNotNull
+            item: P70_RESPONDENT_ID
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P70_RESPONDENT_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item=value
+            item: P70_COMMUNITY_ACTION
+            value: -3
+        }
+    )
+
+    process create-collections-for-adding-respondent (
+        name: Create Collections for adding respondent
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_valid     boolean := true;
+                    l_email     varchar2(1000);
+                    l_domain    varchar2(4000);
+                begin
+                    ---------------------
+                    -- create collections
+                    --
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_RESPONDENT_INVALID');
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_RESPONDENT_VALID');
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_RESPONDENT_CREATE');
+                 
+                    for c1 in (select /* APEX76a66f */ r.email
+                                 from EBA_QPOLL_RESP_COMM_REF ref,
+                                      EBA_QPOLL_RESPONDENTS r
+                                where ref.respondent_id = :P70_RESPONDENT_ID
+                                  and r.id = ref.respondent_id
+                                  and ref.community_id = :P70_COMMUNITY_ID_TO)
+                    loop
+                        l_email := c1.email;
+                        wwv_flow_collection.add_member(
+                            p_collection_name => 'EBA_QPOLL_RESPONDENT_INVALID',
+                            p_c001            => upper(l_email),
+                            p_c002            => apex_lang.message('ALREADY_IN_COMMUNITY'));
+                        commit;
+                        l_valid := false;
+                        exit;
+                    end loop;
+                
+                    select /* APEX76a66f */ r.email
+                      into l_email
+                      from EBA_QPOLL_RESPONDENTS r
+                     where r.id = :P70_RESPONDENT_ID;
+                
+                    l_email := replace(l_email,chr(49824),null);
+                
+                    if l_email is not null then
+                        l_valid := true;
+                    end if;
+                
+                    if l_valid then
+                        for c1 in (select /* APEXeaf772 */  c001
+                                     from wwv_flow_collections
+                                    where collection_name = 'EBA_QPOLL_RESPONDENT_VALID'
+                                      and c001 = upper(l_email))
+                        loop
+                            apex_collection.add_member(
+                                p_collection_name => 'EBA_QPOLL_RESPONDENT_INVALID',
+                                p_c001            => upper(l_email),
+                                p_c002            => apex_lang.message('DUPLICATE_EMAIL'));
+                                commit;
+                            l_valid := false;
+                            exit;
+                        end loop;
+                    end if;
+                
+                    if l_valid then
+                        apex_collection.add_member(
+                            p_collection_name => 'EBA_QPOLL_RESPONDENT_VALID',
+                            p_c001            => upper(l_email));
+                            commit;
+                    end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 13925154392254811444
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item=value
+            item: P70_COMMUNITY_ACTION
+            value: -3
+        }
+    )
+
+    process create-collections-for-copy-communities (
+        name: Create Collections for copy communities
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_line      varchar2(32767);
+                    l_emails    wwv_flow_global.vc_arr2;
+                    l_email     varchar2(4000);
+                    l_at        number;
+                    l_dot       number;
+                    l_valid     boolean := true;
+                    l_domain    varchar2(4000);
+                begin
+                    ---------------------
+                    -- create collections
+                    --
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_RESPONDENT_INVALID');
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_RESPONDENT_VALID');
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_RESPONDENT_CREATE');
+                
+                    --------------------------------------------
+                    -- replace delimiting characters with commas
+                    --
+                    l_line := :P70_RESPONDENT_EMAIL_ADDRESSES;
+                    l_line := replace(l_line,chr(10),' ');
+                    l_line := replace(l_line,chr(13),' ');
+                    l_line := replace(l_line,chr(9),' ');
+                    l_line := replace(l_line,'<',' ');
+                    l_line := replace(l_line,'>',' ');
+                    l_line := replace(l_line,';',' ');
+                    l_line := replace(l_line,':',' ');
+                    l_line := replace(l_line,'(',' ');
+                    l_line := replace(l_line,')',' ');
+                    l_line := replace(l_line,' ',',');
+                
+                    -----------------------------------------
+                    -- get one comma separated line of emails
+                    --
+                    for j in 1..1000 loop
+                        if instr(l_line,',,') > 0 then
+                           l_line := replace(l_line,',,',',');
+                        else
+                           exit;
+                        end if;
+                    end loop;
+                
+                    -------------------------
+                    -- get an array of emails
+                    --
+                    l_emails := wwv_flow_utilities.string_to_table(l_line,',');
+                
+                    -----------------------------
+                    -- add emails to a collection
+                    --
+                    l_email := null;
+                    l_domain := null;
+                    l_at := 0;
+                    l_dot := 0;
+                    for j in 1..l_emails.count loop
+                        l_valid := true;
+                        l_email := trim(l_emails(j));
+                        l_email := replace(l_email,chr(49824),null);
+                
+                        if l_email is not null then
+                            -----------
+                            -- Validate
+                            --
+                            l_at := instr(nvl(l_email,'x'),'@');
+                            l_domain := substr(l_email,l_at+1);
+                            l_dot := instr(l_domain,'.');
+                            if l_at < 2 then
+                                -- invalid email
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_RESPONDENT_INVALID',
+                                    p_c001            => l_email,
+                                    p_c002            => apex_lang.message('MISSING_AT_SIGN'));
+                                commit;
+                                l_valid := false;
+                            end if;
+                
+                            if l_dot = 0 and l_valid then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_RESPONDENT_INVALID',
+                                    p_c001            => l_email,
+                                    p_c002            => apex_lang.message('MISSING_DOT'));
+                                commit;
+                                l_valid := false;
+                            end if;
+                
+                
+                            l_email := trim(l_email);
+                            l_email := trim(both '.' from l_email);
+                            l_email := replace(l_email,' ',null);
+                            l_email := replace(l_email,chr(10),null);
+                            l_email := replace(l_email,chr(9),null);
+                            l_email := replace(l_email,chr(13),null);
+                            l_email := replace(l_email,chr(49824),null);
+                
+                            if l_valid and length(l_email) > 255 then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_RESPONDENT_INVALID',
+                                    p_c001            => upper(l_email),
+                                    p_c002            => apex_lang.message('EMAIL_TOO_LONG'));
+                                commit;
+                                l_valid := false;
+                            end if;
+                
+                            if l_valid then
+                                for c1 in (select /* APEX76a66f */ r.email
+                                             from eba_qpoll_respondents r,
+                                                  eba_qpoll_resp_comm_ref j
+                                            where upper(r.email) = upper(l_email)
+                                              and r.id = j.respondent_id
+                                              and j.community_id = :P70_COMMUNITY_ID_TO)
+                                loop
+                                    wwv_flow_collection.add_member(
+                                        p_collection_name => 'EBA_QPOLL_RESPONDENT_INVALID',
+                                        p_c001            => upper(l_email),
+                                        p_c002            => apex_lang.message('ALREADY_IN_COMMUNITY'));
+                                    commit;
+                                    l_valid := false;
+                                    exit;
+                                end loop;
+                            end if;
+                
+                            if l_valid then
+                                for c1 in (select /* APEXeaf772 */  c001
+                                             from wwv_flow_collections
+                                            where collection_name = 'EBA_QPOLL_RESPONDENT_VALID'
+                                              and c001 = upper(l_email))
+                                loop
+                                    apex_collection.add_member(
+                                        p_collection_name => 'EBA_QPOLL_RESPONDENT_INVALID',
+                                        p_c001            => upper(l_email),
+                                        p_c002            => apex_lang.message('DUPLICATE_EMAIL'));
+                                        commit;
+                                    l_valid := false;
+                                    exit;
+                                end loop;
+                            end if;
+                
+                            if l_valid then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_RESPONDENT_VALID',
+                                    p_c001            => upper(l_email));
+                                    commit;
+                            end if;
+                
+                        end if;
+                        l_email := null;
+                    end loop;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 13921303693736975175
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item!=value
+            item: P70_COMMUNITY_ACTION
+            value: -3
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 71
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+)
+

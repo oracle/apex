@@ -1,0 +1,731 @@
+page 150 (
+    name: Customer Activity
+    alias: CUSTOMER-ACTIVITY
+    title: Customer Activity
+    pageGroup: @activities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @activities
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region customer-activity (
+        name: Customer Activity
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P150_ACTIVITY_DATE (
+        type: datePicker
+        label {
+            label: Date
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @customer-activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACTIVITY_DATE
+            used: always
+        }
+    )
+
+    pageItem P150_ACTIVITY_ID (
+        type: popupLov
+        label {
+            label: Activity
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sharedComponent
+            lov: @activities
+            displayExtraValues: false
+            nullDisplayValue: - Select Activity -
+        }
+        layout {
+            sequence: 60
+            region: @customer-activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACTIVITY_ID
+            used: always
+        }
+    )
+
+    pageItem P150_CONTACT_ID (
+        type: selectList
+        label {
+            label: Contact
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select name||nvl2(title,', '||title,'') d, id r
+                from eba_cust_contacts
+                where customer_id = :P150_CUSTOMER_ID
+                order by lower(name)
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - No Specific Contact -
+        }
+        cascadingLov {
+            parentItems: P150_CUSTOMER_ID
+        }
+        layout {
+            sequence: 70
+            region: @customer-activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_ID
+            used: always
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    pageItem P150_CUSTOMER_ID (
+        type: selectList
+        label {
+            label: Customer
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @customers
+        }
+        layout {
+            sequence: 40
+            region: @customer-activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_ID
+            used: always
+        }
+        readOnly {
+            type: itemIsNotNull
+            item: P150_CUSTOMER_ID
+        }
+    )
+
+    pageItem P150_ID (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @customer-activity
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P150_LOCATION (
+        type: textField
+        label {
+            label: Location
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @customer-activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LOCATION
+            used: always
+        }
+    )
+
+    pageItem P150_NOTES (
+        type: textarea
+        label {
+            label: Notes
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @customer-activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NOTES
+            used: always
+        }
+    )
+
+    pageItem P150_OWNER (
+        type: textField
+        label {
+            label: Owner
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @customer-activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: OWNER
+            used: always
+        }
+    )
+
+    pageItem P150_SHOW_DATE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @customer-activity
+            slot: regionBody
+        }
+        source {
+            type: staticValue
+            staticValue: N
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P150_SHOW_LOCATION (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 30
+            region: @customer-activity
+            slot: regionBody
+        }
+        source {
+            type: staticValue
+            staticValue: N
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P150_SHOW_OWNER (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            region: @customer-activity
+            slot: regionBody
+        }
+        source {
+            type: staticValue
+            staticValue: N
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Activity
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P150_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P150_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P150_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-show-flags (
+        name: Set Show Flags
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P150_ACTIVITY_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    for c1 in ( select nvl2(a.activity_date,'N','Y') show_activity_date,
+                                    nvl2(a.owner,'N','Y') show_owner,
+                                    nvl2(a.location,'N','Y') show_location
+                                from eba_cust_activities a
+                                where a.id = :P150_ACTIVITY_ID ) loop
+                        :P150_SHOW_DATE := c1.show_activity_date;
+                        :P150_SHOW_OWNER := c1.show_owner;
+                        :P150_SHOW_LOCATION := c1.show_location;
+                    end loop;
+                    ```
+                itemsToSubmit: P150_ACTIVITY_ID
+                itemsToReturn: [
+                    P150_SHOW_DATE
+                    P150_SHOW_OWNER
+                    P150_SHOW_LOCATION
+                ]
+                showProcessing: true
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-date-field (
+        name: Show Date Field
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P150_SHOW_DATE
+        }
+        clientSideCondition {
+            type: item=value
+            item: P150_SHOW_DATE
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P150_ACTIVITY_DATE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P150_ACTIVITY_DATE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-location-field (
+        name: Show Location Field
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: P150_SHOW_LOCATION
+        }
+        clientSideCondition {
+            type: item=value
+            item: P150_SHOW_LOCATION
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P150_LOCATION
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P150_LOCATION
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-owner-field (
+        name: Show Owner Field
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P150_SHOW_OWNER
+        }
+        clientSideCondition {
+            type: item=value
+            item: P150_SHOW_OWNER
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P150_OWNER
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P150_OWNER
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 18179538988892946127
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process fetch-row-from-eba-cust-activity-ref (
+        name: Fetch Row from EBA_CUST_ACTIVITY_REF
+        type: autoRowFetch
+        source {
+            tableName: EBA_CUST_ACTIVITY_REF
+            pkColumn: ID
+            pkItem: P150_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 18179537779834946124
+        }
+    )
+
+    process process-row-of-eba-cust-activity-ref (
+        name: Process Row of EBA_CUST_ACTIVITY_REF
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CUST_ACTIVITY_REF
+            pkColumn: ID
+            pkItem: P150_ID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 18179538186035946127
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 18179538583436946127
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

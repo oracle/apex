@@ -1,0 +1,11 @@
+drop table eba_util_farest_catalog cascade constraints;
+drop table eba_util_farest_cat_baseurl cascade constraints;
+drop table eba_util_farest_endpoint_attrs cascade constraints;
+drop table eba_util_farest_endpoint_chobj cascade constraints;
+drop table eba_util_farest_endpoints cascade constraints;
+drop table eba_util_facat_pillars cascade constraints;
+drop table eba_util_facat_releases cascade constraints;
+drop table eba_util_facat_catalogs cascade constraints;
+drop table eba_util_facat_endpoints cascade constraints;
+drop table eba_util_facat_endpoint_attrs cascade constraints;
+drop table eba_util_facat_server_prefixes cascade constraints;

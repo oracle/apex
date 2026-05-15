@@ -1,0 +1,344 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry activity-calendar (
+        name: Activity Calendar
+        pageNumber: 28
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry add-comment (
+        name: Add Comment
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 27
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry drill-down (
+        name: Drill Down
+        pageNumber: 48
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry links (
+        name: Links
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry maintain-link (
+        name: Maintain Link
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry maintain-task (
+        name: Maintain Task
+        pageNumber: 9
+        execution {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry maintain-to-do (
+        name: Maintain To Do
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry milestones (
+        name: Milestones
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry p11-project-name (
+        name: &P11_PROJECT_NAME.
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @report-and-marquee
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry p31-task-name (
+        name: &P31_TASK_NAME.
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @p11-project-name
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry p49-name (
+        name: &P49_NAME.
+        pageNumber: 49
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @drill-down
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+    )
+
+    entry page-views (
+        name: Page Views
+        pageNumber: 29
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry preferences (
+        name: Preferences
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry report-and-marquee (
+        name: Report and Marquee
+        pageNumber: 4
+        execution {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry side-by-side (
+        name: Side by Side
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry stacked (
+        name: Stacked
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry stacked-with-sub-detail (
+        name: Stacked with Sub Detail
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry tasks (
+        name: Tasks
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry to-dos (
+        name: To Dos
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry top-users (
+        name: Top Users
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+)
+

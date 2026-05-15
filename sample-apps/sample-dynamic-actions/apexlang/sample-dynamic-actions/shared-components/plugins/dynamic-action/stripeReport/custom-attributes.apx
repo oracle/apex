@@ -1,0 +1,31 @@
+customAttribute attribute_01 (
+    apexlangName: stripeColor
+    attribute: 1
+    name: Stripe Color
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    default {
+        value: #FAFAFA
+    }
+    help {
+        helpText:
+            ```
+            <p>
+            	Specify a color to be used to color the background of every alternate row in the report. Colors can be specified in 1 of 3 ways:</p>
+            <ul>
+            	<li>
+            		By Name - The name of the color, like &#39;red&#39;.</li>
+            	<li>
+            		By Hex Code - The hex code of the color, like &#39;#FAFAFA&#39;.</li>
+            	<li>
+            		By RGB Code - The rgb code of the color, like &#39;rgb(0,0,255)&#39;</li>
+            </ul>
+            
+            ```
+    }
+)
+

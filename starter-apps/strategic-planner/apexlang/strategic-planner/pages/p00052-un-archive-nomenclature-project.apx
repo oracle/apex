@@ -1,0 +1,204 @@
+page 52 (
+    name: Un-Archive &NOMENCLATURE_PROJECT.
+    alias: UN-ARCHIVE-NOMENCLATURE-PROJECT
+    title: Restore &NOMENCLATURE_PROJECT.
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region archive (
+        name: Archive
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region button-container (
+        name: Button Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P52_PROJECT (
+        type: displayOnly
+        label {
+            label: &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @archive
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P52_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @archive
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button restore-project (
+        buttonName: restore_Project
+        label: Restore &NOMENCLATURE_PROJECT.
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: close dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p52-project (
+        itemName: P52_PROJECT
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project
+                from sp_projects p
+                where id = :P52_PROJECT_ID
+                ```
+        }
+    )
+
+    process unarchive-project (
+        name: unArchive project
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.un_archive_project (
+                    p_project_id => :P52_PROJECT_ID
+                    );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: &NOMENCLATURE_PROJECT. Restored
+        }
+        error {
+            errorMessage: Unable to Archive Project
+        }
+        advanced {
+            executionMappingIdentifier: 11677543556811597523
+        }
+        serverSideCondition {
+            whenButtonPressed: @restore-project
+        }
+    )
+
+    branch (
+        name: branch to projects page
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 3
+                items: {
+                    P3_PROJECT_ID: &P52_PROJECT_ID.
+                }
+                clearCache: 3
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

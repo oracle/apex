@@ -1,0 +1,26 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 100
+        systemPrivileges: [
+            createProcedure
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            EBA_DEMO_CARD_DEPT
+            EBA_DEMO_CARD_EMP
+            EBA_DEMO_CARD_VEHICLE_SPEED
+            EBA_DEMO_CARD_RANDOM_IMAGE
+        ]
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

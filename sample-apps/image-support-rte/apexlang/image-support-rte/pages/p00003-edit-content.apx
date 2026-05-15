@@ -1,0 +1,322 @@
+page 3 (
+    name: Edit Content
+    alias: EDIT-CONTENT
+    title: Edit Content
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    javaScript {
+        fileUrls: #APP_FILES#exContent#MIN#.js
+    }
+    security {
+        authorizationScheme: @access-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region edit-content (
+        name: Edit Content
+        type: form
+        source {
+            location: localDatabase
+            tableName: EXCM_CONTENT_V
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P3_BODY (
+        type: richTextEditor
+        label {
+            label: Content
+            alignment: left
+        }
+        settings {
+            minHeight: 180
+            allowCustomHtml: true
+        }
+        layout {
+            sequence: 30
+            region: @edit-content
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                    return exContent.markdown.configEditor(options, {
+                        apexUpload: {
+                            // Application process name that that will handle the POST request when an image is dropped into
+                            // text box
+                            uploadApplicationProcess: 'POST_IMAGE',
+                            // Pass in any data that you want in the POST process 
+                            // Will be passed in as a JSON object and available in apex_application.g_x01
+                            data: {
+                                imageRefId: apex.item('P3_NEW_IMAGE_REF_ID').getValue()
+                            }
+                        }
+                    });
+                }
+                ```
+        }
+        source {
+            formRegion: @edit-content
+            column: BODY
+            dataType: clob
+        }
+        sessionState {
+            dataType: clob
+        }
+    )
+
+    pageItem P3_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @edit-content
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-content
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_NEW_IMAGE_REF_ID (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @edit-content
+            slot: regionBody
+        }
+        default {
+            type: expression
+            plsqlExpression: "to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') "
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: Would you like to delete this content?
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P3_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P3_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 19796160333724735814
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process delete-content (
+        name: Delete Content
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                excm_util.delete_content (
+                    p_content_id => :P3_ID );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Content deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 20509571035057115003
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process initialize-form-edit-comment (
+        name: Initialize form Edit Comment
+        type: formInitialization
+        formRegion: @edit-content
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 19796157885822735811
+        }
+    )
+
+    process update-content (
+        name: Update Content
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                excm_util.update_content (
+                    p_content_id   => :P3_ID,
+                    p_content      => :P3_BODY,
+                    p_image_ref_id => :P3_NEW_IMAGE_REF_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Changes saved.
+        }
+        advanced {
+            executionMappingIdentifier: 20509570965917115002
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

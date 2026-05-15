@@ -1,0 +1,703 @@
+page 3 (
+    name: Files
+    alias: FILE-LIST
+    title: Files
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        layout {
+            sequence: 21
+            parentRegion: @container
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region application-features-demonstrated-on-this-page (
+        name: Application features demonstrated on this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><strong>This page shows how to:</strong>
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @about-this-page
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region container (
+        name: Container
+        type: staticContent
+        layout {
+            sequence: 11
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region display-download-links-in-an-interactive-report (
+        name: Display download links in an Interactive Report
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ul>
+                    <li>Create an interactive report, including in your select statement the file size using the sys.dbms_lob.getlength([my blob column]) file_length function, you can provide DOWNLOAD as the column alias</li>
+                    <li>Edit the Report Attributes</li>
+                    <li>Edit the Column Definition for the DOWNLOAD column</li>
+                    <li>Select "BLOB Format" as Number/Date Format value (using the popup list of values)</li>
+                    <li>When you select "BLOB Format", the BLOB Column Attributes region will display</li>
+                    <li>Specify appropriate values in BLOB Column Attributes region</li>
+                
+                        <p><br>
+                        <strong>Format Mask</strong>: DOWNLOAD or IMAGE.  If the BLOB you are working with is an image, you can display it in the report using the new report format mask of 'IMAGE'.  For this example, you will select "DOWNLOAD".<br>
+                        <strong>Table</strong>: Case sensitive name of table containing target column of type BLOB.<br>
+                        <strong>Column</strong>: Case sensitive name of column of type BLOB.<br>
+                        <strong>Primary Key Column 1</strong>: Case sensitive name of primary key column 1.<br>
+                        <strong>Primary Key Column 2</strong>: Case sensitive name of primary key column 2.<br>
+                        <strong>Mimetype Column</strong>: Case sensitive column name used to store the MIME type.<br>
+                        <strong>Filename Column</strong>: Case sensitive column name used to store the filename of the BLOB. If NULL, the column name is used as the default when a user downloads the file.<br>
+                        <strong>Last Update Column</strong>: Case sensitive column name used to store the last update date of the BLOB. If used, the HTTP header of the file download indicates the date of last modification and web browsers will be able to cache the BLOB. If not specified, the browser may not be able to cache files.<br>
+                        <strong>Charaset Column</strong>: Case sensitive column name used to store the character set of the BLOB. Most relevant for Asian languages which may need to maintain the character set encoding.<br>
+                        <strong>Content Disposition</strong>: Select inline or attachment. If a MIME type is provided and the file is a type that can be displayed, the file is displayed. If MIME type is not provided, or the file cannot be displayed inline, the user is prompted to download.<br>
+                        <strong>Download Text</strong>: String used for the download link. If nothing is provided, "Download" is used. Note that this supports substitutions (useful for translated applications).<br>
+                        </p>
+                    <li>Click Apply Changes</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @about-this-page
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region files (
+        name: Files
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    ID,
+                    ROW_VERSION_NUMBER,
+                    PROJECT_ID,
+                    FILENAME,
+                    FILE_MIMETYPE,
+                    FILE_CHARSET,
+                    FILE_BLOB,
+                    FILE_COMMENTS,
+                    TAGS,
+                    CREATED,
+                    CREATED_BY,
+                    UPDATED,
+                    UPDATED_BY,
+                    sys.dbms_lob.getlength(file_blob) file_size,
+                    sys.dbms_lob.getlength(file_blob) download
+                from EBA_DEMO_FILES
+                ```
+        }
+        layout {
+            sequence: 31
+            parentRegion: @container
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        advanced {
+            htmlDomId: files_report
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No files found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2598747204470508066
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 10
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column DOWNLOAD (
+            type: downloadBlob
+            heading {
+                heading: Download
+                alignment: center
+            }
+            layout {
+                sequence: 15
+                columnAlignment: center
+            }
+            appearance {
+                downloadText: Download
+            }
+            blobAttributes {
+                tableName: EBA_DEMO_FILES
+                blobColumn: FILE_BLOB
+                primaryKeyColumn1: ID
+                mimeTypeColumn: FILE_MIMETYPE
+                filenameColumn: FILENAME
+                lastUpdatedColumn: UPDATED
+                charSetColumn: FILE_CHARSET
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+            }
+        )
+
+        column FILENAME (
+            type: link
+            heading {
+                heading: Filename
+            }
+            layout {
+                sequence: 4
+            }
+            link {
+                target: {
+                    page: 12
+                    items: {
+                        P12_ID: #ID#
+                    }
+                    clearCache: 12
+                    action: resetPagination
+                }
+                linkText: #FILENAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column FILE_BLOB (
+            type: plainText
+            heading {
+                heading: File
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: OTHER
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: G
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column FILE_CHARSET (
+            type: plainText
+            heading {
+                heading: Charset
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column FILE_COMMENTS (
+            type: plainText
+            heading {
+                heading: Comments
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column FILE_MIMETYPE (
+            type: plainText
+            heading {
+                heading: Mimetype
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column FILE_SIZE (
+            type: plainText
+            heading {
+                heading: File Size
+                alignment: end
+            }
+            layout {
+                sequence: 14
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FILESIZE
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: Id
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PROJECT_ID (
+            type: plainText
+            heading {
+                heading: Project Id
+                alignment: end
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column ROW_VERSION_NUMBER (
+            type: plainText
+            heading {
+                heading: Row Version Number
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 12
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        savedReport 25987488 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CREATED (
+                sequence: 4
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 5
+            )
+
+            displayColumn DOWNLOAD (
+                sequence: 7
+            )
+
+            displayColumn FILENAME (
+                sequence: 1
+            )
+
+            displayColumn FILE_COMMENTS (
+                sequence: 3
+            )
+
+            displayColumn FILE_MIMETYPE (
+                sequence: 2
+            )
+
+            displayColumn FILE_SIZE (
+                sequence: 6
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            aggregate (
+                column: FILE_SIZE
+            )
+
+        )
+
+    )
+
+    region include-file-size-in-a-report-using-the-filesize-format-mask (
+        name: Include file size in a report using the "FILESIZE" format mask
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ul>
+                    <li>Create an interactive report, including in your select statement the file size using the sys.dbms_lob.getlength([my blob column]) file_length function (you can provide FILE_SIZE as the column alias)</li>
+                    <li>Edit the Report Attributes</li>
+                    <li>Edit the Column Definition for the FILE_SIZE column</li>
+                    <li>Enter FILESIZE as Number/Date Format value</li>
+                    <li>Click Apply Changes</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @about-this-page
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region page-title (
+        name: Page Title
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page shows how to implement a download column on an interactive report.  Click the <strong>Add File</strong> to see 
+                an example of adding a file to a database table.</p>
+                ```
+        }
+        layout {
+            sequence: 1
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 41
+            parentRegion: @container
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: files_report
+        }
+    )
+
+    button add-file (
+        buttonName: ADD_FILE
+        label: Add File
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 12
+                clearCache: 12
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+                clearCache: [
+                    3
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

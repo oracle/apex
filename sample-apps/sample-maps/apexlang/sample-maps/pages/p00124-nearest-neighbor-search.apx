@@ -1,0 +1,1170 @@
+page 124 (
+    name: Nearest Neighbor Search
+    alias: NEAREST-NEIGHBOR-SEARCH
+    title: &APP_NAME. - Nearest Neighbor Search
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            function showFeature( pId ) {
+                var lMapRegion   = apex.region("airport-map-region"),
+                    // important: Use the layer name exactly as specified in the "name" attribute in Page Designer
+                    lLayerId     = lMapRegion.call("getLayerIdByName", "Neighbors"),
+                    lFeature     = lMapRegion.call("getFeature", lLayerId, pId );
+            
+                if ( lFeature.geometry ) {
+                    lMapRegion.call( "closeAllInfoWindows" );
+                    lMapRegion.call( "displayPopup", "infoWindow", lLayerId, pId.toString(), false );
+                }
+            }
+            ```
+        executeWhenPageLoads:
+            ```javascript-browser
+            
+            
+            
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .popup-left {
+                transform: translate(0, -10%) !important;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates a <em>Nearest Neighbor Search</em>. After the user clicked a position on the map and adjusted the filter settings, the application looks up <em>nearest neighbors</em> to the clicked position and shows them on the map as well as in the interactive report below the map.</p>
+                <p>This functionality is built on top of the <strong>SDO_NN</strong> Spatial SQL function, which walks through the spatial index and returns nearest neighbors based on the given position. Additional relational filters are respected, so that the returned neighbors are typically farther away as the filter selectivity increases.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region airports (
+        name: Airports
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       iata_code,
+                       initcap( city ) as city,
+                       initcap( airport_name ) as airport_name,
+                       initcap( airport_type ) as airport_type,
+                       state_name,
+                       elevation,
+                       dist_city_to_airport,
+                       land_area_covered,
+                       activation_date_dt as activation_date,
+                       commercial_ops,
+                       air_taxi_ops,
+                       geometry,
+                       sdo_nn_distance( 1 ) as distance
+                  from eba_sample_map_airports
+                 where sdo_nn( geometry, mdsys.sdo_util.from_geojson (:P124_CLICK_POSITION ), case when :P124_MAX_DISTANCE is not null then 'distance=' || :P124_MAX_DISTANCE || ' ' end || 'unit=km',   1 ) = 'TRUE'
+                   and airport_type = :P124_AIRPORT_TYPE
+                   and nvl( commercial_ops, 0 ) >= nvl( :P124_COMMERCIAL_OPS_MIN, 0)
+                   and :P124_CLICK_POSITION is not null and :P124_AIRPORT_TYPE is not null
+                   and 'Y' = nvl(:P124_NEIGHBORS,'Y')
+                   and rownum <=   :P124_NEIGHBOR_COUNT
+                ```
+            pageItemsToSubmit: [
+                P124_AIRPORT_TYPE
+                P124_CLICK_POSITION
+                P124_COMMERCIAL_OPS_MIN
+                P124_NEIGHBOR_COUNT
+                P124_MAX_DISTANCE
+            ]
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            customAttributes: style="height: 640px"
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                type: url
+                url: javascript:showFeature('#ID#')
+            }
+            linkIcon: <center><span class="t-Icon fa fa-lg fa-map-marker-s u-danger-text" aria-hidden="true"></span></center>
+        }
+        pagination {
+            type: rowRangesXToYOfZ
+        }
+        messages {
+            whenNoDataFound: No nearest neighbors found. Click a position on the map to begin.
+        }
+        searchBar {
+            finderDropDown: false
+            reportsSelectList: false
+        }
+        actionsMenu {
+            filter: false
+            rowsPerPage: false
+            controlBreak: false
+            aggregate: false
+            chart: false
+            groupBy: false
+            pivot: false
+            flashback: false
+            subscription: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 1548171950621184485
+        }
+
+        column ACTIVATION_DATE (
+            type: plainText
+            heading {
+                heading: Opened
+                alignment: center
+            }
+            layout {
+                sequence: 60
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column AIRPORT_NAME (
+            type: plainText
+            heading {
+                heading: Airport Name
+            }
+            layout {
+                sequence: 40
+            }
+            columnFormatting {
+                htmlExpression: #AIRPORT_NAME# (#IATA_CODE#)
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column AIRPORT_TYPE (
+            type: plainText
+            heading {
+                heading: Airport Type
+                alignment: center
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column AIR_TAXI_OPS (
+            type: hidden
+            heading {
+                heading: Air Taxi Ops
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CITY (
+            type: plainText
+            heading {
+                heading: City
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column COMMERCIAL_OPS (
+            type: hidden
+            heading {
+                heading: Operations
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column DISTANCE (
+            type: plainText
+            heading {
+                heading: Distance&nbsp;KM
+                alignment: end
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 9G999G999G999G990D0
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column DIST_CITY_TO_AIRPORT (
+            type: hidden
+            heading {
+                heading: Dist City To Airport
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ELEVATION (
+            type: hidden
+            heading {
+                heading: Elevation
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column GEOMETRY (
+            type: hidden
+            heading {
+                heading: Geometry
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: OTHER
+            }
+            advanced {
+                endUserAlias: M
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column IATA_CODE (
+            type: hidden
+            heading {
+                heading: Code
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LAND_AREA_COVERED (
+            type: hidden
+            heading {
+                heading: Land Area Covered
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column STATE_NAME (
+            type: plainText
+            heading {
+                heading: State
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: New
+        }
+
+        savedReport 7728084 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 10
+            }
+
+            displayColumn ACTIVATION_DATE (
+                sequence: 5
+            )
+
+            displayColumn AIRPORT_NAME (
+                sequence: 3
+            )
+
+            displayColumn CITY (
+                sequence: 4
+            )
+
+            displayColumn DISTANCE (
+                sequence: 1
+            )
+
+            displayColumn STATE_NAME (
+                sequence: 2
+            )
+
+            sort (
+                column: DISTANCE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: CITY
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: COMMERCIAL_OPS
+                sort {
+                    direction: desc
+                    sequence: 3
+                }
+            )
+
+            sort (
+                column: ACTIVATION_DATE
+                sort {
+                    direction: desc
+                    sequence: 4
+                }
+            )
+
+        )
+
+    )
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region map (
+        name: Map
+        type: map
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: airport-map-region
+            regionDisplaySelector: true
+        }
+        map {
+            height: 420
+        }
+        controls {
+            options: [
+                scaleBar
+                infiniteMap
+                rectangleZoom
+            ]
+        }
+        initialPositionAndZoom {
+            type: staticValues
+            longitude: -110
+            latitude: 35
+            zoomLevel: 4
+        }
+        attributes {
+            messagesPosition: below
+        }
+        componentAdvanced {
+            customSvgStyles:
+                ```
+                [
+                    {
+                        "name": "Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M12.942,5.942,11.783,7.1l.655,2.836a.5.5,0,0,1-.317.583.509.509,0,0,1-.171.03.5.5,0,0,1-.445-.273l-.978-1.92-.986.986.123,1.1a.5.5,0,0,1-.972.213L8.354,9.646,7.342,9.308a.5.5,0,0,1-.33-.582.509.509,0,0,1,.543-.39l1.1.123.986-.986L7.723,6.5a.5.5,0,0,1,.34-.933l2.836.655,1.159-1.159a.625.625,0,0,1,.884.884Z",
+                                "fill":"#ffffff",
+                                "fill-opacity":"1",
+                                "stroke": "none"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Small Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,19a1.5,1.5,0,0,1-1.106-.487C8.291,17.855,3,11.967,3,8A7,7,0,0,1,17,8c0,3.967-5.291,9.855-5.894,10.514A1.506,1.506,0,0,1,10,19Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M11.94,7.375h-.963L9.435,4.906a.5.5,0,0,0-.9.42L9.2,7.375H8.307l-.693-.866a.508.508,0,0,0-.66-.109.5.5,0,0,0-.177.645L7.29,8.072a1,1,0,0,0,.894.553H9.2l-.666,2.049a.5.5,0,0,0,.122.508.5.5,0,0,0,.778-.088l1.542-2.469h.963a.625.625,0,0,0,0-1.25Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M13.076,9a.2.2,0,0,1-.2-.2V7.2a.2.2,0,1,1,.4,0V8.8A.2.2,0,0,1,13.076,9Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            }
+                        ]
+                    }
+                ]
+                
+                ```
+        }
+
+        layer clicked-position (
+            name: Clicked Position
+            label {
+                label: my Position
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 0 as id, mdsys.sdo_util.from_geojson( :P124_CLICK_POSITION ) as geometry 
+                      from sys.dual
+                     where :P124_CLICK_POSITION is not null
+                    ```
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            pointObjects {
+                shape: Pin Circle
+                shapeScale: 2
+            }
+            appearance {
+                fillColor: #007aff
+                strokeColor: #ffffff
+                strokeWidth: 1
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression: This is the position you have clicked on the map.
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression: Your Position
+            }
+        )
+
+        layer distance-circle (
+            name: Distance Circle
+            layerType: polygons
+            layout {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 0 as id,
+                           mdsys.sdo_util.circle_polygon(
+                            point         => mdsys.sdo_util.from_geojson( :P124_CLICK_POSITION ),
+                            radius        => :P124_MAX_DISTANCE * 1000,
+                            arc_tolerance => 1 ) as geometry
+                      from sys.dual
+                     where :P124_MAX_DISTANCE is not null and :P124_CLICK_POSITION is not null  
+                    ```
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            appearance {
+                fillColor: #d8aa12
+                fillOpacity: .2
+                strokeColor: #101010
+            }
+        )
+
+        layer large-airports (
+            name: Large Airports
+            layout {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ID,
+                           IATA_CODE,
+                           CITY,
+                           STATE_NAME,
+                           AIRPORT_NAME,
+                           AIRPORT_TYPE,
+                           ELEVATION,
+                           DIST_CITY_TO_AIRPORT,
+                           LAND_AREA_COVERED,
+                           ACTIVATION_DATE,
+                           COMMERCIAL_OPS,
+                           AIR_TAXI_OPS,
+                           GEOMETRY
+                      from EBA_SAMPLE_MAP_AIRPORTS
+                     where COMMERCIAL_OPS > 100000
+                    ```
+                pageItemsToSubmit: P121_ID
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            pointObjects {
+                shape: Airport
+                shapeScale: 2
+            }
+            appearance {
+                fillColor: #363434
+                fillOpacity: .2
+                strokeColor: #000000
+                strokeWidth: .4
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <p><strong>&AIRPORT_NAME. (&IATA_CODE.)</strong><br>
+                    &CITY., &STATE_NAME.</p>
+                    ```
+            }
+        )
+
+        layer neighbors (
+            name: Neighbors
+            layout {
+                sequence: 40
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select id,
+                           IATA_CODE,
+                           CITY,
+                           STATE_NAME,
+                           AIRPORT_NAME,
+                           AIRPORT_TYPE,
+                           ELEVATION,
+                           DIST_CITY_TO_AIRPORT,
+                           LAND_AREA_COVERED,
+                           ACTIVATION_DATE,
+                           COMMERCIAL_OPS,
+                           AIR_TAXI_OPS,
+                           GEOMETRY,
+                           case 
+                               when sdo_nn_distance(1) < 50                 then '#e06060'
+                               when sdo_nn_distance(1) between 50  and 100  then '#c05050'
+                               when sdo_nn_distance(1) between 100 and 200  then '#a04040'
+                               when sdo_nn_distance(1) between 200 and 500  then '#803030'
+                               when sdo_nn_distance(1) between 500 and 1000 then '#601010'
+                               else                                              '#200000'
+                           end as color
+                      from EBA_SAMPLE_MAP_AIRPORTS
+                     where sdo_nn( geometry, mdsys.sdo_util.from_geojson (:P124_CLICK_POSITION ), case when :P124_MAX_DISTANCE is not null then 'distance=' || :P124_MAX_DISTANCE || ' ' end || 'unit=km', 1 ) = 'TRUE'
+                       and airport_type = :P124_AIRPORT_TYPE
+                       and nvl(commercial_ops,0) >= nvl( :P124_COMMERCIAL_OPS_MIN, 0)
+                       and :P124_CLICK_POSITION is not null and :P124_AIRPORT_TYPE is not null 
+                       and rownum <=   :P124_NEIGHBOR_COUNT
+                    ```
+                pageItemsToSubmit: [
+                    P124_COMMERCIAL_OPS_MIN
+                    P124_NEIGHBOR_COUNT
+                    P124_CLICK_POSITION
+                    P124_AIRPORT_TYPE
+                    P124_MAX_DISTANCE
+                ]
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            pointObjects {
+                shape: Circle
+                shapeScale: 1.5
+            }
+            appearance {
+                fillColor: &COLOR.
+                strokeColor: #ffffff
+                strokeWidth: 2
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression: &AIRPORT_NAME. (&IATA_CODE.)
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <h3>&AIRPORT_NAME. (&IATA_CODE.)</h3>
+                    <p>&AIRPORT_TYPE.<br>
+                    <strong>&CITY., &STATE_NAME.</strong><br>
+                    {if ACTIVATION_DATE/}
+                    Activation Date: &ACTIVATION_DATE.<br>
+                    {endif/}
+                    {if COMMERCIAL_OPS/}
+                    Commercial Operations: &COMMERCIAL_OPS.<br>
+                    {endif/}
+                    {if AIR_TAXI_OPS/}
+                    Taxi Operations: &AIR_TAXI_OPS.<br>
+                    {endif/}
+                    ```
+            }
+        )
+
+    )
+
+    pageItem P124_AIRPORT_TYPE (
+        type: selectList
+        label {
+            label: Airport Type
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Airport;AIRPORT,Heliport;HELIPORT,Seaplane Base;SEAPLANE BASE,Ultralight;ULTRALIGHT,Gliderport;GLIDERPORT,Balloonport;BALLOONPORT
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: AIRPORT
+        }
+        help {
+            helpText: Nearest Neighbors will only return for the selected airport type.
+        }
+    )
+
+    pageItem P124_CLICK_POSITION (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @map
+            slot: regionBody
+        }
+    )
+
+    pageItem P124_COMMERCIAL_OPS_MIN (
+        type: numberField
+        label {
+            label: Minimum Operations
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 30
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        help {
+            helpText: Return only nearest neighbors with at least the specified amount of "commercial operations".
+        }
+    )
+
+    pageItem P124_MAX_DISTANCE (
+        type: numberField
+        label {
+            label: Max Distance (km)
+            alignment: left
+        }
+        settings {
+            minValue: 0
+            maxValue: 10000
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 50
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        help {
+            helpText: Specify the maximum distance to return nearest neighbors in.
+        }
+    )
+
+    pageItem P124_NEIGHBORS (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @map
+            slot: regionBody
+        }
+    )
+
+    pageItem P124_NEIGHBOR_COUNT (
+        type: numberField
+        label {
+            label: Nearest Neighbor Count
+            alignment: left
+        }
+        settings {
+            minValue: 1
+            maxValue: 20
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 40
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        default {
+            type: static
+            staticValue: 15
+        }
+        help {
+            helpText: Specify the maximum amount of nearest neighbors to return.
+        }
+    )
+
+    pageItem P124_SEARCH_FROM (
+        type: popupLov
+        label {
+            label: Start Search at Airport
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sharedComponent
+            lov: @lov-airports
+            displayExtraValues: false
+            nullDisplayValue: - Pick an Airport or a Position on the Map -
+        }
+        layout {
+            sequence: 60
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        help {
+            helpText: Pick an airport from the list to search nearest neighbors for. As an alternative, click any position on the map.
+        }
+    )
+
+    dynamicAction click-on-map (
+        name: Click on Map
+        execution {
+            sequence: 30
+        }
+        when {
+            event: region/map/spatialmapclick
+            selectionType: region
+            region: @map
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P124_SEARCH_FROM
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: "JSON.stringify({\"type\":\"Point\", \"coordinates\": [this.data.lng, this.data.lat]})"
+            }
+            affectedElements {
+                selectionType: items
+                items: P124_CLICK_POSITION
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-after-change (
+        name: Refresh after Change
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: [
+                P124_AIRPORT_TYPE
+                P124_COMMERCIAL_OPS_MIN
+                P124_NEIGHBOR_COUNT
+                P124_MAX_DISTANCE
+                P124_CLICK_POSITION
+            ]
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @map
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @airports
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-airports-irr-if-neighbors-legend-is-toggled (
+        name: Refresh Airports IRR if neighbors legend is toggled
+        execution {
+            sequence: 50
+        }
+        when {
+            event: region/map/spatialmapchanged
+            selectionType: region
+            region: @map
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.changeType === "toggle-layer"
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    -- This true action just ensures the hidden P124_NEIGHBORS value gets into session state
+                    -- before refreshing the Airports IRR
+                    null;
+                    ```
+                itemsToSubmit: P124_NEIGHBORS
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // the "map-changed" event sends the type of change as the "changeType" attribute. "toggle-layer" indicates
+                    // that the layer visibility has been toggled by clicking the layer entry in the legend.
+                    // "copy" the layer visibility information from the dynamic action "payload" object to the
+                    // P124_NEIGHBORS page item, which are then picked up by the
+                    // report query.
+                    for ( l = 0; l < this.data.layers.length; l++) {
+                        if ( this.data.layers[ l ].name === "Neighbors" ) {
+                            apex.item( "P124_NEIGHBORS" ).setValue( ( this.data.layers[ l ].visible ? 'Y' : 'N' ) );
+                        }
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @airports
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,33 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 100
+        systemPrivileges: [
+            createProcedure
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            OOW_DEMO_ITEMS
+            OOW_DEMO_REGIONS
+            OOW_DEMO_STORES
+            OOW_DEMO_STORE_PRODUCTS
+            OOW_DEMO_SALES_HISTORY
+            OOW_DEMO_HIST_GEN_LOG
+            OOW_DEMO_PREFERENCES
+            OOW_DEMO_EVENT_LOG
+            OOW_DEMO_SAMPLE_DATA
+            OOW_DEMO_EVENT_PKG
+            OOW_DEMO_SEQ
+        ]
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

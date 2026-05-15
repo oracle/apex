@@ -1,0 +1,1002 @@
+page 68 (
+    name: Customer Product(s)
+    alias: CUSTOMER-PRODUCT-S
+    title: Customer Product(s)
+    pageGroup: @customers
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 40
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region product (
+        name: Product
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region product-use-form-elements (
+        name: Product Use Form Elements
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @product
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region select-products (
+        name: Select Products
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    apex_item.checkbox2(
+                    p_idx        => 1,
+                    p_value      => id,
+                    p_item_id    => 'P68_PRODUCT_IDS',    
+                    p_item_label => 'Select/Unselect' || product_name) as product_id,
+                    product_name,
+                    product_family_id
+                from
+                    eba_cust_products
+                order by product_name
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @product
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        advanced {
+            htmlDomId: productsIRR
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: <label for="P68_PRODUCT_IDS">Select applicable products from the report below. Use the search field to find products quickly.</label>
+            footerText: <br>
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P68_ID
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 12788598327395131029
+        }
+
+        column PRODUCT_FAMILY_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Product Family
+            }
+            lov {
+                lov: @product-families
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                    from eba_cust_product_families
+                    ```
+            }
+        )
+
+        column PRODUCT_ID (
+            type: plainText
+            heading {
+                heading: <input type="checkbox" id="selectUnselectAll" title="Select/Unselect All">
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                authorizationScheme: @contribution-rights
+                escapeSpecialChars: false
+            }
+            comments {
+                comments: <span style="max-width:25px;">#PRODUCT_ID#</span>
+            }
+        )
+
+        column PRODUCT_NAME (
+            type: plainText
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        page {
+            width: 8.5
+            height: 11
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 131867281 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn PRODUCT_FAMILY_ID (
+                sequence: 2
+            )
+
+            displayColumn PRODUCT_ID (
+                sequence: 1
+            )
+
+            displayColumn PRODUCT_NAME (
+                sequence: 3
+            )
+
+        )
+
+    )
+
+    pageItem P68_COMMENTS (
+        type: textarea
+        label {
+            label: Comments
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @product-use-form-elements
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 41
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMMENTS
+            used: always
+        }
+        help {
+            helpText: Enter any comments you feel are appropriate for your product assignment(s).
+        }
+    )
+
+    pageItem P68_CUSTOMER_CONTACT_ID (
+        type: selectList
+        label {
+            label: Customer Contact
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p68-prod-use-external-contact
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 70
+            region: @product-use-form-elements
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        advanced {
+            cssClasses: mnw310
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_CONTACT_ID
+            used: always
+        }
+        help {
+            helpText: Select the customer contact best-suited to speak to the selected product(s) uses.
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    pageItem P68_CUSTOMER_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @product
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P68_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @product
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P68_INTERNAL_CONTACT (
+        type: textField
+        label {
+            label: Internal Contact
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @product-use-form-elements
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: INTERNAL_CONTACT
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Provide the name or email address of the internal person responsible for the product assignment(s).
+        }
+    )
+
+    pageItem P68_NEW_CONTACT (
+        type: textField
+        label {
+            label: New Contact
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @product-use-form-elements
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Provide the full name of the new customer contact you're adding.
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    pageItem P68_PRODUCT_ID (
+        type: displayOnly
+        label {
+            label: Product
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+        }
+        lov {
+            type: sharedComponent
+            lov: @p68-product
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 30
+            region: @product
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PRODUCT_ID
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P68_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P68_PRODUCT_STATUS_ID (
+        type: selectList
+        label {
+            label: Reference Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @product-statuses
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 40
+            region: @product-use-form-elements
+            slot: regionBody
+            alignment: left
+            column: 2
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: REFERENCE_STATUS_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Would this customer give the product(s) selected above a good reference?
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    pageItem P68_REFERENCE_TYPES (
+        type: checkboxGroup
+        label {
+            label: Reference Assets
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @reference-types
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 50
+            region: @product-use-form-elements
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            column: 8
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: REFERENCE_TYPE_IDS
+            used: always
+        }
+        help {
+            helpText: In what ways would this customer be willing to reference the product(s) selected above? Select all that apply.
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    pageItem P68_VALID_FROM (
+        type: datePicker
+        label {
+            label: Valid From
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @product-use-form-elements
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 44
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: VALID_FROM
+            used: always
+        }
+        help {
+            helpText: Provide the date that this product use and reference information can be considered valid.
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    pageItem P68_VALID_TO (
+        type: datePicker
+        label {
+            label: Valid Until
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @product-use-form-elements
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 44
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: VALID_TO
+            used: always
+        }
+        help {
+            helpText: Provide the date that this product use and reference information is no longer valid.
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    button add-product (
+        buttonName: ADD_PRODUCT
+        label: Add Product(s)
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P68_ID
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete-product (
+        buttonName: DELETE_PRODUCT
+        label: Delete Product
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE_PRODUCT');
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P68_ID
+        }
+    )
+
+    button update-product (
+        buttonName: UPDATE_PRODUCT
+        label: Update Product
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P68_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: cancel dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction select-unselect-all-products (
+        name: Select/Unselect All Products
+        execution {
+            sequence: 30
+            eventScope: dynamic
+            staticContainer: #productsIRR
+        }
+        when {
+            selectionType: jQuerySelector
+            jquerySelector: #selectUnselectAll
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    if ( $( '#selectUnselectAll' ).is(':checked') ) {
+                      $('input[type=checkbox][name=f01]').attr('checked',true);
+                    }
+                    else {
+                      $('input[type=checkbox][name=f01]').attr('checked',false);
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-new-contact (
+        name: Show/Hide New Contact
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P68_CUSTOMER_CONTACT_ID
+        }
+        clientSideCondition {
+            type: item=value
+            item: P68_CUSTOMER_CONTACT_ID
+            value: -1
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P68_NEW_CONTACT
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P68_NEW_CONTACT
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation new-contact-is-not-null (
+        name: New Contact is not null
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P68_NEW_CONTACT
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P68_NEW_CONTACT
+        }
+        serverSideCondition {
+            type: item=value
+            item: P68_CUSTOMER_CONTACT_ID
+            value: -1
+        }
+    )
+
+    validation product-must-be-selected (
+        name: Product Must Be Selected
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_product_id number;
+                begin
+                    for i in 1..apex_application.g_f01.count
+                    loop
+                        l_product_id := to_number(APEX_APPLICATION.G_F01(i));
+                        if l_product_id > 0 then
+                            return true;
+                        end if;
+                    end loop;
+                    return false;
+                end;
+                ```
+        }
+        error {
+            errorMessage: At least one product must be selected.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-product
+        }
+    )
+
+    process add-products (
+        name: add products
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                  l_ref_types     eba_cust_product_uses.reference_type_ids%type;
+                  l_ref_status_id eba_cust_product_uses.reference_status_id%type;
+                begin
+                    if APEX_UTIL.GET_BUILD_OPTION_STATUS(
+                        P_APPLICATION_ID => :APP_ID,
+                        P_BUILD_OPTION_NAME => 'Product Referencability') = 'INCLUDE' then
+                        l_ref_types     := :P68_REFERENCE_TYPES;
+                        l_ref_status_id := :P68_PRODUCT_STATUS_ID;
+                    else
+                        l_ref_types     := null;
+                        l_ref_status_id := null;
+                    end if;
+                    
+                    for i in 1..apex_application.g_f01.count
+                    loop
+                        insert into eba_cust_product_uses
+                        (customer_id, product_id, reference_type_ids, reference_status_id, internal_contact,
+                         customer_contact_id, valid_from, valid_to, comments)
+                        values
+                        (:P68_CUSTOMER_ID, to_number(APEX_APPLICATION.G_F01(i)), l_ref_types, l_ref_status_id, :P68_INTERNAL_CONTACT, 
+                         :P68_CUSTOMER_CONTACT_ID, to_timestamp(:P68_VALID_FROM, 'DD-MON-YYYY HH:MI.SS AM'), to_timestamp(:P68_VALID_TO, 'DD-MON-YYYY HH:MI.SS AM'), :P68_COMMENTS);
+                    end loop;
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 16592507486631831657
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-product
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 13844120529470607681
+        }
+    )
+
+    process create-new-customer-contact (
+        name: Create New Customer Contact
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                insert into EBA_CUST_CONTACTS
+                (name, customer_id) values (:P68_NEW_CONTACT, :P68_CUSTOMER_ID) returning id into :P68_CUSTOMER_CONTACT_ID;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 14276344994849669494
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P68_CUSTOMER_CONTACT_ID = -1 and :P68_NEW_CONTACT is not null
+        }
+    )
+
+    process fetch-row-eba-cust-product-uses (
+        name: Fetch Row EBA_CUST_PRODUCT_USES
+        type: autoRowFetch
+        source {
+            tableName: EBA_CUST_PRODUCT_USES
+            pkColumn: ID
+            pkItem: P68_ID
+            secondaryKeyColumn: PRODUCT_ID
+            secondaryKeyItem: P68_PRODUCT_ID
+        }
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 13844135267957607729
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P68_ID
+        }
+    )
+
+    process process-rows-for-eba-cust-product-uses (
+        name: Process Rows for EBA_CUST_PRODUCT_USES
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CUST_PRODUCT_USES
+            pkColumn: ID
+            pkItem: P68_ID
+            secondaryKeyColumn: PRODUCT_ID
+            secondaryKeyItem: P68_PRODUCT_ID
+            supportedOperations: [
+                update
+                delete
+            ]
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 14276343846679669482
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: DELETE_PRODUCT, UPDATE_PRODUCT
+        }
+    )
+
+)
+

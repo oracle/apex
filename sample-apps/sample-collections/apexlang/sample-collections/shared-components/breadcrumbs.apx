@@ -1,0 +1,166 @@
+breadcrumb breadcrumbs (
+    name: breadcrumbs
+
+    entry add-edit-collection-member (
+        name: Add/Edit Collection Member
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-synchronization
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry api-examples (
+        name: API Examples
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry basic-collections (
+        name: Basic Collections
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry create-collection (
+        name: Create Collection
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basic-collections
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry data-synchronization (
+        name: Data Synchronization
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 100
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry modify-collection (
+        name: Modify Collection
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basic-collections
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry remove-collections (
+        name: Remove Collections
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry reset-data (
+        name: Reset Data
+        pageNumber: 39
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+)
+

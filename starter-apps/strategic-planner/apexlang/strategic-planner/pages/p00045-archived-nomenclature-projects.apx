@@ -1,0 +1,636 @@
+page 45 (
+    name: Archived &NOMENCLATURE_PROJECTS.
+    alias: ARCHIVED-NOMENCLATURE-PROJECTS
+    title: Archived &NOMENCLATURE_PROJECTS.
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: All &NOMENCLATURE_PROJECTS. that have been archived and by whom and when they were archived.
+    }
+
+    region archived-nomenclature-projects (
+        name: Archived &NOMENCLATURE_PROJECTS.
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       friendly_identifier,
+                       (select initiative from sp_initiatives i where i.id = p.INITIATIVE_ID) initiative,
+                       (select area from sp_areas f where id = (select area_id from sp_initiatives i where i.id = p.INITIATIVE_ID)) area,
+                       PROJECT,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = p.OWNER_ID) owner,
+                       TARGET_COMPLETE,
+                       pct_complete,
+                       (select t.release_train||' '||t.release from SP_RELEASE_TRAINS t where t.id = p.release_id) release,
+                       PROJECT_SIZE,
+                       DESCRIPTION,
+                       --
+                       -- initiative focus area
+                       --
+                       nvl((select focus_area from sp_initiative_focus_areas ifa where ifa.id = p.focus_area_id),'Not Identified') Init_focus_area,
+                       --
+                       --
+                       --
+                       TAGS,
+                       CREATED,
+                       CREATED_BY,
+                       UPDATED,
+                       UPDATED_BY,
+                       ARCHIVED_YN,
+                       ARCHIVED_DATE,
+                       archived_date archived_since,
+                       lower(archived_by) ARCHIVED_BY,
+                       (select project from sp_projects p2 where p2.id = p.DUPLICATE_OF_PROJECT_ID) duplicate_of
+                  from SP_PROJECTS p
+                where ARCHIVED_YN = 'Y'
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 11664821743972252886
+        }
+
+        column ARCHIVED_BY (
+            type: plainText
+            heading {
+                heading: Archived By
+            }
+            layout {
+                sequence: 27
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column ARCHIVED_DATE (
+            type: plainText
+            heading {
+                heading: Archived On
+            }
+            layout {
+                sequence: 26
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column ARCHIVED_SINCE (
+            type: plainText
+            heading {
+                heading: Archived
+            }
+            layout {
+                sequence: 138
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AM
+            }
+        )
+
+        column ARCHIVED_YN (
+            type: hidden
+            heading {
+                heading: "Archived "
+            }
+            layout {
+                sequence: 25
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column AREA (
+            type: plainText
+            heading {
+                heading: Area
+            }
+            layout {
+                sequence: 98
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: CLOB
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: K
+            }
+            enableUsersTo {
+                sort: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column DUPLICATE_OF (
+            type: link
+            heading {
+                heading: Duplicate of
+            }
+            layout {
+                sequence: 108
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        P3_PROJECT_ID: #DUPLICATE_OF_PROJECT_ID#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #DUPLICATE_OF#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            type: plainText
+            heading {
+                heading: Friendly Identifier
+            }
+            layout {
+                sequence: 118
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AK
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column INITIATIVE (
+            type: plainText
+            heading {
+                heading: Initiative
+            }
+            layout {
+                sequence: 88
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AH
+            }
+        )
+
+        column INIT_FOCUS_AREA (
+            type: plainText
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 148
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AN
+            }
+        )
+
+        column OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 158
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AO
+            }
+        )
+
+        column PCT_COMPLETE (
+            type: plainText
+            heading {
+                heading: Pct Complete
+                alignment: end
+            }
+            layout {
+                sequence: 128
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AL
+            }
+        )
+
+        column PROJECT (
+            type: link
+            heading {
+                heading: &NOMENCLATURE_PROJECT.
+            }
+            layout {
+                sequence: 3
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        P3_PROJECT_ID: #ID#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column PROJECT_SIZE (
+            type: plainText
+            heading {
+                heading: Project Size
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column TARGET_COMPLETE (
+            type: plainText
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 5
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 22
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 23
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Archived &NOMENCLATURE_PROJECTS.
+        }
+
+        savedReport 116649051 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ARCHIVED_BY (
+                sequence: 9
+            )
+
+            displayColumn ARCHIVED_DATE (
+                sequence: 8
+            )
+
+            displayColumn ARCHIVED_SINCE (
+                sequence: 7
+            )
+
+            displayColumn AREA (
+                sequence: 2
+            )
+
+            displayColumn CREATED (
+                sequence: 5
+            )
+
+            displayColumn INITIATIVE (
+                sequence: 3
+            )
+
+            displayColumn INIT_FOCUS_AREA (
+                sequence: 4
+            )
+
+            displayColumn PROJECT (
+                sequence: 1
+            )
+
+            displayColumn UPDATED (
+                sequence: 6
+            )
+
+            sort (
+                column: ARCHIVED_SINCE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: ARCHIVED_DATE
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 45
+                clearCache: [
+                    45
+                    CIR
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

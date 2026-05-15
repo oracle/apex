@@ -1,0 +1,1509 @@
+page 6303 (
+    name: Layout Modifiers
+    alias: LAYOUT-MODIFIERS
+    title: Layout Modifiers - &APP_TITLE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .class,
+            .class-value,
+            .class-desc {
+                display: inline-block;
+                font-size: 12px;
+                font-family: 'Menlo','Consolas',monospace;
+            }
+            .class {
+                color: #9C27B0;
+            }
+            .class.tag {
+                padding: 4px 8px;
+                background-color: #FFF;
+                border-radius: 2px;
+                box-shadow: inset rgba(225, 190, 231, .25) 0 0 0 1px;
+            }
+            .class-value {
+                color: #008676;
+                min-width: 40px;
+            }
+            .class-var {
+                font-weight: bold;
+                color: #008676;
+            }
+            .dm-Report--doc {
+                background: #FFF;
+                border: 1px solid rgba(0,0,0,.05);
+            }
+            .dm-Report--doc th, 
+            .dm-Report--doc td {
+                padding: 8px;
+                min-height: 32px;
+                background-color: transparent;
+                border-width: 0 0 1px 0;
+                border-style: solid;
+                border-color: rgba(0,0,0,.05);
+            }
+            .dm-Report--doc td {
+                vertical-align: top;
+            }
+            .dm-Report--doc tr:last-child td {
+                border-bottom-width: 0;
+            }
+            .dm-Report--doc .class {
+                min-width: 40px;
+            }
+            .dm-Report--doc .class-desc {
+                width: 48px;
+                text-align: right;
+                color: rgba(0,0,0,.55);
+                border-radius: 2px;
+            }
+            .dm-Code {
+                border-radius: var(--ut-component-border-radius);
+                border: var(--ut-component-border-width) solid var(--ut-component-border-color);
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region classes (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                    <thead>
+                    <tr>
+                      <th style="width: 20%" class="u-textStart">Class</th>
+                      <th style="width: 20%" class="u-textStart">Values</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                    <tbody>
+                        <!-- U-FLEX -->
+                        <tr>
+                            <td><span class="class">u-flex</span></td>
+                            <td></td>
+                            <td>Treat the element as a flex container and its children as flex items.</td>
+                        </tr>
+                        <!-- FLEX -->
+                        <tr>
+                            <td rowspan="7"><span class="class">u-flex-</span></td>
+                            <td><span class="class-value">item</span></td>
+                            <td>Size item according to its width and height properties, but grow to absorb any extra free space in the flex container and shrink to its minimum size to fit the container.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">direction-column</span></td>
+                            <td>Direction in which lines of text are stacked. Aligns items in columns as opposed to rows.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">direction-column-reverse</span></td>
+                            <td>Stacks items in a column, reversing the default column order.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">direction-row</span></td>
+                            <td>Direction in which lines of text are placed. Aligns items in rows as opposed to columns.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">direction-row-reverse</span></td>
+                            <td>Aligns items in rows, reversing the default row order.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">wrap</span></td>
+                            <td>Break flex items into multiple lines.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">wrap-nowrap</span></td>
+                            <td>Lay flex items out in a single line which may cause the flex container to overflow.</td>
+                        </tr>
+                        <!-- FLEX-BASIS -->
+                        <tr>
+                            <td rowspan="3"><span class="class">u-flex-basis-</span></td>
+                            <td><span class="class-value">auto</span></td>
+                            <td>Set the size of the element relative to the width and height of the content of the element.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">100</span></td>
+                            <td>Set the size of the element(s) to 100% of the available space in the parent container.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">0</span></td>
+                            <td>Prevent the element(s) from taking up the available space in the parent container.</td>
+                        </tr>
+                        <!-- FLEX-GROW -->
+                        <tr>
+                            <td rowspan="2"><span class="class">u-flex-grow-</span></td>
+                            <td><span class="class-value">1</span></td>
+                            <td>Allow the item to grow to fit available space.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">0</span></td>
+                            <td>Do not allow the item to grow to fit available space.</td>
+                        </tr>
+                        <!-- FLEX-SHRINK -->
+                        <tr>
+                            <td rowspan="2"><span class="class">u-flex-shrink-</span></td>
+                            <td><span class="class-value">1</span></td>
+                            <td>Allow the item to shrink to fit available space.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">0</span></td>
+                            <td>Prevent the item from shrinking to fit available space.</td>
+                        </tr>
+                        <!-- ORDER -->
+                        <tr>
+                            <td><span class="class">u-order-</span></td>
+                            <td></td>
+                            <td>Refer to the Order utilities on this page.</td>
+                        </tr>
+                        <!-- JUSTIFY-CONTENT -->
+                        <tr>
+                            <td rowspan="6"><span class="class">u-justify-content-</span></td>
+                            <td><span class="class-value">flex-start</span></td>
+                            <td>Horizontally align (justify) content to the start of the div.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">flex-end</span></td>
+                            <td>Horizontally align (justify) content to the end of the div.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">center</span></td>
+                            <td>Horizontally align (justify) content to the center of the div.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">space-between</span></td>
+                            <td>Distribute content evenly with the first item flush with the start and the last item flush with the end.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">space-around</span></td>
+                            <td>Distribute content evenly with a half-size space on either end of items.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">stretch</span></td>
+                            <td>Distribute content evenly by stretching 'auto'-sized items to fit the container.</td>
+                        </tr>
+                        <!-- ALIGN-ITEMS -->
+                        <tr>
+                            <td rowspan="5"><span class="class">u-align-items-</span></td>
+                            <td><span class="class-value">flex-start</span></td>
+                            <td>Vertical alignment. The cross-start margin edges of the flex items are flushed with the cross-start edge of the line.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">flex-end</span></td>
+                            <td>Vertical alignment. The cross-end margin edges of the flex items are flushed with the cross-end edge of the line.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">start</span></td>
+                            <td>Vertical alignment. Pack items flush to each other toward the start edge of the alignment container in the appropriate axis.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">center</span></td>
+                            <td>Vertically align all items to the center of the div.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">end</span></td>
+                            <td>Vertical alignment. Pack items flush to each other toward the end edge of the alignment container in the appropriate axis.</td>
+                        </tr>
+                        <!-- ALIGN CONTENT -->
+                        <tr>
+                            <td rowspan="6"><span class="class">u-align-content-</span></td>
+                            <td><span class="class-value">start</span></td>
+                            <td>Groups lines together at the top of the container.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">end</span></td>
+                            <td>Groups lines together at the bottom of the container.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">center</span></td>
+                            <td>Groups lines together in the vertical center of the container.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">between</span></td>
+                            <td>Spreads lines evenly with no space at the edges.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">around</span></td>
+                            <td>Spreads lines evenly with half-size space at the edges.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">evenly</span></td>
+                            <td>Spreads lines evenly with equal space at the edges.</td>
+                        </tr>
+                        <!-- ALIGN-SELF -->
+                        <tr>
+                            <td rowspan="6"><span class="class">u-align-self-</span></td>
+                            <td><span class="class-value">flex-start</span></td>
+                            <td>Vertical alignment of individual flex item. Flush the cross-start margin edges of the flex item with the cross-start edge of the line.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">flex-end</span></td>
+                            <td>Vertical alignment of individual flex item. Flush the cross-end margin edges of the flex item with the cross-end edge of the line.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">start</span></td>
+                            <td>Vertical alignment of individual flex item. Pack the item flush to the edge of the alignment container of the start side of the item, in the appropriate axis.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">center</span></td>
+                            <td>Vertically align individual flex item to the center of the div.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">end</span></td>
+                            <td>Vertical alignment of individual flex item. Pack the item flush to the edge of the alignment container of the end side of the item, in the appropriate axis.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="class-value">stretch</span></td>
+                            <td>Vertical alignment of individual flex item. Stretch flex item such that the cross-size of the item margin box is the same as the line while respecting widget and height constraints.</td>
+                        </tr>
+                        <!-- GAP -->
+                        <tr>
+                            <td><span class="class">u-gap-</span></td>
+                            <td></td>
+                            <td>Refer to the Gap utilities on this page.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @flex
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Flex Classes
+        }
+    )
+
+    region classes-2 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-pull<span class="class-value">Left</span></span></td><td>Float to left</td></tr>
+                    <tr><td><span class="class">u-pull<span class="class-value">Right</span></span></td><td>Float to right</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @floats
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Float Classes
+        }
+    )
+
+    region classes-3 (
+        name: Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-align<span class="class-value">Top</span></span></td><td>Vertically align to the top</td></tr>
+                    <tr><td><span class="class">u-align<span class="class-value">Middle</span></span></td><td>Vertically align to the middle</td></tr>
+                    <tr><td><span class="class">u-align<span class="class-value">Baseline</span></span></td><td>Vertically align to the text baseline</td></tr>
+                    <tr><td><span class="class">u-align<span class="class-value">Bottom</span></span></td><td>Vertically align to the bottom</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @vertical-alignment
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Vertical Alignment Classes
+        }
+    )
+
+    region example-markup (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-html"><code>
+                &lt;div class="u-flex"&gt;
+                    &lt;div class="u-order-3"&gt;This column will appear as the 3rd column&lt;/div&gt;
+                    &lt;div class="u-order-1"&gt;This column will be first&lt;/div&gt;
+                    &lt;div class="u-order-2 u-order-xxs-1"&gt;<br />
+                    &nbsp;&nbsp;This column will appear first when the viewport is below 479px wide.<br />
+                    &nbsp;&nbsp;And will appear as the second column when the viewport is 480px and wider.<br />
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                </code>
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @order
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region example-markup-2 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-html"><code>
+                &lt;div class="u-flex u-align-items-center"&gt;
+                    &lt;div class="u-order-3"&gt;This column will appear as the 3rd column and centered&lt;/div&gt;
+                    &lt;div class="u-order-1 u-align-self-center"&gt;This column will be first and aligned at the start of the row&lt;/div&gt;
+                    &lt;div class="u-order-2"&gt;This column will appear as the 2nd column&lt;/div&gt;
+                &lt;/div&gt;
+                </code>
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @flex
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Flex
+        }
+    )
+
+    region example-markup-3 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-html"><code>&lt;button class="u-pullLeft"&gt;Foo&lt;/button&gt; &lt;!-- Float button to the left --&gt;
+                &lt;div class="u-pullRight"&gt;Hello World&lt;/div&gt; &lt;!-- Float div to the right --&gt;</code></pre>
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @floats
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Float
+        }
+    )
+
+    region example-markup-4 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-html"><code>&lt;h1 class="u-margin-auto"&gt;Centered Heading Text&lt;/h1&gt;
+                &lt;p class="u-margin-top-lg"&gt;Content with a large margin on top.&lt;/p&gt;</code></pre>
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @margin
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Margin
+        }
+    )
+
+    region example-markup-5 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode: <pre class="dm-Code lang-html"><code>&lt;div class="w95p mxw800"&gt;This region will be 95% wide with a max-widht of 800px.&lt;/div&gt;</code></pre>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @width
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Width
+        }
+    )
+
+    region example-markup-6 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode: <pre class="dm-Code lang-html"><code>&lt;div class="h400"&gt;This region would be 400px tall.&lt;/div&gt;</code></pre>
+        }
+        layout {
+            sequence: 20
+            parentRegion: @height
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Height
+        }
+    )
+
+    region example-markup-7 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-html"><code>&lt;table&gt;
+                  &lt;tbody&gt;
+                    &lt;tr&gt;
+                      &lt;td class="u-alignTop"&gt;Hello World!&lt;/td&gt;
+                      &lt;td class="u-alignMiddle"&gt;I'm in the middle!&lt;/td&gt;
+                    &lt;/tr&gt;
+                  &lt;/tbody&gt;
+                &lt;/table&gt;</code></pre>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @vertical-alignment
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Vertical Alignment
+        }
+    )
+
+    region example-markup-8 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-html"><code>&lt;button class="u-padding-lg"&gt;Large button&lt;/button&gt;
+                &lt;div class="u-padding-left-md"&gt;Little bit of padding on the side.&lt;/div&gt;</code></pre>
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @padding
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Padding
+        }
+    )
+
+    region example-markup_1 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-html"><code>
+                &lt;div class="u-flex u-gap-4"&gt;
+                    &lt;div class="row"&gt;Row 1&lt;/div&gt;
+                    &lt;div class="row"&gt;Row 2&lt;/div&gt;
+                    &lt;div class="row"&gt;Row 3&lt;/div&gt;
+                &lt;/div&gt;
+                </code>
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @gap
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region example-markup_1_1 (
+        name: Example Markup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-html u-overflow-hidden"><code>
+                &lt;div class="h50 u-overflow-y-scroll"&gt;
+                    &lt;div class="row"&gt;In vestibulum mattis ornare. Ut nec turpis eget tortor volutpat ultricies. Mauris tempor ex ac mauris elementum scelerisque. Pellentesque a magna vitae ex pretium efficitur ac at neque. Vivamus auctor vel tellus vitae viverra. Aliquam quis quam velit. Vivamus sit amet semper est, quis eleifend diam. Pellentesque venenatis euismod dui sed dignissim. Nulla facilisi. Vestibulum in sollicitudin dolor. Vestibulum sollicitudin sollicitudin nibh, a ultricies est ornare id. Ut lorem quam, iaculis porta leo non, ultrices dapibus arcu. Sed venenatis ex vel viverra varius.&lt;/div&gt;
+                &lt;/div&gt;
+                </code>
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @overflow
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region flex (
+        name: Flex
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>These utility classes can be added to help arrange items in rows, columns or more "flexible" layouts. They can 
+                    also help with item alignment, content justification, content ordering, and content spacing.</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region floats (
+        name: Floats
+        type: staticContent
+        source {
+            htmlCode: <p>To float an element, you can use the <span class="class tag">u-pull<span class="class-var">Direction</span></span> utility classes.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region gap (
+        name: Gap
+        type: staticContent
+        source {
+            htmlCode: <p>Gap classes help to set the spacing between flex or grid items, controlling both row and column gaps in a single property. To use these utility classes make sure the parent element has the display property set to flex, inline-flex, or grid.</p>
+        }
+        layout {
+            sequence: 100
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region height (
+        name: Height
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Text</p>
+                
+                ```
+        }
+        layout {
+            sequence: 95
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region introduction (
+        name: Introduction
+        type: staticContent
+        source {
+            htmlCode: <p>You can use the following utility classes anywhere in your app to fine-tune the layout of your page and components. For most Oracle APEX components, you can simply populate the <b>CSS Classes</b> property to apply these modifiers to your page components.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region margin (
+        name: Margin
+        type: staticContent
+        source {
+            htmlCode: <p>Margin classes can be added to help add spacing around your elements. As of Universal Theme 24.2 we added the "u-" prefix to margin utility classes.</p>
+        }
+        layout {
+            sequence: 65
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region options (
+        name: Options
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Set the order to lay out an item in a flex container. Items in a container are sorted by ascending order value and then by their source code order.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Values</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td><span class="class">u-order-</span></td>
+                        <td>
+                            <span class="class-value">0</span> <br />
+                            <span class="class-value">1</span> <br />
+                            <span class="class-value">2</span> <br />
+                            <span class="class-value">3</span> <br />
+                            <span class="class-value">4</span> <br />
+                            <span class="class-value">5</span>
+                        </td>
+                    </tr>
+                
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @order
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region options-2 (
+        name: Options
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Use the following class name structure with the options listed below to add spacing around your element.</p>
+                <p><span class="class tag">u-margin-<span class="class-var">direction</span>-<span class="class-var">spacing</span></span></p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Variable</th>
+                      <th class="u-textStart">Values</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td>Direction</td>
+                        <td>
+                            <span class="class-value">top</span> <br />
+                            <span class="class-value">right</span> <br />
+                            <span class="class-value">bottom</span> <br />
+                            <span class="class-value">left</span> <br />
+                            <span class="class-value">block</span> <br />
+                            <span class="class-value">inline</span>
+                        </td>
+                        <td>Where the margin should be positioned</td>
+                    </tr>
+                    <tr>
+                        <td>Spacing</td>
+                        <td>
+                            <span class="class-value">none</span> <span class="class-desc">0 px</span><br />
+                            <span class="class-value">xs</span>   <span class="class-desc">4 px</span><br />
+                            <span class="class-value">sm</span>   <span class="class-desc">8 px</span><br />
+                            <span class="class-value">md</span>   <span class="class-desc">16 px</span><br />
+                            <span class="class-value">lg</span>   <span class="class-desc">32 px</span><br />
+                            <span class="class-value">xl</span>   <span class="class-desc">48 px</span>
+                        </td>
+                        <td>
+                            The amount of spacing in pixels. 
+                        </td>
+                    </tr>
+                
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @margin
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Margin Options
+        }
+    )
+
+    region options-2_1 (
+        name: Options
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Values</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td><span class="class">u-gap-</span></td>
+                        <td>
+                            <span class="class-value">0</span> <span class="class-desc">0 px</span> <br />
+                            <span class="class-value">px</span> <span class="class-desc">1 px</span> <br />
+                            <span class="class-value">0_5</span> <span class="class-desc">2 px</span> <br />
+                            <span class="class-value">1</span> <span class="class-desc">4 px</span> <br />
+                            <span class="class-value">1_5</span> <span class="class-desc">6 px</span> <br />
+                            <span class="class-value">2</span> <span class="class-desc">8 px</span> <br />
+                            <span class="class-value">2_5</span> <span class="class-desc">10 px</span> <br />
+                            <span class="class-value">3</span> <span class="class-desc">12 px</span> <br />
+                            <span class="class-value">3_5</span> <span class="class-desc">14 px</span> <br />
+                            <span class="class-value">4</span> <span class="class-desc">16 px</span> <br />
+                            <span class="class-value">5</span> <span class="class-desc">20 px</span> <br />
+                            <span class="class-value">6</span> <span class="class-desc">24 px</span> <br />
+                            <span class="class-value">7</span> <span class="class-desc">28 px</span> <br />
+                            <span class="class-value">8</span> <span class="class-desc">32 px</span> <br />
+                            <span class="class-value">9</span> <span class="class-desc">36 px</span> <br />
+                            <span class="class-value">10</span> <span class="class-desc">40 px</span>
+                        </td>
+                    </tr>
+                
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @gap
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Margin Options
+        }
+    )
+
+    region options-2_1_1 (
+        name: Options
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-overflow-<span class="class-value">auto</span></span></td><td>Adds scrollbars only when content exceeds the container size.</td></tr>
+                    <tr><td><span class="class">u-overflow-<span class="class-value">hidden</span></span></td><td>Content that exceeds the container is clipped and hidden.  </td></tr>
+                    <tr><td><span class="class">u-overflow-<span class="class-value">scroll</span></span></td><td>Adds scrollbars to the container so all content can be reached. </td></tr>
+                    <tr><td><span class="class">u-overflow-<span class="class-value">x-scroll</span></span></td><td>Adds horizontal scrollbars.</td></tr>
+                    <tr><td><span class="class">u-overflow-<span class="class-value">y-scroll</span></span></td><td>Adds vertical scrollbars.</td></tr>
+                    <tr><td><span class="class">u-overflow-<span class="class-value">visible</span></span></td><td>Content spills outside the container and remains fully visible.</td></tr>
+                    <tr><td><span class="class">u-overflow-<span class="class-value">clip</span></span></td><td>Clips content like hidden, but also prevents any scrolling. </td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @overflow
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Margin Options
+        }
+    )
+
+    region options-3 (
+        name: Options
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Classes</th>
+                      <th class="u-textStart">Values</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td><span class="class tag">w<span class="class-value">amount</span></span></td>
+                        <td>
+                            <span class="class">10-800</span> <span class="class-desc">px</span>
+                        </td>
+                        <td>Sets the element's width to specified value. Sizes in 10px increments.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class tag">w<span class="class-value">percentage</span>p</span></td>
+                        <td>
+                            <span class="class">5-100</span> <span class="class-desc">%</span>
+                        </td>
+                        <td>Sets the element's width to specified percentage. Percentages in 5% increments</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class tag">mnw<span class="class-value">amount</span></span></td>
+                        <td>
+                            <span class="class">10-800</span> <span class="class-desc">px</span>
+                        </td>
+                        <td>Sets the element's min-width to specified value. Sizes in 10px increments</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class tag">mxw<span class="class-value">amount</span></span></td>
+                        <td>
+                            <span class="class">10-800</span> <span class="class-desc">px</span>
+                        </td>
+                        <td>Sets the element's max-width to specified value. Sizes in 10px increments</td>
+                    </tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @width
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Width Options
+        }
+    )
+
+    region options-4 (
+        name: Options
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Classes</th>
+                      <th class="u-textStart">Values</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td><span class="class">h<span class="class-value">amount</span></span></td>
+                        <td>
+                            <span class="class-value">10-800</span> <span class="class-desc">px</span>
+                        </td>
+                        <td>Sets the element's height to specified value. Sizes in 10px increments</td>
+                    </tr>
+                    <tr>
+                        <td><span class="class">mxh<span class="class-value">amount</span></span></td>
+                        <td>
+                            <span class="class-value">10-800</span> <span class="class-desc">px</span>
+                        </td>
+                        <td>Sets the element's max-height to specified value. Sizes in 10px increments</td>
+                    </tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @height
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Height Options
+        }
+    )
+
+    region options-5 (
+        name: Options
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Use the following class name structure with the options listed below to add spacing around your element.</p>
+                <p><span class="class tag">u-padding-<span class="class-var">direction</span>-<span class="class-var">spacing</span></span></p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Variable</th>
+                      <th class="u-textStart">Values</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td>Direction</td>
+                        <td>
+                            <span class="class-value">top</span> <br />
+                            <span class="class-value">right</span> <br />
+                            <span class="class-value">bottom</span> <br />
+                            <span class="class-value">left</span> <br />
+                            <span class="class-value">block</span> <br />
+                            <span class="class-value">inline</span>
+                        </td>
+                        <td>Where the padding should be positioned</td>
+                    </tr>
+                    <tr>
+                        <td>Spacing</td>
+                        <td>
+                            <span class="class-value">none</span> <span class="class-desc">0 px</span><br />
+                            <span class="class-value">xs</span>   <span class="class-desc">4 px</span><br />
+                            <span class="class-value">sm</span>   <span class="class-desc">8 px</span><br />
+                            <span class="class-value">md</span>   <span class="class-desc">16 px</span><br />
+                            <span class="class-value">lg</span>   <span class="class-desc">32 px</span><br />
+                            <span class="class-value">xl</span>   <span class="class-desc">48 px</span>
+                        </td>
+                        <td>
+                            The amount of spacing in pixels. 
+                        </td>
+                    </tr>
+                
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @padding
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Padding Options
+        }
+    )
+
+    region order (
+        name: Order
+        type: staticContent
+        source {
+            htmlCode: <p>Order classes can help you place elements in a different order. Order is a flex based property. To use these utility classes make sure the parent element has the display property set to flex, inline-flex, or grid.</p>
+        }
+        layout {
+            sequence: 35
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region other-classes (
+        name: Other Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Use these classes to adjust the order of your elements when the viewport size is at the specified breakpoint.</p>
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-order-<span class="class-value">xxs-number</span></span></td><td>479px and below</td></tr>
+                    <tr><td><span class="class">u-order-<span class="class-value">xs-number</span></span></td><td>480px to 639px</td></tr>
+                    <tr><td><span class="class">u-order-<span class="class-value">sm-number</span></span></td><td>640px to 767px</td></tr>
+                    <tr><td><span class="class">u-order-<span class="class-value">md-number</span></span></td><td>768px to 991px</td></tr>
+                    <tr><td><span class="class">u-order-<span class="class-value">lg-number</span></span></td><td>992px to 1199px</td></tr>
+                    <tr><td><span class="class">u-order-<span class="class-value">xl-number</span></span></td><td>1200px to 1399px</td></tr>
+                    <tr><td><span class="class">u-order-<span class="class-value">xxl-number</span></span></td><td>1400px and above</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @order
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region other-classes-2 (
+        name: Other Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Use these classes to adjust spacing around all sides of your element.</p>
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-margin-<span class="class-value">none</span></span></td><td>No margin</td></tr>
+                    <tr><td><span class="class">u-margin-<span class="class-value">xs</span></span></td><td>4 px margin</td></tr>
+                    <tr><td><span class="class">u-margin-<span class="class-value">sm</span></span></td><td>8 px margin</td></tr>
+                    <tr><td><span class="class">u-margin-<span class="class-value">md</span></span></td><td>16 px margin</td></tr>
+                    <tr><td><span class="class">u-margin-<span class="class-value">lg</span></span></td><td>32 px margin</td></tr>
+                    <tr><td><span class="class">u-margin-<span class="class-value">xl</span></span></td><td>48 px margin</td></tr>
+                    <tr><td><span class="class">u-margin-<span class="class-value">inline-auto</span></span></td><td>aligns content into the center</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @margin
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Margin Classes
+        }
+    )
+
+    region other-classes-3 (
+        name: Other Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Use these classes to adjust spacing within all sides of your element.</p>
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-padding-<span class="class-value">none</span></span></td><td>No padding</td></tr>
+                    <tr><td><span class="class">u-padding-<span class="class-value">xs</span></span></td><td>4 px padding</td></tr>
+                    <tr><td><span class="class">u-padding-<span class="class-value">sm</span></span></td><td>8 px padding</td></tr>
+                    <tr><td><span class="class">u-padding-<span class="class-value">md</span></span></td><td>16 px padding</td></tr>
+                    <tr><td><span class="class">u-padding-<span class="class-value">lg</span></span></td><td>32 px padding</td></tr>
+                    <tr><td><span class="class">u-padding-<span class="class-value">xl</span></span></td><td>48 px padding</td></tr>
+                  </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @padding
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Padding Classes
+        }
+    )
+
+    region overflow (
+        name: Overflow
+        type: staticContent
+        source {
+            htmlCode: <p>Controls what happens to content that is too large to fit inside its container. </p>
+        }
+        layout {
+            sequence: 110
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region padding (
+        name: Padding
+        type: staticContent
+        source {
+            htmlCode: <p>Padding classes can be added to help add spacing within your elements. As of Universal Theme 24.2 we added the "u-" prefix to padding utility classes.</p>
+        }
+        layout {
+            sequence: 75
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region vertical-alignment (
+        name: Vertical Alignment
+        type: staticContent
+        source {
+            htmlCode: <p>To vertically-align the contents of an element you can use the <span class="class tag">u-align<span class="class-var">Direction</span></span> utility class.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region width (
+        name: Width
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Text</p>
+                
+                ```
+        }
+        layout {
+            sequence: 85
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

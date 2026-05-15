@@ -1,0 +1,306 @@
+page 91 (
+    name: Results Emailed
+    alias: RESULTS-EMAILED
+    title: Results Emailed
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button (
+        name: button
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @results-emailed-for-poll-name
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region emails-not-sent (
+        name: Emails Not Sent
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c001 || ', ' || lower(c002) email
+                  from wwv_flow_collections
+                 where collection_name = 'EBA_QPOLL_EMAIL_RES_INVALID'
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @results-emailed-for-poll-name
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from wwv_flow_collections
+                 where collection_name = 'EBA_QPOLL_EMAIL_RES_INVALID'
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--noBorders
+                t-Report--rowHighlightOff
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: none
+        }
+
+        column EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 1
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+    )
+
+    region emails-sent (
+        name: Emails Sent
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c001 as email
+                  from apex_collections
+                 where collection_name = 'EBA_QPOLL_EMAIL_RES_VALID'
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @results-emailed-for-poll-name
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--noBorders
+                t-Report--rowHighlightOff
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No emails sent.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: none
+        }
+
+        column EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 1
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+    )
+
+    region results-emailed-for-poll-name (
+        name: Results Emailed for &POLL_NAME.
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body-3
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    button close (
+        buttonName: CLOSE
+        label: Close
+        layout {
+            sequence: 10
+            region: @button
+            slot: bottom
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction close (
+        name: CLOSE
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @close
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process remove-collections (
+        name: Remove collections
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                wwv_flow_collection.DELETE_COLLECTION('EBA_QPOLL_EMAIL_RES_INVALID');
+                wwv_flow_collection.DELETE_COLLECTION('EBA_QPOLL_EMAIL_RES_VALID');
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 14033762875748461700
+        }
+        serverSideCondition {
+            whenButtonPressed: @close
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 66
+                items: {
+                    LPOLL_ID: &POLL_ID.
+                }
+                clearCache: 90
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @close
+        }
+    )
+
+)
+

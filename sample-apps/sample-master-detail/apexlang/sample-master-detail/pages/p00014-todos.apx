@@ -1,0 +1,586 @@
+page 14 (
+    name: ToDos
+    alias: TODOS
+    title: To Dos
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        width: 800
+        height: 600
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region eba-demo-md-task-todos (
+        name: EBA_DEMO_MD_TASK_TODOS
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select "ID", 
+                "PROJECT_ID",
+                "TASK_ID",
+                "ASSIGNEE",
+                "NAME",
+                "DESCRIPTION",
+                "IS_COMPLETE_YN"
+                from EBA_DEMO_MD_TASK_TODOS
+                WHERE TASK_ID = :P14_TASK_ID
+                  
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+            addRowIfEmpty: false
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: No To Dos for this task.
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+            ]
+            addButtonLabel: Add To Do
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 1838248033312356745
+        }
+
+        savedReport 14378 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @PROJECT_ID
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @TASK_ID
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @ASSIGNEE
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @NAME
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @DESCRIPTION
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @IS_COMPLETE_YN
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @ROWID
+                layout {
+                    sequence: 12
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 10
+            }
+        )
+
+        column ASSIGNEE (
+            type: selectList
+            heading {
+                heading: Assignee
+                alignment: end
+            }
+            lov {
+                type: sharedComponent
+                lov: @team-members
+                nullDisplayValue: - Select Assignee -
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: ASSIGNEE
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column DESCRIPTION (
+            type: textarea
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 80
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: none
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column IS_COMPLETE_YN (
+            type: switch
+            heading {
+                heading: Complete?
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: IS_COMPLETE_YN
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: N
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column NAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 60
+            }
+            validation {
+                valueRequired: true
+                maxLength: 255
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: none
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column PROJECT_ID (
+            type: hidden
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PROJECT_ID
+                dataType: number
+            }
+            default {
+                type: item
+                item: P14_PROJECT_ID
+                duplicateCopiesExistingValue: false
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ROWID (
+            type: hidden
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: ROWID
+                dataType: rowid
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column TASK_ID (
+            type: hidden
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: TASK_ID
+                dataType: number
+            }
+            default {
+                type: item
+                item: P14_TASK_ID
+                duplicateCopiesExistingValue: false
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+    )
+
+    region task-details (
+        name: Task Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select distinct id task_id, project_id
+                from eba_demo_md_tasks
+                where project_id = :P14_PROJECT_ID 
+                and id = :P14_TASK_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column PROJECT_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Project
+                alignment: center
+            }
+            lov {
+                type: sharedComponent
+                lov: @projects
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column TASK_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Task
+                alignment: center
+            }
+            lov {
+                type: sharedComponent
+                lov: @tasks
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+    )
+
+    pageItem P14_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @eba-demo-md-task-todos
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P14_TASK_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @eba-demo-md-task-todos
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Save
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @eba-demo-md-task-todos
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @eba-demo-md-task-todos
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: close dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action processed.
+        }
+        advanced {
+            executionMappingIdentifier: 3940932605273126532
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    process save-to-do (
+        name: save to do
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @eba-demo-md-task-todos
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action processed.
+        }
+        advanced {
+            executionMappingIdentifier: 3940732532829538826
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

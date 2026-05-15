@@ -1,0 +1,251 @@
+page 30 (
+    name: Transaction
+    title: Transaction
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>Loading the page will cause a transaction to be completed.  Reload the page to generate another transaction.  Pressing the button will not post the page simply reload the page.</p>
+    }
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region generate-one-transaction-on-page-load (
+        name: Generate One Transaction on Page Load
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region show-last-generation (
+        name: show last generation
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    x number;
+                begin
+                   begin
+                       x := oow_demo_gen_data_pkg.generate_transaction;
+                       sys.htp.p('<br><strong>Transaction</strong> "'||x||'" completed');
+                   exception when others then
+                       sys.htp.p('<br>unexpected error: '|| apex_escape.html( sqlerrm ));
+                   end;
+                
+                   for c1 in (select id,
+                                     store_id, 
+                                     created_on,
+                                     product_id, 
+                                     quantity, 
+                                     item_price,
+                                     date_of_sale,
+                                     (select store_name 
+                                      from OOW_demo_stores s 
+                                      where s.id = h.store_id) store,
+                                     (select item_Name from OOW_demo_items i
+                                      where i.id = h.product_id) product,
+                                     SALES_DATA 
+                              from oow_demo_sales_history h
+                              where id = x) loop
+                     sys.htp.p('<br /><strong>ID</strong>: '||apex_escape.html(c1.id));
+                     sys.htp.p('<br /><strong>Store</strong>: '||apex_escape.html(c1.store));
+                     sys.htp.p('<br /><strong>Product</strong>: '||apex_escape.html(c1.product));
+                     sys.htp.p('<br /><strong>Date of Sale</strong>: '||to_char(c1.date_of_sale,'DD-MON-YYYY HH24:MI:SS'));
+                     sys.htp.p('<br /><strong>Date of Posting</strong>: '||to_char(c1.created_on,'DD-MON-YYYY HH24:MI:SS'));
+                
+                     sys.htp.p('<br /><strong>Quantity</strong>: '||to_char(c1.quantity,'999G999G999G990'));
+                     sys.htp.p('<br /><strong>Price</strong>: '||to_char(c1.item_price,'$999G999G999G990D00'));
+                     sys.htp.p('<br /><strong>Sale</strong>: '||to_char(c1.item_price * c1.quantity,'$999G999G999G990D00'));
+                   end loop;
+                
+                exception when others then
+                  sys.htp.prn( apex_escape.html( sqlerrm ) );
+                end;
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @generate-one-transaction-on-page-load
+            slot: subRegions
+        }
+    )
+
+    pageItem P30_AUTOREFRESH (
+        type: radioGroup
+        label {
+            label: Auto-Refresh
+            alignment: left
+        }
+        settings {
+            noOfCols: 5
+        }
+        lov {
+            type: sharedComponent
+            lov: @auto-refresh
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @generate-one-transaction-on-page-load
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        advanced {
+            cssClasses: mnw180
+        }
+    )
+
+    pageItem P30_TRANSACTION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @generate-one-transaction-on-page-load
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button refresh-page (
+        buttonName: refresh_page
+        label: Refresh Page
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 30
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 28
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction set-auto-refresh (
+        name: Set Auto-Refresh
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P30_AUTOREFRESH
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P30_AUTOREFRESH
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P30_AUTOREFRESH
+            }
+            execution {
+                sequence: 5
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: setTimeout("location.reload(true);",1000 * $v('P30_AUTOREFRESH'));
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+)
+

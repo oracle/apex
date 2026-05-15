@@ -1,0 +1,152 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Sample Application Search
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The <strong>Application Search</strong> feature, introduced in APEX 22.2, provides a seamless search experience that feels like a&nbsp;search engine&nbsp;within your application. It allows users to search for data across multiple&nbsp;data sources, making it easy to find the information they need.</p>
+                <p>With Application Search, you can create multiple&nbsp;search configurations&nbsp;that search a<strong>&nbsp;local data source</strong>, <strong>REST-enabled SQL</strong>, or <strong>REST API</strong>. This allows you to provide a comprehensive&nbsp;search experience&nbsp;for your users, retrieving relevant information from a variety of sources.</p>
+                <p><strong>Search Configurations</strong> contain information about a&nbsp;searchable data source&nbsp;and provide an abstraction over concrete search implementations, allowing for flexibility and future improvements.<br />You can create and manage your Search Configurations under :&nbsp;<em><strong>Shared Components&nbsp;&rarr; Navigation and Search &rarr; Search Configurations</strong></em></p>
+                <p>These Search Configurations give you control over which data appears in the search results and can include links to detailed result pages. This allows users to quickly and easily navigate to the relevant information within your application.</p>
+                <p>One of the key benefits of this new search feature is its ability to use&nbsp;<strong>Oracle Text</strong>, which is a powerful full-text search engine provided by Oracle Database. By leveraging Oracle Text, you can take advantage of its advanced&nbsp;search capabilities, such as&nbsp;keyword searching,&nbsp;fuzzy searching, and stemming, allowing for more accurate and relevant search results. It can handle complex queries, including&nbsp;phrase searching&nbsp;and&nbsp;proximity searching, which can further refine search results.</p>
+                <p>A new region type, <strong>Search Region</strong>, has also been introduced, which can be configured to use one or more Search Configurations and display the search results.</p>
+                <p>To see a demo of this feature in action, you can refer to this video:</p>
+                <p><a href="https://www.youtube.com/watch?v=ZvM9IWil4Xs&amp;ab_channel=OracleAPEX">&#9658; Add Search to your APEX Application with Oracle APEX 22.2</a></p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region app-navigation (
+        name: App Navigation
+        type: list
+        source {
+            list: @home
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+                t-MediaList--iconsRounded
+            ]
+        }
+    )
+
+    region sample-application-search (
+        name: Sample Application Search
+        type: staticContent
+        source {
+            htmlCode: Demonstration of Application Search in APEX
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @sample-application-search
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 100
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @sample-application-search
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            customAttributes: disabled
+        }
+    )
+
+)
+

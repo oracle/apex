@@ -1,0 +1,390 @@
+page 10820 (
+    name: About this App
+    alias: HELP
+    title: About this App
+    pageGroup: @about-app
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: All application help text can be accessed from this page. The links in the "Documentation" region give a much more in-depth explanation of the application's features and functionality.
+    }
+    config {
+        buildOption: @about-page
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    x clob;
+                begin
+                x := 'No content provided.';
+                for c1 in (select configurable_content from SP_CONFIGURABLE_TEXT where config_ID = 'ABOUT-PRIMARY-TEXT') loop
+                    x := c1.configurable_content;
+                    x := apex_application.do_substitutions(x);
+                    x := replace(x,'NOMENCLATURE_PROJECTS','hello');
+                    x := apex_markdown.to_html(x);
+                end loop;
+                return x;
+                end;
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 90
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 10
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 50
+                }
+            )
+
+            menu edit-app-description (
+                label: Edit App Description
+                layout {
+                    sequence: 30
+                }
+                behavior {
+                    target: {
+                        page: 14000
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @administration-rights
+                }
+            )
+
+            menu edit-terminology (
+                label: Edit Terminology
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 10400
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @administration-rights
+                }
+            )
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 70
+                }
+                behavior {
+                    target: {
+                        page: 10820
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 60
+                }
+                behavior {
+                    target: {
+                        page: 10820
+                        clearCache: 10820
+                        action: clearRegions
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+        )
+
+    )
+
+    region percent-complete (
+        name: Percent Complete
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                Each &NOMENCLATURE_PROJECT. has a percent complete attribute.  
+                This percent complete status specifies a percent complete ranging from 0% to 100% in 10% increments.  
+                Each &NOMENCLATURE_PROJECT. can choose a scale from a list of scales, the default is set by the selected &NOMENCLATURE_INITIATIVE..  
+                The scale identifies the meaning of what is 10% complete and what is 20% complete etc, in addition to what milestones will be tracked based on the type.  
+                Each instance of this application can adjust the scales.
+                <p/>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: footer
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+    )
+
+    region terminology (
+        name: Terminology
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-folder-o fa-2x margin-right-sm"></span> &NOMENCLATURE_AREAS.</h3> Top level organization for &NOMENCLATURE_PROJECTS..
+                    All &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_INITIATIVES. 
+                    that are organized by &NOMENCLATURE_AREAS..  Full &NOMENCLATURE_PROJECT. organization is &NOMENCLATURE_AREA. > &NOMENCLATURE_INITIATIVE. >  &NOMENCLATURE_PROJECT..
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-lightbulb-o fa-2x  margin-right-sm"></span> &NOMENCLATURE_INITIATIVES.</h3> Further organize &NOMENCLATURE_AREAS..
+                    All &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_INITIATIVES. 
+                    that are organized by &NOMENCLATURE_AREAS..
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECTS.</h3> This application primarily tracks &NOMENCLATURE_PROJECTS.. 
+                    &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_AREAS. and &NOMENCLATURE_INITIATIVES..
+                    &NOMENCLATURE_PROJECTS. typically have owners, sizes, priorities, tags.
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECTS.</h3> This application primarily tracks &NOMENCLATURE_PROJECTS.. 
+                    &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_AREAS. and &NOMENCLATURE_INITIATIVES..
+                    &NOMENCLATURE_PROJECTS. typically have owners, sizes, priorities, tags. &NOMENCLATURE_PROJECTS. can also have Milestones, Reviews and Tasks.  Default Milestones and Reviews can be selected at the &NOMENCLATURE_INITIATIVE. level and any &NOMENCLATURE_PROJECT. created within that &NOMENCLATURE_INITIATIVE. will inherit those (which can then be customized).
+                <p/>
+                
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECT. Groups</h3> &NOMENCLATURE_PROJECT. Groups allows viewing of all Comments and Activity across a common organizing structure.  
+                    Each &NOMENCLATURE_PROJECT. can only belong to one Group. 
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-badge-check fa-2x  margin-right-sm"></span> Activities</h3>  Activities are work performed by people.  
+                    Activities can be specific to a &NOMENCLATURE_PROJECT. but they are not required to be.
+                    Activities track who is doing on what within a time range.  For example Jane Doe is researching an implementation for a specific &NOMENCLATURE_PROJECT..
+                <p/>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        config {
+            buildOption: !@releases
+        }
+    )
+
+    region terminology-2 (
+        name: Terminology
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-folder-o fa-2x margin-right-sm"></span> &NOMENCLATURE_AREAS.</h3> Top level organization for &NOMENCLATURE_PROJECTS..
+                    All &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_INITIATIVES. 
+                    that are organized by &NOMENCLATURE_AREAS..  Full &NOMENCLATURE_PROJECT. organization is &NOMENCLATURE_AREA. > &NOMENCLATURE_INITIATIVE. >  &NOMENCLATURE_PROJECT..
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-lightbulb-o fa-2x  margin-right-sm"></span> &NOMENCLATURE_INITIATIVES.</h3> Further organize &NOMENCLATURE_AREAS..
+                    All  &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_INITIATIVES. 
+                    that are organized by &NOMENCLATURE_AREAS..
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECTS.</h3> This application primarily tracks &NOMENCLATURE_PROJECTS.. 
+                    &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_AREAS. and &NOMENCLATURE_INITIATIVES..
+                    &NOMENCLATURE_PROJECTS. typically have owners, sizes, priorities, tags, and can be optionally associated with releases. &NOMENCLATURE_PROJECTS. can also have Milestones, Reviews and Tasks.  Default Milestones and Reviews can be selected at the &NOMENCLATURE_INITIATIVE. level and any &NOMENCLATURE_PROJECT. created within that &NOMENCLATURE_INITIATIVE. will inherit those (which can then be customized).
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECT. Groups</h3> &NOMENCLATURE_PROJECT. Groups allows viewing of all Comments and Activity across a common organizing structure.  
+                    Each &NOMENCLATURE_PROJECT. can only belong to one Group. 
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-badge-check fa-2x  margin-right-sm"></span> Activities</h3>  Activities are work performed by people.  
+                    Activities can be specific to a &NOMENCLATURE_PROJECT. but they are not required to be.
+                    Activities track who is doing on what within a time range.  For example Jane Doe is researching an implementation for a specific &NOMENCLATURE_PROJECT..
+                <p/>
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-ship fa-2x margin-right-sm"></span> Releases</h3>  &NOMENCLATURE_PROJECTS. can be optionally associated with a release.  
+                    A release is typically a software distribution.  
+                    Releases have specific milestones with dates.  
+                <p/>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-percent-complete-scales (
+        buttonName: view_percent_complete_scales
+        label: View Percent Complete Scales
+        layout {
+            sequence: 10
+            region: @percent-complete
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 222
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,145 @@
+page 17 (
+    name: Activity Calendar
+    title: Activity Calendar
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region activity-calendar (
+        name: Activity Calendar
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                lower(USERID)||'-'||trim(to_char(count(*),'999G999G999G990')) "Page Events",
+                trunc(time_stamp) the_day
+                from apex_activity_log l
+                where flow_id = :app_id and userid is not null and userid != 'nobody'
+                group by trunc(time_stamp), lower(USERID)
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        settings {
+            displayColumn: "Page Events"
+            startDateColumn: THE_DAY
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+            maxEventsDay: 50
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    region activity-calendar-2 (
+        name: Activity Calendar
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button refresh (
+        buttonName: refresh
+        label: Refresh
+        layout {
+            sequence: 10
+            region: @activity-calendar-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 17
+                clearCache: 17
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @activity-calendar-2
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

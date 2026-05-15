@@ -1,0 +1,74 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 1408
+        systemPrivileges: [
+            createProcedure
+            createSequence
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            EBA_CA_ACCESS_LEVELS
+            EBA_CA_ADMINS
+            EBA_CA_COLOR_PREFS
+            EBA_CA_EMAIL_GROUP_MBRS
+            EBA_CA_EMAIL_GROUPS
+            EBA_CA_ERROR_LOOKUP
+            EBA_CA_EVENT_TYPES
+            EBA_CA_EVENTS
+            EBA_CA_FILES
+            EBA_CA_HISTORY
+            EBA_CA_NOTES
+            EBA_CA_NOTIFICATIONS
+            EBA_CA_PREFERENCES
+            EBA_CA_SERIES
+            EBA_CA_TAGS
+            EBA_CA_TAGS_TYPE_SUM
+            EBA_CA_TAGS_SUM
+            EBA_CA_TIMEFRAMES
+            EBA_CA_TZ_PREF
+            EBA_CA_USERS
+            EBA_CA_API
+            EBA_CA
+            EBA_CA_SEQ
+            EBA_CA_FW
+        ]
+    }
+    installationMessages {
+        welcome: This application installer will guide you through the process of creating your database objects and seed data.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+    }
+    upgrade {
+        upgradeWhenSqlQuery:
+            ```sql
+            select null
+              from user_tables
+             where table_name like 'EBA_CA_%'
+            ```
+    }
+    upgradeMessages {
+        welcome: The application installer has detected that this application's supporting objects were previously installed.  This wizard will guide you through the process of upgrading these supporting objects.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+        success: Your application's supporting objects have been installed.
+        failure: Installation of database objects and seed data has failed.
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    deinstallationMessages {
+        confirmation: This operation will completely remove this application from your workspace.
+        postDeinstall: Deinstallation complete.
+    }
+    messages {
+        validations: The following validations will be performed to ensure your system is compatible with this application.
+        appSubstitutions: You can configure the following attributes of your application.
+        buildOptions: You can choose to include the following build options.
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

@@ -1,0 +1,8 @@
+.a-IconList::before, .a-IconList::after {
+    display: none;
+}
+
+.a-IconList-item:hover {
+    --a-iconlist-item-text-color: initial;
+    --a-iconlist-item-background-color: initial;
+}

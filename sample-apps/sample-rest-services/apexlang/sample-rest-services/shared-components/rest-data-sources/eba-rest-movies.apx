@@ -1,0 +1,252 @@
+restDataSource eba_rest_movies (
+    name: EBA_REST_MOVIES
+    source {
+        type: http
+        remoteServer: @api_themoviedb_org_3_2_
+        urlPathPrefix: /movie/popular
+    }
+    authentication {
+        credentials: @moviedb_api_key
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_MOVIES
+        rowSelector: results
+    }
+
+    dataProfileColumn adult (
+        columnName: ADULT
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: adult
+        }
+        advanced {
+            sourceDataType: boolean
+        }
+    )
+
+    dataProfileColumn backdrop-path (
+        columnName: BACKDROP_PATH
+        source {
+            sequence: 12
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: backdrop_path
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn genre-ids (
+        columnName: GENRE_IDS
+        source {
+            sequence: 6
+            dataType: array
+        }
+        parsing {
+            pathExpression: genre_ids
+        }
+        advanced {
+            sourceDataType: array
+        }
+    )
+
+    dataProfileColumn genre-ids-2 (
+        columnName: GENRE_IDS2
+        source {
+            sequence: 15
+            parentColumn: @genre-ids
+            dataType: number
+        }
+        parsing {
+            pathExpression: .
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: number
+        }
+        parsing {
+            pathExpression: id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn original-language (
+        columnName: ORIGINAL_LANGUAGE
+        source {
+            sequence: 14
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: original_language
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn original-title (
+        columnName: ORIGINAL_TITLE
+        source {
+            sequence: 13
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: original_title
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn overview (
+        columnName: OVERVIEW
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: overview
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn popularity (
+        columnName: POPULARITY
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: popularity
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn poster-path (
+        columnName: POSTER_PATH
+        source {
+            sequence: 9
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: poster_path
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn release-date (
+        columnName: RELEASE_DATE
+        source {
+            sequence: 10
+            dataType: date
+        }
+        parsing {
+            pathExpression: release_date
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn title (
+        columnName: TITLE
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: title
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn video (
+        columnName: VIDEO
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: video
+        }
+        advanced {
+            sourceDataType: boolean
+        }
+    )
+
+    dataProfileColumn vote-average (
+        columnName: VOTE_AVERAGE
+        source {
+            sequence: 11
+            dataType: number
+        }
+        parsing {
+            pathExpression: vote_average
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn vote-avg-rounded (
+        columnName: VOTE_AVG_ROUNDED
+        source {
+            sequence: 25
+            type: sqlExpression
+            dataType: number
+        }
+        computation {
+            sqlExpression: ROUND(VOTE_AVERAGE, 1)
+        }
+    )
+
+    dataProfileColumn vote-count (
+        columnName: VOTE_COUNT
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: vote_count
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+)
+

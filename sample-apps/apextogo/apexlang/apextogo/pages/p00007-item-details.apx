@@ -1,0 +1,722 @@
+page 7 (
+    name: Item Details
+    alias: ITEM-DETAILS
+    title: Item Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+            js-dialog-class-t-Drawer--md
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Hero */
+            .c-HeroCard {
+              --a-cv-placeholder-color: transparent; /* Hide Placeholders */
+              --a-cv-background-color: transparent; /* Remove Hero Card Background */
+              --a-cv-border-width: 0px; /* Remove Hero Card Borders */
+              --a-cv-shadow: none; /* Remove Hero Card Shadow */
+              --a-cv-media-border-radius: .5rem;
+              --a-cv-header-padding-x: 0rem;
+              --a-cv-grid-gap: 0rem;
+            
+              min-block-size: 15.75rem; /* Set Initial Hero Card Size */
+            }
+            
+            /* Set Hero Card Grid */
+            .a-CardView-items--grid {
+              grid-template-columns: auto;
+              padding: 0;
+            }
+            
+            /* Set Max-Height for Hero Card Image */
+            .c-HeroCard .a-CardView-media {
+              max-block-size: 10rem;
+            }
+            
+            /* Show Only First Hero Card */
+            .c-HeroCard .is-placeholder li:not(:first-child) {
+              display: none;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region actions (
+        name: Actions
+        type: staticContent
+        layout {
+            sequence: 160
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region item-information (
+        name: Item Information
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       image_url as image,
+                       name,
+                       description,
+                       price
+                  from sample_restaurant_items
+                 where id = :P7_ITEM_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleC
+            ]
+            cssClasses: c-HeroCard
+        }
+        componentAppearance {
+            layout: horizontal
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                <div class="a-CardView-title">
+                  &NAME.<br />
+                  $&PRICE.
+                </div>
+                ```
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: <div class="a-CardView-subTitle">&DESCRIPTION.</div>
+        }
+        media {
+            source: imageUrl
+            url: #APP_FILES#&IMAGE.
+            position: first
+            appearance: widescreen
+            sizing: cover
+            imageDescription: &DESCRIPTION.
+        }
+    )
+
+    region quantity-container (
+        name: Quantity Container
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+                margin-top-sm
+            ]
+        }
+    )
+
+    pageItem P7_ITEM_DESCRIPTION (
+        type: hidden
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select description
+                  from sample_restaurant_items
+                 where id = :P7_ITEM_ID
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_ITEM_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_ITEM_NAME (
+        type: hidden
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_NOTE (
+        type: textarea
+        label {
+            label: Add Note
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            slot: contentBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            width: 30
+            height: 2
+        }
+    )
+
+    pageItem P7_QUANTITY (
+        type: numberField
+        label {
+            label: Quantity
+            alignment: left
+        }
+        settings {
+            minValue: 1
+            numberAlignment: center
+            virtualKeyboard: numeric
+        }
+        layout {
+            sequence: 20
+            region: @quantity-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 0
+            columnCssClasses: [
+                padding-none
+                t-Button--pillEnd
+            ]
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            cssClasses: [
+                margin-none
+                t-Form-fieldContainer--noPadding
+                rounded-none
+            ]
+            width: 3
+        }
+        advanced {
+            cssClasses: rounded-none
+        }
+    )
+
+    pageItem P7_SHOPPING_CART_ITEMS (
+        type: hidden
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+    )
+
+    pageItem P7_UTENSILS (
+        type: checkbox
+        label {
+            label: <span class="fa fa-cutlery" aria-hidden="true"></span> Request utensils, etc.
+            alignment: left
+        }
+        settings {
+            useDefaults: false
+            checkedValue: Y
+            uncheckedValue: N
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+        }
+    )
+
+    button add (
+        buttonName: ADD
+        label: +
+        layout {
+            sequence: 50
+            region: @quantity-container
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: [
+                padding-none
+                u-flex
+            ]
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--pillEnd
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button add-cart (
+        buttonName: ADD_CART
+        label: Add to Cart
+        layout {
+            sequence: 10
+            region: @actions
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--stretch
+                t-Button--padTop
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) = 0
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Remove from Cart
+        layout {
+            sequence: 30
+            region: @actions
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--danger
+                t-Button--link
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) > 0
+        }
+    )
+
+    button edit (
+        buttonName: EDIT
+        label: Update Cart
+        layout {
+            sequence: 20
+            region: @actions
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--stretch
+                t-Button--padTop
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) > 0
+        }
+    )
+
+    button share (
+        buttonName: SHARE
+        label: Share
+        layout {
+            sequence: 10
+            region: @quantity-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-share-alt
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button substract (
+        buttonName: SUBSTRACT
+        label: -
+        layout {
+            sequence: 10
+            region: @quantity-container
+            slot: regionBody
+            rowCssClasses: [
+                u-flex
+                u-align-items-stretch
+            ]
+            columnCssClasses: [
+                padding-none
+                u-flex
+            ]
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--pillStart
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction add-action (
+        name: Add Action
+        execution {
+            sequence: 80
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @add
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.items.P7_QUANTITY.setValue( parseInt( apex.items.P7_QUANTITY.value ) + 1 )
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction confirm-delete (
+        name: Confirm Delete
+        execution {
+            sequence: 60
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @delete
+        }
+
+        action native-confirm (
+            action: confirm
+            settings {
+                message: Confirm to remove from cart
+                style: warning
+                confirmLabel: Confirm
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: DELETE
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction share-page (
+        name: Share Page
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @share
+        }
+
+        action native-share (
+            action: share
+            settings {
+                title: &P7_ITEM_NAME.
+                text: I recommend this: &P7_ITEM_DESCRIPTION.
+                type: url
+                url: {
+                    page: 1
+                }
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction substract-action (
+        name: Substract Action
+        execution {
+            sequence: 70
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @substract
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.items.P7_QUANTITY.setValue( Math.max ( parseInt( apex.items.P7_QUANTITY.value ) - 1, 1 ) )
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p7-note (
+        itemName: P7_NOTE
+        execution {
+            sequence: 30
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) > 0 then
+                    return sample_restaurant_manage_orders.get_note( p_item_id => :P7_ITEM_ID );
+                else
+                    return '';
+                end if;
+                ```
+        }
+    )
+
+    computation p7-quantity (
+        itemName: P7_QUANTITY
+        execution {
+            sequence: 10
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) > 0 then
+                    return sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID );
+                else
+                    return 1;
+                end if;
+                ```
+        }
+    )
+
+    computation p7-utensils (
+        itemName: P7_UTENSILS
+        execution {
+            sequence: 20
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) > 0 then
+                    return sample_restaurant_manage_orders.get_utensils( p_item_id => :P7_ITEM_ID );
+                else
+                    return 'N';
+                end if;
+                ```
+        }
+    )
+
+    process add-item (
+        name: Add Item
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) = 0 then
+                    sample_restaurant_manage_orders.add_item( p_item_id  => :P7_ITEM_ID,
+                                                              p_quantity => :P7_QUANTITY,
+                                                              p_utensils => :P7_UTENSILS,
+                                                              p_note     => :P7_NOTE );
+                end if;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 46387968857646736
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-cart
+        }
+    )
+
+    process calculate-shopping-cart-items (
+        name: Calculate Shopping Cart Items
+        type: executeCode
+        source {
+            plsqlCode: :P7_SHOPPING_CART_ITEMS := sample_restaurant_manage_orders.get_quantity;
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 46388325346646736
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            itemsToReturn: P7_SHOPPING_CART_ITEMS
+        }
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 46389544004646737
+        }
+    )
+
+    process delete-item (
+        name: Delete Item
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) > 0 then
+                    sample_restaurant_manage_orders.remove_item( p_item_id => :P7_ITEM_ID );
+                end if;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 46388788045646737
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process edit-item (
+        name: Edit Item
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if sample_restaurant_manage_orders.item_quantity( p_item_id => :P7_ITEM_ID ) > 0 then
+                    sample_restaurant_manage_orders.remove_item( p_item_id => :P7_ITEM_ID );
+                    sample_restaurant_manage_orders.add_item( p_item_id  => :P7_ITEM_ID,
+                                                              p_quantity => :P7_QUANTITY,
+                                                              p_utensils => :P7_UTENSILS,
+                                                              p_note     => :P7_NOTE );
+                end if;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 46389152063646737
+        }
+        serverSideCondition {
+            whenButtonPressed: @edit
+        }
+    )
+
+)
+

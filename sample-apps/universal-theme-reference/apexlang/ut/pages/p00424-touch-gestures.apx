@@ -1,0 +1,648 @@
+page 424 (
+    name: Touch Gestures
+    alias: TOUCH-GESTURES
+    title: Touch Gestures
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .touch-region {
+              -webkit-user-select: none;
+                 -moz-user-select: none;
+                  -ms-user-select: none;
+                      user-select: none; }
+            
+            .touch-region .anim-icon {
+              height: 8rem;
+              border-radius: var(--ut-comonent-border-radius, 0.125rem);
+              background-color: rgba(255, 239, 94, 0.25);
+              box-shadow: 0 0 0 1px var(--ut-comonent-border-color, rgba(0, 0, 0, 0.05)) inset;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              position: relative;
+              overflow: hidden; }
+            
+            .js-event-icon {
+              width: 3rem;
+              height: 3rem;
+              line-height: 3rem;
+              text-align: center;
+              border-radius: 100%;
+              background-color: var(--ut-palette-primary, #3170C8);
+              color: var(--ut-palette-primary-contrast, #FFF);
+              transition: .2s transform ease; }
+            
+            .js-event-text {
+              font-family: monospace; }
+            
+            .touch-region.is-active .anim-icon .fa {
+              -webkit-animation: touch-active .5s forwards ease;
+                      animation: touch-active .5s forwards ease; }
+            
+            @-webkit-keyframes touch-active {
+              0% {
+                transform: scale(1) rotate(0deg); }
+              10% {
+                transform: scale(0.85) rotate(50deg); }
+              50% {
+                transform: scale(1.5) rotate(90deg); }
+              100% {
+                transform: scale(1) rotate(0deg); } }
+            
+            @keyframes touch-active {
+              0% {
+                transform: scale(1) rotate(0deg); }
+              10% {
+                transform: scale(0.85) rotate(50deg); }
+              50% {
+                transform: scale(1.5) rotate(90deg); }
+              100% {
+                transform: scale(1) rotate(0deg); } }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region available-gestures (
+        name: Available Gestures
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>APEX 18.1 provides declarative support for the following touch gestures via Dynamic Actions:</p>
+                
+                <ul>
+                  <li>tap and double tap</li>
+                  <li>press</li>
+                  <li>swipe</li>
+                  <li>pan</li>
+                </ul>
+                
+                <p>Note: While APEX wraps these touch events to make them accessible via Dynamic Actions, the underlying touch support is powered using the <a href="http://hammerjs.github.io/" target="_blank" rel="noopener noreferrer">hammer.js</a> library.</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region details (
+        name: Details
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><b>Notable <code>press</code> event data</b></p>
+                <ul>
+                  <li><code>this.data.pointerType</code> type of pointer (mouse or touch)</li>
+                </ul>
+                <p>Note: <code>press</code> events can also be triggered by clicking and holding</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @press
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region details-2 (
+        name: Details
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><b>Notable <code>swipe</code> event data</b></p>
+                <ul>
+                  <li><code>this.data.offsetDirection</code> swipe direction (2 left, 4 right)</li>
+                  <li><code>this.data.distance</code> distance of the swipe gesture</li>
+                  <li><code>this.data.pointerType</code> type of pointer (mouse or touch)</li>
+                </ul>
+                <p>Note: <code>swipe</code> events can also be triggered by clicking and quickly moving the cursor to the right or left</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @swipe
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region details-3 (
+        name: Details
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><b>Notable <code>pan</code> event data</b></p>
+                <ul>
+                  <li><code>this.data.offsetDirection</code> swipe direction (2 left, 4 right, 8 up, 16 down)</li>
+                  <li><code>this.data.isFinal</code> returns <code>true</code> if it is the last input</li>
+                  <li><code>this.data.pointerType</code> type of pointer (mouse or touch)</li>
+                </ul>
+                <p>Note: <code>pan</code> events can also be triggered by clicking and dragging</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @pan
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region details-4 (
+        name: Details
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><b>Notable <code>tap</code> event data</b></p>
+                <ul>
+                  <li><code>this.data.tapCount</code> number of times the screen was tapped</li>
+                  <li><code>this.data.pointerType</code> type of pointer (mouse or touch)</li>
+                </ul>
+                <p>Note: <code>tap</code> events can also be triggered by clicking</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @tap
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Adding touch support to your APEX apps help provide an improved and more natural mobile experience. This is especially important if your apps are more likely to be used on touch devices, such as smartphones or tablest. This page walks you through how you can use declarative touch events, introduced in APEX 18.1, to build touch friendly UIs.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region pan (
+        name: Pan
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region press (
+        name: Press
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region swipe (
+        name: Swipe
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region tap (
+        name: Tap
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region touch-region (
+        name: Touch Region
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="anim-icon">
+                <span class="fa fa-hand-pointer-o fa-lg js-event-icon" aria-hidden="true"></span> <span class="js-event-text">Press me!</span>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @press
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: touch-region
+        }
+        advanced {
+            htmlDomId: press_region
+        }
+    )
+
+    region touch-region-2 (
+        name: Touch Region
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="anim-icon">
+                <span class="fa fa-hand-pointer-o fa-lg js-event-icon" aria-hidden="true"></span> <span class="js-event-text">Swipe me!</span>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @swipe
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: touch-region
+        }
+        advanced {
+            htmlDomId: swipe_region
+        }
+    )
+
+    region touch-region-3 (
+        name: Touch Region
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="anim-icon">
+                <span class="fa fa-hand-pointer-o fa-lg js-event-icon" aria-hidden="true"></span> <span class="js-event-text">Pan me!</span>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @pan
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: touch-region
+        }
+        advanced {
+            htmlDomId: pan_region
+        }
+    )
+
+    region touch-region-4 (
+        name: Touch Region
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="anim-icon">
+                <span class="fa fa-hand-pointer-o fa-lg js-event-icon" aria-hidden="true"></span> <span class="js-event-text">Tap me!</span>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @tap
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: touch-region
+        }
+        advanced {
+            htmlDomId: tap_region
+        }
+    )
+
+    dynamicAction pan (
+        name: Pan
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexpan
+            selectionType: region
+            region: @touch-region-3
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var touchRegion$ = $(this.triggeringElement);
+                    var text$ = touchRegion$.find(".js-event-text");
+                    var icon$ = touchRegion$.find(".js-event-icon");
+                    var swipeDir = this.data.offsetDirection;
+                    
+                    var offsetX = (touchRegion$.outerWidth() / 2) - 24;
+                    
+                    var message, icon;
+                    
+                    if (swipeDir === 2) {
+                        message = 'Panning Left!'
+                        icon = 'fa-hand-o-left'
+                    } else if (swipeDir === 4) {
+                        message = 'Panning Right!'
+                        icon = 'fa-hand-o-right'
+                    }
+                    
+                    if (this.data.isFinal ) {
+                        icon$.css("position","static");
+                    } else {
+                        icon$.css({
+                            position: "absolute",
+                            left: this.data.deltaX + offsetX
+                        })
+                    }
+                    
+                    // reset icon after 1000 ms
+                    setTimeout(function(){
+                        icon$.css("position","static");
+                    }, 1000);
+                    
+                    text$.text(message);
+                    icon$.removeClass("fa-hand-pointer-o fa-hand-o-right fa-hand-o-left fa-hand-o-up fa-hand-o-down").addClass(icon);
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction press (
+        name: Press
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexpress
+            selectionType: region
+            region: @touch-region
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var touchRegion$ = $(this.triggeringElement);
+                    touchRegion$.find(".js-event-text").text("Pressed!");
+                    
+                    var animationEvent = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
+                    
+                    touchRegion$.addClass('is-active');
+                    touchRegion$.find(".js-event-icon").removeClass("fa-hand-pointer-o").addClass("fa-hand-grab-o");
+                    touchRegion$.one(animationEvent, function(event) {
+                        touchRegion$.removeClass('is-active').find(".js-event-icon").addClass("fa-hand-pointer-o").removeClass("fa-hand-grab-o");
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction swipe (
+        name: Swipe
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexswipe
+            selectionType: region
+            region: @touch-region-2
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var touchRegion$ = $(this.triggeringElement);
+                    var text$ = touchRegion$.find(".js-event-text");
+                    var icon$ = touchRegion$.find(".js-event-icon");
+                    var swipeDir = this.data.offsetDirection;
+                    
+                    var message, icon;
+                    
+                    if (swipeDir === 2) {
+                        message = 'Swiped Left!'
+                        icon = 'fa-hand-o-left'
+                    } else if (swipeDir === 4) {
+                        message = 'Swiped Right!'
+                        icon = 'fa-hand-o-right'
+                    }
+                    
+                    text$.text(message);
+                    
+                    icon$.removeClass("fa-hand-pointer-o fa-hand-o-right fa-hand-o-left").addClass(icon);
+                    var animationEvent = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
+                    touchRegion$.addClass('is-active');
+                    touchRegion$.one(animationEvent, function(event) {
+                        touchRegion$.removeClass('is-active');
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction tap (
+        name: Tap
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apextap
+            selectionType: region
+            region: @touch-region-4
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var tapCount = this.data.tapCount;
+                    var touchRegion$ = $(this.triggeringElement);
+                    touchRegion$.find(".js-event-text").text("Tapped " + tapCount + " times!");
+                    
+                    var animationEvent = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
+                    touchRegion$.addClass('is-active');
+                    touchRegion$.one(animationEvent, function(event) {
+                        touchRegion$.removeClass('is-active');
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

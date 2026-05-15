@@ -1,0 +1,345 @@
+page 146 (
+    name: Validation Details
+    alias: VALIDATION-DETAILS
+    title: Validation Details
+    pageGroup: @accounts
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region form-items (
+        name: form items
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @validation-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region introduction-text (
+        name: Introduction text
+        type: staticContent
+        source {
+            htmlCode: <p>If you feel information associated with this &P146_ENTITY_TYPE_LOWER. is correct and accurate, please validate it. Enter any comments (optional), check the validation checkbox, and then click the Validate button below.</p>
+        }
+        layout {
+            sequence: 1
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region validation-details (
+        name: Validation Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+    )
+
+    pageItem P146_ENTITY_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @form-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P146_ENTITY_TYPE (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @form-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P146_ENTITY_TYPE_LOWER (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @form-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P146_I_VALIDATE (
+        type: checkboxGroup
+        label {
+            label: Check to validate
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:I validate this info is accurate;VALIDATED
+        }
+        layout {
+            sequence: 50
+            region: @form-items
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        source {
+            used: always
+        }
+    )
+
+    pageItem P146_VERIFICATION_COMMENT (
+        type: textarea
+        label {
+            label: Comment
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Validate
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+            icon: fa-check
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-clicked (
+        name: Cancel clicked
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation p146-i-validate-is-not-null (
+        name: P146_I_VALIDATE is not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P146_I_VALIDATE
+        }
+        error {
+            errorMessage: Please check to validate.
+        }
+    )
+
+    process close-dialog (
+        name: close dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 6407138390542009679
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process create-validation (
+        name: Create validation
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                
+                  l_verification_rec eba_sales_verifications%rowtype;
+                
+                begin
+                
+                  l_verification_rec.verification_comment := :P146_VERIFICATION_COMMENT;
+                  l_verification_rec.entity_type := :P146_ENTITY_TYPE;
+                  l_verification_rec.verified_by := lower(:APP_USER);
+                
+                  case :P146_ENTITY_TYPE
+                    when 'LEAD'
+                    then
+                      l_verification_rec.lead_id := :P146_ENTITY_ID;
+                    when 'OPPORTUNITY'
+                    then
+                      l_verification_rec.opp_id := :P146_ENTITY_ID;
+                    when 'ACCOUNT'
+                    then
+                      l_verification_rec.cust_id := :P146_ENTITY_ID;
+                    when 'TERRITORY'
+                    then
+                      l_verification_rec.territory_id := :P146_ENTITY_ID;
+                    when 'CONTACT'
+                    then
+                      l_verification_rec.contact_id := :P146_ENTITY_ID;
+                    when 'PRODUCT'
+                    then
+                      l_verification_rec.product_id := :P146_ENTITY_ID;
+                  end case;
+                  
+                  
+                  insert into eba_sales_verifications values l_verification_rec;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Validation saved.
+        }
+        error {
+            errorMessage: Unable to save validation.
+        }
+        advanced {
+            executionMappingIdentifier: 6429145205132355900
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process init-page (
+        name: Init page
+        type: executeCode
+        source {
+            plsqlCode: :P146_ENTITY_TYPE_LOWER := lower(:P146_ENTITY_TYPE);
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 6637010483017819683
+        }
+    )
+
+)
+

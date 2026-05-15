@@ -1,0 +1,87 @@
+page 28 (
+    name: Activity Calendar
+    alias: ACTIVITY-CALENDAR
+    title: Activity Calendar
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region activity-calendar (
+        name: Activity Calendar
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select lower(USERID)||' - '
+                    ||trim(to_char(count(*),'999G999G999G990')) page_events,
+                    trunc(time_stamp) the_day
+                from apex_activity_log l
+                where flow_id = :APP_ID
+                    and userid is not null
+                    and userid != 'nobody'
+                group by trunc(time_stamp), lower(userid)
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            displayColumn: PAGE_EVENTS
+            startDateColumn: THE_DAY
+            showTooltip: false
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

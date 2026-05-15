@@ -1,0 +1,162 @@
+page 49 (
+    name: Movie Details
+    alias: MOVIE-DETAILS
+    title: Movie Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        width: 600
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region movie-details-report (
+        name: Movie Details Report
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select title, moviedescription, actors, genre, release_date, rating
+                  from eba_vector_moviedata
+                 where id = :P49_SEARCH_ID
+                ```
+            pageItemsToSubmit: P49_SEARCH_ID
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            column: GENRE
+        }
+        body {
+            column: MOVIEDESCRIPTION
+        }
+        secondaryBody {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                &ACTORS. <br /><br />
+                Release Date: &RELEASE_DATE.
+                ```
+        }
+        iconAndBadge {
+            badgeColumn: RATING
+            badgeLabel: Rating
+        }
+    )
+
+    pageItem P49_SEARCH_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @movie-details-report
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button find-similar-movies (
+        buttonName: FIND_SIMILAR_MOVIES
+        label: Find Similar Movies
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+    )
+
+    process find-similar-movies (
+        name: Find Similar Movies
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    select moviedescription
+                      into :P41_SEARCH
+                      from eba_vector_moviedata
+                     where id = :P49_SEARCH_ID;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 11527042583693116
+        }
+        serverSideCondition {
+            whenButtonPressed: @find-similar-movies
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+)
+

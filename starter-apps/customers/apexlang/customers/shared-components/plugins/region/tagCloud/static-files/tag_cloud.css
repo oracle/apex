@@ -1,0 +1,49 @@
+	.tagCloud {}
+	.tagCloud ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		}
+		.tagCloud li {
+			display: inline;
+			}
+			.tagCloud li a {
+				padding: 0 5px;
+				font: normal 12px/20px Arial, sans-serif;
+				color: #000;
+				text-shadow: 0 1px 0 rgba(255,255,255,.75);
+				-moz-border-radius: 3px;
+				-webkit-border-radius: 3px;
+				border-radius: 3px;
+				border-right: 1px solid #FFF;
+				border-bottom: 1px solid #FFF;
+				text-decoration: none;
+				display: inline-block;
+				margin: 0 3px 2px 0;
+				}
+				.tagCloud li a:hover {
+					background-color: #EEE;
+					text-decoration: none;
+					border-bottom: 1px solid #999;
+					border-right: 1px solid #999;
+					}
+					.tagCloud li a:active {
+						background-color: #DDD;
+					}
+
+				.tagCloud li a.size1 {font-size: 11px; line-height: 16px}
+				.tagCloud li a.size2 {font-size: 13px;line-height: 20px}
+				.tagCloud li a.size3 {font-size: 16px;line-height: 24px}
+				.tagCloud li a.size4 {font-size: 17px;line-height: 28px}
+				.tagCloud li a.size5 {font-size: 18px;line-height: 30px}
+				.tagCloud li a.size6 {font-size: 19px;line-height: 32px}
+
+				.tagCloud li a span {
+					display: inline-block;
+					margin-left: 3px;
+					padding: 0;
+					font-weight: bold;
+					color: #999;
+					}
+					.tagCloud li a:hover span {
+						}

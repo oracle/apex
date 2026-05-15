@@ -1,0 +1,8 @@
+event com_oracle_eloc_gcdr_done (
+    name: elocation_geocoder_success
+)
+
+event com_oracle_eloc_gcdr_error (
+    name: elocation_geocoder_error
+)
+

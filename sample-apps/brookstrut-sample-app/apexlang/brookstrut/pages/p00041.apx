@@ -1,0 +1,491 @@
+page 41 (
+    name: Load Data
+    title: Load Data
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region results (
+        name: Results
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    (select count(*) c from OOW_DEMO_SALES_HISTORY) rows_generated,
+                    (select count(distinct STORE_ID) from OOW_DEMO_SALES_HISTORY) distinct_stores,
+                    (select count(distinct PRODUCT_ID) from OOW_DEMO_SALES_HISTORY) distinct_products,
+                    :P41_SIZE requested_size,
+                    to_number(:P41_ROWS) rows_requested,
+                    :P41_ORDERS requested_orders,
+                    to_number(:P41_LOAD_TIME) load_time_milliseconds,
+                    to_number(:P41_LOAD_TIME) / 1000 load_time_seconds,
+                    to_number(:P41_ROWS) / (to_number(:P41_LOAD_TIME) / 1000) rows_per_second
+                from dual
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 4
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--large
+                t-BadgeList--dash
+                t-BadgeList--cols t-BadgeList--3cols
+            ]
+        }
+
+        column DISTINCT_PRODUCTS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Distinct Products
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column DISTINCT_STORES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Distinct Stores
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column LOAD_TIME_MILLISECONDS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Load Time Milliseconds
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column LOAD_TIME_SECONDS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Load Time Seconds
+                alignment: center
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990D0
+            }
+        )
+
+        column REQUESTED_ORDERS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Requested Orders
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column REQUESTED_SIZE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Requested Size
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column ROWS_GENERATED (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Rows Generated
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column ROWS_PER_SECOND (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Rows Loaded Per Second
+                alignment: center
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: 999G999G999G999G990D00
+            }
+        )
+
+        column ROWS_REQUESTED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Rows Requested
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+    )
+
+    region summary (
+        name: Summary
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select max(created_on) last_order from OOW_DEMO_SALES_HISTORY
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-item--stacked
+                t-ContextualInfo-label--stacked
+            ]
+        }
+
+        column LAST_ORDER (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Last Order
+            }
+            layout {
+                sequence: 10
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
+    pageItem P41_DAYS (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P41_LOAD_TIME (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P41_ORDERS (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P41_ROWS (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P41_SIZE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button reload (
+        buttonName: Reload
+        label: Reload Data
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-gear
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 40
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process generate-data (
+        name: Generate Data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    t1 timestamp := systimestamp;
+                    t2 timestamp;
+                
+                begin
+                    oow_demo_gen_data_pkg.oow_demo_gen_sales_data (
+                          p_days      => :P41_DAYS,
+                          p_orders    => :P41_ORDERS,
+                          p_truncate  =>'N',
+                          p_max_rows  => :P41_ROWS);
+                    t2 := systimestamp;
+                    for c1 in (
+                        select
+                           extract( day from diff )*24*60*60*1000 +
+                           extract( hour from diff )*60*60*1000 +
+                           extract( minute from diff )*60*1000 +
+                           round(extract( second from diff )*1000) total_milliseconds
+                        from (select t2 - t1 diff from dual)
+                    ) loop
+                    :P41_LOAD_TIME := c1.total_milliseconds;
+                    end loop;
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 17354507638727098989
+        }
+    )
+
+    process setup-and-truncate (
+        name: setup and truncate
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    s number := 0;
+                    o number := 0;
+                    d number := 0;
+                    t1 timestamp;
+                    t2 timestamp;
+                begin
+                    if :P41_SIZE = 'S' then 
+                       s := 500; -- max
+                       d := 365; -- days
+                       o := 2; -- orders
+                    elsif :P41_SIZE = 'M' then 
+                       s := 1000;
+                       d := 365;
+                       o := 3;
+                    elsif :P41_SIZE = 'L' then 
+                       s := 5000;
+                       d := 365;
+                       o := 5;
+                    elsif :P41_SIZE = 'XL' then 
+                       s := 25000;
+                       d := 365;
+                       o := 25;
+                    elsif :P41_SIZE = 'XXL' then 
+                       s := 50000;
+                       d := 365;
+                       o := 50;
+                    elsif :P41_SIZE = 'XXXL' then 
+                       s := 100000;
+                       d := 365;
+                       o := 100;
+                    elsif :P41_SIZE = '4XL' then 
+                       s := 1000000;
+                       d := 365;
+                       o := 100;
+                    elsif :P41_SIZE = '5XL' then 
+                       s := 5000000;
+                       d := 365;
+                       o := 100;
+                    end if;
+                    :P41_ROWS := s;
+                    :P41_ORDERS := o;
+                    :P41_DAYS := d;
+                
+                    execute immediate 'truncate table OOW_DEMO_SALES_HISTORY';
+                   
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 17354507511770098988
+        }
+    )
+
+)
+

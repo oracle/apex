@@ -1,0 +1,79 @@
+page 131 (
+    name: My Activities
+    alias: MY=CURRENT-AND-FUTURE-ACTIVITY
+    title: My Activities
+    pageGroup: @activities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_clob clob;
+                begin
+                l_clob := '<p>
+                An activity is something that consumes time identified by a start and end date.  
+                This report shows your current and future (planned) activities.  
+                This report excludes past activities.
+                </P>
+                <p>
+                An activity can be optionally associated with a &NOMENCLATURE_PROJECT!LOWER.. 
+                When an activity is associated with a &NOMENCLATURE_PROJECT!LOWER. the &NOMENCLATURE_PROJECT!LOWER. title becomes a link to the &NOMENCLATURE_PROJECT!LOWER. details.
+                The "2 days ago" style timeframe indicates last change to the activity.
+                </p>
+                <p>
+                     Click the dot-dot-dot actions menu controls to perform actions related to activities.
+                </p>
+                <p>
+                    Activity Attributes:
+                    <ul>
+                        <li><strong>Type</strong>: Type of activity performed, see list below for types of activities defined for this application.</li>
+                        <li><strong>Activity</strong>: Is a short description, up to 280 characters, of what activity is intended to occur between two dates.</li>
+                        <li><strong>Start Date</strong>: Date activity started or is planned to start.</li>
+                        <li><strong>End Date</strong>: Date activity was completed or is planned to be completed.</li>
+                        <li><strong>Optional &NOMENCLATURE_PROJECT!LOWER.:</strong>: Defines related &NOMENCLATURE_PROJECT!LOWER. if work is in support of a specific &NOMENCLATURE_PROJECT!LOWER..</li>
+                        <li><strong>Owner</strong>: Defines who is doing the activity.</li>
+                        <li><strong>Tags</strong>: Comma seperated list of tags to help filter activities.</li>
+                        <li><strong>URL</strong>: Optional URL relating to the activity.</li>
+                    </ul>
+                </p>
+                <br />
+                <br />';
+                
+                l_clob := replace(l_clob,'&NOMENCLATURE_PROJECTS.',:NOMENCLATURE_PROJECTS);
+                l_clob := replace(l_clob,'&NOMENCLATURE_PROJECT.',:NOMENCLATURE_PROJECT);
+                l_clob := replace(l_clob,'&NOMENCLATURE_PROJECTS!LOWER.',lower(:NOMENCLATURE_PROJECTS));
+                l_clob := replace(l_clob,'&NOMENCLATURE_PROJECT!LOWER.',lower(:NOMENCLATURE_PROJECT));
+                return l_clob;
+                end;
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

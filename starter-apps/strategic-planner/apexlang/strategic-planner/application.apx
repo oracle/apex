@@ -1,0 +1,141 @@
+app STRATEGIC-PLANNER (
+    name: Strategic Planner
+    version: 26.1.0
+    group: @starter-apps
+    logo {
+        type: text
+        text: &NOMENCLATURE_STRATEGIC_PLANNER.
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--classic
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        autoDismissSuccessMessages: true
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    javaScript {
+        fileUrls: #APP_FILES#js/sp-search#MIN#.js
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: @reader-rights
+    }
+    security {
+        deepLinking: true
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        checksumSalt: 965CC55C8FE2B2FD4B2CAE6F064CE5EF63F7CA0EB756701DD35CEE6AC2937D19
+    }
+    sessionManagement {
+        sessionStateCommits: immediate
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        installable: true
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    runtime {
+        allowFeedback: true
+        accessibleReadOnlyItems: false
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Strategic Planner
+        }
+    )
+
+    appSetting ACCESS_CONTROL_SCOPE (
+        value {
+            staticValue: ACL_ONLY
+            onUpgradeKeepValue: true
+        }
+        validation {
+            validValues: ACL_ONLY, ALL_USERS
+        }
+        config {
+            buildOption: @access-control
+        }
+        comments {
+            comments: The default access level given to authenticated users who are not in the access control list
+        }
+    )
+
+    appSetting EXTERNAL_PERSON_LINK (
+        value {
+            staticValue: http://people.oracle.com/@#EMAIL#
+        }
+        comments {
+            comments: link with #EMAIL# substitution to provide a link to more details - only if the email domain matches that within EXTERNAL_PERSON_LINK_DOMAIN
+        }
+    )
+
+    appSetting EXTERNAL_PERSON_LINK_DOMAIN (
+        value {
+            staticValue: oracle.com
+        }
+        comments {
+            comments: if the email of a "person" uses this domain, the EXTERNAL_PERSON_LINK will be used to show a link to more details
+        }
+    )
+
+    appSetting FEEDBACK_ATTACHMENTS_YN (
+        value {
+            staticValue: Y
+            onUpgradeKeepValue: true
+        }
+        validation {
+            validValues: Y, N
+        }
+        config {
+            buildOption: @feedback
+        }
+    )
+
+)
+

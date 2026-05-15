@@ -1,0 +1,1 @@
+alter table eba_sales_customers add secondary_rep varchar2(255);

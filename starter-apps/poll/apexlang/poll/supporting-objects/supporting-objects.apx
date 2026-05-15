@@ -1,0 +1,77 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 100
+        systemPrivileges: [
+            createProcedure
+            createSequence
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            EBA_QPOLL_POLLS
+            EBA_QPOLL_NOTIFICATIONS
+            EBA_QPOLL_PREFERENCES
+            EBA_QPOLL
+            EBA_QPOLL_FW
+            EBA_QPOLL_SEQ
+            EBA_QPOLL_QUIZ
+            EBA_QPOLL_ACCOUNT
+            EBA_QPOLL_RESP_COMM_REF
+            EBA_QPOLL_RESPONDENTS
+            EBA_QPOLL_RESP_COMMUNITIES
+            EBA_QPOLL_RESULTS
+            EBA_QPOLL_RESULT_DETAILS
+            EBA_QPOLL_USER_LOG
+            EBA_QPOLL_APPLICATION_LOG
+            EBA_QPOLL_ERROR_LOG
+            EBA_QPOLL_ACCESS_REQUESTS
+            EBA_QPOLL_CANNED_ANSWERS
+            EBA_QPOLL_QUESTIONS
+            EBA_QPOLL_ERRORS
+            EBA_QPOLL_EMAIL_OPT_OUT
+            EBA_QPOLL_INVITES
+            EBA_QPOLL_COMM_INVITES
+            EBA_QPOLL_EMAILS
+            EBA_QPOLL_EMAIL
+        ]
+    }
+    installationMessages {
+        welcome: This application installer will guide you through the process of creating your database objects and seed data.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+        installSuccess: Your application's supporting objects have been installed.
+        installFailure: Installation of database objects and seed data has failed.
+    }
+    upgrade {
+        upgradeWhenSqlQuery:
+            ```sql
+            select object_name
+            from user_objects
+            where object_name like 'EBA_QPOLL_%'
+            ```
+    }
+    upgradeMessages {
+        welcome: The application installer has detected that this application's supporting objects were previously installed.  This wizard will guide you through the process of upgrading these supporting objects.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+        success: Your application's supporting objects have been installed.
+        failure: Installation of database objects and seed data has failed.
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    deinstallationMessages {
+        confirmation: This operation will completely remove this application from your workspace.
+        postDeinstall: Deinstallation complete.
+    }
+    messages {
+        validations: The following validations will be performed to ensure your system is compatible with this application.
+        appSubstitutions: You can configure the following attributes of your application.
+        buildOptions: You can choose to include the following build options.
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

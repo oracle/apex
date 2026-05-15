@@ -1,0 +1,37 @@
+lov dept-dname (
+    name: DEPT.DNAME
+    source {
+        tableName: EBA_DEMO_CARD_DEPT
+    }
+    columnMapping {
+        return: DEPTNO
+        display: DNAME
+    }
+)
+
+lov emp-mgr (
+    name: EMP.MGR
+    source {
+        tableName: EBA_DEMO_CARD_EMP
+    }
+    columnMapping {
+        return: EMPNO
+        display: ENAME
+        defaultSort: ENAME
+    }
+)
+
+lov login-remember-username (
+    name: LOGIN_REMEMBER_USERNAME
+    source {
+        location: staticValues
+    }
+
+    entry remember-username (
+        sequence: 10
+        display: Remember username
+        return: Y
+    )
+
+)
+

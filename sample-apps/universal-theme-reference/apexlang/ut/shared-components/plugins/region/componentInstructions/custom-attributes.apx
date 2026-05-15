@@ -1,0 +1,67 @@
+customAttribute attribute_01 (
+    apexlangName: componentType
+    attribute: 1
+    name: Component Type
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    default {
+        value: REGION
+    }
+
+    entry button (
+        sequence: 30
+        display: Button
+        return: BUTTON
+    )
+
+    entry item (
+        sequence: 20
+        display: Item
+        return: ITEM
+    )
+
+    entry region (
+        sequence: 10
+        display: Region
+        return: REGION
+    )
+
+)
+
+customAttribute attribute_02 (
+    apexlangName: staticId
+    attribute: 2
+    name: Static ID
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText:
+            ```
+            <p>For regions and buttons, provide their Static ID.</p>
+            <p>For items, provide their regular names.</p>
+            ```
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: additionalText
+    attribute: 3
+    name: Additional Text
+    type: textarea
+    appearance {
+        sequence: 30
+    }
+    builder {
+        translatable: true
+    }
+)
+

@@ -1,0 +1,83 @@
+page 3000 (
+    name: Components
+    alias: COMPONENTS
+    title: Components - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            /* Update icon background color to match page hero color */
+            :root {
+                --ut-medialist-icon-background-color: var(--u-color-15);
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region components (
+        name: Components
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            icon: fa-lg fa-shapes u-color-15
+        }
+    )
+
+    region components-2 (
+        name: Components
+        type: list
+        source {
+            list: @templates-components
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: region-types
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+                t-MediaList--cols t-MediaList--2cols
+                t-MediaList--iconsRounded
+            ]
+        }
+    )
+
+)
+

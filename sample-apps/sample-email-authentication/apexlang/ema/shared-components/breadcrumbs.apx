@@ -1,0 +1,96 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry administration (
+        name: Administration
+        pageNumber: 10000
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10000
+            }
+        }
+    )
+
+    entry application-error-log (
+        name: Application Error Log
+        pageNumber: 10022
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10022
+            }
+        }
+    )
+
+    entry email-reporting (
+        name: Email Reporting
+        pageNumber: 10050
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10050
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry logged-messages (
+        name: Logged Messages
+        pageNumber: 10026
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10026
+            }
+        }
+    )
+
+    entry manage-user-access (
+        name: Manage User Access
+        pageNumber: 10031
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10031
+            }
+        }
+    )
+
+    entry settings (
+        name: Settings
+        pageNumber: 10011
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10011
+            }
+        }
+    )
+
+)
+

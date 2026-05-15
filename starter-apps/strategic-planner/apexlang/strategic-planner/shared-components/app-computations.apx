@@ -1,0 +1,155 @@
+appComputation app-user-first-last-name (
+    itemName: APP_USER_FIRST_LAST_NAME
+    execution {
+        sequence: 20
+        point: beforeHeader
+    }
+    computation {
+        type: sqlQuerySingleValue
+        sqlQuery:
+            ```sql
+            select first_name||' '||last_name 
+              from sp_team_members 
+             where id = :APP_USER_ID
+            ```
+    }
+    serverSideCondition {
+        type: expression
+        plsqlExpression:
+            ```plsql
+            :APP_USER_ID is not null and
+            :APP_USER_FIRST_LAST_NAME is null
+            ```
+    }
+)
+
+appComputation app-user-first-name (
+    itemName: APP_USER_FIRST_NAME
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            for c1 in (
+                select first_name
+                  from sp_team_members 
+                 where id = :APP_USER_ID
+                   and first_name is not null
+            ) loop
+                return c1.first_name;
+            end loop;
+            -- in case user is not in team_members (or first name is null)
+            return lower(:APP_USER);
+            ```
+    }
+    serverSideCondition {
+        type: expression
+        plsqlExpression: :APP_USER_ID is not null and :APP_USER_FIRST_NAME is null
+    }
+)
+
+appComputation app-user-id (
+    itemName: APP_USER_ID
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: sqlQuerySingleValue
+        sqlQuery: select id from sp_team_members t where t.email = lower(:APP_USER)
+    }
+    serverSideCondition {
+        type: itemIsNull
+        item: APP_USER_ID
+    }
+)
+
+appComputation approvals-more-info-cnt (
+    itemName: APPROVALS_MORE_INFO_CNT
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody: return sp_approvals.more_info_pending_cnt (p_team_member_id => :APP_USER_ID);
+    }
+    serverSideCondition {
+        type: itemIsNotNull
+        item: APP_USER_ID
+    }
+    config {
+        buildOption: @approvals
+    }
+)
+
+appComputation approvals-pending-cnt (
+    itemName: APPROVALS_PENDING_CNT
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody: return sp_approvals.approval_pending_cnt (p_team_member_id => :APP_USER_ID);
+    }
+    serverSideCondition {
+        type: itemIsNotNull
+        item: APP_USER_ID
+    }
+    config {
+        buildOption: @approvals
+    }
+)
+
+appComputation complete-task-status-ids (
+    itemName: COMPLETE_TASK_STATUS_IDS
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: sqlQuerySingleValue
+        sqlQuery:
+            ```sql
+            select ':'||listagg(id, ':')||':'
+              from sp_task_statuses
+             where indicates_complete_yn = 'Y'
+            ```
+    }
+)
+
+appComputation is-admin (
+    itemName: IS_ADMIN
+    execution {
+        sequence: 10
+        point: afterAuthentication
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            if APEX_AUTHORIZATION.IS_AUTHORIZED (p_authorization_name => 'Administration Rights') then
+               return 'Y';
+            else return 'N';
+            end if;
+            ```
+    }
+)
+
+appComputation last-project-view (
+    itemName: LAST_PROJECT_VIEW
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: 23
+    }
+    serverSideCondition {
+        type: itemIsNull
+        item: LAST_PROJECT_VIEW
+    }
+)
+

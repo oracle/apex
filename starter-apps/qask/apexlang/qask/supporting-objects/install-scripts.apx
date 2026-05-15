@@ -1,0 +1,63 @@
+installScript "add installing user" (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: add-installing-user.sql
+    }
+)
+
+installScript "close_old job" (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: close-old-job.sql
+    }
+)
+
+installScript "create data" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: create-data.sql
+    }
+)
+
+installScript "create tables" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-tables.sql
+    }
+)
+
+installScript "create triggers" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: create-triggers.sql
+    }
+)
+
+installScript "qask_util body" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: qask-util-body.sql
+    }
+)
+
+installScript "qask_util spec" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: qask-util-spec.sql
+    }
+)
+

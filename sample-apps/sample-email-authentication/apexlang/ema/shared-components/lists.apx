@@ -1,0 +1,269 @@
+list activity-reports (
+    name: Activity Reports
+    config {
+        buildOption: @feature-activity-reporting
+    }
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-exclamation
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10022
+                clearCache: 10022
+            }
+        }
+        userDefinedAttributes {
+            1: Report of errors logged by this application
+        }
+    )
+
+    entry email-reporting (
+        label: Email Reporting
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 10050
+                clearCache: 10050
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all email queued to be sent and those already sent
+        }
+    )
+
+    entry logged-messages (
+        label: Logged Messages
+        icon {
+            imageIconCssClasses: fa-warning
+        }
+        layout {
+            sequence: 35
+        }
+        link {
+            target: {
+                page: 10026
+                clearCache: 10026
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            1: Report of messages logged by the apis supporting this application
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 70
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry about (
+        label: About
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-user-wrench
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                10000
+                10011
+                10020
+                10021
+                10022
+                10023
+                10024
+                10026
+                10031
+                10035
+                10037
+                10050
+                10051
+            ]
+        }
+        link {
+            target: {
+                page: 10000
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+        security {
+            authorizationScheme: @administrator
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry protected-page (
+        label: Protected Page
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        security {
+            authorizationScheme: mustNotBePublicUser
+        }
+    )
+
+)
+
+list user-interface (
+    name: User Interface
+
+    entry settings (
+        label: Settings
+        icon {
+            imageIconCssClasses: fa-gears
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10011
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the settings that govern this application
+        }
+    )
+
+)
+
+list user-related-actions (
+    name: User Related Actions
+    config {
+        buildOption: @feature-access-control
+    }
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10031
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Set level of access for authenticated users of this application
+        }
+    )
+
+)
+

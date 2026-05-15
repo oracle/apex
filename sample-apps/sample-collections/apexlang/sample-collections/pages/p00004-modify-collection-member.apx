@@ -1,0 +1,666 @@
+page 4 (
+    name: Modify Collection Member
+    alias: MODIFY-COLLECTION-MEMBER
+    title: Modify Collection Member
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>Use this page to modify a member of the collection.</p>
+        }
+        layout {
+            sequence: 10
+            slot: wizardBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: wizardButtons
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region collection-member (
+        name: Collection Member
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: wizardBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+            ]
+        }
+    )
+
+    pageItem P4_ATTR1 (
+        type: textField
+        label {
+            label: Character Attribute 1
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_ATTR2 (
+        type: textField
+        label {
+            label: Character Attribute 2
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_ATTR3 (
+        type: textField
+        label {
+            label: Character Attribute 3
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_ATTR4 (
+        type: textField
+        label {
+            label: Character Attribute 4
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_ATTR5 (
+        type: textField
+        label {
+            label: Character Attribute 5
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_DATE_ATTR1 (
+        type: datePicker
+        label {
+            label: Date Attribute 1
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_DATE_ATTR2 (
+        type: datePicker
+        label {
+            label: Date Attribute 2
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_DATE_ATTR3 (
+        type: datePicker
+        label {
+            label: Date Attribute 3
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_NAME (
+        type: displayOnly
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            showLineBreaks: false
+        }
+        layout {
+            sequence: 10
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_NUM_ATTR1 (
+        type: numberField
+        label {
+            label: Numeric Attribute 1
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 80
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_NUM_ATTR2 (
+        type: numberField
+        label {
+            label: Numeric Attribute 2
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 90
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_NUM_ATTR3 (
+        type: numberField
+        label {
+            label: Numeric Attribute 3
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 100
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_SEQ (
+        type: displayOnly
+        label {
+            label: Sequence
+            alignment: left
+        }
+        settings {
+            showLineBreaks: false
+        }
+        layout {
+            sequence: 20
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_XMLTYPE (
+        type: textarea
+        label {
+            label: XMLType
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 140
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter a well-formed XML fragment or document.
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete-member (
+        buttonName: Delete_Member
+        label: Delete Member
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button update-member (
+        buttonName: Update_Member
+        label: Update Member
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-modal (
+        name: Cancel Modal
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process delete-member (
+        name: Delete Member
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.delete_member(
+                    p_collection_name => :P4_NAME,
+                    p_seq             => :P4_SEQ );
+                --
+                commit;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Successfully deleted member <b>&P4_SEQ.</b> in collection <b>&P4_NAME.</b>.
+        }
+        error {
+            errorMessage: Error deleting member <b>&P4_SEQ.</b> in collection <b>&P4_NAME.</b>.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867105393702187191
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete-member
+        }
+    )
+
+    process populate-form (
+        name: Populate form
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                --
+                -- Given the values supplied for collection name and sequence,
+                -- fetch the values from the Collections database view
+                -- and populate the items on the page
+                --
+                for c1 in ( select c001, c002, c003, c004, c005, n001, n002, n003, d001, d002, d003, xmltype001
+                              from apex_collections
+                             where collection_name = :P4_NAME
+                               and seq_id = :P4_SEQ ) loop
+                    :P4_ATTR1 := c1.c001;
+                    :P4_ATTR2 := c1.c002;
+                    :P4_ATTR3 := c1.c003;
+                    :P4_ATTR4 := c1.c004;
+                    :P4_ATTR5 := c1.c005;
+                    :P4_NUM_ATTR1 := c1.n001;
+                    :P4_NUM_ATTR2 := c1.n002;
+                    :P4_NUM_ATTR3 := c1.n003;
+                    :P4_DATE_ATTR1 := c1.d001;
+                    :P4_DATE_ATTR2 := c1.d002;
+                    :P4_DATE_ATTR3 := c1.d003;
+                    if c1.xmltype001 is not null then
+                        :P4_XMLTYPE   := xmltype.extract(c1.xmltype001,'/').getstringval();
+                    end if;
+                  
+                    exit;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8867096911004118350
+        }
+    )
+
+    process update-member (
+        name: Update Member
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_xmltype xmltype := null;
+                begin
+                    if :P4_XMLTYPE is not null then
+                        l_xmltype := xmltype( :P4_XMLTYPE );
+                    end if;
+                    --
+                    --
+                    -- This application uses the Application Level Date format to control the default date format for the application.
+                    -- Without this, then you would need to specify explict date format masks in the TO_DATE conversions.
+                    --
+                    apex_collection.update_member(
+                        p_collection_name => :P4_NAME,
+                        p_seq             => :P4_SEQ,
+                        p_c001            => :P4_ATTR1,
+                        p_c002            => :P4_ATTR2,
+                        p_c003            => :P4_ATTR3,
+                        p_c004            => :P4_ATTR4,
+                        p_c005            => :P4_ATTR5,
+                        p_n001            => :P4_NUM_ATTR1,
+                        p_n002            => :P4_NUM_ATTR2,
+                        p_n003            => :P4_NUM_ATTR3,
+                        p_d001            => to_date(:P4_DATE_ATTR1),
+                        p_d002            => to_date(:P4_DATE_ATTR2),
+                        p_d003            => to_date(:P4_DATE_ATTR3),
+                        p_xmltype001      => l_xmltype );
+                    commit;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Successfully updated member <b>&P4_SEQ.</b> in collection <b>&P4_NAME.</b>.
+        }
+        error {
+            errorMessage: Error updating member <b>&P4_SEQ.</b> in collection <b>&P4_NAME.</b>.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867072410838057677
+        }
+        serverSideCondition {
+            whenButtonPressed: @update-member
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            type: page
+            pageNumber: 1
+        }
+    )
+
+)
+

@@ -1,0 +1,187 @@
+buildOption about-page (
+    name: About Page
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_ABOUT_PAGE
+    }
+    comments {
+        comments: This feature displays an "About this application" link and exposes a partially configurable about this application page.  If you don't want to have a link to about this application disable this setting.
+    }
+)
+
+buildOption access-control (
+    name: Access Control
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_ACCESS_CONTROL
+    }
+    comments {
+        comments: Incorporate role based user authentication within your application and manage username mappings to application roles.
+    }
+)
+
+buildOption activity-planning (
+    name: Activity Planning
+    status {
+        status: include
+    }
+    comments {
+        comments: Allows a team member to plan activities; For example I am working on these activities (aka NOMENCLATURE_PROJECTS) for these dates.
+    }
+)
+
+buildOption ai-project-summaries (
+    name: AI Project Summaries
+    status {
+        defaultOnExport: exclude
+    }
+    comments {
+        comments: If included, and an AI Service is identified (under Settings), summaries will be generated for &NOMENCLATURE_PROJECTS..
+    }
+)
+
+buildOption ai-release-summaries (
+    name: AI Release Summaries
+    comments {
+        comments: If included, and an AI Service is identified (under Settings), summaries can be generated for Releases.
+    }
+)
+
+buildOption approvals (
+    name: Approvals
+    status {
+        status: include
+        defaultOnExport: include
+    }
+    comments {
+        comments: Encapsulates all the workflow for NOMENCLATURE_PROJECT approvals.
+    }
+)
+
+buildOption comment-tagging (
+    name: Comment Tagging
+    status {
+        status: include
+    }
+    comments {
+        comments: If included, Screen Name will be available under NOMENCLATURE_USERS and NOMENCLATURE_PROJECT comments will be searched for screen names and if someone is 'tagged', they will receive an alert (if they have Comment Alerts enabled).
+    }
+)
+
+buildOption configure-application-features (
+    name: Configure Application Features
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_CONFIGURATION
+    }
+    comments {
+        comments: Allow application administrators to enable or disable specific application features.
+    }
+)
+
+buildOption email-configured (
+    name: Email Configured
+    status {
+        status: include
+    }
+    comments {
+        comments: If email is not configured on your instance, use this to turn off the features that would send emails.
+    }
+)
+
+buildOption feedback (
+    name: Feedback
+    advanced {
+        featureIdentifier: APPLICATION_FEEDBACK
+    }
+    comments {
+        comments: Provide a mechanism for end users to post general comments back to the application administrators and developers.
+    }
+)
+
+buildOption groups (
+    name: Groups
+    status {
+        status: include
+    }
+    comments {
+        comments: Groups allow you to organize contributors.  You define a group, then add NOMENCLATURE_USERS to the group.  When viewing  NOMENCLATURE_USERS, you can filter by groups.  This reduces a large list to a smaller, more targeted, list.
+    }
+)
+
+buildOption include-project-active-toggle (
+    name: Include Project Active Toggle
+    status {
+        status: include
+    }
+    comments {
+        comments: Identifies a NOMENCLATURE_PROJECT as being actively worked or not.
+    }
+)
+
+buildOption kanban (
+    name: Kanban
+    status {
+        status: include
+    }
+    comments {
+        comments: Kanban Board, Cumulative Flow, Control Chart and Planning Board.
+    }
+)
+
+buildOption project-groups (
+    name: Project Groups
+    status {
+        status: include
+    }
+    comments {
+        comments: Allows grouping of NOMENCLATURE_PROJECTS across NOMENCLATURE_INITIATIVES.
+    }
+)
+
+buildOption releases (
+    name: Releases
+    status {
+        status: include
+    }
+    comments {
+        comments: Used to exclude the use of Releases.
+    }
+)
+
+buildOption reviews (
+    name: Reviews
+    status {
+        status: include
+    }
+    comments {
+        comments: If disabled, Reviews will not be included within NOMENCLATURE_PROJECTS.
+    }
+)
+
+buildOption show-friendly-identifier (
+    name: Show friendly identifier
+    status {
+        status: include
+    }
+    comments {
+        comments: Each project gets a friendly identifier by default.  Friendly identifiers are alternative primary keys that are human readable. For example "AA01" is a friendly identifier.  This setting controls if the identifiers are displayed in the UI of the application.
+    }
+)
+
+buildOption subscriptions (
+    name: Subscriptions
+    status {
+        status: include
+    }
+    comments {
+        comments: Allows enable/disable of Notification Subscriptions, sent via email.  This should be disabled if email is not configured on this instance.
+    }
+)
+

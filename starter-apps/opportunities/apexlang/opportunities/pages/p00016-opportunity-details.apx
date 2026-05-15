@@ -1,0 +1,973 @@
+page 16 (
+    name: Opportunity Details
+    alias: OPPORTUNITY-DETAILS
+    title: Opportunity Details
+    pageGroup: @opportunities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <script language="JavaScript" type="text/javascript">
+            <!--
+            
+             htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            
+            //-->
+            </script>
+            <style>
+            .shuttle select {width: 350px}
+            </style>
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region opportunity (
+        name: Opportunity
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+            columnAttributes: valign=top
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P16_ACCOUNT_STANDING_ID (
+        type: selectList
+        label {
+            label: Account Standing
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select display_order||'. '||standing_text d, id from eba_sales_account_standing order by display_order
+        }
+        layout {
+            sequence: 155
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 2
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCOUNT_STANDING_ID
+            used: always
+        }
+    )
+
+    pageItem P16_CUSTOMER_ID (
+        type: selectList
+        label {
+            label: Account
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @accounts
+            displayExtraValues: false
+            nullDisplayValue: - No Account Specified -
+        }
+        layout {
+            sequence: 45
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_ID
+            used: always
+        }
+    )
+
+    pageItem P16_DEAL_AMOUNT (
+        type: numberField
+        label {
+            label: Amount
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 65
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 64
+            valuePlaceholder: $0
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_AMOUNT
+            used: always
+        }
+        config {
+            buildOption: !@opportunity-amount-set-at-product-level
+        }
+    )
+
+    pageItem P16_DEAL_CLOSE_DATE (
+        type: datePicker
+        label {
+            label: Close
+            alignment: left
+        }
+        layout {
+            sequence: 75
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            formatMask: &APP_DATE_FORMAT.
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_CLOSE_DATE
+            used: always
+        }
+    )
+
+    pageItem P16_DEAL_CUSTOMER_LOCATION_ID (
+        type: selectList
+        label {
+            label: Location
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select CUSTOMER_LOCATION_NAME display_value, ID return_value 
+                from eba_sales_CUSTOMER_LOCATIONS
+                order by 1
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - Select Location -
+        }
+        layout {
+            sequence: 55
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_CUSTOMER_LOCATION
+            used: always
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    pageItem P16_DEAL_NAME (
+        type: textField
+        label {
+            label: Opportunity
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 35
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_NAME
+            used: always
+        }
+    )
+
+    pageItem P16_DEAL_PROBABILITY (
+        type: numberField
+        label {
+            label: Probability
+            alignment: left
+        }
+        settings {
+            minValue: 0
+            maxValue: 100
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 115
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 2
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--postTextBlock
+            ]
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        advanced {
+            postText: %
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_PROBABILITY
+            used: always
+        }
+    )
+
+    pageItem P16_DEAL_STATUS_CODE_ID (
+        type: selectList
+        label {
+            label: Stage
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @steps-to-close-status-code
+            displayExtraValues: false
+            nullDisplayValue: - Select a Status -
+        }
+        layout {
+            sequence: 95
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_STATUS_CODE_ID
+            used: always
+        }
+        default {
+            type: static
+            staticValue: 2
+        }
+    )
+
+    pageItem P16_DEAL_SUMMARY (
+        type: textarea
+        label {
+            label: Summary
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 185
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_SUMMARY
+            used: always
+        }
+    )
+
+    pageItem P16_FINANCIAL_ASSESSMENT_ID (
+        type: selectList
+        label {
+            label: Financial Assessment
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select display_order||'. '||assessment_text d, id from eba_sales_fin_assessments order by display_order
+        }
+        layout {
+            sequence: 135
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 2
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FINANCIAL_ASSESSMENT_ID
+            used: always
+        }
+    )
+
+    pageItem P16_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @opportunity
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P16_PRO_RE_ACTIVE (
+        type: selectList
+        label {
+            label: Pro Re Active
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Proactive;Proactive,Reactive;Reactive
+        }
+        layout {
+            sequence: 165
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PRO_RE_ACTIVE
+            used: always
+        }
+    )
+
+    pageItem P16_RISK_ASSESSMENT_ID (
+        type: selectList
+        label {
+            label: Risk Assessment
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select display_order||'. '||assessment_text d, id from eba_sales_risk_assessments order by display_order
+        }
+        layout {
+            sequence: 145
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: RISK_ASSESSMENT_ID
+            used: always
+        }
+    )
+
+    pageItem P16_SALESREP_ID_01 (
+        type: selectList
+        label {
+            label: &REP_TITLE.
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @primary-sales-rep
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 85
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 2
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SALESREP_ID_01
+            used: always
+        }
+    )
+
+    pageItem P16_SPONSOR_CONTACT_ID (
+        type: selectList
+        label {
+            label: Client Sponsor
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @contacts-with-titles
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 175
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SPONSOR_CONTACT_ID
+            used: always
+        }
+        help {
+            helpText: Select a client sponsor from the list provided. If you do not see the client sponsor you want in the list, click the "Contacts" tab and add a new contact that represents the client sponsor you want to add to this opportunity. Once you've created the contact, you can come back to this page and assign the newly added contact as this opportunity's client sponsor.
+        }
+    )
+
+    pageItem P16_STATUS_ASSESSMENT_ID (
+        type: selectList
+        label {
+            label: Status Assessment
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select display_order||'. '||assessment_text d, id 
+                from EBA_SALES_STATUS_ASSESSMENTS 
+                order by display_order
+                ```
+        }
+        layout {
+            sequence: 125
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STATUS_ASSESSMENT_ID
+            used: always
+        }
+    )
+
+    pageItem P16_SVP (
+        type: selectList
+        label {
+            label: SVP
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select svp_name, id from eba_sales_svps order by upper(svp_name)
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 105
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SVP_ID
+            used: always
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from eba_sales_svps
+        }
+    )
+
+    pageItem P16_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                from eba_sales_tags_type_sum
+                where content_type = 'DEAL'
+                ```
+        }
+        layout {
+            sequence: 195
+            region: @opportunity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Opportunity
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P16_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P16_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P16_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation p16-deal-amount-not-null (
+        name: P16_DEAL_AMOUNT Not Null
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P16_DEAL_AMOUNT
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+        }
+        config {
+            buildOption: !@opportunity-amount-set-at-product-level
+        }
+    )
+
+    validation p16-deal-probability-is-not-0-or (
+        name: P16_DEAL_PROBABILITY is not 0 or 100
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: :P16_DEAL_PROBABILITY in ('0', '100')
+        }
+        error {
+            errorMessage: Use the Close Won/Lost button to set #LABEL# to 0 or 100.
+            associatedItem: @P16_DEAL_PROBABILITY
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+            type: expression
+            plsqlExpression: sysdate > to_date(:P16_DEAL_CLOSE_DATE,'DD-MON-YYYY')
+        }
+    )
+
+    validation p16-deal-status-code-id-not-in (
+        name: P16_DEAL_STATUS_CODE_ID not in (4, 11)
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: :P16_DEAL_STATUS_CODE_ID in ('4', '11')
+        }
+        error {
+            errorMessage: Use the Close Won/Lost button to set #LABEL# to a "closed" value.
+            associatedItem: @P16_DEAL_STATUS_CODE_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+            type: expression
+            plsqlExpression: sysdate > to_date(:P16_DEAL_CLOSE_DATE,'DD-MON-YYYY')
+        }
+    )
+
+    validation valid-tag-characters (
+        name: Valid Tag Characters
+        execution {
+            sequence: 40
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P16_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P16_TAGS
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: SAVE,CREATE
+        }
+    )
+
+    computation p80-id (
+        itemName: P80_ID
+        execution {
+            sequence: 10
+            point: afterFooter
+        }
+        computation {
+            type: staticValue
+            staticValue: &P16_ID.
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            itemsToReturn: P16_DEAL_NAME
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 6542457273840038170
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: DELETE
+        }
+    )
+
+    process fetch-row-from-eba-sales-deals (
+        name: Fetch Row from EBA_SALES_DEALS
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_DEALS
+            pkColumn: ID
+            pkItem: P16_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 10495563693462890801
+        }
+    )
+
+    process process-row-of-eba-sales-deals (
+        name: Process Row of EBA_SALES_DEALS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_DEALS
+            pkColumn: ID
+            pkItem: P16_ID
+            returnKeyIntoItem: P16_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_SALES_DEALS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 10495563911667890804
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 10495564083710890805
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        name: Branch to Opportunities on delete
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 1
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

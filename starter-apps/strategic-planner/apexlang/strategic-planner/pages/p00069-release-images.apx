@@ -1,0 +1,567 @@
+page 69 (
+    name: Release Images
+    alias: RELEASE-IMAGES
+    title: &P69_RELEASE. - Images
+    pageGroup: @releases
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region facets (
+        name: Facets
+        type: facetedSearch
+        source {
+            filteredRegion: @images
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P69_AUTHOR (
+            type: checkboxGroup
+            label {
+                label: Contributor
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: AUTHOR
+            }
+        )
+
+        facet P69_FILE_EXTENSION (
+            type: checkboxGroup
+            label {
+                label: File Extension
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: FILE_EXTENSION
+            }
+        )
+
+        facet P69_MONTH_CREATED (
+            type: checkboxGroup
+            label {
+                label: Month Created
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: MONTH_CREATED
+            }
+        )
+
+        facet P69_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        facet P69_TAGS (
+            type: checkboxGroup
+            label {
+                label: Tags
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: TAGS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+    )
+
+    region images (
+        name: Images
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.ID,
+                       d.DOCUMENT_FILENAME,
+                       d.document_mimetype,
+                       d.document_lastupd,
+                       d.UPDATED,
+                       d.created,
+                       d.tags,
+                       case when length(d.doc_description) > 200
+                            then substr(d.doc_description,1,200)||'...'
+                            else d.doc_description
+                            end doc_description,
+                       d.DOCUMENT_BLOB,
+                       lower(d.created_by) author,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) doc_size,
+                       apex_util.get_since(d.created) created_since,
+                       d.created date_created,
+                       lower(substr(d.DOCUMENT_FILENAME,instr(d.DOCUMENT_FILENAME,'.',-1)+1,length(d.DOCUMENT_FILENAME)-instr(d.DOCUMENT_FILENAME,'.',-1))) file_extension,
+                       to_char(d.created,'YYYY.MM') month_created
+                  from SP_RELEASE_DOCUMENTS d
+                 where d.release_id = :P69_RELEASE_ID and 
+                       (
+                           lower(d.DOCUMENT_FILENAME) like '%.png' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                order by created desc
+                
+                ```
+            pageItemsToSubmit: P69_RELEASE_ID
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: DOCUMENT_FILENAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: &AUTHOR. - &CREATED_SINCE.
+        }
+        secondaryBody {
+            advancedFormatting: true
+            htmlExpression: &DOC_DESCRIPTION.
+        }
+        media {
+            source: blobColumn
+            blobColumn: DOCUMENT_BLOB
+        }
+        blobAttributes {
+            mimeTypeColumn: DOCUMENT_MIMETYPE
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 59
+                    items: {
+                        P59_ID: &ID.
+                        P59_PREV_PAGE: 68
+                    }
+                    clearCache: 59
+                }
+            }
+        )
+
+    )
+
+    region release (
+        name: Release
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.ID,
+                       r.RELEASE_TRAIN||' '||r.RELEASE release,
+                       decode(r.RELEASE_TARGET_DATE,null,    'No Date',to_char(r.RELEASE_TARGET_DATE,   'DD-MON-YY')) RELEASE_TARGET_DATE,
+                       decode(r.RELEASE_OPEN_DATE,null,      'No Date',to_char(r.RELEASE_OPEN_DATE,     'DD-MON-YY')) RELEASE_OPEN_DATE,
+                       greatest(round(r.RELEASE_TARGET_DATE - sysdate),0) days_remaining,
+                       --
+                       -- projects
+                       --
+                       (select count(*) 
+                          from sp_projects p 
+                         where p.release_id = r.id  
+                           and p.ARCHIVED_YN = 'N' 
+                           and p.DUPLICATE_OF_PROJECT_ID is null) projects,
+                       --
+                       --
+                       --
+                       round(r.RELEASE_TARGET_DATE - r.RELEASE_OPEN_DATE) release_length,
+                       --
+                       -- owner
+                       --
+                       t.first_name||' '||t.last_name owner,
+                       --
+                       -- release open and close
+                       --
+                       decode(r.RELEASE_OPEN_COMPLETED,'Y','Yes','N','No','Unknown') release_opened,
+                       decode(r.RELEASE_COMPLETED,'Y','Yes','N','No','Unknown') release_completed
+                  from SP_RELEASE_TRAINS r,
+                       SP_TEAM_MEMBERS t
+                 where r.id = :P69_RELEASE_ID and 
+                       r.RELEASE_OWNER_ID = t.id(+)
+                ```
+            pageItemsToSubmit: P69_RELEASE_ID
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+                t-Region-orderBy--end
+                margin-left-md
+            ]
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+            ]
+        }
+
+        column DAYS_REMAINING (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 99999
+            }
+            columnFormatting {
+                htmlExpression: #DAYS_REMAINING# days
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECTS.
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column RELEASE_COMPLETED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Release Completed
+            }
+            layout {
+                sequence: 150
+            }
+        )
+
+        column RELEASE_LENGTH (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Length
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #RELEASE_LENGTH# days
+            }
+        )
+
+        column RELEASE_OPENED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Release Opened
+            }
+            layout {
+                sequence: 160
+            }
+        )
+
+        column RELEASE_OPEN_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Open
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON-YY
+            }
+        )
+
+        column RELEASE_TARGET_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+    )
+
+    pageItem P69_RELEASE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @images
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P69_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @images
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button add-document (
+        buttonName: add_document
+        label: Add Document
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 120
+                items: {
+                    P120_RELEASE_ID: &P69_RELEASE_ID.
+                }
+                clearCache: 120
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 117
+                items: {
+                    P117_RELEASE_ID: &P69_RELEASE_ID.
+                }
+                clearCache: 117
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dc (
+        name: DC
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @images
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p69-release (
+        itemName: P69_RELEASE
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select release_train||' '||release d from sp_release_trains where id = :P69_RELEASE_ID
+        }
+    )
+
+)
+

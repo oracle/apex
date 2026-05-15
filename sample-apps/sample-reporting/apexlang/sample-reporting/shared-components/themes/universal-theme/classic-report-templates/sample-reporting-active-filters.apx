@@ -1,0 +1,73 @@
+classicReportTemplate sample-reporting-active-filters (
+    name: "[Sample Reporting] Active Filters"
+    templateClass: custom1
+    type: namedColumn
+    reportTemplate {
+        top: <div class="t-Form-fieldContainer t-Form-fieldContainer--stacked">
+        bottom: </div>
+    }
+    rowTemplate1 {
+        template:
+            ```html
+                <div class="t-Form-labelContainer">
+                    <label for="ACTIVE_FILTERS" id="ACTIVE_FILTER_#FILTER_GROUP#_LABEL" class="t-Form-label">#FILTER_GROUP#</label>
+                </div>
+                <div class="t-Form-inputContainer">
+                    <fieldset tabindex="-1" id="ACTIVE_FILTER_#FILTER_GROUP#"
+                        aria-labelledby="ACTIVE_FILTER_#FILTER_GROUP#_LABEL" class="checkbox_group">
+                        <input class="filterLink" type="checkbox" id="ACTIVE_FILTER_#FILTER_SEQUENCE#"
+                            data-group="#FILTER_GROUP#" data-sequence="#FILTER_SEQUENCE#"
+                            checked value="#FILTER_SEQUENCE#">
+                        <label for="ACTIVE_FILTER_#FILTER_SEQUENCE#">#FILTER_DISPLAY#</label>
+                     </fieldset>
+                </div>
+            ```
+        conditionType: plsqlExpression
+        plsqlExpression: #ROW_NUM# = 1 AND #TOTAL_ROWS# = 1
+    }
+    rowTemplate2 {
+        template:
+            ```html
+                <div class="t-Form-labelContainer">
+                    <label for="ACTIVE_FILTERS" id="ACTIVE_FILTER_#FILTER_GROUP#_LABEL" class="t-Form-label">#FILTER_GROUP#</label>
+                </div>
+                <div class="t-Form-inputContainer">
+                    <fieldset tabindex="-1" id="ACTIVE_FILTER_#FILTER_GROUP#"
+                        aria-labelledby="ACTIVE_FILTER_#FILTER_GROUP#_LABEL" class="checkbox_group">
+                        <input class="filterLink" type="checkbox" id="ACTIVE_FILTER_#FILTER_SEQUENCE#"
+                            data-group="#FILTER_GROUP#" data-sequence="#FILTER_SEQUENCE#"
+                            checked value="#FILTER_SEQUENCE#">
+                        <label for="ACTIVE_FILTER_#FILTER_SEQUENCE#">#FILTER_DISPLAY#</label>
+                        <br>
+            ```
+        conditionType: plsqlExpression
+        plsqlExpression: #ROW_NUM# = 1 AND #TOTAL_ROWS# > 1
+    }
+    rowTemplate3 {
+        template:
+            ```html
+                        <input class="filterLink" type="checkbox" id="ACTIVE_FILTER_#FILTER_SEQUENCE#"
+                            data-group="#FILTER_GROUP#" data-sequence="#FILTER_SEQUENCE#"
+                            checked value="#FILTER_SEQUENCE#">
+                        <label for="ACTIVE_FILTER_#FILTER_SEQUENCE#">#FILTER_DISPLAY#</label>
+                        <br>
+            ```
+        conditionType: plsqlExpression
+        plsqlExpression: #ROW_NUM# > 1 AND #ROW_NUM# < #TOTAL_ROWS#
+    }
+    rowTemplate4 {
+        template:
+            ```html
+                        <input class="filterLink" type="checkbox" id="ACTIVE_FILTER_#FILTER_SEQUENCE#"
+                            data-group="#FILTER_GROUP#" data-sequence="#FILTER_SEQUENCE#"
+                            checked value="#FILTER_SEQUENCE#">
+                        <label for="ACTIVE_FILTER_#FILTER_SEQUENCE#">#FILTER_DISPLAY#</label>
+                    </fieldset>
+                </div>
+            ```
+    }
+    advanced {
+        identifier: "[SAMPLE_REPORTING]_ACTIVE_FILTERS"
+    }
+)
+

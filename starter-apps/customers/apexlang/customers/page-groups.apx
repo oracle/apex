@@ -1,0 +1,48 @@
+pageGroup acl (
+    name: ACL
+)
+
+pageGroup activities (
+    name: Activities
+)
+
+pageGroup administration (
+    name: Administration
+)
+
+pageGroup contacts (
+    name: Contacts
+)
+
+pageGroup customers (
+    name: Customers
+)
+
+pageGroup deprecated (
+    name: Deprecated
+)
+
+pageGroup help (
+    name: Help
+)
+
+pageGroup home (
+    name: Home
+)
+
+pageGroup login (
+    name: Login
+)
+
+pageGroup mobile (
+    name: Mobile
+)
+
+pageGroup products (
+    name: Products
+)
+
+pageGroup reports (
+    name: Reports
+)
+

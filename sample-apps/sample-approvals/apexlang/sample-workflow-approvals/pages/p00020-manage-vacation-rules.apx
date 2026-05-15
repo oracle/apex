@@ -1,0 +1,684 @@
+page 20 (
+    name: Manage Vacation Rules
+    alias: MANAGE-VACATION-RULES
+    title: Manage Vacation Rules
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page lets Operations Team members edit the vacation rules
+                    that affect future task assignments, configure additional
+                    employee appraisal VP reviewers, and indicate a temporary
+                    business admininstrator for all approvals and action tasks.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 5
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region additional-appraisal-vp-reviewers (
+        name: Additional Appraisal VP Reviewers
+        type: staticContent
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region approval-vacation-coverage (
+        name: Approval Vacation Coverage
+        type: staticContent
+        layout {
+            sequence: 15
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 110
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region manage-vacation-rules (
+        name: Manage Vacation Rules
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_APPR_VACATION
+        }
+        layout {
+            sequence: 35
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+            addRowIfEmpty: false
+        }
+        editAuthorization {
+            add: @operations-team
+            update: @operations-team
+            delete: @operations-team
+        }
+        componentAppearance {
+            selectFirstRow: false
+        }
+        messages {
+            whenNoDataFound: No vacation rules defined.
+        }
+        toolbar {
+            addButtonLabel: Add Vacation Rule
+        }
+        enableUsersTo {
+            flashback: false
+            defineChartView: false
+            download: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 3505726375703771
+        }
+
+        savedReport 35062 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    frozen: true
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @ORIGINAL_USER
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @SUBSTITUTE_USER
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @START_DATE
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @END_DATE
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @REASON
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @TASK_DEF_IDS
+                layout {
+                    sequence: 4
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column END_DATE (
+            type: datePicker
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: END_DATE
+                dataType: date
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                queryOnly: true
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ORIGINAL_USER (
+            type: selectList
+            heading {
+                heading: For Vacationing
+            }
+            lov {
+                type: sharedComponent
+                lov: @all-enames-lov
+                displayExtraValues: false
+                nullDisplayValue: < Any User >
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: ORIGINAL_USER
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column REASON (
+            type: textField
+            heading {
+                heading: Reason
+            }
+            layout {
+                sequence: 100
+            }
+            validation {
+                maxLength: 80
+            }
+            source {
+                databaseColumn: REASON
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column START_DATE (
+            type: datePicker
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: START_DATE
+                dataType: date
+            }
+        )
+
+        column SUBSTITUTE_USER (
+            type: selectList
+            heading {
+                heading: Covering User
+            }
+            lov {
+                type: sharedComponent
+                lov: @all-enames-lov
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: SUBSTITUTE_USER
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column TASK_DEF_IDS (
+            type: popupLov
+            heading {
+                heading: For Which Approvals?
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select name, static_id
+                    from apex_appl_taskdefs
+                    where task_type_code = 'APPROVAL'
+                    and application_id = :APP_ID
+                    order by name
+                    ```
+                displayExtraValues: false
+                displayNullValue: false
+            }
+            multipleValues {
+                type: delimitedList
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: TASK_DEF_IDS
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+    )
+
+    region temporary-business-admin (
+        name: Temporary Business Admin
+        type: staticContent
+        layout {
+            sequence: 100
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    pageItem P20_EMP_APPRAISAL_EXTRA_VP_REVIEWERS (
+        type: shuttle
+        label {
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ename d, ename r
+                from eba_demo_appr_emp
+                where deptno = /* OPERATIONS */ 40
+                ```
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 20
+            region: @additional-appraisal-vp-reviewers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 5
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    pageItem P20_TEMPORARY_BUSINESS_ADMIN (
+        type: selectList
+        label {
+            label: Temporary Business Admin
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ename d, ename r
+                from eba_demo_appr_emp
+                where deptno = 40 /* OPERATIONS */
+                  and ename != 'PAT'
+                ```
+            displayExtraValues: false
+            nullDisplayValue: < Choose Temporary Admin >
+        }
+        layout {
+            sequence: 10
+            region: @temporary-business-admin
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY_CHANGES
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation substitute-different-from-original (
+        name: Substitute Different from Original
+        execution {
+            sequence: 10
+        }
+        validation {
+            editableRegion: @manage-vacation-rules
+            plsqlExpression: :ORIGINAL_USER is null or (:ORIGINAL_USER != :SUBSTITUTE_USER)
+            alwaysExecute: true
+        }
+        error {
+            errorMessage: &APP_TEXT$SUBSTITUTE_SAME_AS_ORIGINAL.
+        }
+    )
+
+    computation p20-emp-appraisal-extra-vp-reviewers (
+        itemName: P20_EMP_APPRAISAL_EXTRA_VP_REVIEWERS
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('EMP_APPRAISAL_EXTRA_VP_REVIEWERS');
+        }
+    )
+
+    computation p20-temporary-business-admin (
+        itemName: P20_TEMPORARY_BUSINESS_ADMIN
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('TEMPORARY_BUSINESS_ADMIN');
+        }
+    )
+
+    process manage-vacation-rules-save-interactive-grid-data (
+        name: Manage Vacation Rules - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @manage-vacation-rules
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 3513043123703784
+        }
+    )
+
+    process update-emp-appraisal-extra-vp-reviewers-setting (
+        name: Update EMP_APPRAISAL_EXTRA_VP_REVIEWERS Setting
+        type: invokeApi
+        invoke {
+            package: APEX_APP_SETTING
+            procedureOrFunction: SET_VALUE
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 4008940843574528
+        }
+
+        parameter p_name (
+            value {
+                type: staticValue
+                staticValue: EMP_APPRAISAL_EXTRA_VP_REVIEWERS
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+        parameter p_raise_error (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_value (
+            parameter {
+                hasDefault: true
+            }
+            value {
+                type: item
+                item: P20_EMP_APPRAISAL_EXTRA_VP_REVIEWERS
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+    )
+
+    process update-temporary-business-admin-setting (
+        name: Update TEMPORARY_BUSINESS_ADMIN Setting
+        type: invokeApi
+        invoke {
+            package: APEX_APP_SETTING
+            procedureOrFunction: SET_VALUE
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 3515957588716415
+        }
+
+        parameter p_name (
+            value {
+                type: staticValue
+                staticValue: TEMPORARY_BUSINESS_ADMIN
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+        parameter p_raise_error (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_value (
+            parameter {
+                hasDefault: true
+            }
+            value {
+                type: item
+                item: P20_TEMPORARY_BUSINESS_ADMIN
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+    )
+
+)
+

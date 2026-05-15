@@ -1,0 +1,125 @@
+restDataSource eba_rest_orders (
+    name: EBA_REST_ORDERS
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /orders/
+    }
+
+    operation delete (
+        label: DELETE - :order_id
+        operation {
+            urlPattern: :order_id
+            httpMethod: delete
+            databaseOperation: delete
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    operation get-2 (
+        label: GET - :order_id
+        operation {
+            urlPattern: :order_id
+            httpMethod: get
+            databaseOperation: fetchSingleRow
+        }
+    )
+
+    operation post (
+        label: POST
+        operation {
+            urlPattern: .
+            httpMethod: post
+            databaseOperation: insert
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation put (
+        label: PUT - :order_id
+        operation {
+            urlPattern: :order_id
+            httpMethod: put
+            databaseOperation: update
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_ORDERS
+        rowSelector: items
+    }
+
+    dataProfileColumn customer-id (
+        columnName: CUSTOMER_ID
+        source {
+            sequence: 3
+            dataType: number
+        }
+        parsing {
+            pathExpression: customer_id
+        }
+    )
+
+    dataProfileColumn order-datetime (
+        columnName: ORDER_DATETIME
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: order_datetime
+        }
+    )
+
+    dataProfileColumn order-id (
+        columnName: ORDER_ID
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: order_id
+        }
+    )
+
+    dataProfileColumn order-status (
+        columnName: ORDER_STATUS
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: order_status
+        }
+    )
+
+    dataProfileColumn store-id (
+        columnName: STORE_ID
+        source {
+            sequence: 5
+            dataType: number
+        }
+        parsing {
+            pathExpression: store_id
+        }
+    )
+
+)
+

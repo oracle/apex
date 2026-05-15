@@ -1,0 +1,306 @@
+customAttribute attribute_01 (
+    apexlangName: bottomLabel
+    attribute: 1
+    name: Bottom Label
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 25
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the labels for the badges.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: value
+    attribute: 2
+    name: Value
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the values for the badges.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: percent
+    attribute: 3
+    name: Percent
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 30
+    }
+    supports {
+        dataTypes: number
+    }
+    dependingOn {
+        attribute: @attribute_07/component
+        conditionType: =
+        value: PERCENT
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the percentage values for the badges. Percentages will be displayed together with the value within the badge.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: linkTarget
+    attribute: 4
+    name: Link Target
+    type: linkToTargetPageUrl
+    appearance {
+        sequence: 40
+    }
+    help {
+        helpText: <p>Enter a target page to be called when the user clicks a badge entry.</p>
+    }
+    examples {
+        examples:
+            ```
+            <p>Example 1: URL to navigate to page 10 and set P10_EMPNO to the EMPNO value of the clicked entry.
+            <pre>f?p=&amp;APP_ID.:10:&amp;APP_SESSION.::&amp;DEBUG.:RP,10:P10_EMPNO:&amp;EMPNO.</pre>
+            </p>
+            <p>Example 2: Display the EMPNO value of the clicked entry in a JavaScript alert
+            <pre>javascript:alert('current empno: &amp;EMPNO.');</pre>
+            </p>
+            ```
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: layout
+    attribute: 5
+    name: Layout
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 50
+    }
+    builder {
+        common: false
+    }
+    default {
+        value: 0
+    }
+    help {
+        helpText: <p>Select the layout to determine how the badge list is displayed.</p>
+    }
+
+    entry 1Column (
+        sequence: 10
+        display: 1 column
+        return: 1
+        help {
+            helpText: Displays only one badge per row. Therefore, if there are three badges they are displayed on three rows.
+        }
+    )
+
+    entry 2Columns (
+        sequence: 20
+        display: 2 columns
+        return: 2
+        help {
+            helpText: Displays only two badges per row. Therefore, if there are three badges they are displayed on two rows.
+        }
+    )
+
+    entry 3Columns (
+        sequence: 30
+        display: 3 columns
+        return: 3
+        help {
+            helpText: <p>Displays a maximum of three badges per row. Therefore, if there are four badges they are displayed on two rows.</p>
+        }
+    )
+
+    entry 4Columns (
+        sequence: 40
+        display: 4 columns
+        return: 4
+        help {
+            helpText: <p>Displays a maximum of four badges per row. Therefore, if there are six badges they are displayed on two rows.</p>
+        }
+    )
+
+    entry 5Columns (
+        sequence: 50
+        display: 5 columns
+        return: 5
+        help {
+            helpText:
+                ```
+                <p>Displays a maximum of fix badges per row. Therefore, if there are seven badges they are displayed on two rows.</p>
+                <p>Note: on smaller displays where the badges cannot be displayed appropriately, the responsive region will revert to less column and additional rows. For example, seven badges may be displayed as three columns on three rows, instead of five columns on two rows.</p>
+                ```
+        }
+    )
+
+    entry fitToPage (
+        sequence: 5
+        display: Fit to Page
+        return: 0
+        help {
+            helpText:
+                ```
+                <p>Sizes the badges to stretch across the page. The width of each badge will be determined by the number of badges and the display width.</p>
+                <p>Note: Badges will not wrap when displayed on smaller devices.</p>
+                ```
+        }
+    )
+
+    entry floatToLeft (
+        sequence: 7
+        display: Float to Left
+        return: F
+        help {
+            helpText: <p>Sizes the badges based on the width of the label for each badge. All badges will be displayed to the left of the region.</p>
+        }
+    )
+
+)
+
+customAttribute attribute_06 (
+    apexlangName: badgeSize
+    attribute: 6
+    name: Badge Size
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 70
+    }
+    builder {
+        common: false
+    }
+    default {
+        value: L
+    }
+    dependingOn {
+        attribute: @attribute_07/component
+        conditionType: !=
+        value: BOX
+    }
+    help {
+        helpText: Select the size of badge to display.
+    }
+
+    entry extraExtraLarge (
+        sequence: 40
+        display: Extra Extra Large
+        return: XXL
+    )
+
+    entry extraLarge (
+        sequence: 30
+        display: Extra Large
+        return: B
+    )
+
+    entry large (
+        sequence: 20
+        display: Large
+        return: L
+    )
+
+    entry medium (
+        sequence: 10
+        display: Medium
+        return: M
+    )
+
+    entry small (
+        sequence: 0
+        display: Small
+        return: S
+    )
+
+)
+
+customAttribute attribute_07 (
+    apexlangName: badgeStyle
+    attribute: 7
+    name: Badge Style
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 1
+    }
+    default {
+        value: BOX
+    }
+    help {
+        helpText: Select the shape of the badges to display.
+    }
+
+    entry circular (
+        sequence: 20
+        display: Circular
+        return: DOT
+    )
+
+    entry default (
+        sequence: 10
+        display: Default
+        return: BOX
+    )
+
+    entry defaultWithPercent (
+        sequence: 15
+        display: Default with Percent
+        return: PERCENT
+    )
+
+)
+
+customAttribute attribute_08 (
+    apexlangName: color
+    attribute: 8
+    name: Color
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 80
+    }
+    default {
+        value: N
+    }
+    help {
+        helpText: Select if the badges should be displayed in different colors, or without colors.
+    }
+
+    entry no (
+        sequence: 20
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+
+customAttribute attribute_09 (
+    apexlangName: topLabel
+    attribute: 9
+    name: Top Label
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 10
+    }
+)
+

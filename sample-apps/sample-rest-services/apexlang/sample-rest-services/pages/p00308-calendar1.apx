@@ -1,0 +1,177 @@
+page 308 (
+    name: Calendar
+    alias: CALENDAR1
+    title: Calendar
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    On this page we present task entries from the <strong>EBA_REST_TASKS</strong> REST Data Source in a calendar layout rather than a Classic or Interactive Report. Each record from the <code>EBA_TASKS_SS</code> table appears as a dated event, displaying its title and scheduled dates. Filtering and pagination are driven by the REST service to keep the display efficient.
+                  </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region projects-calendar (
+        name: Projects Calendar
+        type: calendar
+        source {
+            location: restSource
+            restSource: @eba_rest_tasks
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                
+                
+                
+                select  id,
+                        project,
+                        task_name,
+                        status,
+                        assigned_to,
+                        cost,
+                        start_date,
+                        end_date,
+                 case
+                 when   status = 'Pending' then 'apex-cal-blue'
+                 when   status = 'Open' then 'apex-cal-green'
+                 when   status = 'Closed' then 'apex-cal-gray'
+                 when   status = 'On-Hold' then 'apex-cal-orange'
+                  end   as css_class,
+                        'Project: ' || project || '<br>Status: ' || status AS supplemental_info
+                 from   #APEX$SOURCE_DATA#
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        settings {
+            displayColumn: TASK_NAME
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            pkColumn: ID
+            showTime: true
+            supplementalInfo: &SUPPLEMENTAL_INFO.
+            calendarViewsAndNavigation: [
+                month
+                week
+                day
+                list
+                navigation
+            ]
+            cssClass: CSS_CLASS
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 400
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 307
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

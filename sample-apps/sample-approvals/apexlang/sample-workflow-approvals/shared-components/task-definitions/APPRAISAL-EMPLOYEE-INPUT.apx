@@ -1,0 +1,33 @@
+taskDefinition APPRAISAL_EMPLOYEE_INPUT (
+    name: Appraisal - Employee Input
+    type: action
+    task {
+        subject: Your Appraisal - please complete your self review
+    }
+    advanced {
+        detailsPage: {
+            page: 17
+            items: {
+                P17_TASK_ID: &TASK_ID.
+            }
+            clearCache: 17
+            action: resetPagination
+        }
+    }
+
+    participant (
+        value {
+            type: expression
+            plsqlExpression: eba_demo_appr.get_appraisal_participant(:APEX$TASK_PK)
+        }
+    )
+
+    participant (
+        type: businessAdministrator
+        value {
+            staticValue: PAT
+        }
+    )
+
+)
+

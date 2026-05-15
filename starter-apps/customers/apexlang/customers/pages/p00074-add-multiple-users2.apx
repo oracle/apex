@@ -1,0 +1,521 @@
+page 74 (
+    name: Add Multiple Users
+    alias: ADD-MULTIPLE-USERS2
+    title: Add Multiple Users
+    pageGroup: @acl
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .uReportList {
+                margin: 0;
+                list-style: none;
+            }
+            .uReportList li {
+                margin: 0 0 4px 0;
+            }
+            .check_icon {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                line-height: 16px;
+                background: #69B86B;
+                color: #FFF;
+                text-align: center;
+                border-radius: 12px;
+                font-size: 15px;
+                border: 1px solid green;
+                text-shadow: 0 -1px 0 rgba(0,0,0,.15);
+                vertical-align: top;
+                margin-right: 4px;
+            }
+            .valid_user {
+                display: inline-block;
+                padding: 4px 8px 4px 4px;
+                border: 1px solid #D0D0D0;
+                border-radius: 3px;
+                line-height: 20px;
+                background-color: #F8F8F8;
+                color: #404040;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region bulk-load-users-step (
+        name: Bulk Load Users - Step 2
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region exceptions (
+        name: Exceptions
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c001 username, c002 reason
+                  from apex_collections
+                 where collection_name = 'EBA_CUST_BULK_USER_INVALID'
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @bulk-load-users-step
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 10000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No invalid new users found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column REASON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Why Invalid
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USERNAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Username
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+    )
+
+    region no-valid-users-exist-page-info (
+        name: No Valid Users Exist - Page Info
+        type: staticContent
+        source {
+            htmlCode: <p>The username list on the previous page found no valid usernames and &P74_INVALID_COUNT.. Please go back and verify the username list you provided.</p>
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'EBA_CUST_BULK_USER_VALID'
+                ```
+        }
+    )
+
+    region users-to-be-added (
+        name: Users to be added
+        type: listView
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select lower(c001) username
+                  from apex_collections
+                 where collection_name = 'EBA_CUST_BULK_USER_VALID'
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @bulk-load-users-step
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            features: advancedFormatting
+            textFormatting: <span class="fa fa-check-circle u-success-text" aria-hidden="true"></span> <span style="line-height:36px;">&USERNAME.</span>
+        }
+    )
+
+    region valid-users-exist-page-info (
+        name: Valid Users Exist - Page Info
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                sys.htp.p('<p>');
+                sys.htp.p(apex_lang.message('ABOUT_TO_CREATE', :P74_VALID_COUNT, :P74_ROLE));
+                if :P74_INVALID_COUNT > 0 then
+                    sys.htp.p(apex_lang.message('INVALID_USERS_NOT_CREATED', :P74_INVALID_COUNT));
+                end if;
+                sys.htp.p('</p>');
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'EBA_CUST_BULK_USER_VALID'
+                ```
+        }
+    )
+
+    pageItem P74_INVALID_COUNT (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from apex_collections
+                 where collection_name = 'EBA_CUST_BULK_USER_INVALID'
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P74_ROLE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if :P73_ROLE = 3 then
+                    return 'Administrator';
+                elsif :P73_ROLE = 2 then
+                    return 'Contributor';
+                elsif :P73_ROLE = 1 then
+                    return 'Reader';
+                end if;
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P74_VALID_COUNT (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from apex_collections
+                 where collection_name = 'EBA_CUST_BULK_USER_VALID'
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    button finish (
+        buttonName: FINISH
+        label: Add Users
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'EBA_CUST_BULK_USER_VALID'
+                ```
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:history.back();
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process add-users-to-acl (
+        name: Add Users to ACL
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c in
+                (
+                    select
+                        c001      as username,
+                        :P73_ROLE as access_level_id
+                    from
+                        apex_collections
+                    where
+                        collection_name = 'EBA_CUST_BULK_USER_VALID'
+                )
+                loop
+                    insert into eba_cust_users
+                    (username, access_level_id)
+                    values
+                    (c.username, c.access_level_id);
+                end loop;
+                
+                ---------------------
+                -- delete collections
+                --
+                wwv_flow_collection.DELETE_COLLECTION('EBA_CUST_BULK_USER_INVALID');
+                wwv_flow_collection.DELETE_COLLECTION('EBA_CUST_BULK_USER_VALID');
+                wwv_flow_collection.DELETE_COLLECTION('EBA_CUST_BULK_USER_CREATE');
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: User(s) added.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 14813868797405773922
+        }
+        serverSideCondition {
+            whenButtonPressed: @finish
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 1654644202330839266
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 57
+                clearCache: [
+                    73
+                    &APP_PAGE_ID.
+                ]
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @finish
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

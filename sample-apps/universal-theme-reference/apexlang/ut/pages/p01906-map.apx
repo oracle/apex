@@ -1,0 +1,390 @@
+page 1906 (
+    name: Map
+    alias: MAP
+    title: Map
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region configuration (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Map<br/>
+                <strong>Template:</strong> Blank with Attributes (No Grid)<br/>
+                
+                <h4>Attributes</h4>
+                <strong>Map Background:</strong> Built-In<br/>
+                <strong>Map Standard:</strong> Oracle World Map<br/>
+                <strong>Advanced:</strong> <em>Custom SVG Style for Airport</em><br/>
+                
+                <h4>Layer: Major US Airports</h4>
+                <strong>Type:</strong> Points<br/>
+                <strong>Geometry Column Data Type:</strong> SDO_GEOMETRY<br/>
+                <strong>Geometry Column:</strong> <em>The SDO_GEOMETRY column returning geometry objects to display on the map</em><br/>
+                <strong>Point Objects Style:</strong> SVG<br/>
+                <strong>Point Objects Shape:</strong> <em>Airport SVG Style</em><br/>
+                <strong>Point Objects Shape Scale:</strong> 2<br/>
+                <strong>Tooltip:</strong> <em>HTML Expression</em><br/>
+                <strong>Info Window:</strong> <em>Custom HTML Expression</em><br/>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @demo
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region dataset-attribution (
+        name: Dataset Attribution
+        type: staticContent
+        source {
+            htmlCode: <p><small>US Airports data from bts.gov "Airports", Bureau of Transportation Statistics / Federal Government.</small></p>
+        }
+        layout {
+            sequence: 40
+            slot: footer
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: map_demo
+        }
+    )
+
+    region map (
+        name: Map
+        type: map
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       IATA_CODE,
+                       CITY,
+                       STATE_NAME,
+                       to_char(ACTIVATION_DATE_DT,'fmDDfm-MON-YYYY') as ACTIVATION_DATE,
+                       COMMERCIAL_OPS,
+                       to_char(COMMERCIAL_OPS,'999G999G999G999') as com_ops_fmtd,
+                       AIR_TAXI_OPS,
+                       to_char(AIR_TAXI_OPS,'999G999G999G999') as air_ops_fmtd,
+                       GEOMETRY
+                  from EBA_UT_MAP_AIRPORTS
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @demo
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: map_demo
+        }
+        map {
+            background: builtIn
+            standard: oracleWorldMap
+        }
+        controls {
+            options: [
+                scaleBar
+                infiniteMap
+                rectangleZoom
+            ]
+        }
+        attributes {
+            messagesPosition: below
+        }
+        componentAdvanced {
+            customSvgStyles:
+                ```
+                [
+                    {
+                        "name": "Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M12.942,5.942,11.783,7.1l.655,2.836a.5.5,0,0,1-.317.583.509.509,0,0,1-.171.03.5.5,0,0,1-.445-.273l-.978-1.92-.986.986.123,1.1a.5.5,0,0,1-.972.213L8.354,9.646,7.342,9.308a.5.5,0,0,1-.33-.582.509.509,0,0,1,.543-.39l1.1.123.986-.986L7.723,6.5a.5.5,0,0,1,.34-.933l2.836.655,1.159-1.159a.625.625,0,0,1,.884.884Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Heliport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,19a1.5,1.5,0,0,1-1.106-.487C8.291,17.855,3,11.967,3,8A7,7,0,0,1,17,8c0,3.967-5.291,9.855-5.894,10.514A1.506,1.506,0,0,1,10,19Z",
+                                "fill":"#ffffff"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type": "path",
+                                "d": "M10.454,9.7h1.224a1.008,1.008,0,0,0,.713-1.722A2.663,2.663,0,0,0,10.5,7.2h-.421v-.94h2.194a.314.314,0,0,0,0-.627H10.075V5.523a.314.314,0,0,0-.627,0v.105H7.254a.314.314,0,1,0,0,.627H9.448V7.2H6.418a.418.418,0,0,0,0,.836H7.5a1,1,0,0,1,.707.293l.767.766A2.091,2.091,0,0,0,10.454,9.7Z",
+                                "fill":"#ffffff"
+                            },
+                            {
+                                "type": "path",
+                                "d": "M12.625,11.378a.375.375,0,0,0,0-.75H8.375a.375.375,0,0,0,0,.75Z",
+                                "fill":"#ffffff"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Small Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,19a1.5,1.5,0,0,1-1.106-.487C8.291,17.855,3,11.967,3,8A7,7,0,0,1,17,8c0,3.967-5.291,9.855-5.894,10.514A1.506,1.506,0,0,1,10,19Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M11.94,7.375h-.963L9.435,4.906a.5.5,0,0,0-.9.42L9.2,7.375H8.307l-.693-.866a.508.508,0,0,0-.66-.109.5.5,0,0,0-.177.645L7.29,8.072a1,1,0,0,0,.894.553H9.2l-.666,2.049a.5.5,0,0,0,.122.508.5.5,0,0,0,.778-.088l1.542-2.469h.963a.625.625,0,0,0,0-1.25Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M13.076,9a.2.2,0,0,1-.2-.2V7.2a.2.2,0,1,1,.4,0V8.8A.2.2,0,0,1,13.076,9Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            }
+                        ]
+                    }
+                ]
+                ```
+        }
+
+        layer major-us-airports (
+            name: Major US Airports
+            layout {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+            }
+            pointObjects {
+                shape: Airport
+                shapeScale: 2
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression: &CITY. (&IATA_CODE.)
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <h3>&CITY. (&IATA_CODE.)</h3>
+                    <p>
+                    <strong>&STATE_NAME.</strong><br>
+                    {if ACTIVATION_DATE/}
+                    Activation Date: &ACTIVATION_DATE.<br>
+                    {endif/}
+                    {if COMMERCIAL_OPS/}
+                    Commercial Operations: &COM_OPS_FMTD.<br>
+                    {endif/}
+                    {if AIR_TAXI_OPS/}
+                    Taxi Operations: &AIR_OPS_FMTD.<br>
+                    {endif/}
+                    ```
+            }
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    The Map region is useful for displaying coordinate data and is highly customizable. Supports points, lines and polygon data, as well as a variety of map backgrounds from OpenStreetMap and Oracle World Map to custom backgrounds.
+                </p>
+                <p>
+                    Maps can be connected with additional APEX components such as Faceted Search and Reports, to make filtering and viewing data even easier. 
+                    To see additional Map examples, visit the <a href="https://apex.oracle.com/go/sample_maps" target="_blank" rel="noopener noreferrer">Sample Maps App</a>.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query (
+        name: Sample SQL Query
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            regionStaticId: map_demo
+        }
+    )
+
+)
+

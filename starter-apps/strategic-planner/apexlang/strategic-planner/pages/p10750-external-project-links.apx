@@ -1,0 +1,514 @@
+page 10750 (
+    name: External Project Links
+    alias: EXTERNAL-PROJECT-LINKS
+    title: External &NOMENCLATURE_PROJECT. Links
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region external-nomenclature-project-links (
+        name: External &NOMENCLATURE_PROJECT. Links
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select s.ID,
+                       s.EXTERNAL_SYSTEM_NAME,
+                       s.DESCRIPTION,
+                       decode(s.IS_ACTIVE_YN,'N','No','Y','Yes','No') IS_ACTIVE_YN,
+                       s.LINK_PATTERN,
+                       --
+                       s.ticket_id_regex,
+                       s.evaulation_sequence,
+                       --
+                       (select initiative from sp_initiatives i where i.id = s.required_initiative_id) required_initiative,
+                       --
+                       CREATED,
+                       CREATED_BY,
+                       UPDATED,
+                       UPDATED_BY
+                  from SP_EXTERNAL_TICKETING_SYSTEMS s
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 10760
+                items: {
+                    P10760_ID: \#ID#\
+                }
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 4473282402805458626
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 45
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 55
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column EVAULATION_SEQUENCE (
+            type: plainText
+            heading {
+                heading: Evaulation Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 35
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column EXTERNAL_SYSTEM_NAME (
+            type: plainText
+            heading {
+                heading: External System Name
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IS_ACTIVE_YN (
+            type: plainText
+            heading {
+                heading: "Active "
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column LINK_PATTERN (
+            type: plainText
+            heading {
+                heading: Link Pattern
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column REQUIRED_INITIATIVE (
+            type: plainText
+            heading {
+                heading: Required &NOMENCLATURE_INITIATIVE.
+            }
+            layout {
+                sequence: 115
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column TICKET_ID_REGEX (
+            type: plainText
+            heading {
+                heading: Extract Ticket ID Regex
+            }
+            layout {
+                sequence: 25
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 65
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 75
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: External &NOMENCLATURE_PROJECT. Links
+        }
+
+        savedReport 44733970 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DESCRIPTION (
+                sequence: 2
+            )
+
+            displayColumn EVAULATION_SEQUENCE (
+                sequence: 1
+            )
+
+            displayColumn IS_ACTIVE_YN (
+                sequence: 6
+            )
+
+            displayColumn LINK_PATTERN (
+                sequence: 5
+            )
+
+            displayColumn REQUIRED_INITIATIVE (
+                sequence: 3
+            )
+
+            displayColumn TICKET_ID_REGEX (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 7
+            )
+
+            sort (
+                column: EVAULATION_SEQUENCE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    region sql (
+        name: SQL
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'insert into SP_EXTERNAL_TICKETING_SYSTEMS (
+                            ID, 
+                            EVAULATION_SEQUENCE, 
+                            EXTERNAL_SYSTEM_NAME, 
+                            IS_ACTIVE_YN, 
+                            LINK_PATTERN, 
+                            description, 
+                            TICKET_ID_REGEX) 
+                            values ('||
+                       id||', '||
+                       EVAULATION_SEQUENCE||', '||
+                       ''''||replace(EXTERNAL_SYSTEM_NAME,'''','''''')||''', '||
+                       ''''||replace(nvl(IS_ACTIVE_YN,'Y'),'''','''''')||''', '||
+                       ''''||replace(LINK_PATTERN,'''','''''')||''', '||
+                       ''''||replace(DESCRIPTION,'''','''''')||''', '||
+                       ''''||replace(TICKET_ID_REGEX,'''','''''')||'''); '||chr(10)||chr(10) sql
+                
+                  from SP_EXTERNAL_TICKETING_SYSTEMS
+                  order by EVAULATION_SEQUENCE
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 1500
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column SQL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: SQL
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Link
+        layout {
+            sequence: 10
+            region: @external-nomenclature-project-links
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10760
+                clearCache: 10760
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @external-nomenclature-project-links
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @external-nomenclature-project-links
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

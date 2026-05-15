@@ -1,0 +1,315 @@
+page 92 (
+    name: Products
+    alias: PRODUCTS4
+    title: Products
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region customer-counts-by-product (
+        name: Customer Counts by Product
+        type: chart
+        source {
+            pageItemsToSubmit: [
+                P92_CATEGORY
+                P92_GEO
+            ]
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            show: false
+        }
+        legend {
+            position: top
+            hideAndShowBehavior: none
+        }
+
+        series customer-counts-by-product (
+            name: Customer Counts by Product
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select product_name, id, customer_users , description
+                    from (
+                       select product_name, 
+                              description, 
+                              id, 
+                             (select count(distinct c.id) 
+                              from   eba_cust_product_uses u, 
+                                     eba_cust_customers c
+                              where  u.product_id = p.id and 
+                                   u.customer_id = c.id and 
+                                  (NVL(:P92_CATEGORY,0) = 0 or c.CATEGORY_ID = :P92_CATEGORY) and 
+                                 (NVL(:P92_GEO,0) = 0 or :P92_GEO = c.geography_id)
+                             ) 
+                             customer_users
+                       from eba_cust_products p
+                    ) x
+                    where customer_users > 0
+                    order by 1
+                    ```
+                pageItemsToSubmit: [
+                    P92_CATEGORY
+                    P92_GEO
+                ]
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: CUSTOMER_USERS
+                labelTooltip: DESCRIPTION
+            }
+            appearance {
+                color: RED
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 19
+                    items: {
+                        IR_PRODUCT_NAME: &PRODUCT_NAME.
+                    }
+                    clearCache: [
+                        19
+                        RIR
+                    ]
+                    action: resetPagination
+                }
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    pageItem P92_CATEGORY (
+        type: selectList
+        label {
+            label: Category
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @cat
+            nullDisplayValue: - All -
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: 0
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    pageItem P92_GEO (
+        type: selectList
+        label {
+            label: Geography
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @geography
+            nullDisplayValue: "- All - "
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction geo (
+        name: geo
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P92_GEO
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-counts-by-product
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction prod-counts (
+        name: prod counts
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P92_CATEGORY
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-counts-by-product
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

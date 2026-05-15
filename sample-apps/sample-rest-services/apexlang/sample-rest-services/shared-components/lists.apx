@@ -1,0 +1,742 @@
+list advanced-features (
+    name: Advanced Features
+
+    entry invoke-api-process (
+        label: Invoke API Process
+        icon {
+            imageIconCssClasses: fa-compass
+        }
+        layout {
+            sequence: 19
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to declaratively invoke a REST API using the Invoke API Page Process type.
+        }
+    )
+
+    entry nested-json-and-dynamic-actions (
+        label: Nested JSON and Dynamic Actions
+        icon {
+            imageIconCssClasses: fa-ai-sparkle-generate-text
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 405
+            }
+        }
+        userDefinedAttributes {
+            1: Use Dynamic Actions to visualize nested JSON from a REST Data Source in two regions.
+        }
+    )
+
+    entry rest-and-workflow (
+        label: REST and Workflow
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 51
+        }
+        link {
+            target: {
+                page: 407
+            }
+        }
+        userDefinedAttributes {
+            1: Explains how to orchestrate REST calls using Workflows.
+        }
+    )
+
+    entry rest-data-and-pl-sql (
+        label: REST Data and PL/SQL
+        icon {
+            imageIconCssClasses: fa-window-pointer
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 404
+            }
+        }
+        userDefinedAttributes {
+            1: Illustrates how to invoke REST endpoints with PL/SQL and the APEX_EXEC package.
+        }
+    )
+
+    entry rest-data-source-plugins (
+        label: REST Data Source Plugins
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 41
+        }
+        link {
+            target: {
+                page: 406
+            }
+        }
+        userDefinedAttributes {
+            1: Use a REST Data Source Plug-In to support special functionality of an external REST API.
+        }
+    )
+
+    entry rest-synchronization (
+        label: REST Synchronization
+        icon {
+            imageIconCssClasses: fa-refresh
+        }
+        layout {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+        userDefinedAttributes {
+            1: Leverage REST Synchronization for improved performance and availability.
+        }
+    )
+
+)
+
+list combine-with-relational-data (
+    name: Combine with Relational Data
+
+    entry derived-columns (
+        label: Derived Columns
+        icon {
+            imageIconCssClasses: fa-circle-arrow-in-east
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+        userDefinedAttributes {
+            1: Showcases how to use additional <em>derived columns</em> in the <strong>Data Profile</strong> to enrich results coming from the REST service.
+        }
+    )
+
+    entry post-processing-sql (
+        label: Post Processing SQL
+        icon {
+            imageIconCssClasses: fa-arrow-up
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+        userDefinedAttributes {
+            1: Showcases how to combine external REST data with data from local tables using <strong>Post Processing SQL</strong>.
+        }
+    )
+
+)
+
+list data-display-options (
+    name: Data Display Options
+
+    entry calendar (
+        label: Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 308
+            }
+        }
+        userDefinedAttributes {
+            1: Presents REST data in the APEX Calendar component for date-based visualization.
+        }
+    )
+
+    entry cards-layout (
+        label: Cards Layout
+        icon {
+            imageIconCssClasses: fa-address-card
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 304
+            }
+        }
+        userDefinedAttributes {
+            1: Showcases how to use visual card regions to display REST data in a mobile-friendly format, offering an alternative presentation to traditional reports.
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 306
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to consume and display REST-sourced data using Faceted Search, with filtering by Job and Salary ranges.
+        }
+    )
+
+    entry map (
+        label: Map
+        icon {
+            imageIconCssClasses: fa-map-marker
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 307
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                Displays REST data on a map using the built-in APEX Map component.
+                
+                
+                ```
+        }
+    )
+
+    entry oracle-jet-charts (
+        label: Oracle JET Charts
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 305
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                Demonstrates how to build interactive, dynamic visualizations using Oracle JET.
+                
+                
+                ```
+        }
+    )
+
+    entry report-with-pagination (
+        label: Report with Pagination
+        icon {
+            imageIconCssClasses: fa-table-clock
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+        userDefinedAttributes {
+            1: Highlights how to dynamically fetch and display subsets of data from a REST service using offset/limit parameters, making it suitable for large datasets.
+        }
+    )
+
+    entry report-with-query (
+        label: Report with Query
+        icon {
+            imageIconCssClasses: fa-database-search
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 303
+            }
+        }
+        userDefinedAttributes {
+            1: Illustrates how to create a report that handles larger REST service responses and offers built-in query capabilities.
+        }
+    )
+
+    entry simple-report (
+        label: Simple Report
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to consume a REST endpoint with automatic JSON conversion to present data without advanced features.
+        }
+    )
+
+)
+
+list home (
+    name: Home
+
+    entry advanced-features (
+        label: Advanced Features
+        icon {
+            imageIconCssClasses: fa-ellipsis-h-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+        userDefinedAttributes {
+            1: This section highlights advanced functionalities such as dynamic actions for triggering REST calls and robust error handling ...
+        }
+    )
+
+    entry combine-with-relational-data (
+        label:
+            ```html
+            Combine with Relational Data
+            
+            ```
+        icon {
+            imageIconCssClasses: fa-database-arrow-up
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+        userDefinedAttributes {
+            1: Showcase how to merge and enriche external REST data with local Oracle Tables using ...
+        }
+    )
+
+    entry data-display-options (
+        label: Data Display Options
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+        userDefinedAttributes {
+            1: This section showcases various techniques for presenting REST data in Oracle APEX, including reports ...
+        }
+    )
+
+    entry rest-data-sources (
+        label: REST Data Sources
+        icon {
+            imageIconCssClasses: fa-calendar-search
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            1: This section explores various methods for integrating RESTful services within Oracle APEX. It covers basic HTTP requests and...
+        }
+    )
+
+)
+
+list interactivity (
+    name: Interactivity
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 600
+            }
+        }
+        config {
+            buildOption: @feature-about-page
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 60
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 70
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-user-wrench
+        }
+        layout {
+            sequence: 10000
+            subentriesList: @user-interface
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry advanced-features (
+        label: Advanced Features
+        icon {
+            imageIconCssClasses: fa-ellipsis-h-o
+        }
+        layout {
+            sequence: 14
+            subentriesList: @advanced-features
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry combine-with-relational-data (
+        label:
+            ```html
+            Combine with Relational Data
+            
+            ```
+        icon {
+            imageIconCssClasses: fa-database-arrow-up
+        }
+        layout {
+            sequence: 11
+            subentriesList: @combine-with-relational-data
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry data-display-options (
+        label: Data Display Options
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 13
+            subentriesList: @data-display-options
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 9
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry rest-data-source (
+        label: REST Data Source
+        icon {
+            imageIconCssClasses: fa-window-search
+        }
+        layout {
+            sequence: 10
+            subentriesList: @rest-data-sources
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+)
+
+list rest-data-sources (
+    name: REST Data Sources
+
+    entry odata (
+        label: OData
+        icon {
+            imageIconCssClasses: fa-database-check
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+        userDefinedAttributes {
+            1: Seamlessly integrate and consume external OData REST services.
+        }
+    )
+
+    entry ords (
+        label: ORDS
+        icon {
+            imageIconCssClasses: fa-database-application
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+        userDefinedAttributes {
+            1: Enable insert, update and delete on ORDS compliant endpoints.
+        }
+    )
+
+    entry simple-http (
+        label: Simple HTTP
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+        userDefinedAttributes {
+            1: One‑shot HTTP endpoint delivering your complete dataset instantly.
+        }
+    )
+
+)
+
+list user-interface (
+    name: User Interface
+    config {
+        buildOption: @feature-theme-style-selection
+    }
+
+    entry network-setup (
+        label: Network Setup
+        icon {
+            imageIconCssClasses: fa-window-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 504
+            }
+        }
+        userDefinedAttributes {
+            1: This page helps you to setup connection with ORDS and ODATA.
+        }
+    )
+
+    entry reset-data (
+        label: Reset Data
+        icon {
+            imageIconCssClasses: fa-refresh
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 502
+            }
+        }
+        userDefinedAttributes {
+            1: This application ships with sample data. You can reset the sample data using this administrative page.
+        }
+    )
+
+    entry theme-style-selection (
+        label: Theme Style Selection
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 501
+                clearCache: 10010
+            }
+        }
+        userDefinedAttributes {
+            1: Set the default application look and feel.
+        }
+        config {
+            buildOption: @feature-theme-style-selection
+        }
+    )
+
+    entry web-credentials (
+        label: Web Credentials
+        icon {
+            imageIconCssClasses: fa-lock-new
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 503
+            }
+        }
+        userDefinedAttributes {
+            1: The REST Data Source Plugins & Cards Layout pages rely on TMDb API. Use this page to provide your own TMDb API key.
+        }
+    )
+
+)
+

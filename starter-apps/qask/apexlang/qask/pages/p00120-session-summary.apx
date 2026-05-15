@@ -1,0 +1,1286 @@
+page 120 (
+    name: Session Summary
+    alias: SESSION-SUMMARY
+    title: Session Summary
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .t-ContentRow-misc {
+                min-width: 150px;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @host
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region actions-menu (
+        name: Actions Menu
+        type: list
+        source {
+            list: @p120-actions
+        }
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: page_actions
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_sessions
+                 where id = :P120_SESSION_ID
+                   and session_status in ('STAGED','CLOSED')
+                   and owner = lower(:APP_USER)
+                ```
+        }
+        componentAppearance {
+            listTemplate: @/menu-popup
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region p120-session-name (
+        name: &P120_SESSION_NAME.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       OWNER,
+                       SESSION_CODE,
+                       initcap(session_status) status,
+                       closed_on DATE_CLOSED,
+                       ROW_VERSION,
+                       CREATED_ON CREATED,
+                       started_on,
+                       CREATED_BY,
+                       UPDATED_ON UPDATED,
+                       UPDATED_BY,
+                       PURPOSE,
+                       case when RESP_NAME_REQUIRED_YN = 'Y' then 'Yes' else 'No' end resp_name_required,
+                       case when RESP_EMAIL_REQUIRED_YN = 'Y' then 'Yes' else 'No' end resp_email_required,
+                       SESSION_NAME,
+                       case when length_minutes is not null
+                            then case when LENGTH_MINUTES < 60
+                                 then round(LENGTH_MINUTES)||' minutes'
+                                 else round(LENGTH_MINUTES/60,1)||' hours' end 
+                            end length,
+                       (select count(*) from qask_session_questions 
+                         where session_id = s.id) question_count,
+                       (select count(*) from qask_responses 
+                         where session_id = s.id) response_count
+                  from QASK_SESSIONS s
+                 where id = :P120_SESSION_ID
+                   and owner = lower(:APP_USER)
+                ```
+            pageItemsToSubmit: P120_SESSION_ID
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column CREATED (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: fmMonth fmDD, YYYY
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_sessions
+                     where id = :P120_SESSION_ID
+                       and started_on is null
+                    ```
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 170
+            }
+        )
+
+        column DATE_CLOSED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column LENGTH (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Length
+            }
+            layout {
+                sequence: 140
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from QASK_SESSIONS s
+                     where id = :P120_SESSION_ID
+                       and owner = lower(:APP_USER)
+                       and length_minutes is not null
+                    ```
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column PURPOSE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Purpose
+            }
+            layout {
+                sequence: 60
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_sessions
+                     where id = :P120_SESSION_ID
+                       and purpose is not null
+                    ```
+            }
+        )
+
+        column QUESTION_COUNT (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Questions
+                alignment: end
+            }
+            layout {
+                sequence: 200
+                columnAlignment: end
+            }
+        )
+
+        column RESPONSE_COUNT (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            heading {
+                heading: Participants
+                alignment: end
+            }
+            layout {
+                sequence: 210
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_responses
+                     where session_id = :P120_SESSION_ID
+                    ```
+            }
+        )
+
+        column RESP_EMAIL_REQUIRED (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Participant Email Required
+            }
+            layout {
+                sequence: 230
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_sessions
+                     where id = :P120_SESSION_ID
+                       and resp_email_required_yn  = 'Y'
+                    ```
+            }
+        )
+
+        column RESP_NAME_REQUIRED (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Participant Name Required
+            }
+            layout {
+                sequence: 220
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_sessions
+                     where id = :P120_SESSION_ID
+                       and resp_name_required_yn  = 'Y'
+                    ```
+            }
+        )
+
+        column ROW_VERSION (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column SESSION_CODE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 30
+            }
+        )
+
+        column SESSION_NAME (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column STARTED_ON (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Started
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                formatMask: fmMonth DD, YYYY
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from qask_sessions
+                     where id = :P120_SESSION_ID
+                       and started_on is not null
+                    ```
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 100
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 180
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 190
+            }
+        )
+
+    )
+
+    region participants (
+        name: Participants
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                  from qask_responses
+                 where session_id = :P120_SESSION_ID
+                ```
+        }
+    )
+
+    region participants-report (
+        name: Participants Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       APEX_SESSION,
+                       NAME,
+                       EMAIL,
+                       USER_AGENT,
+                       X_FORWARDED_FOR,
+                       REMOTE_ADDR,
+                       ROW_VERSION,
+                       CREATED_ON CREATED,
+                       CREATED_BY,
+                       UPDATED_ON UPDATED,
+                       UPDATED_BY,
+                       SESSION_ID,
+                       (select count(unique question_id) from qask_response_answers
+                         where response_id = r.id) questions_answered
+                  from QASK_RESPONSES r
+                 where session_id = :P120_SESSION_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @participants
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        componentAdvanced {
+            maxRowsPerPageInSelector: 15
+        }
+        advanced {
+            savedReportMappingIdentifier: 63879911624659505342
+        }
+
+        column APEX_SESSION (
+            type: plainText
+            heading {
+                heading: Session ID
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CREATED_BY (
+            type: hidden
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column EMAIL (
+            type: plainText
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    qask_util.session_resp_email_req_yn (
+                        p_session_id => :P120_SESSION_ID ) = 'Y'
+                    ```
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column NAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    qask_util.session_resp_name_req_yn (
+                        p_session_id => :P120_SESSION_ID ) = 'Y'
+                    ```
+            }
+        )
+
+        column QUESTIONS_ANSWERED (
+            type: plainText
+            heading {
+                heading: Questions Answered
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column REMOTE_ADDR (
+            type: plainText
+            heading {
+                heading: Remote Addr
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column ROW_VERSION (
+            type: hidden
+            heading {
+                heading: Row Version
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column SESSION_ID (
+            type: hidden
+            heading {
+                heading: Session Id
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column UPDATED (
+            type: hidden
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column UPDATED_BY (
+            type: hidden
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column USER_AGENT (
+            type: plainText
+            heading {
+                heading: User Agent
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column X_FORWARDED_FOR (
+            type: plainText
+            heading {
+                heading: X Forwarded For
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Participants Report
+        }
+
+        savedReport 707643117 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn APEX_SESSION (
+                sequence: 1
+            )
+
+            displayColumn EMAIL (
+                sequence: 4
+            )
+
+            displayColumn NAME (
+                sequence: 3
+            )
+
+            displayColumn QUESTIONS_ANSWERED (
+                sequence: 2
+            )
+
+            displayColumn REMOTE_ADDR (
+                sequence: 7
+            )
+
+            displayColumn USER_AGENT (
+                sequence: 5
+            )
+
+            displayColumn X_FORWARDED_FOR (
+                sequence: 6
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region questions (
+        name: Questions
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       SESSION_ID,
+                       QUESTION,
+                       QUESTION_NUMBER,
+                       ANSWER_TYPE,
+                       case when ask_for_comments_yn = 'Y' then 'asked for comments' end ask_for_comments,
+                       question_status,
+                       dbms_lob.substr(QUESTION_EXPLANATION,255) ||
+                           case when dbms_lob.getlength(question_explanation) > 255 then '...' end question_explanation,
+                       case when length is not null then 'Open '||length end length,
+                       CREATED,
+                       case when QUESTION_STATUS in ('OPEN','CLOSED') 
+                            then responses||case when responses = 1 then ' response' else ' responses' end 
+                            end responses,
+                       case when length(answers) > 255 then substr(answers,1,255)||'...' else answers end answers,
+                       question_url
+                from (
+                select ID,
+                       SESSION_ID,
+                       QUESTION,
+                       QUESTION_NUMBER,
+                       (select display_value from APEX_APPLICATION_LOV_ENTRIES
+                         where LIST_OF_VALUES_NAME = 'ANSWER TYPE'
+                           and application_id = :APP_ID
+                           and return_value = ANSWER_TYPE)||
+                           case when answer_type != 'FREEFORM' then ':' end answer_type,
+                       ask_for_comments_yn,
+                       QUESTION_STATUS,
+                       QUESTION_EXPLANATION,
+                       case when length_seconds is not null
+                            then case when length_seconds < 60
+                                 then round(length_seconds)||' seconds'
+                                 when length_seconds/60 > 60 
+                                 then round(LENGTH_SECONDS/(60*60),1)||' hours'
+                                else round(LENGTH_SECONDS/60,1)||' minutes' end 
+                            end length,
+                       CREATED_ON CREATED,
+                       (select count(unique response_id)
+                          from qask_response_answers
+                         where question_id = q.id) responses,
+                       case when answer_set_id is not null then (select answer_set_name from qask_answer_sets a
+                                                                  where q.answer_set_id =  a.id)  
+                            when answer_type != 'FREEFORM' then (select listagg(answer_text,', ') within group (order by answer_number)
+                                                                   from qask_sess_question_answers 
+                                                                  where question_id = q.id)
+                            end answers,
+                       case when question_status = 'OPEN' 
+                            then apex_page.get_url(
+                                     p_page => 113,
+                                     p_items => 'P113_SESSION_ID,P113_QUESTION_ID',
+                                     p_values => session_id||','||id,
+                                     p_clear_cache => 113)
+                            else apex_page.get_url(
+                                     p_page => 121,
+                                     p_items => 'P121_SESSION_ID,P121_QUESTION_ID',
+                                     p_values => session_id||','||id,
+                                     p_clear_cache => 121)
+                            end question_url
+                  from QASK_SESSION_QUESTIONS q
+                 where session_id = :P120_SESSION_ID
+                )
+                order by question_number
+                ```
+            pageItemsToSubmit: P120_SESSION_ID
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &QUESTION_NUMBER.. &QUESTION.
+            description: {if QUESTION_EXPLANATION/}&QUESTION_EXPLANATION.<br/>{endif/} &ANSWER_TYPE. &ANSWERS. {if ASK_FOR_COMMENTS/}<br/>&ASK_FOR_COMMENTS.{endif/}
+            miscellaneous: &LENGTH.<br/>&RESPONSES.
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        messages {
+            whenNoDataFound: No questions
+        }
+
+        column ANSWERS (
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: ANSWERS
+                dataType: varchar2
+            }
+        )
+
+        column ANSWER_TYPE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: ANSWER_TYPE
+                dataType: varchar2
+            }
+        )
+
+        column ASK_FOR_COMMENTS (
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: ASK_FOR_COMMENTS
+                dataType: varchar2
+            }
+        )
+
+        column CREATED (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column LENGTH (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: LENGTH
+                dataType: varchar2
+            }
+        )
+
+        column QUESTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: QUESTION
+                dataType: varchar2
+            }
+        )
+
+        column QUESTION_EXPLANATION (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: QUESTION_EXPLANATION
+                dataType: varchar2
+            }
+        )
+
+        column QUESTION_NUMBER (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: QUESTION_NUMBER
+                dataType: number
+            }
+        )
+
+        column QUESTION_STATUS (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: QUESTION_STATUS
+                dataType: varchar2
+            }
+        )
+
+        column QUESTION_URL (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: QUESTION_URL
+                dataType: varchar2
+            }
+        )
+
+        column RESPONSES (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: RESPONSES
+                dataType: varchar2
+            }
+        )
+
+        column SESSION_ID (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: SESSION_ID
+                dataType: number
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: &QUESTION_URL.
+            }
+        )
+
+    )
+
+    pageItem P120_SESSION_CODE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @p120-session-name
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P120_SESSION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @p120-session-name
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P120_SESSION_NAME (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @p120-session-name
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button actions-menu (
+        buttonName: ACTIONS_MENU
+        label: Actions Menu
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            customAttributes: data-menu="page_actions_menu"
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_sessions
+                 where id = :P120_SESSION_ID
+                   and session_status in ('STAGED','CLOSED')
+                   and owner = lower(:APP_USER)
+                ```
+        }
+    )
+
+    button ask-question (
+        buttonName: Ask_Question
+        label: Ask Question
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 112
+                items: {
+                    P112_SESSION_ID: &P120_SESSION_ID.
+                }
+                clearCache: 112
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_sessions
+                 where id = :P120_SESSION_ID
+                   and session_status = 'OPEN'
+                   and owner = lower(:APP_USER)
+                ```
+        }
+    )
+
+    button close-session (
+        buttonName: CLOSE_SESSION
+        label: Close Session
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_sessions
+                 where id = :P120_SESSION_ID
+                   and session_status = 'OPEN'
+                   and owner = lower(:APP_USER)
+                ```
+        }
+    )
+
+    button start-session (
+        buttonName: Start_Session
+        label: Start Session
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 114
+                items: {
+                    P114_SESSION_ID: &P120_SESSION_ID.
+                }
+                clearCache: 114
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_sessions s
+                 where id = :P120_SESSION_ID
+                   and session_status = 'STAGED'
+                   and owner = lower(:APP_USER)
+                   and exists (select 1 from qask_session_questions
+                                where session_id = s.id)
+                ```
+        }
+    )
+
+    button up (
+        buttonName: Up
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 100
+                clearCache: 120
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p120-session-code (
+        itemName: P120_SESSION_CODE
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return qask_util.get_session_code (
+                    p_session_id => :P120_SESSION_ID );
+                ```
+        }
+    )
+
+    computation p120-session-name (
+        itemName: P120_SESSION_NAME
+        execution {
+            sequence: 20
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return qask_util.get_session_name (
+                    p_session_id => :P120_SESSION_ID );
+                ```
+        }
+    )
+
+    process close-session (
+        name: Close Session
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.close_session (
+                    p_session_id => :P120_SESSION_ID );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Session Closed.
+        }
+        advanced {
+            executionMappingIdentifier: 59169439890402129538
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-session
+        }
+    )
+
+)
+

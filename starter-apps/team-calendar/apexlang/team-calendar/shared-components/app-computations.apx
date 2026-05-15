@@ -1,0 +1,133 @@
+appComputation application-title (
+    itemName: APPLICATION_TITLE
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_app_name varchar2(255);
+            begin
+                select nvl(preference_value,:APP_NAME)
+                  into l_app_name
+                  from eba_ca_preferences
+                 where preference_name = 'APPLICATION_TITLE';
+                return l_app_name;
+            exception
+                when others then
+                    return :APP_NAME;
+            end;
+            ```
+    }
+)
+
+appComputation cals-restricted-to (
+    itemName: CALS_RESTRICTED_TO
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: sqlQuerySingleValue
+        sqlQuery:
+            ```sql
+            select nvl(restricted_to, decode(access_level_id, 3, 'All', null)) 
+            from eba_ca_users
+            where username = :APP_USER
+            ```
+    }
+    config {
+        buildOption: @include-multiple-calendars
+    }
+)
+
+appComputation external-internal-bo (
+    itemName: EXTERNAL_INTERNAL_BO
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Include
+    }
+    config {
+        buildOption: @include-external-internal-event-types
+    }
+)
+
+appComputation external-internal-bo-2 (
+    itemName: EXTERNAL_INTERNAL_BO
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Exclude
+    }
+    config {
+        buildOption: !@include-external-internal-event-types
+    }
+)
+
+appComputation external-internal-bo-name (
+    itemName: EXTERNAL_INTERNAL_BO_NAME
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Include External / Internal Event Types
+    }
+    config {
+        buildOption: @include-external-internal-event-types
+    }
+)
+
+appComputation host-url (
+    itemName: HOST_URL
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: wwv_flow_utilities.host_url('SCRIPT');
+    }
+)
+
+appComputation multiple-cal-bo (
+    itemName: MULTIPLE_CAL_BO
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Include
+    }
+    config {
+        buildOption: @include-multiple-calendars
+    }
+)
+
+appComputation multiple-cal-bo-2 (
+    itemName: MULTIPLE_CAL_BO
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Exclude
+    }
+    config {
+        buildOption: !@include-multiple-calendars
+    }
+)
+
+appComputation multiple-cal-bo-name (
+    itemName: MULTIPLE_CAL_BO_NAME
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Include Multiple Calendars
+    }
+    config {
+        buildOption: @include-multiple-calendars
+    }
+)
+

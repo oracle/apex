@@ -1,0 +1,125 @@
+plugin authorizationAdministration (
+    name: Authorization Administration
+    staticId: COM.ORACLE.AUTH_ADMINISTRATION
+    type: region
+    source {
+        plsqlCode:
+            ```plsql
+            function auth_admin (   p_region              in apex_plugin.t_region,
+                                    p_plugin              in apex_plugin.t_plugin,
+                                    p_is_printer_friendly in boolean ) return apex_plugin.t_region_render_result is
+                l_retval         apex_plugin.t_region_render_result;
+                --
+                c_page_report_page constant number        := p_region.attribute_01;
+                c_public_pages_msg constant varchar2(255) := apex_escape.html(p_region.attribute_02);
+                c_auth_pages_msg   constant varchar2(255) := apex_escape.html(p_region.attribute_03);
+                c_custom_auth_msg  constant varchar2(255) := apex_escape.html(p_region.attribute_04);
+            
+                l_app_session     varchar2(255) := :APP_SESSION;
+                l_app_id          number := :APP_ID;
+                l_cnt             number := 0;
+                l_auth_scheme     number := 0;
+                l_auth_required   number := 0;
+                l_auth_scheme_name     varchar2(255);
+            begin
+                for c1 in ( select count(*) c,
+                                sum(decode(authorization_scheme,null,0,1)) auth_scheme,
+                                sum(decode(page_requires_authentication,'Yes',1,0)) auth_required
+                            from apex_application_pages
+                            where application_id =  l_app_id
+                                and page_function != 'Global Page' ) loop
+                    l_cnt := c1.c;
+                    l_auth_scheme := c1.auth_scheme;
+                    l_auth_required := c1.auth_required;
+                end loop;
+            
+                for c1 in ( select authentication_scheme 
+                            from apex_applications 
+                            where application_id = l_app_id ) loop
+                    l_auth_scheme_name := c1.authentication_scheme;
+                end loop;
+            
+                sys.htp.p('<div class="container">');
+                sys.htp.p('<div class="row">');
+                sys.htp.p('<div class="col col-12 ">');
+                sys.htp.p('<div class="t-ConfigPanel">');
+                sys.htp.p('<div class="t-ConfigPanel-body">');
+                sys.htp.p('<div class="t-ConfigPanel-main">');
+                sys.htp.p('<span class="t-ConfigPanel-icon a-Icon auth-scheme"></span>');
+                sys.htp.p('<span class="t-ConfigPanel-setting">Authentication Scheme</span>');
+                sys.htp.p('<span class="t-ConfigPanel-status">'||apex_escape.html(l_auth_scheme_name)||'</span>');
+                sys.htp.p('</div>');
+                sys.htp.p('<div class="t-ConfigPanel-list">');
+                sys.htp.p('<ul class="t-ConfigPanel-attrs">');
+                sys.htp.p('<li class="t-ConfigPanel-attr">');
+                sys.htp.p('<a href="'
+                    ||case when c_page_report_page is not null then
+                            apex_util.prepare_url('f?p='||l_app_id||':'||c_page_report_page||':'||l_app_session
+                                                 ||':::'||c_page_report_page||',RIR:IREQ_REQUIRES_AUTH:No')
+                        else
+                            '#'
+                    end
+                    ||'" class="t-ConfigPanel-attrLink">');
+                sys.htp.p('<span class="t-ConfigPanel-attrLabel">'||c_public_pages_msg||'</span>');
+                sys.htp.p('<span class="t-ConfigPanel-attrValue">'||to_char((l_cnt - l_auth_required),'999G999G990')
+                    ||'</span>');
+                sys.htp.p('</a>');
+                sys.htp.p('</li>');
+                sys.htp.p('<li class="t-ConfigPanel-attr">');
+                sys.htp.p('<a href="'
+                    ||case when c_page_report_page is not null then
+                            apex_util.prepare_url('f?p='||l_app_id||':'||c_page_report_page||':'||l_app_session
+                                                 ||':::'||c_page_report_page||',RIR:IREQ_REQUIRES_AUTH:Yes')
+                        else
+                            '#'
+                    end
+                    ||'" class="t-ConfigPanel-attrLink">');
+                sys.htp.p('<span class="t-ConfigPanel-attrLabel">'||c_auth_pages_msg||'</span>');
+                sys.htp.p('<span class="t-ConfigPanel-attrValue">'||to_char(l_auth_required,'999G999G990')||
+                  '</span>');
+                sys.htp.p('</a>');
+                sys.htp.p('</li>');
+                sys.htp.p('<li class="t-ConfigPanel-attr">');
+                sys.htp.p('<a href="'
+                    ||case when c_page_report_page is not null then
+                            apex_util.prepare_url('f?p='||l_app_id||':'||c_page_report_page||':'||l_app_session
+                                                 ||':::'||c_page_report_page||',RIR:IRNEQ_AUTHORIZATION_SCHEME:No Scheme Applied')
+                        else
+                            '#'
+                    end
+                    ||'" class="t-ConfigPanel-attrLink">');
+                sys.htp.p('<span class="t-ConfigPanel-attrLabel">'||c_custom_auth_msg||'</span>');
+                sys.htp.p('<span class="t-ConfigPanel-attrValue">'||to_char(l_auth_scheme,'999G999G990')||
+                      '</span>');
+                sys.htp.p('</a>');
+                sys.htp.p('</li>');
+                sys.htp.p('</ul>');
+                sys.htp.p('</div>');
+                sys.htp.p('</div>');
+                sys.htp.p('</div>');
+                sys.htp.p('</div>');
+                sys.htp.p('</div>');
+                sys.htp.p('</div>');
+                --
+                return l_retval;    
+            end auth_admin;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: auth_admin
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    information {
+        version: 5.0.1
+        aboutUrl: http://apex.oracle.com/plugins
+        helpText:
+            ```
+            <p>Authorization Administration displays the current authentication scheme together with a count of public pages, pages requiring authentication, and pages with an authorization defined.</p>
+            <p>This plug-in is suitable for adding to the main Administration page to provide an overview of high level security settings.</p>
+            ```
+    }
+)
+

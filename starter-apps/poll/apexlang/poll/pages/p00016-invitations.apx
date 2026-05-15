@@ -1,0 +1,598 @@
+page 16 (
+    name: Invitations
+    alias: INVITATIONS
+    title: Invitations
+    pageGroup: @polls
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region invitations (
+        name: Invitations
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.id poll_id,
+                       p.poll_name,
+                       ci.id comm_invite_id,
+                       ci.community_name community_name,
+                       lower(i.created_by) invitation_sent_by,
+                       i.created  invitation_sent,
+                       i.respondent_id, 
+                       i.respondent_email,
+                       decode(i.email_sent,'YES', '<a href="'
+                                ||apex_util.prepare_url('f?p='||:APP_ID||':13:'||:APP_SESSION||':::13:P13_POLL_ID,P13_INVITE_ID,P13_EMAIL_ID:'||p.id||','||i.id||','||i.email_id)
+                                ||'" title="View Details">Email</a>',
+                            'REMINDER_SENT', '<a href="'
+                                ||apex_util.prepare_url('f?p='||:APP_ID||':13:'||:APP_SESSION||':::13:P13_POLL_ID,P13_INVITE_ID,P13_EMAIL_ID:'||p.id||','||i.id||','||i.email_id)
+                                ||'" title="View Details">Reminder</a>',
+                            'OPTED_OUT','Opted Out',
+                            'PREVIOUSLY_SENT','Previously Sent',
+                            'MANUAL_INVITE', '<a href="'
+                                ||apex_util.prepare_url('f?p='||:APP_ID||':13:'||:APP_SESSION||':::13:P13_POLL_ID,P13_INVITE_ID,P13_EMAIL_ID:'||p.id||','||i.id||','||i.email_id)
+                                ||'" title="View Details">Manual Invite</a>',
+                              i.email_sent) email_sent_yn,
+                       case when p.anonymous_yn = 'Y' then 'na' else
+                          nvl((select 'Y'
+                                 from eba_qpoll_results r
+                                where r.poll_id = p.id
+                                  and r.IS_VALID_YN = 'Y'
+                                  and r.respondent_id = i.respondent_id ),'N') end has_responded,
+                       case when p.anonymous_yn = 'Y' then null else
+                          (select max(created)
+                             from eba_qpoll_results r
+                            where r.poll_id = p.id
+                              and r.IS_VALID_YN = 'Y'
+                              and r.respondent_id = i.respondent_id) end response_date,
+                       :APP_PATH||apex_util.prepare_url(p_url => 'f?p='||:APP_ID||':'||decode(p.authentication_req_yn,'Y','500','50')||':0::::LPOLL_ID,PID:' ||p.id||','||i.respondent_id,
+                                                             p_checksum_type => '1') poll_url,
+                       i.id invite_id
+                  from eba_qpoll_polls p,
+                       eba_qpoll_comm_invites ci,
+                       eba_qpoll_invites i
+                 where p.id = ci.poll_id
+                   and ci.id = i.comm_invite_id
+                  
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            pivot: false
+            flashback: false
+            subscription: false
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        heading {
+            fixedTo: none
+        }
+        advanced {
+            savedReportMappingIdentifier: 988450912708214401
+        }
+
+        column COMMUNITY_NAME (
+            type: plainText
+            heading {
+                heading: Community
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column COMM_INVITE_ID (
+            type: hidden
+            heading {
+                heading: Selected Community
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column EMAIL_SENT_YN (
+            type: plainText
+            heading {
+                heading: Invitation Method
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            columnFilter {
+                type: namedLovWordContains
+                namedLov: @email-sent
+            }
+            advanced {
+                endUserAlias: I
+            }
+            enableUsersTo {
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column HAS_RESPONDED (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Responded
+            }
+            lov {
+                lov: @yes-no-y-n
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column INVITATION_SENT (
+            type: plainText
+            heading {
+                heading: Invited
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: F
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column INVITATION_SENT_BY (
+            type: plainText
+            heading {
+                heading: Invited By
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column INVITE_ID (
+            type: hidden
+            heading {
+                heading: Selected Individual
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column POLL_ID (
+            type: hidden
+            heading {
+                heading: Selected Poll
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column POLL_NAME (
+            type: plainText
+            heading {
+                heading: Poll Name
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column POLL_URL (
+            type: plainText
+            heading {
+                heading: Poll URL
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column RESPONDENT_EMAIL (
+            type: plainText
+            heading {
+                heading: Invitee
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column RESPONDENT_ID (
+            type: hidden
+            heading {
+                heading: Selected Invitee
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column RESPONSE_DATE (
+            type: plainText
+            heading {
+                heading: Response Date
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: K
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        savedReport 9884518 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn COMMUNITY_NAME (
+                sequence: 2
+            )
+
+            displayColumn COMM_INVITE_ID (
+                sequence: 9
+            )
+
+            displayColumn EMAIL_SENT_YN (
+                sequence: 4
+            )
+
+            displayColumn HAS_RESPONDED (
+                sequence: 5
+            )
+
+            displayColumn INVITATION_SENT (
+                sequence: 8
+            )
+
+            displayColumn INVITATION_SENT_BY (
+                sequence: 7
+            )
+
+            displayColumn INVITE_ID (
+                sequence: 10
+            )
+
+            displayColumn POLL_NAME (
+                sequence: 1
+            )
+
+            displayColumn RESPONDENT_EMAIL (
+                sequence: 3
+            )
+
+            displayColumn RESPONSE_DATE (
+                sequence: 6
+            )
+
+            sort (
+                column: POLL_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: COMMUNITY_NAME
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: RESPONDENT_EMAIL
+                sort {
+                    sequence: 3
+                }
+            )
+
+            sort (
+                column: INVITATION_SENT
+                sort {
+                    direction: desc
+                    sequence: 4
+                }
+            )
+
+            controlBreak (
+                column: POLL_NAME
+                layout {
+                    sequence: 1
+                }
+            )
+
+            controlBreak (
+                column: COMMUNITY_NAME
+                layout {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button back (
+        buttonName: BACK
+        label: Back
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-angle-double-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @invitations
+            slot: rightOfInteractiveReportSearchBar
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process if-request-is-comm (
+        name: if Request is COMM
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                APEX_UTIL.IR_FILTER (   
+                   p_page_id        => 16,
+                   p_report_column  => 'COMMUNITY_NAME',
+                   p_operator_abbr  => 'NN',
+                   p_filter_value   => null );
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 14033612482892748068
+        }
+        serverSideCondition {
+            type: request=Value
+            value: COMM
+        }
+    )
+
+    process if-request-is-ind (
+        name: if Request is IND
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                APEX_UTIL.IR_FILTER (   
+                   p_page_id        => 16,
+                   p_report_column  => 'COMMUNITY_NAME',
+                   p_operator_abbr  => 'N',
+                   p_filter_value   => null );
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 14033612686356749091
+        }
+        serverSideCondition {
+            type: request=Value
+            value: IND
+        }
+    )
+
+)
+

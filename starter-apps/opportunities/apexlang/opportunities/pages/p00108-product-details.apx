@@ -1,0 +1,954 @@
+page 108 (
+    name: Product Details
+    alias: PRODUCT-DETAILS
+    title: Product Details
+    pageGroup: @opportunities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region product-details (
+        name: Product Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P108_CLOSE_DATE (
+        type: datePicker
+        label {
+            label: Close Date
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @product-details
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CLOSE_DATE
+            used: always
+        }
+        help {
+            helpText: Enter the contract end date (in DD-MON-YYYY format) or use the date picker controls to navigate to and select the contract's end date.
+        }
+    )
+
+    pageItem P108_CONTRACT_TERM (
+        type: selectList
+        label {
+            label: Contract Term
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @terms-num-months-return-value
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 70
+            region: @product-details
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TERM
+            used: always
+        }
+        help {
+            helpText: Select the contract term that matches the term of this opportunity's subscription.
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+    )
+
+    pageItem P108_DEAL_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @product-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P108_DEAL_PROD_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @product-details
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 74
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_PROD_DESCRIPTION
+            used: always
+        }
+        help {
+            helpText: Enter any other additional information you may have about this product contract
+        }
+    )
+
+    pageItem P108_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @product-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P108_PRODUCT_ID (
+        type: selectList
+        label {
+            label: Product
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @products
+            displayExtraValues: false
+            nullDisplayValue: - Select Product -
+        }
+        layout {
+            sequence: 50
+            region: @product-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 8
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PRODUCT_ID
+            used: always
+        }
+    )
+
+    pageItem P108_PRODUCT_SOLD_AS (
+        type: displayOnly
+        label {
+            label: Sold As
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 60
+            region: @product-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+    )
+
+    pageItem P108_QUOTE_PRICE (
+        type: textField
+        label {
+            label: Annual Recurring Revenue
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @product-details
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            formatMask: FML999G999G999G999G999
+            width: 30
+            valuePlaceholder: $0
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: QUOTE_PRICE
+            used: always
+        }
+        help {
+            helpText: Enter the quoted Annual Recurring Revenue price for the product. If this is a subscription product and it costs $100 per month, the value entered in this field would be $1,200.
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+    )
+
+    pageItem P108_TCV (
+        type: textField
+        label {
+            label: Total Contract Value
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @product-details
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: FML999G999G999G999G999
+            width: 30
+        }
+        validation {
+            maxLength: 30
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+    )
+
+    pageItem P108_TCV_RETURN (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @product-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TCV
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        config {
+            buildOption: @opportunity-amount-set-at-product-level
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Product
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P108_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P108_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P108_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-sold-as (
+        name: Refresh Sold As
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P108_PRODUCT_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P108_PRODUCT_ID
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P108_CONTRACT_TERM
+                    P108_TCV
+                    P108_PRODUCT_SOLD_AS
+                    P108_QUOTE_PRICE
+                ]
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: items
+                items: P108_PRODUCT_SOLD_AS
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select case
+                               when sold_as = 'SUBSCRIPTION' then
+                                   'Cloud ' || initcap(sold_as)
+                               when sold_as = 'PURCHASE' then
+                                   'On-Premise ' || initcap(sold_as)
+                           end sold_as
+                      from eba_sales_products
+                     where id = :P108_PRODUCT_ID;
+                    ```
+                itemsToSubmit: P108_PRODUCT_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P108_PRODUCT_SOLD_AS
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P108_PRODUCT_SOLD_AS
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+    )
+
+    dynamicAction set-tcv (
+        name: Set TCV
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: [
+                P108_CONTRACT_TERM
+                P108_QUOTE_PRICE
+            ]
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P108_QUOTE_PRICE
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: plsqlFunctionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    if :P108_CONTRACT_TERM < 12 then
+                        :P108_TCV := replace(replace(:P108_QUOTE_PRICE,',',null),'$',null) / ((:P108_CONTRACT_TERM * 12) / :P108_CONTRACT_TERM);
+                    elsif :P108_CONTRACT_TERM = 12 then
+                        :P108_TCV := replace(replace(:P108_QUOTE_PRICE,',',null),'$',null);
+                    elsif :P108_CONTRACT_TERM > 12 then
+                        :P108_TCV := replace(replace(:P108_QUOTE_PRICE,',',null),'$',null) * (:P108_CONTRACT_TERM / 12);
+                    end if;
+                    
+                    :P108_TCV := to_char(:P108_TCV,'FML999G999G999G999G999');
+                    
+                    return :P108_TCV;
+                    ```
+                itemsToSubmit: [
+                    P108_CONTRACT_TERM
+                    P108_QUOTE_PRICE
+                ]
+            }
+            affectedElements {
+                selectionType: items
+                items: P108_TCV
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P108_TCV
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+    )
+
+    dynamicAction set-tcv-2 (
+        name: Set TCV_1
+        execution {
+            sequence: 50
+        }
+        when {
+            event: focusout
+            selectionType: items
+            items: P108_QUOTE_PRICE
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P108_QUOTE_PRICE
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: plsqlFunctionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    if :P108_CONTRACT_TERM < 12 then
+                        :P108_TCV := replace(replace(:P108_QUOTE_PRICE,',',null),'$',null) / ((:P108_CONTRACT_TERM * 12) / :P108_CONTRACT_TERM);
+                    elsif :P108_CONTRACT_TERM = 12 then
+                        :P108_TCV := replace(replace(:P108_QUOTE_PRICE,',',null),'$',null);
+                    elsif :P108_CONTRACT_TERM > 12 then
+                        :P108_TCV := replace(replace(:P108_QUOTE_PRICE,',',null),'$',null) * (:P108_CONTRACT_TERM / 12);
+                    end if;
+                    
+                    :P108_TCV := to_char(:P108_TCV,'FML999G999G999G999G999');
+                    
+                    return :P108_TCV;
+                    ```
+                itemsToSubmit: [
+                    P108_CONTRACT_TERM
+                    P108_QUOTE_PRICE
+                ]
+            }
+            affectedElements {
+                selectionType: items
+                items: P108_TCV
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P108_TCV
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-term-tcv (
+        name: Show/Hide Term & TCV
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P108_PRODUCT_SOLD_AS
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: $('#P108_PRODUCT_SOLD_AS').html().toLowerCase().indexOf('subscription') > 0
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P108_CONTRACT_TERM
+                    P108_TCV
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: "$('label[for=\"P108_QUOTE_PRICE\"]').html('Amount');"
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-javascript-code-2 (
+            action: executeJsCode
+            settings {
+                jsCode: "$('label[for=\"P108_QUOTE_PRICE\"]').html('Annual Recurring Revenue');"
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: [
+                    P108_CONTRACT_TERM
+                    P108_QUOTE_PRICE
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show-2 (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P108_QUOTE_PRICE
+            }
+            execution {
+                sequence: 30
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    validation p108-product-id-not-duplicated (
+        name: P108_PRODUCT_ID not duplicated
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from eba_sales_deal_products
+                 where deal_id = :P108_DEAL_ID
+                   and product_id = :P108_PRODUCT_ID
+                   and (:P108_ID is null or id != :P108_ID)
+                ```
+        }
+        error {
+            errorMessage: Product is already associated with this deal.
+            associatedItem: @P108_PRODUCT_ID
+        }
+        config {
+            buildOption: !@product-level-close-dates
+        }
+    )
+
+    validation p108-product-id-p108-close-date-not-duplicated (
+        name: P108_PRODUCT_ID & P108_CLOSE_DATE not duplicated
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from eba_sales_deal_products
+                 where deal_id = :P108_DEAL_ID
+                   and product_id = :P108_PRODUCT_ID
+                   and close_date = :P108_CLOSE_DATE
+                   and (:P108_ID is null or id != :P108_ID)
+                ```
+        }
+        error {
+            errorMessage: Product is already associated with this deal.
+            associatedItem: @P108_PRODUCT_ID
+        }
+        config {
+            buildOption: @product-level-close-dates
+        }
+    )
+
+    validation p108-quote-price-is-numeric (
+        name: P108_QUOTE_PRICE is numeric
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNumeric
+            item: P108_QUOTE_PRICE
+        }
+        error {
+            errorMessage: #LABEL# must contain a numeric value (other than commas and a dollar sign).
+            associatedItem: @P108_QUOTE_PRICE
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P108_QUOTE_PRICE
+        }
+    )
+
+    validation p108-tcv-is-numeric (
+        name: P108_TCV is numeric
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: itemIsNumeric
+            item: P108_TCV
+        }
+        error {
+            errorMessage: #LABEL# must contain a numeric value (other than commas and a dollar sign).
+            associatedItem: @P108_TCV
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P108_TCV
+        }
+    )
+
+    computation p108-product-sold-as (
+        itemName: P108_PRODUCT_SOLD_AS
+        execution {
+            sequence: 10
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select case
+                           when sold_as = 'SUBSCRIPTION' then
+                               'Cloud ' || initcap(sold_as)
+                           when sold_as = 'PURCHASE' then
+                               'On-Premise ' || initcap(sold_as)
+                       end sold_as
+                  from eba_sales_products
+                 where id = :P108_PRODUCT_ID;
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P108_PRODUCT_ID
+        }
+    )
+
+    computation p108-quote-price (
+        itemName: P108_QUOTE_PRICE
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression: replace(replace(:P108_QUOTE_PRICE,'$',null),',',null);
+        }
+    )
+
+    computation p108-tcv-return (
+        itemName: P108_TCV_RETURN
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression: replace(replace(nvl(:P108_TCV,:P108_QUOTE_PRICE),'$',null),',',null);
+        }
+    )
+
+    process automatic-row-processing-of-eba-sales-deal-products (
+        name: Automatic Row Processing of EBA_SALES_DEAL_PRODUCTS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_DEAL_PRODUCTS
+            pkColumn: ID
+            pkItem: P108_ID
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 8023073899564039153
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 6542457752707038175
+        }
+    )
+
+    process fetch-row-from-eba-sales-deal-products (
+        name: Fetch Row from EBA_SALES_DEAL_PRODUCTS
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_DEAL_PRODUCTS
+            pkColumn: ID
+            pkItem: P108_ID
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8023073958169039154
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 8904508239223722395
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

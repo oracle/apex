@@ -1,0 +1,18 @@
+page 1000 (
+    name: A PWA Page
+    alias: EMPTY
+    title: A PWA Page
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+)
+

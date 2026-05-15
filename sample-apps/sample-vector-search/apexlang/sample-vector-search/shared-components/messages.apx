@@ -1,0 +1,8 @@
+textMessage EBA_VECTOR.STATUS_UPDATE_AI_GENERATION (
+    message {
+        text: %0 out of %1 categories generated.
+        language: en
+        usedInJavaScript: true
+    }
+)
+

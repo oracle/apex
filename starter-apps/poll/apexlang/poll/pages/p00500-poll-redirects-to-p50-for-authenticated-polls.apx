@@ -1,0 +1,40 @@
+page 500 (
+    name: Poll - redirects to p50 for authenticated polls
+    alias: POLL-REDIRECTS-TO-P50-FOR-AUTHENTICATED-POLLS
+    title: Poll
+    pageGroup: @polls
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    branch (
+        name: branch to page 50
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 50
+                clearCache: 50
+                successMessage: false
+            }
+        }
+    )
+
+)
+

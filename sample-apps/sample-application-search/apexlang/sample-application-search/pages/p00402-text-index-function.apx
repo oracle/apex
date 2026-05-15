@@ -1,0 +1,388 @@
+page 402 (
+    name: Text Index Function
+    alias: TEXT-INDEX-FUNCTION
+    title: Text Index Function
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region oracle-text-index-does-not-exist (
+        name: Oracle Text Index does not exist
+        type: staticContent
+        source {
+            htmlCode: <p>Oracle Text is available in your workspace, but the Full Text index does not exist yet.</p>
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from user_indexes
+                where index_name='EBA_DEMO_SEARCH_PRODUCTS_CTX'
+                ```
+        }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
+    )
+
+    region oracle-text-is-not-available (
+        name: Oracle Text is not available
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Oracle Text is not available in your workspace. Contact your database administrator to get the <strong>CTXAPP</strong> role granted using the following SQL statement.</p>
+                <pre>grant CTXAPP to #OWNER#;</pre>
+                <p>Then log out and back into the application and revisit this page. </p>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        security {
+            authorizationScheme: !@oracle-text-is-available
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how to use the <em>Text Index Function</em>, which takes the end user input and returns the Oracle Text query as a result.</p>
+                <p>To configure Oracle Text in <em>Page Designer</em>, navigate to the <em>Shared Components</em> section, select the Search Configuration referenced by the Search region, and click on "<em>Edit Component</em>" to access the configuration settings. In the "<em>Text Index Function</em>" attribute, select the function that will convert the end user's query to Oracle Text query syntax.</p>
+                <p>To perform a search, simply type your query (or use one of the examples below). Your query is automatically translated to Oracle Text query syntax by the <em>EBA_DEMO_SEARCH_TEXT_PKG.CONVERT_TEXT_QUERY</em> function. This function executes <em>exact</em> queries first and adds <em>fuzzy</em> or <em>wildcard</em> features later on when the exact query does not return enough rows.</p>
+                <p>Query Examples:</p>
+                <ul>
+                <li><em>trousers</em></li>
+                <li><em>trosers</em></li>
+                <li><em>sweater</em></li>
+                <li><em>sweter</em></li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from user_indexes
+                where index_name='EBA_DEMO_SEARCH_PRODUCTS_CTX'
+                ```
+        }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Products
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from user_indexes
+                where index_name='EBA_DEMO_SEARCH_PRODUCTS_CTX'
+                ```
+        }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: search
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: t-ResultsRegion--iconMd
+        }
+        accessibility {
+            useLandmark: false
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from user_indexes
+                where index_name='EBA_DEMO_SEARCH_PRODUCTS_CTX'
+                ```
+        }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
+        settings {
+            searchPageItem: P402_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Enter a query to search for products.
+            noResultsFoundMessage: No products found.
+        }
+
+        searchSource product-search-configuration-oracle-text-function (
+            name: Product Search Configuration Oracle Text  Function
+            searchConfig: @product_text_index_function
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    pageItem P402_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            valuePlaceholder: Enter your search term, e.g. 'trosers'
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    button create-text-index (
+        buttonName: CREATE_TEXT_INDEX
+        label: Create Oracle Text index
+        layout {
+            sequence: 10
+            region: @oracle-text-index-does-not-exist
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            cssClasses: disabled
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 402
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            customAttributes: disabled
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 401
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction enter-key (
+        name: Enter key
+        execution {
+            sequence: 10
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P402_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.browserEvent.keyCode === 13
+                
+                ```
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process create-oracle-text-index (
+        name: Create Oracle Text Index
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    eba_demo_search_text_pkg.drop_text_preferences;
+                    eba_demo_search_text_pkg.create_text_preferences;
+                    eba_demo_search_text_pkg.create_text_index;
+                end;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 2447062431206667653
+        }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
+    )
+
+)
+

@@ -1,0 +1,243 @@
+page 12136 (
+    name: Edit Prompt
+    alias: EDIT-PROMPT
+    title: Edit Prompt
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @ai-project-summaries
+    }
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region edit-prompt (
+        name: Edit Prompt
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_AI_PROMPTS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P12136_DESCRIPTION (
+        type: displayOnly
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @edit-prompt
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @edit-prompt
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P12136_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @edit-prompt
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-prompt
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12136_PROMPT (
+        type: textarea
+        label {
+            label: Prompt
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @edit-prompt
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 20
+        }
+        source {
+            formRegion: @edit-prompt
+            column: PROMPT
+            dataType: clob
+        }
+        sessionState {
+            dataType: clob
+        }
+    )
+
+    pageItem P12136_STATIC_ID (
+        type: displayOnly
+        label {
+            label: Static Id
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @edit-prompt
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @edit-prompt
+            column: STATIC_ID
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 12135
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P12136_ID
+        }
+    )
+
+    process initialize-form-edit-prompt (
+        name: Initialize form Edit Prompt
+        type: formInitialization
+        formRegion: @edit-prompt
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 27872404533184032428
+        }
+    )
+
+    process process-form-edit-prompt (
+        name: Process form Edit Prompt
+        type: formAutoRowProcessing
+        formRegion: @edit-prompt
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 27872404945055032429
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 1
+        }
+        behavior {
+            target: {
+                page: 12135
+            }
+        }
+    )
+
+)
+

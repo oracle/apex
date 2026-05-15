@@ -1,0 +1,508 @@
+page 149 (
+    name: Customer Activities
+    alias: CUSTOMER-ACTIVITIES
+    title: Customer Activities
+    pageGroup: @activities
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @activities
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region customer-activities (
+        name: Customer Activities
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select rf.id,
+                    rf.activity_id,
+                    rf.customer_id,
+                    rf.contact_id,
+                    nvl(a.activity_date,rf.activity_date) activity_date,
+                    nvl(a.owner,rf.owner) owner,
+                    nvl(a.location,rf.location) location,
+                    rf.notes,
+                    rf.created,
+                    lower(rf.created_by) created_by,
+                    rf.updated,
+                    lower(rf.updated_by) updated_by
+                from eba_cust_activity_ref rf,
+                    eba_cust_activities a
+                where a.id = rf.activity_id
+                    and rf.customer_id = :P149_CUSTOMER_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 150
+                items: {
+                    P150_ID: #ID#
+                }
+            }
+            linkIcon: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            subscription: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 17124054239626498876
+        }
+
+        column ACTIVITY_DATE (
+            type: plainText
+            heading {
+                heading: Activity Date
+            }
+            layout {
+                sequence: 5
+            }
+            appearance {
+                formatMask: fmDay, fmDD fmMonth, YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ACTIVITY_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Activity
+            }
+            lov {
+                lov: @activities
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column CONTACT_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Contact
+            }
+            lov {
+                lov: @contacts
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column CUSTOMER_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Customer
+            }
+            lov {
+                lov: @customers
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LOCATION (
+            type: plainText
+            heading {
+                heading: Location
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column NOTES (
+            type: plainText
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 171248855 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIVITY_DATE (
+                sequence: 3
+            )
+
+            displayColumn ACTIVITY_ID (
+                sequence: 1
+            )
+
+            displayColumn CONTACT_ID (
+                sequence: 2
+            )
+
+            displayColumn LOCATION (
+                sequence: 5
+            )
+
+            displayColumn NOTES (
+                sequence: 6
+            )
+
+            displayColumn OWNER (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 7
+            )
+
+            displayColumn UPDATED_BY (
+                sequence: 8
+            )
+
+            sort (
+                column: ACTIVITY_DATE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P149_CUSTOMER_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @customer-activities
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Activity
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 150
+                items: {
+                    P150_CUSTOMER_ID: &P149_CUSTOMER_ID.
+                }
+                clearCache: 150
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @customer-activities
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                items: {
+                    P149_CUSTOMER_ID: &P149_CUSTOMER_ID.
+                }
+                clearCache: [
+                    RIR
+                    &APP_PAGE_ID.
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction create-button-dialog-closed (
+        name: Create Button - Dialog Closed
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @create
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-activities
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @customer-activities
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-activities
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

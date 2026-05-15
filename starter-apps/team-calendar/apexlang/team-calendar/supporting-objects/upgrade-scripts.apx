@@ -1,0 +1,188 @@
+upgradeScript "Adding Multi-Calendar Mode" (
+    execution {
+        sequence: 35
+    }
+    script {
+        contentFile: adding-multi-calendar-mode.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CA_CALENDARS';
+            ```
+    }
+)
+
+upgradeScript "Framework Body" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: framework-body.sql
+    }
+)
+
+upgradeScript "Framework Package" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: framework-package.sql
+    }
+)
+
+upgradeScript "More Event Colors" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: more-event-colors.sql
+    }
+    serverSideCondition {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_cnt    pls_integer;
+                l_retval boolean := true;
+            begin
+                select count(*)
+                  into l_cnt
+                  from eba_ca_color_prefs
+                 where color_name in ('Black', 'Darkblue', 'Bluesky', 'Brown', 'Cyan', 'Lime', 'Silver', 'Yellow');
+            
+                if l_cnt > 0 then
+                    l_retval := false;
+                end if;
+            
+                return l_retval;
+            end;
+            ```
+    }
+)
+
+upgradeScript "Remove Help Table" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: remove-help-table.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery:
+            ```sql
+            select table_name
+            from user_tables
+            where table_name = 'EBA_CA_HELP_PAGE'
+            ```
+    }
+)
+
+upgradeScript "Sample Data Package" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: sample-data-package.sql
+    }
+)
+
+upgradeScript "Set First Run Preference" (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: set-first-run-preference.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+              from eba_ca_preferences
+             where preference_name = 'FIRST_RUN';
+            ```
+    }
+)
+
+upgradeScript "TIMESTAMP Fix (BUGID: 31352674)" (
+    execution {
+        sequence: 120
+    }
+    script {
+        contentFile: timestamp-fix-bugid-31352674-.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery: select null from all_tab_cols where table_name like 'EBA_CA_%' and data_type = 'TIMESTAMP(6) WITH LOCAL TIME ZONE'
+    }
+)
+
+upgradeScript "Update event types" (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: update-event-types.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select column_name
+            from user_tab_columns
+            where table_name = 'EBA_CA_EVENT_TYPES'
+                and column_name = 'INTERNAL_YN'
+            ```
+    }
+)
+
+upgradeScript "Username Format Preference" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: username-format-preference.sql
+    }
+)
+
+upgradeScript "eba_ca package" (
+    execution {
+        sequence: 110
+    }
+    script {
+        contentFile: eba-ca-package.sql
+    }
+)
+
+upgradeScript "eba_ca_api body" (
+    execution {
+        sequence: 90
+    }
+    script {
+        contentFile: eba-ca-api-body.sql
+    }
+)
+
+upgradeScript "eba_ca_api spec" (
+    execution {
+        sequence: 80
+    }
+    script {
+        contentFile: eba-ca-api-spec.sql
+    }
+)
+
+upgradeScript "remove eba_ca_admins (not used)" (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: remove-eba-ca-admins-not-used-.sql
+    }
+)
+

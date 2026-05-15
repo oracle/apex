@@ -1,0 +1,647 @@
+page 79 (
+    name: Change History
+    alias: CHANGE-HISTORY-IR
+    title: Change History
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: Changes made across &NOMENCLATURE_INITIATIVES., &NOMENCLATURE_PROJECTS., &NOMENCLATURE_PROJECT. Milestones, Reviews, Tasks and Releases.  Includes old and new values and who made the change and when the change was made.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region change-history (
+        name: Change History
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select change_to,
+                       parent_type,
+                       object,
+                       owner,
+                       view_link,                   
+                       favorite,
+                       ATTRIBUTE_CHANGE_DATE,
+                       change_type,
+                       ATTRIBUTE_COLUMN,
+                       OLD_VALUE,
+                       NEW_VALUE,
+                       changed_by,
+                       release
+                  from (
+                select :NOMENCLATURE_PROJECT               change_to,
+                       :NOMENCLATURE_PROJECT               parent_type,
+                       p.project                           object,
+                       (select tm.first_name||' '||tm.last_name
+                        from   sp_team_members TM  
+                        where  tm.id = p.OWNER_ID)         owner,
+                       apex_util.prepare_url('f?p='||:APP_ID||':3:'||:APP_SESSION||'::NO:3:FI,PN:'||apex_escape.html(p.FRIENDLY_IDENTIFIER)||','||apex_escape.html(p.PROJECT_URL_NAME)) view_link,
+                       --
+                       case when f.project_id is not null then 'Yes' else 'No' end favorite,
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       case pc.change_type when 'CREATE' then 'Addition'
+                                           when 'UPDATE' then 'Update'
+                                           when 'DELETE' then 'Delete'
+                                           else pc.change_type
+                            end change_type,
+                       --
+                       initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(pc.old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(pc.new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       pc.changed_by,
+                       --
+                       -- release
+                       --
+                       (select t.release_train||' '||t.release from SP_RELEASE_TRAINS t where t.id = p.release_id) release
+                  from SP_PROJECT_HISTORY pc,
+                       sp_projects p,
+                       sp_favorites f
+                 where p.id = pc.project_id
+                   and p.ARCHIVED_YN = 'N'
+                   and p.duplicate_of_project_id is null
+                   and p.id = f.project_id (+)
+                   and (f.team_member_id = :APP_USER_ID or f.team_member_id is null)
+                union all
+                select :NOMENCLATURE_PROJECT ||' '|| tt.task_type ||
+                       case when t.task_sub_type_id is not null
+                            then (select ': '||task_type from sp_task_types where t.task_sub_type_id = id)
+                            end change_to,
+                       :NOMENCLATURE_PROJECT ||' '|| case when tt.task_type in ('Review','Milestone') then tt.task_type
+                                                          else 'Task' end parent_type,
+                       p.project                           object,
+                       (select tm.first_name||' '||tm.last_name
+                        from   sp_team_members TM  
+                        where  tm.id = p.OWNER_ID)         owner,
+                       apex_util.prepare_url('f?p='||:APP_ID||':502:'||:APP_SESSION||'::NO:502:P502_PREV_PAGE,P502_TASK_ID,P502_PROJECT_ID:3,'||t.id||','||p.id) view_link,
+                       --
+                       case when f.project_id is not null then 'Yes' else 'No' end favorite,
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       case pc.change_type when 'CREATE' then 'Addition'
+                                           when 'UPDATE' then 'Update'
+                                           when 'DELETE' then 'Delete'
+                                           else pc.change_type
+                            end change_type,
+                       --
+                       initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(pc.old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(pc.new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       pc.changed_by,
+                       --
+                       -- release
+                       --
+                       (select t.release_train||' '||t.release from SP_RELEASE_TRAINS t where t.id = p.release_id) release
+                  from sp_task_history pc,
+                       sp_tasks t,
+                       sp_task_types tt,
+                       sp_projects p,
+                       sp_favorites f
+                 where pc.task_id = t.id
+                   and t.task_type_id = tt.id
+                   and t.project_id = p.id
+                   and p.ARCHIVED_YN = 'N'
+                   and p.duplicate_of_project_id is null
+                   and p.id = f.project_id (+)
+                   and (f.team_member_id = :APP_USER_ID or f.team_member_id is null)
+                union all
+                select 'Release'               change_to,
+                       'Release'               parent_type,
+                       p.release_train||' '||p.release object,
+                       (select tm.first_name||' '||tm.last_name
+                        from   sp_team_members TM  
+                        where  tm.id = p.RELEASE_OWNER_ID) owner,
+                       apex_util.prepare_url('f?p='||:APP_ID||':117:'||:APP_SESSION||'::NO:117:P117_RELEASE_ID:'||p.id) view_link,                    
+                       --
+                       null favorite,
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       case pc.change_type when 'CREATE' then 'Addition'
+                                           when 'UPDATE' then 'Update'
+                                           when 'DELETE' then 'Delete'
+                                           else pc.change_type
+                            end change_type,
+                       --
+                       initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(pc.old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(pc.new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       pc.changed_by,
+                       --
+                       -- release
+                       --
+                       p.release_train||' '||p.release release
+                  from SP_RELEASE_HISTORY pc,
+                       sp_release_trains p
+                 where p.id = pc.release_id
+                union all
+                select :NOMENCLATURE_INITIATIVE  change_to,
+                       :NOMENCLATURE_INITIATIVE  parent_type,
+                       p.initiative              object,
+                       (select tm.first_name||' '||tm.last_name
+                        from   sp_team_members TM  
+                        where  tm.id = p.sponsor_id) owner,
+                       apex_util.prepare_url('f?p='||:APP_ID||':94:'||:APP_SESSION||'::NO:94:P94_INITIATIVE_ID:'||p.id) view_link,                  
+                       --
+                       null favorite,
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       case pc.change_type when 'CREATE' then 'Addition'
+                                           when 'UPDATE' then 'Update'
+                                           when 'DELETE' then 'Delete'
+                                           else pc.change_type
+                            end change_type,
+                       --
+                       initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(pc.old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(pc.new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       pc.changed_by,
+                       --
+                       -- release
+                       --
+                       null release
+                  from SP_INITIATIVE_HISTORY pc,
+                       sp_initiatives p
+                 where p.id = pc.initiative_id
+                union all
+                select :NOMENCLATURE_INITIATIVE  change_to,
+                       :NOMENCLATURE_INITIATIVE||' Focus Area'  parent_type,
+                       p.initiative||' - '||a.focus_area  object,
+                       (select tm.first_name||' '||tm.last_name
+                        from   sp_team_members TM  
+                        where  tm.id = a.development_owner_id) owner,
+                       apex_util.prepare_url('f?p='||:APP_ID||':33:'||:APP_SESSION||'::NO:33:P33_INIT_FOCUS_AREA_ID:'||a.id) view_link,                    
+                       --
+                       null favorite,
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       case pc.change_type when 'CREATE' then 'Addition'
+                                           when 'UPDATE' then 'Update'
+                                           when 'DELETE' then 'Delete'
+                                           else pc.change_type
+                            end change_type,
+                       --
+                       initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(pc.old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(pc.new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       pc.changed_by,
+                       --
+                       -- release
+                       --
+                       null release
+                  from SP_INIT_FOCUS_AREA_HISTORY pc,
+                       sp_initiative_focus_areas a,
+                       sp_initiatives p
+                 where pc.init_focus_area_id = a.id
+                   and p.id = a.initiative_id
+                union all
+                select :NOMENCLATURE_PROJECT       change_to,
+                       :NOMENCLATURE_PROJECT       parent_type,
+                       old_value                   object,
+                       null owner,
+                       '#' view_link,                  
+                       --
+                       null favorite,
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       'Delete' change_type,
+                       --
+                       initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(pc.old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(pc.new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       pc.changed_by,
+                       --
+                       -- release
+                       --
+                       null release
+                  from SP_PROJECT_HISTORY pc
+                 where change_type = 'DELETE'
+                   and attribute_column = 'PROJECT'
+                union all
+                select :NOMENCLATURE_INITIATIVE  change_to,
+                       :NOMENCLATURE_INITIATIVE  parent_type,
+                       old_value                 object,
+                       null owner,
+                       '#' view_link,                  
+                       --
+                       null favorite,
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       'Delete' change_type,
+                       --
+                       initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(pc.old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(pc.new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       pc.changed_by,
+                       --
+                       -- release
+                       --
+                       null release
+                  from SP_INITIATIVE_HISTORY pc
+                 where change_type = 'DELETE'
+                   and attribute_column = 'INITIATIVE'
+                union all
+                select 'Release'               change_to,
+                       'Release'               parent_type,
+                       old_value                 object,
+                       null owner,
+                       '#' view_link,                  
+                       --
+                       null favorite,
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       'Delete' change_type,
+                       --
+                       initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(pc.old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(pc.new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       pc.changed_by,
+                       --
+                       -- release
+                       --
+                       null release
+                  from SP_RELEASE_HISTORY pc
+                 where change_type = 'DELETE'
+                   and attribute_column = 'RELEASE'
+                )
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 7173903725518637015
+        }
+
+        column ATTRIBUTE_CHANGE_DATE (
+            type: plainText
+            heading {
+                heading: Attribute Change Date
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH:MIPM
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column ATTRIBUTE_COLUMN (
+            type: plainText
+            heading {
+                heading: Column Changed
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column CHANGED_BY (
+            type: plainText
+            heading {
+                heading: Changed By
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column CHANGE_TO (
+            type: link
+            heading {
+                heading: Change To
+            }
+            layout {
+                sequence: 50
+            }
+            link {
+                target: {
+                    type: url
+                    url: #VIEW_LINK#
+                }
+                linkText: #CHANGE_TO#
+                linkAttributes: alt="View Object"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column CHANGE_TYPE (
+            type: plainText
+            heading {
+                heading: Change Type
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column FAVORITE (
+            type: plainText
+            heading {
+                heading: Favorite
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column NEW_VALUE (
+            type: plainText
+            heading {
+                heading: New Value
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column OBJECT (
+            type: plainText
+            heading {
+                heading: Object Name
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: X
+            }
+            help {
+                helpText: Name of object changed.
+            }
+        )
+
+        column OLD_VALUE (
+            type: plainText
+            heading {
+                heading: Old Value
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column PARENT_TYPE (
+            type: plainText
+            heading {
+                heading: Parent Type
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column VIEW_LINK (
+            type: hidden
+            heading {
+                heading: View Link
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 93362626 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ATTRIBUTE_CHANGE_DATE (
+                sequence: 1
+            )
+
+            displayColumn ATTRIBUTE_COLUMN (
+                sequence: 4
+            )
+
+            displayColumn CHANGED_BY (
+                sequence: 8
+            )
+
+            displayColumn CHANGE_TO (
+                sequence: 2
+            )
+
+            displayColumn CHANGE_TYPE (
+                sequence: 5
+            )
+
+            displayColumn NEW_VALUE (
+                sequence: 7
+            )
+
+            displayColumn OBJECT (
+                sequence: 3
+            )
+
+            displayColumn OLD_VALUE (
+                sequence: 6
+            )
+
+            sort (
+                column: ATTRIBUTE_CHANGE_DATE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 79
+                clearCache: [
+                    79
+                    CIR
+                    RIR
+                ]
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

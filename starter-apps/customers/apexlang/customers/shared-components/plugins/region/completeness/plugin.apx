@@ -1,0 +1,177 @@
+plugin completeness (
+    name: Completeness
+    staticId: COM.ORACLE.APEX.COMPLETENESS
+    type: region
+    component {
+        standardAttributes: regionSourceIsSqlQuery
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function render (
+                p_region              in apex_plugin.t_region,
+                p_plugin              in apex_plugin.t_plugin,
+                p_is_printer_friendly in boolean )
+                return apex_plugin.t_region_render_result
+            is
+                c_region_static_id constant varchar2(255) := apex_escape.html_attribute( p_region.static_id );
+            
+                -- Constants for the columns of our region source query
+                c_metric_col       constant pls_integer := 1;
+                c_score_col        constant pls_integer := 2;
+                c_maxval_col       constant pls_integer := 3;
+            
+                -- attributes of the plug-in
+                l_score      number         := 0;
+                l_max        number         := 0;
+                l_pct        number         := 0;
+                l_color      varchar(30)    := ' is-danger';
+                l_label      varchar2(255)  := null;
+                l_trshld1    number         := nvl(to_number(p_region.attribute_01), 66);
+                l_t1_lbl     varchar2(100)  := nvl(p_region.attribute_02, 'Strong');
+                l_trshld2    number         := nvl(to_number(p_region.attribute_03), 33);
+                l_t2_lbl     varchar2(100)  := nvl(p_region.attribute_04,'Moderate');
+                l_trshld3    number         := nvl(to_number(p_region.attribute_05), 0);
+                l_t3_lbl     varchar2(100)  := nvl(p_region.attribute_06,'Weak');
+                l_0p_lbl     varchar2(100)  := nvl(p_region.attribute_07,'Very Weak');
+                l_mdl_title  varchar2(255)  := nvl(p_region.attribute_08,'Completeness Score Details');
+                l_rslt_hdr   varchar2(4000) := '<p>' || p_region.attribute_09 || '</p>';
+                l_rslt_ftr   varchar2(4000) := '<p>' || p_region.attribute_10 || '</p>';
+            
+                l_valid_data_type_list wwv_flow_global.vc_arr2;
+                l_column_value_list    apex_plugin_util.t_column_value_list2;
+            begin
+                -- define the valid column data types for the region query
+                l_valid_data_type_list(c_metric_col) := apex_plugin_util.c_data_type_varchar2;
+                l_valid_data_type_list(c_score_col)  := apex_plugin_util.c_data_type_number;
+                l_valid_data_type_list(c_maxval_col) := apex_plugin_util.c_data_type_number;
+            
+                -- get the data to be displayed
+                l_column_value_list := apex_plugin_util.get_data2 (
+                                           p_sql_statement  => p_region.source,
+                                           p_min_columns    => 3,
+                                           p_max_columns    => 3,
+                                           p_data_type_list => l_valid_data_type_list,
+                                           p_component_name => p_region.name);
+            
+                sys.htp.p('
+            <div class="js-regionDialog js-resizable js-modal js-draggable js-dialog-size480x320" title="'||apex_escape.html_attribute(l_mdl_title)||'" id="status-completeness-modal-' || c_region_static_id || '" style="display:none;">
+              <div class="t-Completeness-dialog">' || l_rslt_hdr || '
+                <table class="u-Report">
+                  <thead>
+                    <tr>
+                      <th id="h_metric_' || c_region_static_id || '">Metric</th>
+                      <th id="h_score_' || c_region_static_id || '">Score</th>
+                      <th id="h_maximum_' || c_region_static_id || '">Maximum Score</th>
+                    </tr>
+                  </thead>
+                  <tbody>' );
+            
+                for i in 1 .. l_column_value_list(c_metric_col).value_list.count
+                loop
+                    l_score := l_score + nvl(l_column_value_list(c_score_col).value_list(i).number_value, 0);
+                    l_score := greatest(l_score,0);
+                    l_max   := l_max + nvl(l_column_value_list(c_maxval_col).value_list(i).number_value, 0);
+                    if nvl(l_column_value_list(c_score_col).value_list(i).number_value, 0) < 0 then
+                        sys.htp.p('
+            <tr>
+              <td headers="h_metric_' || c_region_static_id || '" class="t-Completeness-negScore">' || apex_escape.html(l_column_value_list(c_metric_col).value_list(i).varchar2_value) || '</td>
+              <td headers="h_score_' || c_region_static_id || '" class="t-Completeness-negScore u-tR">' || nvl(l_column_value_list(c_score_col).value_list(i).number_value, 0) || '</td>
+              <td headers="h_maximum_' || c_region_static_id || '" class="t-Completeness-negScore u-tR">' || nvl(l_column_value_list(c_maxval_col).value_list(i).number_value, 0) || '</td>
+            </tr>' );
+                    else
+                        sys.htp.p('
+            <tr>
+              <td headers="h_metric_' || c_region_static_id || '">' || apex_escape.html(l_column_value_list(c_metric_col).value_list(i).varchar2_value) || '</td>
+              <td headers="h_score_' || c_region_static_id || '" class="u-tR">' || nvl(l_column_value_list(c_score_col).value_list(i).number_value, 0) || '</td>
+              <td headers="h_maximum_' || c_region_static_id || '" class="u-tR">' || nvl(l_column_value_list(c_maxval_col).value_list(i).number_value, 0) || '</td>
+            </tr>' );
+                    end if;
+                end loop;
+            
+                sys.htp.p('
+            </tbody>
+            <tfoot>
+            <tr>
+              <td><strong>Report Total</strong></td>
+              <td class="u-tR"><strong>' || apex_escape.html( l_score ) || '</strong></td>
+              <td class="u-tR"><strong>' || apex_escape.html( l_max ) || '</strong></td>
+            </tr>
+            </tfoot>
+            </table>' || l_rslt_ftr || '</div></div>' );
+            
+                l_max := l_max + 10; -- don't fill circle completely
+            
+                if l_max > 0 then
+                    l_pct := round( 100 * (l_score / l_max));
+                end if;
+            
+                if l_pct >= to_number(l_trshld1) then 
+                    l_color := ' is-success';
+                    l_label := l_t1_lbl;
+                elsif l_pct >= to_number(l_trshld2) then 
+                    l_color := ' is-warning';
+                    l_label := l_t2_lbl;
+                elsif l_pct >= to_number(l_trshld3) then 
+                    l_color := ' is-danger';
+                    l_label := l_t3_lbl;
+                else
+                    l_color := ' is-danger';
+                    l_label := l_0p_lbl;
+                end if;
+            
+            /*    if l_score < to_number(l_trshld3) then
+                    l_label := l_0p_lbl;
+                end if;
+            */
+                sys.htp.p('
+            <a href="javascript:openModal(''status-completeness-modal-' || c_region_static_id||''',''link_'||c_region_static_id||''');" id="link_'||c_region_static_id||'" class="t-Completeness'||l_color||'">
+              <span class="t-Completeness-labelWrap"><span class="t-Completeness-label">'||apex_escape.html(l_label)||'</span></span>
+              <span class="t-Completeness-fill" style="width:'||l_pct||'%"></span>
+            </a>' );
+            
+                -- sys.htp.p('<div class="db-FillChart">
+                --     <a href="javascript:openModal(''status-completeness-modal-' || c_region_static_id||''',''link_'||c_region_static_id||''');" id="link_'||c_region_static_id||'" class="db-FillChart-link">
+                --     <div class="db-FillChart-fillWrapper">
+                --       <div class="db-FillChart-heading">'||apex_escape.html(l_label)||'</div>
+                --         <div class="db-FillChart-fill '||l_color||'" style="height: '||l_pct||'%"></div></div>
+                --     </a>
+                -- </div>');
+            
+                return null;
+            end render;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    css {
+        fileUrls: #PLUGIN_FILES#completeness.css
+    }
+    information {
+        version: 5.1.0
+        aboutUrl: http://apex.oracle.com/plugins
+        helpText:
+            ```
+            <p>This plug-in takes a query and displays a &quot;completeness&quot; orb that shows the end-user at a glance how complete the current page content is.</p>
+            <p>A modal region is also generated which lists the individual score details used to determine the overall completeness. This modal region is accessed by clicking on the completeness region.</p>
+            ```
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        validation {
+            required: true
+        }
+        sqlQuery {
+            minColumns: 3
+            maxColumns: 3
+        }
+    )
+
+)
+

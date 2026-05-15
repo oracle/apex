@@ -1,0 +1,77 @@
+plugin timer (
+    name: Timer
+    staticId: COM.ORACLE.APEX.TIMER
+    type: dynamicAction
+    component {
+        standardAttributes: [
+            forItem
+            forRegion
+            forJavaScriptExpression
+            forJquerySelector
+            forTriggeringElement
+            forEventSource
+            affectedElementRequired
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function render_timer (
+                p_dynamic_action  in apex_plugin.t_dynamic_action,
+                p_plugin          in apex_plugin.t_plugin )
+                return apex_plugin.t_dynamic_action_render_result
+            is
+                l_action     varchar2(10) := nvl(p_dynamic_action.attribute_01, 'add');
+                l_timer_name varchar2(20) := substr(nvl(case l_action
+                                                          when 'add'    then p_dynamic_action.attribute_02
+                                                          when 'remove' then p_dynamic_action.attribute_03
+                                                        end, p_dynamic_action.id), 1, 20);
+                l_expire_in  number       := nvl(p_dynamic_action.attribute_04, 1000);
+                l_occurrence varchar2(10) := nvl(p_dynamic_action.attribute_05, 'infinite');
+            
+                l_result apex_plugin.t_dynamic_action_render_result;
+            begin
+                apex_javascript.add_library (
+                    p_name      => 'com_oracle_apex_timer.min',
+                    p_directory => p_plugin.file_prefix,
+                    p_version   => null );
+            
+                l_result.javascript_function := 'com_oracle_apex_timer.init';
+                l_result.attribute_01        := l_action;
+                l_result.attribute_02        := l_timer_name;
+                l_result.attribute_03        := l_expire_in;
+                l_result.attribute_04        := l_occurrence;
+                return l_result;
+            end render_timer;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render_timer
+    }
+    advanced {
+        category: initialize
+        substituteAttributeValues: true
+    }
+    information {
+        version: 1.0
+        aboutUrl: http://www.oracleapex.info/
+        helpText:
+            ```
+            <p>
+            	&nbsp;</p>
+            <div id="cke_pastebin">
+            	This plug-in is a dynamic action which allows to periodically fire other dynamic actions in the browser.&nbsp;For example to refresh a region. But you can perform any action you want, because the plug-in just provides&nbsp;the infrastructure so that you can hook up your own actions which you want to execute periodically.</div>
+            <div>
+            	&nbsp;</div>
+            <ol>
+            	<li>
+            		Create a dynamic action with the &quot;Timer&quot; plug-in which sets up the periodic timer</li>
+            	<li>
+            		Create a dynamic action for the event &quot;Timer Expired [Plug-in]&quot; where you execute your periodic actions.</li>
+            </ol>
+            
+            ```
+    }
+)
+

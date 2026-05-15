@@ -1,0 +1,165 @@
+page 112 (
+    name: US States (flat)
+    alias: US-STATES-FLAT
+    title: &APP_NAME. - US States (flat)
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This map visualizes US states as polygons. The polygon color is determined by the <strong>WATER_AREA</strong> column, using the built-in <strong>Blue to Yellow</strong> color scheme. Click on a state to show a info popup with details.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region us-states (
+        name: US States
+        type: map
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: airport-map-region
+            regionDisplaySelector: true
+        }
+        controls {
+            options: [
+                scaleBar
+                infiniteMap
+                rectangleZoom
+            ]
+        }
+        initialPositionAndZoom {
+            type: staticValues
+            longitude: -90
+            latitude: 35
+            zoomLevel: 3
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer us-states (
+            name: US States
+            layerType: polygons
+            layout {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ID,
+                           NAME,
+                           STATE_CODE,
+                           to_char(LAND_AREA / 1000000,'9G999G999G990D000')  land_area,
+                           to_char(WATER_AREA / 1000000,'9G999G999G990D000')  water_area,
+                           case when water_area > 50000000000 then 50000000000 else water_area end as water_area_color,
+                           geometry
+                      from EBA_SAMPLE_MAP_SIMPLE_STATES
+                    ```
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            appearance {
+                useColorScheme: true
+                colorScheme: sequential
+                schemeName: blueToYellow
+                colorValueColumn: WATER_AREA_COLOR
+                fillOpacity: .7
+                strokeColor: #101010
+            }
+            tooltip {
+                column: NAME
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <strong>&NAME. (&STATE_CODE.)</strong><br>
+                    Land Area: &LAND_AREA. km&sup2;<br>
+                    Water Area: &WATER_AREA. km&sup2;<br>
+                    ```
+            }
+            messages {
+                whenNoDataFound: No States found.
+            }
+        )
+
+    )
+
+    dynamicAction on-click-point (
+        name: On Click Point
+        execution {
+            sequence: 10
+        }
+        when {
+            event: region/map/spatialmapobjectclick
+            selectionType: region
+            region: @us-states
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    const { lng, lat } = this.data;
+                    
+                    apex.region("airport-map-region").call( "getMapObject" ).flyTo({ 
+                        center: [ lng, lat ],
+                        screenSpeed: 0.8
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,538 @@
+page 57 (
+    name: Initiative Focus Area Change History
+    alias: INITIATIVE-FOCUS-AREA-CHANGE-HISTORY
+    title: Initiative Focus Area Change History
+    pageGroup: @initiatives
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region details (
+        name: details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select f.area,
+                       (select first_name||' '||last_name 
+                          from sp_team_members tm 
+                         where tm.id = a.development_owner_id) dev_owner,
+                       a.created,
+                       lower(a.created_by) created_by
+                  from SP_INITIATIVES i,
+                       SP_AREAS f,
+                       SP_INITIATIVE_FOCUS_AREAS a
+                where 
+                      i.area_id = f.id and
+                      i.id = a.initiative_id and
+                      a.id = :P57_INIT_FOCUS_AREA_ID
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-left-md
+                margin-right-md
+            ]
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column AREA (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Area
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column DEV_OWNER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Development Owner
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Filters
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            showTotalRowCount: true
+            displayChartForTopNValues: 10
+        }
+
+        facet P57_ATTRIBUTE_CHANGE_MONTH (
+            type: checkboxGroup
+            label {
+                label: Month
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: ATTRIBUTE_CHANGE_MONTH
+            }
+        )
+
+        facet P57_ATTRIBUTE_COLUMN (
+            type: checkboxGroup
+            label {
+                label: Attribute
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: ATTRIBUTE_COLUMN
+            }
+        )
+
+        facet P57_CHANGED_BY (
+            type: checkboxGroup
+            label {
+                label: Changed By
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CHANGED_BY
+            }
+        )
+
+        facet P57_CHANGE_TYPE (
+            type: checkboxGroup
+            label {
+                label: Change
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CHANGE_TYPE
+            }
+        )
+
+        facet P57_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: ATTRIBUTE_DATATYPE,PROJECT_ID,ATTRIBUTE_COLUMN,OLD_VALUE,NEW_VALUE
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Search Results
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select h.CHANGED_ON             ATTRIBUTE_CHANGE_DATE,
+                       to_char(h.CHANGED_ON,'YYYY.MM') ATTRIBUTE_CHANGE_Month,
+                       case h.change_type when 'CREATE' then 'Added'
+                                        when 'UPDATE' then 'Updated'
+                                        when 'DELETE' then 'Deleted'
+                                        else change_type
+                            end change_type,
+                       --
+                       initcap(replace(h.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(h.old_value,'Y','Yes','N','No',h.old_value) OLD_VALUE,
+                       decode(h.new_value,'Y','Yes','N','No',h.new_value) NEW_VALUE,
+                       h.changed_by
+                  from sp_init_focus_area_history h,
+                       sp_initiative_focus_areas t
+                 where h.init_focus_area_id = t.id
+                   and h.init_focus_area_id = :P57_INIT_FOCUS_AREA_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No history found
+        }
+
+        column ATTRIBUTE_CHANGE_DATE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: When
+            }
+            layout {
+                sequence: 92
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+        column ATTRIBUTE_CHANGE_MONTH (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 102
+            }
+        )
+
+        column ATTRIBUTE_COLUMN (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Attribute
+            }
+            layout {
+                sequence: 22
+            }
+        )
+
+        column CHANGED_BY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Changed By
+            }
+            layout {
+                sequence: 82
+            }
+        )
+
+        column CHANGE_TYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Change
+            }
+            layout {
+                sequence: 42
+            }
+        )
+
+        column NEW_VALUE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: New Value
+            }
+            layout {
+                sequence: 72
+            }
+        )
+
+        column OLD_VALUE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Old Value
+            }
+            layout {
+                sequence: 62
+            }
+        )
+
+    )
+
+    pageItem P57_INIT_FOCUS_AREA (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P57_INIT_FOCUS_AREA_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button refresh (
+        buttonName: refresh
+        label: Refresh
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 57
+                items: {
+                    P57_INIT_FOCUS_AREA_ID: &P57_INIT_FOCUS_AREA_ID.
+                }
+                clearCache: 57
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 33
+                items: {
+                    P33_INIT_FOCUS_AREA_ID: &P57_INIT_FOCUS_AREA_ID.
+                }
+                clearCache: 33
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p57-init-focus-area (
+        itemName: P57_INIT_FOCUS_AREA
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select i.initiative || ' - '|| fa.focus_area name
+                  from sp_initiatives i,
+                       sp_initiative_focus_areas fa
+                 where i.id = fa.initiative_id
+                   and fa.id = :P57_INIT_FOCUS_AREA_ID
+                ```
+        }
+    )
+
+)
+

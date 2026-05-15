@@ -1,0 +1,769 @@
+page 200 (
+    name: Advanced Search
+    alias: ADVANCED-SEARCH
+    title: Advanced Search
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region polls-contributors (
+        name: Polls (contributors)
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT poll_id,
+                       row_key,
+                       poll, 
+                       POLL_DETAILS,
+                       ANONYMOUS,
+                       answers_updatable,
+                       results_viewable,
+                       Scored,
+                       created,
+                       created_by,
+                       updated,
+                       updated_by,
+                       status,
+                       invite_only,
+                       poll_type,
+                       questions,
+                       invitations,
+                       responses,
+                       started,
+                       ended,
+                       last_action,
+                      'Take It' actions,
+                      case when take_status in ('CAN_TAKE_IT','HAS_ERRORS','CAN_UPDATE') and questions > 0
+                           then '<a class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch" href="'
+                               ||apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:LPOLL_ID:'||poll_id)
+                               ||'">'||apex_escape.html(apex_lang.message(take_status))||'</a>'
+                           else '' end action_URL
+                from
+                (SELECT id poll_id, 
+                       row_key,
+                       POLL_NAME poll, 
+                       POLL_DETAILS,
+                       decode(ANONYMOUS_YN,'Y','Yes','N','No',p.ANONYMOUS_YN) ANONYMOUS,
+                       decode(CAN_UPDATE_ANSWERS_YN,'Y','Yes','N','No',p.CAN_UPDATE_ANSWERS_YN) answers_updatable,
+                       decode(ALL_VIEW_RESULTS_YN,'Y','Viewable by Invitees','N','Viewable by Named Users',p.ALL_VIEW_RESULTS_YN) results_viewable,
+                       decode(ENABLE_SCORE_YN,'Y','Yes','N','No',p.ENABLE_SCORE_YN) Scored,
+                       created,
+                       lower(created_by) created_by,
+                       updated,
+                       lower(updated_by) updated_by,
+                       case status_id when 1 then 'Being Authored'
+                                      when 2 then 'Testing'
+                                      when 3 then 'Published'
+                                      when 4 then 'Closed' end status,
+                       decode(invite_only_yn,'Y','Yes','N','No',invite_only_yn) invite_only,
+                       decode(POLL_OR_QUIZ,'P','Poll','Q','Quiz',p.POLL_OR_QUIZ) poll_type,
+                       (select count(*) from EBA_QPOLL_QUESTIONS qu where qu.POLL_ID = p.id) questions,
+                       nvl((select max(x.updated) from eba_qpoll_results x
+                          where x.poll_id = p.id
+                            and nvl(x.is_valid_yn,'Y') = 'Y'),p.created) last_action,
+                       nvl((select count(distinct respondent_id)
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where c.poll_id = p.id
+                           and c.id = i.comm_invite_id),0) invitations,
+                       nvl((select count(*)
+                              from eba_qpoll_results r
+                             where r.poll_ID = p.id
+                               and nvl(r.is_valid_yn,'Y') = 'Y'),0)  responses,
+                      --
+                      (select max(p.start_time) started
+                              from eba_qpoll_results r
+                             where r.poll_ID = p.id
+                               and nvl(r.is_valid_yn,'Y') = 'Y') started,
+                      --
+                      (select max(p.stop_time) ended
+                              from eba_qpoll_results r
+                             where r.poll_ID = p.id
+                               and nvl(r.is_valid_yn,'Y') = 'Y') ended,
+                      'Take It' actions,
+                      eba_qpoll.poll_take_status (
+                                p_app_id   => :APP_ID,
+                                p_poll_id  => id,
+                                p_app_user => :APP_USER,
+                                p_app_session => :APP_SESSION) take_status
+                from   EBA_QPOLL_POLLS p
+                )
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_qpoll_polls
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        componentAppearance {
+            showNullValuesAs: " "
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No polls found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            pivot: false
+            savePublicReport: true
+            subscription: false
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 14139310482202766708
+        }
+
+        column ACTIONS (
+            type: hidden
+            heading {
+                heading: Actions
+            }
+            layout {
+                sequence: 24
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ACTION_URL (
+            type: plainText
+            heading {
+                heading: Action
+                alignment: center
+            }
+            layout {
+                sequence: 25
+            }
+            source {
+                dataType: STRING
+            }
+            columnFilter {
+                type: namedLovWordContains
+                namedLov: @take-poll-options
+            }
+            advanced {
+                endUserAlias: X
+            }
+            enableUsersTo {
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ANONYMOUS (
+            type: plainText
+            heading {
+                heading: Anonymize
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ANSWERS_UPDATABLE (
+            type: plainText
+            heading {
+                heading: Updatable
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ENDED (
+            type: plainText
+            heading {
+                heading: Ended
+                alignment: center
+            }
+            layout {
+                sequence: 22
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: U
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column INVITATIONS (
+            type: link
+            heading {
+                heading: Invitations
+                alignment: center
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 16
+                    items: {
+                        IR_POLL_ID: #POLL_ID#
+                    }
+                    clearCache: [
+                        CIR
+                        RIR
+                    ]
+                }
+                linkText: #INVITATIONS#
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Z
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column INVITE_ONLY (
+            type: plainText
+            heading {
+                heading: Invite Only
+                alignment: center
+            }
+            layout {
+                sequence: 46
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AB
+            }
+        )
+
+        column LAST_ACTION (
+            type: plainText
+            heading {
+                heading: Last Action
+                alignment: center
+            }
+            layout {
+                sequence: 26
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: Y
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column POLL (
+            type: link
+            heading {
+                heading: Poll
+                alignment: center
+            }
+            layout {
+                sequence: 18
+            }
+            link {
+                target: {
+                    page: 100
+                    items: {
+                        LPOLL_ID: #POLL_ID#
+                    }
+                    clearCache: 100
+                }
+                linkText: #POLL#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column POLL_DETAILS (
+            type: plainText
+            heading {
+                heading: Poll Details
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column POLL_ID (
+            type: hidden
+            heading {
+                heading: Poll ID
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column POLL_TYPE (
+            type: plainText
+            heading {
+                heading: Type
+                alignment: center
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column QUESTIONS (
+            type: plainText
+            heading {
+                heading: Questions
+                alignment: center
+            }
+            layout {
+                sequence: 19
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column RESPONSES (
+            type: link
+            heading {
+                heading: Responses
+                alignment: center
+            }
+            layout {
+                sequence: 21
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 66
+                    items: {
+                        LPOLL_ID: #POLL_ID#
+                    }
+                    clearCache: 66
+                }
+                linkText: #RESPONSES#
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column RESULTS_VIEWABLE (
+            type: plainText
+            heading {
+                heading: Results
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column ROW_KEY (
+            type: plainText
+            heading {
+                heading: Row Key
+                alignment: center
+            }
+            layout {
+                sequence: 66
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AD
+            }
+        )
+
+        column SCORED (
+            type: plainText
+            heading {
+                heading: Scored
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column STARTED (
+            type: plainText
+            heading {
+                heading: Started
+                alignment: center
+            }
+            layout {
+                sequence: 23
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: V
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+                alignment: center
+            }
+            layout {
+                sequence: 56
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AC
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+                alignment: center
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: K
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+                alignment: center
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+            enableUsersTo {
+                pivot: false
+            }
+        )
+
+        savedReport 2062272 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ACTION_URL (
+                sequence: 9
+            )
+
+            displayColumn INVITATIONS (
+                sequence: 6
+            )
+
+            displayColumn LAST_ACTION (
+                sequence: 8
+            )
+
+            displayColumn POLL (
+                sequence: 2
+            )
+
+            displayColumn POLL_TYPE (
+                sequence: 3
+            )
+
+            displayColumn QUESTIONS (
+                sequence: 5
+            )
+
+            displayColumn RESPONSES (
+                sequence: 7
+            )
+
+            displayColumn ROW_KEY (
+                sequence: 1
+            )
+
+            displayColumn STATUS (
+                sequence: 4
+            )
+
+            sort (
+                column: LAST_ACTION
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: STARTED
+                sort {
+                    direction: desc
+                    nulls: last
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @polls-contributors
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

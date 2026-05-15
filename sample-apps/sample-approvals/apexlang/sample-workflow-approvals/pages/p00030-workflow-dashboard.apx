@@ -1,0 +1,939 @@
+page 30 (
+    name: Workflow Dashboard
+    alias: WORKFLOW-DASHBOARD
+    title: Workflow Dashboard
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @operations-team
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region active-workflows (
+        name: Active Workflows
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region activities (
+        name: Activities
+        type: chart
+        layout {
+            sequence: 70
+            parentRegion: @active-workflows
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-headingLevel-3
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: active-workload-details
+        }
+        chartLayout {
+            height: 400
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+        messages {
+            whenNoDataFound: Please select a Workflow in the Overview region to see further details
+        }
+
+        series activities (
+            name: Activities
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select name activity, count(distinct(workflow_id)) instances 
+                      from apex_workflow_activities
+                     where state in ('WAITING','ACTIVE')
+                       and workspace_id = :WORKSPACE_ID
+                       and workflow_def_name = :P30_ACTIVE_DEF_NAME
+                     group by name
+                    ```
+                pageItemsToSubmit: P30_ACTIVE_DEF_NAME
+            }
+            columnMapping {
+                label: ACTIVITY
+                value: INSTANCES
+            }
+        )
+
+        axis x (
+            name: x
+            title: Activities
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Instances
+            value {
+                step: 1
+            }
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region activities-2 (
+        name: Activities
+        type: chart
+        layout {
+            sequence: 80
+            parentRegion: @faulted-workflows
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-headingLevel-3
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: fault-workload-details
+        }
+        chartLayout {
+            height: 400
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+        messages {
+            whenNoDataFound: Please select a Workflow in the Overview region to see further details
+        }
+
+        series activities (
+            name: Activities
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select name activity, count(distinct(workflow_id)) instances 
+                      from apex_workflow_activities
+                    where state = 'FAULTED'
+                       and workspace_id = :WORKSPACE_ID
+                       and workflow_def_name = :P30_FAULT_DEF_NAME
+                     group by name
+                    ```
+                pageItemsToSubmit: P30_FAULT_DEF_NAME
+            }
+            columnMapping {
+                label: ACTIVITY
+                value: INSTANCES
+            }
+        )
+
+        axis x (
+            name: x
+            title: Activities
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Instances
+            value {
+                step: 1
+            }
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region average-completion-time (
+        name: Average Completion Time
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @performance
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: performance-chart
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        settings {
+            timeAxisType: auto
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+        messages {
+            whenNoDataFound: No Completed or Terminated Workflows found
+        }
+
+        series average-completion-time (
+            name: Average Completion Time
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select
+                      workflow_def_name,
+                      avg( duration_seconds ) / 
+                      case :P30_TIME_UNIT
+                            when 'SEC' then 1
+                            when 'MIN' then 60
+                            when 'HOUR' then 3600
+                            when 'DAY' then ( 3600 * 24 )
+                       end  as avg_time
+                     from table ( apex_workflow.get_workflows (
+                                       p_context => 'MY_WORKFLOWS'
+                                       --, p_application_id => :APP_ID
+                                       ) )    
+                    where state_code in ('COMPLETED','TERMINATED')        
+                    group by workflow_def_name
+                    ```
+                pageItemsToSubmit: P30_TIME_UNIT
+            }
+            columnMapping {
+                label: WORKFLOW_DEF_NAME
+                value: AVG_TIME
+            }
+            performance {
+                maxRowsToProcess: 50
+            }
+        )
+
+        axis x (
+            name: x
+            title: Workflows
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Average Completion Time
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region details (
+        name: Details
+        type: chart
+        layout {
+            sequence: 40
+            parentRegion: @workflows-by-state
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-headingLevel-3
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: workflow-state-details
+        }
+        chartLayout {
+            height: 400
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+        messages {
+            whenNoDataFound: Please select a workflow state in the Overview chart to see further details
+        }
+
+        series instances-per-workflow (
+            name: Instances Per Workflow
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select workflow_def_name, count(workflow_id) instances  
+                      from table ( apex_workflow.get_workflows (
+                                       p_context => 'MY_WORKFLOWS'
+                                       --, p_application_id => :APP_ID
+                                       ) )
+                       where state=:P30_STATE
+                       group by workflow_def_name;                
+                    ```
+                pageItemsToSubmit: P30_STATE
+            }
+            columnMapping {
+                label: WORKFLOW_DEF_NAME
+                value: INSTANCES
+            }
+        )
+
+        axis x (
+            name: x
+            title: Workflows
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Instances
+            value {
+                step: 1
+            }
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region faulted-workflows (
+        name: Faulted Workflows
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: chart
+        layout {
+            sequence: 20
+            parentRegion: @workflows-by-state
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-headingLevel-3
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        chart {
+            type: pie
+        }
+        chartLayout {
+            height: 400
+        }
+        legend {
+            show: false
+        }
+
+        series overview-series (
+            name: Overview Series
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select state, count(workflow_id) workflows 
+                      from table ( apex_workflow.get_workflows (
+                                       p_context => 'MY_WORKFLOWS'
+                                       --, p_application_id => :APP_ID
+                                       ) )              
+                     group by state               
+                    ```
+            }
+            columnMapping {
+                label: STATE
+                value: WORKFLOWS
+            }
+            link {
+                type: redirectUrl
+                targetUrl: javascript:apex.item('P30_STATE').setValue('&STATE!JS.');
+            }
+            label {
+                show: true
+                position: outsideSlice
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+    )
+
+    region overview-2 (
+        name: Overview
+        type: chart
+        layout {
+            sequence: 50
+            parentRegion: @active-workflows
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-headingLevel-3
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            customAttributes: aria-controls="active-workload-details"
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        chartLayout {
+            height: 400
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+        messages {
+            whenNoDataFound: No Active Workflows found
+        }
+
+        series workflows (
+            name: Workflows
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select workflow_def_name, 
+                           count(workflow_id) workflows 
+                      from table ( apex_workflow.get_workflows (
+                                       p_context => 'MY_WORKFLOWS'
+                                       --, p_application_id => :APP_ID
+                                       ) )
+                    where state_code in ('ACTIVE','SUSPENDED') 
+                    group by workflow_def_name               
+                    ```
+            }
+            columnMapping {
+                label: WORKFLOW_DEF_NAME
+                value: WORKFLOWS
+            }
+            link {
+                type: redirectUrl
+                targetUrl: javascript:apex.item('P30_ACTIVE_DEF_NAME').setValue('&WORKFLOW_DEF_NAME!JS.');
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        axis x (
+            name: x
+            title: Workflows
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Instances
+            value {
+                step: 1
+            }
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region overview-3 (
+        name: Overview
+        type: chart
+        layout {
+            sequence: 60
+            parentRegion: @faulted-workflows
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-headingLevel-3
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            customAttributes: aria-controls="fault-workload-details"
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        chartLayout {
+            height: 400
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+        messages {
+            whenNoDataFound: No Faulted Workflows found
+        }
+
+        series workflows (
+            name: Workflows
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select workflow_def_name, 
+                           count(workflow_id) workflows 
+                      from table ( apex_workflow.get_workflows (
+                                       p_context => 'MY_WORKFLOWS'
+                                       --, p_application_id => :APP_ID
+                                       ) )
+                    where state_code = 'FAULTED'
+                    group by workflow_def_name               
+                    ```
+            }
+            columnMapping {
+                label: WORKFLOW_DEF_NAME
+                value: WORKFLOWS
+            }
+            link {
+                type: redirectUrl
+                targetUrl: javascript:apex.item('P30_FAULT_DEF_NAME').setValue('&WORKFLOW_DEF_NAME!JS.');
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        axis x (
+            name: x
+            title: Workflows
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Instances
+            value {
+                step: 1
+            }
+            majorTicks {
+                show: auto
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region performance (
+        name: Performance
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region workflows-by-state (
+        name: Workflows By State
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            customAttributes: aria-controls="workflow-state-details"
+            regionDisplaySelector: true
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P30_ACTIVE_DEF_NAME (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @overview-2
+            slot: regionBody
+        }
+    )
+
+    pageItem P30_FAULT_DEF_NAME (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @overview-3
+            slot: regionBody
+        }
+    )
+
+    pageItem P30_STATE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @overview
+            slot: regionBody
+        }
+    )
+
+    pageItem P30_TIME_UNIT (
+        type: selectList
+        label {
+            label: Time Unit
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @workflow-charts-lov-time-unit
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @average-completion-time
+            slot: sortOrder
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: t-Form-fieldContainer--large
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        advanced {
+            customAttributes: aria-controls="performance-chart"
+        }
+        default {
+            type: static
+            staticValue: HOUR
+        }
+        help {
+            helpText: Select the time unit to display within the Performance chart.
+        }
+    )
+
+    dynamicAction refresh-activities (
+        name: Refresh Activities
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P30_ACTIVE_DEF_NAME
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @activities
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-activities-2 (
+        name: Refresh Activities
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: P30_FAULT_DEF_NAME
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @activities-2
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-performance-chart (
+        name: Refresh Performance Chart
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P30_TIME_UNIT
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @average-completion-time
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-workflow-per-state-details-region (
+        name: Refresh Workflow Per State Details Region
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P30_STATE
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @details
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

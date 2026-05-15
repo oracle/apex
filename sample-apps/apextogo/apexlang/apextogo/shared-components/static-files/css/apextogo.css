@@ -1,0 +1,39 @@
+/* Global Variables */
+:root {
+  --ut-header-box-shadow: none; /* Remove Header Shadow */
+  --ut-navtabs-item-active-background-color: transparent; /* Set Active as Transparent */
+  --ut-navtabs-item-highlight-width: .125rem; /* Set Highlight Thickness */
+  --ut-xs-body-content-padding-x: 1rem;
+  --ut-cr-wrap-padding-x: 0rem; /* Set Content Row Horizontal Padding */
+  --ut-xs-cr-wrap-padding-x: 0rem; /* Set Content Row Horizontal Padding on Mobile */
+}
+
+/* Navigation Tabs */
+.t-NavTabs {
+  box-shadow: 0 0 0 1px var(--ut-navtabs-item-border-color); /* Add Border for All Sizes */
+}
+
+/* Cart Badge */
+.t-Button--navBar .t-Button-badge {
+  background-color: var(--a-palette-primary);
+  color: var(--a-palette-primary-contrast);
+}
+
+/* Hide Footer but Reserve Space */
+.t-Footer {
+  visibility: hidden;
+  padding: 0;
+  margin: 0 !important;
+}
+
+/* Set Inline Dialogs to be Full Screen */
+.ui-dialog--inline {
+  min-block-size: 100dvh;
+  min-inline-size: 100dvw;
+}
+
+/* Progressive Transitions */
+@view-transition {
+  navigation: auto;
+  types: slide, forwards;
+}

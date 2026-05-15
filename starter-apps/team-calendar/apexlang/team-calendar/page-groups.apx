@@ -1,0 +1,44 @@
+pageGroup acl (
+    name: ACL
+)
+
+pageGroup administration (
+    name: Administration
+)
+
+pageGroup events (
+    name: Events
+)
+
+pageGroup help (
+    name: Help
+)
+
+pageGroup home (
+    name: Home
+)
+
+pageGroup login (
+    name: Login
+)
+
+pageGroup mobile (
+    name: Mobile
+)
+
+pageGroup public (
+    name: Public
+)
+
+pageGroup search (
+    name: Search
+)
+
+pageGroup tags (
+    name: Tags
+)
+
+pageGroup timeline (
+    name: Timeline
+)
+

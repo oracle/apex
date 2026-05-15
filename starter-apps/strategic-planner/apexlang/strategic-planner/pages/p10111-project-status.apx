@@ -1,0 +1,472 @@
+page 10111 (
+    name: Project Status
+    alias: PROJECT-STATUS
+    title: &NOMENCLATURE_PROJECT. Status
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region nomenclature-project-status (
+        name: &NOMENCLATURE_PROJECT. Status
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_PROJECT_STATUSES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P10111_CREATED (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @nomenclature-project-status
+            slot: regionBody
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: CREATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10111_CREATED_BY (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @nomenclature-project-status
+            slot: regionBody
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: CREATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10111_DISPLAY_SEQ (
+        type: numberField
+        label {
+            label: Display Sequence
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @nomenclature-project-status
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 22
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: DISPLAY_SEQ
+            dataType: number
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue: select max(display_seq) + 10 from sp_task_statuses
+        }
+    )
+
+    pageItem P10111_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @nomenclature-project-status
+            slot: regionBody
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10111_INCLUDE_YN (
+        type: switch
+        label {
+            label: Include
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @nomenclature-project-status
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: INCLUDE_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: Included statuses are current and new tasks can be created with this status.
+        }
+    )
+
+    pageItem P10111_STATIC_ID (
+        type: textField
+        label {
+            label: Static ID
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @nomenclature-project-status
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: STATIC_ID
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10111_STATUS (
+        type: textField
+        label {
+            label: Status
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @nomenclature-project-status
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: STATUS
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10111_UPDATED (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @nomenclature-project-status
+            slot: regionBody
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: UPDATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10111_UPDATED_BY (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @nomenclature-project-status
+            slot: regionBody
+        }
+        source {
+            formRegion: @nomenclature-project-status
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add &NOMENCLATURE_PROJECT. Status
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10111_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10111_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10111_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation no-delete-if-used (
+        name: no delete if used
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_projects
+                 where status_id = :P10111_ID
+                ```
+        }
+        error {
+            errorMessage: Cannot delete statuses that are used by tasks.
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    validation static-id-no-spaces (
+        name: static id no spaces
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: instr(:P10111_STATIC_ID,' ') = 0
+        }
+        error {
+            errorMessage: Static ID cannot contain spaces
+            associatedItem: @P10111_STATIC_ID
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 16188342866178969263
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form (
+        name: Initialize form
+        type: formInitialization
+        formRegion: @nomenclature-project-status
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 16188338763681969259
+        }
+    )
+
+    process process-form (
+        name: Process form
+        type: formAutoRowProcessing
+        formRegion: @nomenclature-project-status
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 16188339108755969259
+        }
+    )
+
+)
+

@@ -1,0 +1,49 @@
+file blue_marker.png (
+    mimeType: image/png
+)
+
+file excanvas.min.js (
+    mimeType: text/javascript
+)
+
+file "icons/app-icon-144-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-256-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file jquery.flot.min.js (
+    mimeType: text/javascript
+)
+
+file jquery.flot.resize.js (
+    mimeType: text/javascript
+)
+
+file jquery.flot.selection.js (
+    mimeType: text/javascript
+)
+
+file red_marker.png (
+    mimeType: image/png
+)
+

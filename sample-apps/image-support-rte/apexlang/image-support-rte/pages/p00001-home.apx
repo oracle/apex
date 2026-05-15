@@ -1,0 +1,134 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Image Support for Rich Text Editor
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                return apex_markdown.to_html(
+                    p_markdown => q'!
+                This application illustrates how to augment Rich Text Editor content items to allow for inline images. Images can be pasted in or image files can be selected (using the `Upload image from computer` icon) or dragged in. Once added, the user can add alt text to describe the image's purpose. This improves accessibility for screen reader users, serves as a fallback when images don't load and helps search and AI systems understand the image. The only image types currently supported in this application are JPEG, JPG, GIF, PNG, and WebP.
+                
+                To see inline images in Rich Text Editor in action, expand the hamburger menu in the upper left and select the `Image Support Demo` menu entry.  You can add some text, paste in an image, and then select the `[Add Content]` button. The content will display in the report below, along with the author's username and creation date.  If the current user is the author, there will also be an edit link. Click the `View Interactive Report >` link in the upper right to see the same data in all the available formats (Body, Body No Images, Body HTML).
+                !'
+                );
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region image-support-for-rich-text-editor (
+        name: Image Support for Rich Text Editor
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    region implementation (
+        name: Implementation
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                return apex_markdown.to_html(
+                    p_markdown => q'!
+                Providing image support requires three things; storing the image, displaying the image and ensuring only referenced images are permanently stored.
+                
+                1. **Storing the Image**  
+                   JavaScript is used to call an application-level process that adds the image to the images table, where a unique filename is created. This process returns an inline URL referencing that unique filename, which will display the resulting image.
+                2. **Displaying the Image**  
+                   The inline URL is a link to a secure, dedicated page containing a "Before Header" process that downloads the image for display (using the unique filename). It works perfectly for Classic Reports using the "Comments" template, but not for Interactive or Classic Reports using other templates, nor within emails. Rather than display the full image link (which can be long and unsightly), the text is also stored with the links, replaced with `[*the alt text*]` (if alt text was added), `[*the file name*]` (if a file was added) or just `[image]` (for images pasted in without alt text). This alternate content body can then be used when needed.
+                
+                   A snippet of CSS ensures that large images do not cause horizontal scrolling. This code can just be added at the page level, or at the application level in a new CSS static file (as in this application) or to CSS styles already within your application.
+                3. **Keeping the Image Table "Clean"**  
+                   Because images are uploaded and stored as they are added (before the related content is created), foreign keys cannot be used to keep the image table clean (only containing referenced images). To help with this, an `IMAGE_REF_ID` is defaulted with a system-generated unique value (`SYS_GUID`) to act as a pseudo foreign key. Each time content is created, a new value is set to be used for the next content.  Because new content can be abandoned, a procedure is executed to look for old images (created over 24 hours ago) whose `IMAGE_REF_ID` does not exist in the content table.
+                
+                   Images can also be added and removed during the edit process, and edits can be abandoned. To avoid having images with a valid IMAGE_REF_ID but not referenced by content, a new `IMAGE_REF_ID` value is used for editing as well.  The content CLOB is scanned after update, and the list of referenced images with the new `IMAGE_REF_ID` is updated to the existing `IMAGE_REF_ID`, which allows any non-referenced images to be deleted after 24 hours (because their `IMAGE_REF_ID` values would not be found in the content table).
+                
+                This application contains only one content table, but the same image table can be used to provide image support for multiple tables containing CLOB content. The utility package would just need to be edited to reference all the content tables.
+                
+                The following details make image support for Rich Text Editor possible:
+                
+                ### Database Objects
+                * `EXCM_RTE_IMAGES`: table storing all images
+                * `EXCM_CONTENT`: content table; includes `IMAGE_REF_ID` as loose foreign key to the images table (images are created before the content, so real foreign keys cannot be used)
+                * `EXCM_CONTENT_BIU`: before insert and update trigger on `EXCM_CONTENT`; includes setting `BODY_HTML` to protect against manual, command line modification of `BODY_HTML`
+                * `EXCM_CONTENT_V`: view based on `EXCM_CONTENT`; used to replace session ID placeholder so that images can be displayed in environments that do not support session rejoining, also provides an HTML version of the body for use in Classic reports using the "Comments" template
+                * `EXCM_UTIL`: utility package; used for upload and display of images, as well as add, update, and delete operations for content (APEX DML is not used, even for update or delete, because of the additional steps necessary)
+                
+                ### Application Objects
+                * Static Application Files: `exContent.js` and `styles.css`
+                * Application Setting: `GET_IMAGE_PREFIX` - used in parsing content for image names to avoid orphans
+                * Application Process: `POST_IMAGE` - used for upload
+                * Application Process: `set GET_IMAGE_PREFIX` - captured only once, upon first login
+                * Page 9000: contains Before Header Process `Download Image`, used to display an image
+                
+                ### Page Objects Wherever Content is Created (in this example, on pages 2 and 3)
+                * Page level JavaScript File URLs: references `exContent.js`
+                * `Px_IMAGE_REF_ID`: value used to tie the images to the content created
+                * `Px_CONTENT`: Rich Text Editor item used to input the content (Rich Text Editor items support `Markdown` or `HTML` as the output format, this solution requires the use of `Markdown`)
+                * Item level Initialization JavaScript Function: sets options, identifies the item storing the `IMAGE_REF_ID` and calls `POST_IMAGE`
+                
+                ### Extra Details
+                1. Because the image prefix is stored as an application setting, the value is verified upon each login.  If this application is exported and installed in a different environment, the setting would need to be different.  This value can also be added to a settings table and retrieved from there if your application has a dedicated settings table.
+                2. All display of the content is driven off the `EXCM_CONTENT_V` view.  This view supports replacing the session ID placeholder with the current user's session (using `EXCM_UTIL.REPLACE_SESSION_ON_DISPLAY`) and is necessary because not all environments support rejoining sessions.  In environments that support rejoining, the session will not be included in the display image URL, so no replacement will be done.
+                3. When the image URL is created, if the user was running in debug mode, there might be "DEBUG" included in the resulting URL.  There is a function within `EXCM_UTIL.UPLOAD_RTE_IMAGE` that removes any debug parameter, so it will not carry over into the stored URL.
+                4. If a user adds a link to an image, the resulting inline URL will contain an extra, exterior set of square brackets (`[]`).  That is why `EXCM_UTIL.REPLACE_IMAGES` does an extra replace (commented within the code).
+                5. All manipulation of data within `EXCM_CONTENT` **must** be done via the procedures in the `EXCM_UTIL` package.  Each procedure does much more than just insert, update, or delete the required row.
+                6. `REGEXP` could have been used to find the image strings in the content, but `INSTR` and `SUBSTR` are used instead, as they tend to be faster.
+                !'
+                );
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+)
+

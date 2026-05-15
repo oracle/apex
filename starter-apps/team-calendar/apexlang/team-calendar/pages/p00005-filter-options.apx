@@ -1,0 +1,619 @@
+page 5 (
+    name: Filter Options
+    alias: FILTER-OPTIONS
+    title: Filter Options
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region filter-options (
+        name: Filter Options
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--hiddenOverflow
+            ]
+        }
+    )
+
+    pageItem P5_CALENDARS (
+        type: checkboxGroup
+        label {
+            label: Calendars
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @calendars-with-default
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 30
+            region: @filter-options
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText: Use to restrict to events from one or more calendars.
+        }
+        config {
+            buildOption: @include-multiple-calendars
+        }
+    )
+
+    pageItem P5_CAL_ALL (
+        type: checkboxGroup
+        label {
+            label: Calendars
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:All;0
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 20
+            region: @filter-options
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText: Use to limit the results to events from the Calendars selected.
+        }
+        config {
+            buildOption: @include-multiple-calendars
+        }
+    )
+
+    pageItem P5_CONTACT_EMAIL (
+        type: selectList
+        label {
+            label: Contact Email
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @contacts
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @filter-options
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 'x' from
+                eba_ca_events where contact_email is not null;
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        help {
+            helpText: Use to limit the results to events where the Contact Email matches the email listed in the Access Control List (under Administration).
+        }
+        config {
+            buildOption: @include-external-internal-event-types
+        }
+    )
+
+    pageItem P5_ET_ALL (
+        type: checkboxGroup
+        label {
+            label: Event Types
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:All;0
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 7
+            region: @filter-options
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText: Use to limit the results to events with the Event Types selected.
+        }
+    )
+
+    pageItem P5_EVENT_TYPES (
+        type: checkboxGroup
+        label {
+            label: Event Types
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: sharedComponent
+            lov: @event-types-for-main-cal
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 10
+            region: @filter-options
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: belowBox
+            horizontalAlignment: left
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset All
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button submit (
+        buttonName: SUBMIT
+        label: Set
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close (
+        name: close
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-cal-other-than-all (
+        name: when cal other than all
+        execution {
+            sequence: 7
+        }
+        when {
+            selectionType: items
+            items: P5_CALENDARS
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P5_CALENDARS
+        }
+
+        action native-set-value (
+            action: setValue
+            affectedElements {
+                selectionType: items
+                items: P5_CAL_ALL
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction when-calendars-all (
+        name: when calendars All
+        execution {
+            sequence: 5
+        }
+        when {
+            selectionType: items
+            items: P5_CAL_ALL
+        }
+        clientSideCondition {
+            type: item=value
+            item: P5_CAL_ALL
+            value: 0
+        }
+
+        action native-set-value (
+            action: setValue
+            affectedElements {
+                selectionType: items
+                items: P5_CALENDARS
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-event-type-other-than-all (
+        name: when event type other than all
+        execution {
+            sequence: 12
+        }
+        when {
+            selectionType: items
+            items: P5_EVENT_TYPES
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P5_EVENT_TYPES
+        }
+
+        action native-set-value (
+            action: setValue
+            affectedElements {
+                selectionType: items
+                items: P5_ET_ALL
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction when-event-types-all (
+        name: when event_types All
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P5_ET_ALL
+        }
+        clientSideCondition {
+            type: item=value
+            item: P5_ET_ALL
+            value: 0
+        }
+
+        action native-set-value (
+            action: setValue
+            affectedElements {
+                selectionType: items
+                items: P5_EVENT_TYPES
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 1837104106203413416
+        }
+    )
+
+    process load-cals (
+        name: load cals
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_pref varchar2(4000);
+                begin
+                
+                l_pref := apex_util.get_preference (
+                              p_preference => 'CALENDARS_FILTER',
+                              p_user       => :APP_USER );
+                
+                if l_pref is null or l_pref = '0' then
+                   :P5_CAL_ALL := '0';
+                else
+                   :P5_CALENDARS := l_pref;
+                end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 22
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1837104474983413416
+        }
+    )
+
+    process load-contact-email (
+        name: load contact_email
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_pref varchar2(4000);
+                begin
+                
+                l_pref := apex_util.get_preference (
+                              p_preference => 'CONTACT_EMAIL',
+                              p_user       => :APP_USER );
+                
+                if l_pref is null or l_pref = '0' then
+                   :P5_CONTACT_EMAIL := null;
+                else
+                   :P5_CONTACT_EMAIL := l_pref;
+                end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 32
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 786939670430519371
+        }
+    )
+
+    process load-event-types (
+        name: load event types
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_pref varchar2(4000);
+                begin
+                
+                l_pref := apex_util.get_preference (
+                              p_preference => 'EVENT_TYPES_FILTER',
+                              p_user       => :APP_USER );
+                
+                if l_pref is null or l_pref = '0' then
+                   :P5_ET_ALL := '0';
+                else
+                   :P5_EVENT_TYPES := l_pref;
+                end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 12
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1837104908865413417
+        }
+    )
+
+    process reset (
+        name: Reset
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P5_EVENT_TYPES := null;
+                :P5_CALENDARS := null;
+                :P5_CONTACT_EMAIL := null;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: All filters reset
+        }
+        advanced {
+            executionMappingIdentifier: 1864060256376892249
+        }
+        serverSideCondition {
+            whenButtonPressed: @reset
+        }
+    )
+
+    process set-calendar-pref (
+        name: set calendar pref
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                APEX_UTIL.SET_PREFERENCE(        
+                   p_preference => 'CALENDARS_FILTER',
+                   p_value      => nvl(:P5_CALENDARS,'0'),      
+                   p_user       => :APP_USER);
+                   
+                :CALENDARS_FILTER := nvl(:P5_CALENDARS,'0');
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 1837103674340413416
+        }
+    )
+
+    process set-contact-email (
+        name: set contact email
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                APEX_UTIL.SET_PREFERENCE(        
+                   p_preference => 'CONTACT_EMAIL',
+                   p_value      => nvl(:P5_CONTACT_EMAIL,'0'),      
+                   p_user       => :APP_USER);
+                   
+                :CONTACT_EMAIL := :P5_CONTACT_EMAIL;
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Filters set.
+        }
+        error {
+            errorMessage: Filters failed to be set.
+        }
+        advanced {
+            executionMappingIdentifier: 1673117388716914087
+        }
+    )
+
+    process set-event-type-pref (
+        name: set event type pref
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                APEX_UTIL.SET_PREFERENCE(        
+                   p_preference => 'EVENT_TYPES_FILTER',
+                   p_value      => nvl(:P5_EVENT_TYPES,'0'),      
+                   p_user       => :APP_USER);
+                   
+                :EVENT_TYPES_FILTER := nvl(:P5_EVENT_TYPES,'0');
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Filters set.
+        }
+        error {
+            errorMessage: Filters failed to be set.
+        }
+        advanced {
+            executionMappingIdentifier: 1837103299368413415
+        }
+    )
+
+)
+

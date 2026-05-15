@@ -1,0 +1,157 @@
+page 28 (
+    name: Delete Poll
+    alias: DELETE-POLL
+    title: Delete Poll
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        width: 480
+        height: 240
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region delete-poll (
+        name: Delete Poll
+        type: staticContent
+        source {
+            htmlCode: <p>Please confirm you want to delete this poll and all information about it.  It will not delete the question set used, but will delete all responses and poll data.</p>
+        }
+        layout {
+            sequence: 10
+            slot: wizardBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region new (
+        name: New
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardButtons
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @new
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete Poll
+        layout {
+            sequence: 10
+            region: @new
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process delete-poll (
+        name: delete poll
+        type: executeCode
+        source {
+            plsqlCode: delete from eba_qpoll_polls where id = :POLL_ID;
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Poll Deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 13932210190164355586
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        name: Branch to Polls Page
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 1
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

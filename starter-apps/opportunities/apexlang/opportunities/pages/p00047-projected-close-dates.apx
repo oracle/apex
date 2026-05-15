@@ -1,0 +1,124 @@
+page 47 (
+    name: Projected Close Dates
+    alias: PROJECTED-CLOSE-DATES
+    title: Projected Close Dates
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This page displays a calendar of projected opportunity close dates. Click an opportunity to edit its details.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region projected-close-dates-displays-rep-title-and-deal-amount (
+        name: Projected Close Dates (displays &REP_TITLE. and Deal Amount)
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.ID,
+                       d.CUSTOMER_ID,
+                       c.CUSTOMER_NAME,
+                       d.SALESREP_ID_01,
+                       case when apex_util.get_build_option_status(
+                                     p_application_id    => :APP_ID,
+                                     p_build_option_name => 'Opportunity Amount Set at Product Level'
+                                 ) = 'EXCLUDE' then
+                           sr.REP_LAST_NAME ||', '|| sr.REP_FIRST_NAME || ' (' || ltrim(to_char(d.DEAL_AMOUNT,'9G999G999G999'),' ') || ')'
+                       else
+                           sr.REP_LAST_NAME ||', '|| sr.REP_FIRST_NAME || ' (' || ltrim(to_char(nvl((select sum(nvl(dp.quote_price, 0)) from EBA_SALES_DEAL_PRODUCTS dp where dp.deal_id = d.id), 0),'FML999G999G999G999G999'),' ') || ')'
+                       end as rep_name,
+                       d.DEAL_NAME,
+                       d.DEAL_CLOSE_DATE
+                  from EBA_SALES_DEALS d,
+                       EBA_SALES_CUSTOMERS c,
+                       EBA_SALES_SALESREPS sr
+                 where d.CUSTOMER_ID = c.ID
+                   and d.SALESREP_ID_01 = sr.ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        settings {
+            displayColumn: REP_NAME
+            startDateColumn: DEAL_CLOSE_DATE
+            endDateColumn: DEAL_CLOSE_DATE
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+            viewEditLink: {
+                page: 16
+                items: {
+                    P16_ID: &ID.
+                }
+                action: resetPagination
+            }
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    computation last-page (
+        itemName: LAST_PAGE
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 47
+        }
+    )
+
+)
+

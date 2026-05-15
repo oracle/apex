@@ -1,0 +1,315 @@
+page 142 (
+    name: Manage Sample Data
+    alias: MANAGE-SAMPLE-DATA
+    title: Manage Sample Data
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Manage sample data for Accounts, Products, Opportunities, Notes, Leads, and more. The available options include remove, install, or reset sample data.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region manage-sample-data (
+        name: Manage Sample Data
+        type: staticContent
+        source {
+            htmlCode: <p>This application ships with sample data.  You can remove and recreate sample data using this page.  If the sample data is old recreating the data makes the dates more current.  Removing or adding sample data will not affect any decisions you created.</p>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: t-Alert--accessibleHeading
+        }
+    )
+
+    region manage-sample-data-2 (
+        name: Manage Sample Data
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @manage-sample-data
+            slot: subRegions
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button load-sample-data (
+        buttonName: load_sample_data
+        label: Load Sample Data
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--primary
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_sales_comments where id <= 20
+                union all
+                select 1 from eba_sales_deal_products where id <= 100
+                union all
+                select 1 from eba_sales_deal_competition where id < 100
+                union all
+                select 1 from eba_sales_deals where id < 100
+                union all
+                select 1 from eba_sales_products where id < 100
+                union all
+                select 1 from eba_sales_salesreps where id < 100
+                union all
+                select 1 from eba_sales_customers where id < 100
+                union all
+                select 1 from eba_sales_leads where id < 100
+                ```
+        }
+    )
+
+    button remove-sample-data (
+        buttonName: remove_sample_data
+        label: Remove Sample Data
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--primary
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_sales_comments where id <= 20
+                union all
+                select 1 from eba_sales_deal_products where id <= 100
+                union all
+                select 1 from eba_sales_deal_competition where id < 100
+                union all
+                select 1 from eba_sales_deals where id < 100
+                union all
+                select 1 from eba_sales_products where id < 100
+                union all
+                select 1 from eba_sales_salesreps where id < 100
+                union all
+                select 1 from eba_sales_customers where id < 100
+                union all
+                select 1 from eba_sales_leads where id < 100
+                ```
+        }
+    )
+
+    button reset-data (
+        buttonName: reset_data
+        label: Reset Data
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process load-sample-data (
+        name: Load Sample Data
+        type: executeCode
+        source {
+            plsqlCode: eba_sales_data.load_sample;
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Sample Data Loaded.
+        }
+        advanced {
+            executionMappingIdentifier: 7812228303203215753
+        }
+        serverSideCondition {
+            whenButtonPressed: @load-sample-data
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    process remove-sample-data (
+        name: remove sample data
+        type: executeCode
+        source {
+            plsqlCode: eba_sales_data.remove_sample;
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Sample Data Removed
+        }
+        advanced {
+            executionMappingIdentifier: 7812227910342215753
+        }
+        serverSideCondition {
+            whenButtonPressed: @remove-sample-data
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    process reset-data (
+        name: reset data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_sales_data.remove_sample;
+                eba_sales_data.load_sample;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Sample data reset.
+        }
+        advanced {
+            executionMappingIdentifier: 7812227454635215751
+        }
+        serverSideCondition {
+            whenButtonPressed: @reset-data
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    branch (
+        name: Go To Page settings
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: settings
+            }
+        }
+        comments {
+            comments: Created 06-JAN-2012 15:08 by MIKE
+        }
+    )
+
+)
+

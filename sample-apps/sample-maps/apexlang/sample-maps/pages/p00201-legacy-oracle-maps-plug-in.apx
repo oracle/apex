@@ -1,0 +1,98 @@
+page 201 (
+    name: Legacy Oracle Maps Plug-In
+    alias: LEGACY-ORACLE-MAPS-PLUG-IN
+    title: &APP_NAME. - Legacy Oracle Maps Plug-In
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This map visualizes US states as a <em>Polygon</em>) layer and the large airports (with more than 50,000 commercial operations) as a <em>Point</em> layer on top.</p>
+                <p>The region uses the <strong>Oracle Maps Region Plug-In</strong> from the <strong>Sample Geolocation Showcase</strong> packaged application, which was shipped with APEX up to version 20.2.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region us-states-legacy-oracle-maps-plug-in (
+        name: US States (Legacy Oracle Maps Plug-In)
+        type: plugin/legacyOracleHtml5MapsRegion
+        source {
+            sqlQuery:
+                ```sql
+                select id,
+                       name as infotip,
+                       geometry,
+                       'blue' as style,
+                       null as markersize
+                  from eba_sample_map_states
+                union all
+                select id,
+                       city || ' (' || iata_code || ')' as infotip,
+                       geometry,
+                       'red' as style,
+                       'C' || round(commercial_ops/10000) as markersize
+                  from eba_sample_map_airports
+                 where commercial_ops > 50000
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            mapCenterLonLat: -115,35
+            initialZoomLevel: 4
+            navigationBarOptions: complete
+            additionalMapFeatures: [
+                rectangleZoom
+                distanceTool
+                scaleBar
+            ]
+            sqlFoiInfoWindowWidthInPixel: 250
+            sqlFoiInfoWindowHeightInPixel: 150
+        }
+    )
+
+)
+

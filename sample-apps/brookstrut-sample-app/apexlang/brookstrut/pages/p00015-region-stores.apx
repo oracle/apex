@@ -1,0 +1,622 @@
+page 15 (
+    name: Region Stores
+    alias: REGION-STORES
+    title: Region Stores
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region region-performance (
+        name: Region Performance
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.REGION_NAME,
+                       s.STORE_NAME,
+                       s.region_id, 
+                       sum(sh.item_price * sh.QUANTITY) total_sales,
+                       sum(sh.quantity) units_sold,
+                       count(*) transactions
+                from     OOW_DEMO_SALES_HISTORY sh,
+                         OOW_DEMO_STORES s,
+                         OOW_DEMO_REGIONS r
+                where  sh.store_id = s.id and
+                       s.region_id = r.id and
+                       r.id = :P15_REGION_ID
+                group by s.region_id, REGION_NAME, s.STORE_NAME
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 12010605336969372710
+        }
+
+        column REGION_ID (
+            type: plainText
+            heading {
+                heading: Region ID
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column REGION_NAME (
+            type: plainText
+            heading {
+                heading: Region
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column STORE_NAME (
+            type: plainText
+            heading {
+                heading: Store
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column TOTAL_SALES (
+            type: plainText
+            heading {
+                heading: Total Sales
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column TRANSACTIONS (
+            type: plainText
+            heading {
+                heading: Transactions
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column UNITS_SOLD (
+            type: plainText
+            heading {
+                heading: Units Sold
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Region Performance
+        }
+
+        savedReport 120137037 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn STORE_NAME (
+                sequence: 1
+            )
+
+            displayColumn TOTAL_SALES (
+                sequence: 2
+            )
+
+            displayColumn TRANSACTIONS (
+                sequence: 4
+            )
+
+            displayColumn UNITS_SOLD (
+                sequence: 3
+            )
+
+            sort (
+                column: TRANSACTIONS
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            aggregate (
+                column: TOTAL_SALES
+            )
+
+            aggregate (
+                column: UNITS_SOLD
+            )
+
+            aggregate (
+                column: STORES_IN_REGION
+            )
+
+            aggregate (
+                column: TRANSACTIONS
+            )
+
+        )
+
+    )
+
+    region stores (
+        name: Stores
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    s.ID,
+                    s.id store_id,
+                    s.STORE_NAME CARD_TITLE,
+                    s.STORE_TYPE,
+                    s.STORE_ADDRESS||' '||s.STORE_CITY|| ' '||s.STORE_STATE||' '||s.STORE_ZIP CARD_SUBTEXT,
+                    s.store_lat,
+                    s.store_lng,
+                    (select count(*) from OOW_DEMO_STORE_PRODUCTS sls where sls.store_id = s.id) inventory_count,
+                    s.STORE_OPEN_DATE, 
+                    s.STORE_OPEN_DATE STORE_OPEN_DATE2,
+                    (select region_name from oow_demo_regions r where r.id = s.region_id) CARD_TEXT
+                from "#OWNER#"."OOW_DEMO_STORES" s
+                where s.region_id = :P15_REGION_ID
+                  
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--featured force-fa-lg
+                t-Cards--3cols
+                t-Cards--animColorFill
+            ]
+        }
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card Subtext
+                alignment: center
+            }
+            layout {
+                sequence: 170
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Card Text
+                alignment: center
+            }
+            layout {
+                sequence: 180
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Card Title
+            }
+            layout {
+                sequence: 160
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        P3_ID: #STORE_ID#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #CARD_TITLE#
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column INVENTORY_COUNT (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Inventory Count
+                alignment: center
+            }
+            layout {
+                sequence: 130
+            }
+        )
+
+        column STORE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Store Id
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column STORE_LAT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Store Lat
+                alignment: center
+            }
+            layout {
+                sequence: 110
+            }
+        )
+
+        column STORE_LNG (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Store Lng
+                alignment: center
+            }
+            layout {
+                sequence: 120
+            }
+        )
+
+        column STORE_OPEN_DATE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Store Open Date
+                alignment: center
+            }
+            layout {
+                sequence: 140
+            }
+        )
+
+        column STORE_OPEN_DATE2 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Store Open Date2
+                alignment: center
+            }
+            layout {
+                sequence: 150
+            }
+        )
+
+        column STORE_TYPE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Store Type
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+    )
+
+    region timing (
+        name: Timing
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   x clob;
+                begin
+                    x := to_char(oow_demo_timing.get_elap,'99G9990D000')||' seconds';
+                    return x;
+                end;
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P15_REGION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @stores
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_REGION_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @stores
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button edit (
+        buttonName: Edit
+        label: Edit
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                items: {
+                    P9_ID: &P15_REGION_ID.
+                }
+                clearCache: 9
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Refresh
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 15
+                items: {
+                    P15_REGION_ID: &P15_REGION_ID.
+                }
+                clearCache: [
+                    8
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 8
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p15-region-name (
+        itemName: P15_REGION_NAME
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select region_name from OOW_DEMO_REGIONS where id = :P15_REGION_ID
+        }
+    )
+
+    process start-timer (
+        name: start timer
+        type: executeCode
+        source {
+            plsqlCode: oow_demo_timing.start_timer;
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 12014533130090491905
+        }
+    )
+
+)
+

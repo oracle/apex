@@ -1,0 +1,108 @@
+lov access-request-statuses (
+    name: ACCESS REQUEST STATUSES
+    source {
+        location: staticValues
+    }
+
+    entry approved (
+        sequence: 2
+        display: Approved
+        return: APPROVED
+    )
+
+    entry declined (
+        sequence: 3
+        display: Declined
+        return: DECLINED
+    )
+
+    entry requested (
+        sequence: 1
+        display: Requested
+        return: REQUESTED
+    )
+
+)
+
+lov access-roles (
+    name: ACCESS_ROLES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select role_name d, role_id r
+              from APEX_APPL_ACL_ROLES
+             where application_id = :APP_ID 
+             order by 1 desc
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov answer-type (
+    name: ANSWER TYPE
+    source {
+        location: staticValues
+    }
+
+    entry free-form-answer (
+        sequence: 3
+        display: Free Form Answer
+        return: FREEFORM
+    )
+
+    entry multiple-answers (
+        sequence: 2
+        display: Multiple Answers
+        return: MULTI
+    )
+
+    entry single-answer (
+        sequence: 1
+        display: Single Answer
+        return: SINGLE
+    )
+
+)
+
+lov timeframe-4-weeks (
+    name: TIMEFRAME (4 WEEKS)
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val as seconds
+              from table( apex_util.get_timeframe_lov_data )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: SECONDS
+        display: DISP
+    }
+)
+
+lov yes-no (
+    name: YES_NO
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 2
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: Y
+    )
+
+)
+

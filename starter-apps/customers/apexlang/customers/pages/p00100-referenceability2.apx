@@ -1,0 +1,554 @@
+page 100 (
+    name: Referenceability
+    alias: REFERENCEABILITY2
+    title: Referenceability
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @product-referencability
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    region by-asset-commitment (
+        name: by Asset Commitment
+        type: chart
+        source {
+            pageItemsToSubmit: [
+                P100_CATEGORY
+                P100_GEO
+            ]
+        }
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: scrollable-region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            position: top
+            hideAndShowBehavior: none
+        }
+
+        series geography (
+            name: Geography
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ID,
+                        reference_TYPE group_name,
+                        (   select count(distinct(pu.customer_id))
+                            from eba_cust_product_uses pu
+                            where ':'||pu.reference_type_ids||':' like '%:'||t.id||':%'
+                        ) cnt
+                    from eba_cust_reference_TYPES t
+                    order by 2 desc
+                    ```
+            }
+            columnMapping {
+                seriesName: GROUP_NAME
+                label: GROUP_NAME
+                value: CNT
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 122
+                    items: {
+                        IR_REFERENCE_TYPE: &GROUP_NAME.
+                    }
+                    clearCache: [
+                        122
+                        RIR
+                    ]
+                    action: resetPagination
+                }
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region by-internal-contact (
+        name: by Internal Contact
+        type: plugin/html5BarChart
+        source {
+            sqlQuery:
+                ```sql
+                select internal_contact,
+                    count(*) customers
+                from eba_cust_product_uses
+                where internal_contact is not null
+                group by internal_contact
+                order by lower(internal_contact)
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            labelColumn: INTERNAL_CONTACT
+            valueColumn: CUSTOMERS
+            labelLinkTarget: {
+                page: 122
+                items: {
+                    IREQ_REF_RECRUITMENT_OWNER: &INTERNAL_CONTACT.
+                }
+                clearCache: [
+                    RIR
+                    122
+                ]
+                action: resetPagination
+            }
+            valueLinkTarget: {
+                page: 122
+                items: {
+                    IREQ_REF_RECRUITMENT_OWNER: &INTERNAL_CONTACT.
+                }
+                clearCache: [
+                    RIR
+                    122
+                ]
+                action: resetPagination
+            }
+            maximumRows: 50
+        }
+    )
+
+    region by-phase (
+        name: by Phase
+        type: chart
+        source {
+            pageItemsToSubmit: [
+                P100_CATEGORY
+                P100_GEO
+            ]
+        }
+        layout {
+            sequence: 60
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: scrollable-region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            position: top
+            hideAndShowBehavior: none
+        }
+
+        series geography (
+            name: Geography
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select id,
+                        status group_name,
+                        (   select count(distinct(pu.customer_id))
+                            from eba_cust_product_uses pu
+                            where pu.reference_status_id = t.id
+                        ) cnt
+                    from eba_cust_product_statuses t
+                    order by status
+                    ```
+            }
+            columnMapping {
+                seriesName: GROUP_NAME
+                label: GROUP_NAME
+                value: CNT
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region product-summary (
+        name: Product Summary
+        type: plugin/badgeList
+        source {
+            sqlQuery:
+                ```sql
+                select label, nvl(to_number(value,'999G999G990'),0) value, url from (
+                with data as (
+                    select count(*) total,
+                        count( distinct product_family_id ) families
+                    from eba_cust_products p
+                --    where (NVL(:P100_CATEGORY,0) = 0 or CATEGORY_ID = :P100_CATEGORY) and
+                --          (NVL(:P100_GEO,0) = 0 or :P100_GEO = c.geography_id)
+                ), rws as (
+                    select level r from dual connect by level < 4
+                )
+                select rws.r display_order,
+                    decode(rws.r, 1, 'Products Tracked',    2, 'Product Families',    3, 'Referenceable')  label,
+                    decode(rws.r, 1, data.total, 2, data.families, 3, ( select count(*)
+                                                                        from eba_cust_product_uses pu
+                                                                        where pu.reference_type_ids is not null ) ) value,
+                    decode(rws.r, 1, 'f?p='||:APP_ID||':44:'||:APP_SESSION||':::44,RIR:',
+                                  2, 'f?p='||:APP_ID||':44:'||:APP_SESSION||':::44,RIR:',
+                                  3, 'f?p='||:APP_ID||':59:'||:APP_SESSION||':::44,RIR:') url
+                from data, rws
+                union all
+                select 4 display_order,
+                	'Customers' label,
+                	count(*) value,
+                	apex_util.prepare_url('f?p='||:APP_ID||':59:'||:APP_SESSION||':::59,RIR:') url
+                from eba_cust_customers
+                )
+                order by display_order
+                ```
+            pageItemsToSubmit: [
+                P100_CATEGORY
+                P100_GEO
+            ]
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            value: VALUE
+            bottomLabel: LABEL
+            linkTarget: {
+                type: url
+                url: &URL.
+            }
+            layout: 4Columns
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 25
+            slot: body
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    pageItem P100_CATEGORY (
+        type: selectList
+        label {
+            label: Category
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @cat
+            nullDisplayValue: - All -
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: 0
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    pageItem P100_GEO (
+        type: selectList
+        label {
+            label: Geography
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @geography
+            nullDisplayValue: "- All - "
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 1000
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cat (
+        name: cat
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P100_CATEGORY
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @by-internal-contact
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @product-summary
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction geo (
+        name: geo
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P100_GEO
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @by-internal-contact
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @product-summary
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

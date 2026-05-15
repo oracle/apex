@@ -1,0 +1,80 @@
+app IMAGE-SUPPORT-RTE (
+    name: Image Support for Rich Text Editor
+    version: 26.1.0
+    logo {
+        type: text
+        text: Image Support for Rich Text Editor
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        addBuiltWithApexToFooter: false
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+    }
+    sessionStateProtection {
+        checksumSalt: B61062F1C2E27E6C72E0C62E994FAC35563052254D4A5925F515C4FCD43084EA
+    }
+    sessionManagement {
+        maxSessionLength: 43200
+        maxSessionIdleTime: 14400
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    runtime {
+        allowFeedback: true
+    }
+    advanced {
+        modernizeApp: true
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Image Support for Rich Text Editor
+        }
+    )
+
+    appSetting GET_IMAGE_PREFIX (
+        value {
+            staticValue: /ords/r/oracle/image-support-rte/
+            onUpgradeKeepValue: true
+        }
+    )
+
+)
+

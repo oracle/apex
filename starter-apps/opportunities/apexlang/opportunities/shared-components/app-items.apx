@@ -1,0 +1,78 @@
+appItem AMT_HDR (
+)
+
+appItem APPLICATION_TITLE (
+)
+
+appItem BREADCRUMB_DISPLAY (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem COMPETITION (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem CONTACTS (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem CUSTOMERS (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem DEALS (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem LAST_PAGE (
+)
+
+appItem LAST_VIEW (
+)
+
+appItem LEADS (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem OPP_SET_PROD_LEV_BO (
+)
+
+appItem OPP_SET_PROD_LEV_BO_NAME (
+)
+
+appItem PRODUCTS (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem REP_TITLE (
+)
+
+appItem REP_TITLE_RAW (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem SALES_LDR_TITLE (
+)
+
+appItem TERRITORIES (
+    security {
+        escapeSpecialChars: false
+    }
+)
+

@@ -1,0 +1,486 @@
+page 16000 (
+    name: Error Log
+    alias: ERROR-LOG
+    title: Error Log
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: <p>This report shows all email queued to be sent and those already sent.</p>
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region error-log (
+        name: Error Log
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       PACKAGE_NAME,
+                       PROCEDURE_NAME,
+                       ERROR,
+                       ARG1_NAME,
+                       ARG1_VAL,
+                       ARG2_NAME,
+                       ARG2_VAL,
+                       ARG3_NAME,
+                       ARG3_VAL,
+                       ARG4_NAME,
+                       ARG4_VAL,
+                       ARG5_NAME,
+                       ARG5_VAL,
+                       CREATED,
+                       CREATED_TRUNC,
+                       lower(CREATED_BY) created_by
+                  from SP_ERROR_LOG
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        link {
+            linkColumn: singleRowView
+            uniquelyIdentifyRowsBy: uniqueColumn
+            uniqueColumn: ID
+            linkIcon: <img src="#APEX_FILES#app_ui/img/icons/apex-edit-view.png" class="apex-edit-view" alt="">
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 76975402379634983472
+        }
+
+        column ARG1_NAME (
+            type: plainText
+            heading {
+                heading: Arg1 Name
+            }
+            layout {
+                sequence: 42
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column ARG1_VAL (
+            type: plainText
+            heading {
+                heading: Arg1 Val
+            }
+            layout {
+                sequence: 52
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column ARG2_NAME (
+            type: plainText
+            heading {
+                heading: Arg2 Name
+            }
+            layout {
+                sequence: 62
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column ARG2_VAL (
+            type: plainText
+            heading {
+                heading: Arg2 Val
+            }
+            layout {
+                sequence: 72
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AB
+            }
+        )
+
+        column ARG3_NAME (
+            type: plainText
+            heading {
+                heading: Arg3 Name
+            }
+            layout {
+                sequence: 82
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AC
+            }
+        )
+
+        column ARG3_VAL (
+            type: plainText
+            heading {
+                heading: Arg3 Val
+            }
+            layout {
+                sequence: 92
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AD
+            }
+        )
+
+        column ARG4_NAME (
+            type: plainText
+            heading {
+                heading: Arg4 Name
+            }
+            layout {
+                sequence: 102
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AE
+            }
+        )
+
+        column ARG4_VAL (
+            type: plainText
+            heading {
+                heading: Arg4 Val
+            }
+            layout {
+                sequence: 112
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AF
+            }
+        )
+
+        column ARG5_NAME (
+            type: plainText
+            heading {
+                heading: Arg5 Name
+            }
+            layout {
+                sequence: 122
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AG
+            }
+        )
+
+        column ARG5_VAL (
+            type: plainText
+            heading {
+                heading: Arg5 Val
+            }
+            layout {
+                sequence: 132
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AH
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 142
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 162
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AK
+            }
+        )
+
+        column CREATED_TRUNC (
+            type: plainText
+            heading {
+                heading: Created Trunc
+            }
+            layout {
+                sequence: 152
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column ERROR (
+            type: plainText
+            heading {
+                heading: Error
+            }
+            layout {
+                sequence: 32
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: X
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PACKAGE_NAME (
+            type: plainText
+            heading {
+                heading: Package Name
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column PROCEDURE_NAME (
+            type: plainText
+            heading {
+                heading: Procedure Name
+            }
+            layout {
+                sequence: 22
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Email Reporting
+        }
+
+        savedReport 118737241 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 20
+            }
+
+            displayColumn ARG1_NAME (
+                sequence: 4
+            )
+
+            displayColumn ARG1_VAL (
+                sequence: 5
+            )
+
+            displayColumn CREATED (
+                sequence: 7
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 6
+            )
+
+            displayColumn ERROR (
+                sequence: 3
+            )
+
+            displayColumn PACKAGE_NAME (
+                sequence: 1
+            )
+
+            displayColumn PROCEDURE_NAME (
+                sequence: 2
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16000
+                clearCache: 16000
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

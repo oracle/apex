@@ -1,0 +1,170 @@
+page 8 (
+    name: Reset Data
+    alias: SETTINGS
+    title: Reset Data
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @reset-data
+            slot: subRegions
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region reset-data (
+        name: Reset Data
+        type: staticContent
+        source {
+            htmlCode: <p>Click the reset data button to reset the data to default values.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+            cssClasses: t-Alert--accessibleHeading
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-data (
+        buttonName: reset_data
+        label: Reset Data
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process reset-data (
+        name: reset_data
+        type: executeCode
+        source {
+            plsqlCode: eba_demo_data_load.reset_sample;
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Data reset.
+        }
+        advanced {
+            executionMappingIdentifier: 4900751352333077838
+        }
+        serverSideCondition {
+            whenButtonPressed: @reset-data
+        }
+    )
+
+    branch (
+        name: Go To Page 1
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 9
+                action: resetPagination
+            }
+        }
+        comments {
+            comments: Created 01-MAY-2012 12:07 by MIKE
+        }
+    )
+
+)
+

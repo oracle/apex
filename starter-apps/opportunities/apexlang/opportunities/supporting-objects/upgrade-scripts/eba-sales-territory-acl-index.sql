@@ -1,0 +1,1 @@
+create index eba_sales_territory_acl_n1 on eba_sales_territory_acl( territory_id );

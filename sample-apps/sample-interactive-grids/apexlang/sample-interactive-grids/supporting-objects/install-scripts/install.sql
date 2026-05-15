@@ -1,0 +1,109 @@
+CREATE SEQUENCE EBA_DEMO_IG_DEPT_SEQ MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 50 NOORDER  NOCYCLE;
+
+CREATE TABLE "EBA_DEMO_IG_DEPT"
+   (
+    "DEPTNO" NUMBER,
+    "DNAME" VARCHAR2(60),
+    "LOC" VARCHAR2(40),
+    "NOTES" VARCHAR2(1000),
+    PRIMARY KEY ("DEPTNO")
+  USING INDEX  ENABLE
+   )
+/
+
+CREATE OR REPLACE TRIGGER  "BI_EBA_DEMO_IG_DEPT" 
+    before insert on EBA_DEMO_IG_DEPT
+    for each row
+    begin
+      if :new.deptno is null then
+          select eba_demo_ig_dept_seq.nextval into :new.deptno from sys.dual;
+     end if;
+    end;
+/
+ALTER TRIGGER "BI_EBA_DEMO_IG_DEPT" ENABLE
+/
+
+
+
+CREATE SEQUENCE EBA_DEMO_IG_EMP_SEQ MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 8000 NOORDER  NOCYCLE;
+
+CREATE TABLE "EBA_DEMO_IG_EMP"
+   (
+    "EMPNO" NUMBER NOT NULL ENABLE,
+    "ENAME" VARCHAR2(60),
+    "JOB" VARCHAR2(9),
+    "MGR" NUMBER,
+    "HIREDATE" DATE,
+    "SAL" NUMBER(7,2),
+    "COMM" NUMBER(7,2),
+    "ONLEAVE" VARCHAR2(1) NOT NULL ENABLE,
+    "NOTES" VARCHAR2(1000),
+    "DEPTNO" NUMBER,
+    "FLEX1" VARCHAR2(1000),
+    "FLEX2" VARCHAR2(1000),
+    "FLEX3" VARCHAR2(1000),
+    "FLEX4" VARCHAR2(1000),
+    "RATING" number,
+    CONSTRAINT "EBA_DEMO_IG_EMP_RATING_CK" CHECK (RATING between 0 and 9) ENABLE,
+    CONSTRAINT "EBA_DEMO_IG_EMP_ONLEAVE_CK" CHECK (ONLEAVE in ('Y', 'N')) ENABLE, 
+    PRIMARY KEY ("EMPNO")
+  USING INDEX  ENABLE
+   )
+/
+ALTER TABLE "EBA_DEMO_IG_EMP" ADD FOREIGN KEY ("MGR")
+    REFERENCES  "EBA_DEMO_IG_EMP" ("EMPNO") ENABLE
+/
+ALTER TABLE "EBA_DEMO_IG_EMP" ADD FOREIGN KEY ("DEPTNO")
+    REFERENCES  "EBA_DEMO_IG_DEPT" ("DEPTNO") ON DELETE CASCADE ENABLE
+/
+
+CREATE OR REPLACE TRIGGER  "BI_EBA_DEMO_IG_EMP" 
+    before insert on EBA_DEMO_IG_EMP
+    for each row
+    begin
+      if :new.empno is null then
+          select eba_demo_ig_emp_seq.nextval into :new.empno from sys.dual;
+     end if;
+    end;
+/
+ALTER TRIGGER "BI_EBA_DEMO_IG_EMP" ENABLE
+/
+
+REM Max ID of seeded people data is 104133, so create the sequence starting
+REM beyond that to avoid clashes if developers create more people rows
+CREATE SEQUENCE EBA_DEMO_IG_PEOPLE_SEQ MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 105000 CACHE 20 NOORDER  NOCYCLE;
+
+CREATE TABLE  "EBA_DEMO_IG_PEOPLE" 
+   (
+    "ID" NUMBER,
+    "RATING" NUMBER,
+    "NAME" VARCHAR2(255),
+    "COUNTRY" VARCHAR2(50),
+    "FROM_YR" NUMBER,
+    "TO_YR" NUMBER,
+    "LINK" VARCHAR2(255),
+    "CATEGORY" VARCHAR2(10),
+    "GENDER" VARCHAR2(1),
+    "FLEX1" VARCHAR2(1000),
+    "FLEX2" VARCHAR2(1000),
+    "FLEX3" VARCHAR2(1000),
+     CONSTRAINT "EBA_DEMO_IG_PEOPLE_PK" PRIMARY KEY ("ID")
+  USING INDEX  ENABLE
+   )
+/
+
+CREATE OR REPLACE TRIGGER  "BI_EBA_DEMO_IG_PEOPLE" 
+  before insert on EBA_DEMO_IG_PEOPLE              
+  for each row 
+begin
+  if :new."ID" is null then
+    select eba_demo_ig_people_seq.nextval into :new.id from sys.dual;
+  end if;
+end;
+
+/
+ALTER TRIGGER  "BI_EBA_DEMO_IG_PEOPLE" ENABLE
+/
+
+
+

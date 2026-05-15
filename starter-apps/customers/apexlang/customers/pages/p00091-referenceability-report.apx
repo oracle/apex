@@ -1,0 +1,514 @@
+page 91 (
+    name: Referenceability Report
+    alias: REFERENCEABILITY-REPORT
+    title: Referencability Report
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @customer-referencability
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 1
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region by-asset-commitment (
+        name: by Asset Commitment
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.reference_TYPE, 
+                     c.CUSTOMER_NAME , 
+                     c.INDUSTRY_ID , 
+                     c.REFERENCABLE , 
+                     b.CATEGORY , 
+                     t.id reference_type_id, 
+                     d.GEOGRAPHY_NAME , 
+                     c.created, 
+                     c.updated, 
+                     s.STATUS , 
+                     MARQUEE_CUSTOMER_YN marquee, 
+                     c.id customer_id,
+                     (select status from EBA_CUST_REF_PHASE p where p.id = c.reference_phase_id) ref_phase,
+                     c.REF_RECRUITMENT_OWNER
+                 from EBA_CUST_CUSTOMER_REFTYPE_REF rt , 
+                      eba_cust_customers c,
+                      EBA_CUST_reference_TYPES t,
+                    eba_cust_categories b,
+                    eba_cust_status s,
+                    eba_cust_geographies d
+                 where rt.reference_type_id = t.id and 
+                       c.id = rt.customer_id and
+                c.category_id = b.id(+)
+                    and c.status_id = s.id(+)
+                    and c.geography_id = d.id(+) and
+                       (NVL(:P91_CATEGORY,0) = 0 or c.CATEGORY_ID = :P91_CATEGORY)
+                ```
+            pageItemsToSubmit: P91_CATEGORY
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            subscription: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 2443645187272143074
+        }
+
+        column CATEGORY (
+            type: plainText
+            heading {
+                heading: Category
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column CUSTOMER_ID (
+            type: hidden
+            heading {
+                heading: Customer Id
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CUSTOMER_NAME (
+            type: link
+            heading {
+                heading: Customer Name
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 50
+                    items: {
+                        P50_ID: #CUSTOMER_ID#
+                    }
+                    clearCache: 50
+                }
+                linkText: #CUSTOMER_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column GEOGRAPHY_NAME (
+            type: plainText
+            heading {
+                heading: Geography
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column INDUSTRY_ID (
+            type: hidden
+            heading {
+                heading: Industry
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column MARQUEE (
+            type: plainText
+            heading {
+                heading: Marquee
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column REFERENCABLE (
+            type: plainText
+            heading {
+                heading: Referencable
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column REFERENCE_TYPE (
+            type: plainText
+            heading {
+                heading: Asset Commitment
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column REFERENCE_TYPE_ID (
+            type: hidden
+            heading {
+                heading: Reference Type
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column REF_PHASE (
+            type: plainText
+            heading {
+                heading: Ref Phase
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column REF_RECRUITMENT_OWNER (
+            type: plainText
+            heading {
+                heading: Ref Recruitment Owner
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 24436501 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CATEGORY (
+                sequence: 5
+            )
+
+            displayColumn CUSTOMER_ID (
+                sequence: 10
+            )
+
+            displayColumn CUSTOMER_NAME (
+                sequence: 2
+            )
+
+            displayColumn GEOGRAPHY_NAME (
+                sequence: 7
+            )
+
+            displayColumn INDUSTRY_ID (
+                sequence: 3
+            )
+
+            displayColumn MARQUEE (
+                sequence: 9
+            )
+
+            displayColumn REFERENCABLE (
+                sequence: 4
+            )
+
+            displayColumn REFERENCE_TYPE (
+                sequence: 1
+            )
+
+            displayColumn REFERENCE_TYPE_ID (
+                sequence: 6
+            )
+
+            displayColumn REF_PHASE (
+                sequence: 11
+            )
+
+            displayColumn REF_RECRUITMENT_OWNER (
+                sequence: 12
+            )
+
+            displayColumn STATUS (
+                sequence: 8
+            )
+
+            sort (
+                column: CUSTOMER_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P91_CATEGORY (
+        type: selectList
+        label {
+            label: Category
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @cat
+            nullDisplayValue: - All -
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: 0
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    dynamicAction refresh-report (
+        name: Refresh Report
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P91_CATEGORY
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @by-asset-commitment
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

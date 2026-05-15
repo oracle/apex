@@ -1,0 +1,39 @@
+classicReportTemplate sample-reports-comment-bubbles (
+    name: "[Sample Reports] Comment Bubbles"
+    templateClass: custom1
+    type: namedColumn
+    reportTemplate {
+        top: <ul class="commentBubbles">
+        bottom:
+            ```html
+            </ul>
+            <table class="uPaginationTable">
+            #PAGINATION#
+            </table>
+            ```
+    }
+    rowTemplate1 {
+        template:
+            ```html
+            <li class="#1#">
+            <div>
+            	<em>#2#</em>
+            	#3##4##5##6##7#
+            </div>
+            <span>
+            	#8# (#9#) #10#
+            </span>
+            </li>
+            ```
+    }
+    pagination {
+        nextPage: <a href="#LINK#" class="sPaginationNext">#PAGINATION_NEXT#</a>
+        previousPage: <a href="#LINK#" class="sPaginationPrev">#PAGINATION_PREVIOUS#</a>
+        nextSet: <a href="#LINK#" class="sPaginationNext">#PAGINATION_NEXT_SET#</a>
+        previousSet: <a href="#LINK#" class="sPaginationPrev">#PAGINATION_PREVIOUS_SET#</a>
+    }
+    advanced {
+        identifier: "[SAMPLE_REPORTS]_COMMENT_BUBBLES"
+    }
+)
+

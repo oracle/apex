@@ -1,0 +1,238 @@
+page 0 (
+    name: Global Page
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                js-dialog-autoheight
+                js-modal
+                js-dialog-size720x480
+            ]
+        }
+        accessibility {
+            landmarkType: search
+        }
+        advanced {
+            htmlDomId: SearchDialog
+        }
+    )
+
+    region search-restaurants (
+        name: Search Restaurants
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id,
+                       r.hero_url as image,
+                       r.rating,
+                       r.delivery_time,
+                       r.name as name,
+                       r.category_id,
+                       c.name as category_name
+                  from sample_restaurant r,
+                       sample_restaurant_categories c
+                 where r.category_id = c.id
+                   and ( lower( r.name ) like '%' || lower( :P0_SEARCH ) || '%'
+                      or lower( c.name ) like '%' || lower( :P0_SEARCH ) || '%' )
+                ```
+            pageItemsToSubmit: P0_SEARCH
+        }
+        layout {
+            sequence: 20
+            parentRegion: @search
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: SearchRestaurants
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &NAME.
+            description: &CATEGORY_NAME.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: url
+                url: #APP_FILES#&IMAGE.
+            }
+            shape: circular
+            size: extraSmall
+        }
+        messages {
+            whenNoDataFound: No restaurant found.
+            noDataFoundIcon: fa-404
+        }
+
+        column CATEGORY_ID (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: CATEGORY_ID
+                dataType: number
+            }
+        )
+
+        column CATEGORY_NAME (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: CATEGORY_NAME
+                dataType: varchar2
+            }
+        )
+
+        column DELIVERY_TIME (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: DELIVERY_TIME
+                dataType: number
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column IMAGE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: IMAGE
+                dataType: varchar2
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column RATING (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: RATING
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: fullRowLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 5
+                    items: {
+                        P5_RESTAURANT_ID: &ID.
+                    }
+                }
+                linkAttributes: aria-label="&NAME."
+            }
+        )
+
+    )
+
+    pageItem P0_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+                margin-top-none
+                margin-bottom-sm
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search APEXToGo...
+        }
+        advanced {
+            cssClasses: rounded-full
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    dynamicAction p0-search-input (
+        name: P0_SEARCH Input
+        execution {
+            sequence: 10
+            type: debounce
+            time: 200
+        }
+        when {
+            event: input
+            selectionType: items
+            items: P0_SEARCH
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-restaurants
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

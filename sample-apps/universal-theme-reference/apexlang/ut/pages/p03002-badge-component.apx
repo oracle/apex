@@ -1,0 +1,737 @@
+page 3002 (
+    name: Components - Badge
+    alias: BADGE-COMPONENT
+    title: Badge - Universal Theme
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region configuration-classic-report (
+        name: Configuration: Classic Report
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Classic Report
+                
+                <h4>Status Column</h4>
+                <p>The <strong>Status</strong> column uses the with-apply syntax in the HTML Expression attribute under Column Formatting to access the <em>Badge</em> partial and display a badge in each row.</p>
+                
+                <strong>Type:</strong> Plain Text<br>
+                <strong>HTML Expression:</strong>
+                <code>
+                    {with/}
+                        LABEL:=STATUS
+                        VALUE:=#STATUS#
+                        STATE:=#BADGE_STATE#
+                        ICON:=#BADGE_ICON#
+                        LABEL_DISPLAY:=N
+                        STYLE:=t-Badge--subtle
+                        SHAPE:=t-Badge--circle
+                    {apply THEME$BADGE/}
+                </code>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @demo-classic-report
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region configuration-interactive-report (
+        name: Configuration: Interactive Report
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Interactive Report
+                
+                <h4>Status Column</h4>
+                <p>In Interactive Reports, the <em>Badge</em> partial is available for use as a column Type. The <strong>Status</strong> column in this demo uses the Badge column type and associated Partial settings to display a badge in each row.</p>
+                
+                <h4>Badge</h4>
+                <strong>Label:</strong> Status<br>
+                <strong>Value:</strong> #STATUS#<br>
+                <strong>Icon:</strong> <em>None</em><br>
+                <strong>Display Label:</strong> No<br>
+                <strong>Style:</strong> Default<br>
+                <strong>Shape:</strong> Default<br>
+                <strong>Size:</strong> Default
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @demo-interactive-report
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region cr (
+        name: CR
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       TASK_NAME,
+                       START_DATE,
+                       END_DATE,
+                       STATUS,
+                       ASSIGNED_TO,
+                       COST,
+                       BUDGET,
+                       case STATUS
+                         when 'Closed'  then 'success'
+                         when 'Open'    then 'danger'
+                         when 'Pending' then 'warning'
+                         else 'info'
+                       end as BADGE_STATE,
+                       case STATUS
+                         when 'Closed'  then 'fa-check'
+                         when 'Open'    then 'fa-exclamation'
+                         when 'Pending' then 'fa-question'
+                         else 'fa-info'
+                       end as BADGE_ICON
+                  from EBA_UT_CHART_TASKS
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo-classic-report
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: CRDemo
+        }
+        reportLayout {
+            numberOfRows: 10
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column ASSIGNED_TO (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column BADGE_ICON (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column BADGE_STATE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 100
+            }
+        )
+
+        column BUDGET (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Budget
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column COST (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column END_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column START_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: DD-MON
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Status
+                alignment: center
+            }
+            layout {
+                sequence: 120
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {with/}
+                    LABEL:=STATUS
+                    VALUE:=#STATUS#
+                    STATE:=#BADGE_STATE#
+                    ICON:=#BADGE_ICON#
+                    LABEL_DISPLAY:=N
+                    STYLE:=t-Badge--subtle
+                    SHAPE:=t-Badge--circle
+                    {apply THEME$BADGE/}
+                    ```
+            }
+        )
+
+        column TASK_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Task Name
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+    )
+
+    region demo-classic-report (
+        name: Demo: Classic Report
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region demo-interactive-report (
+        name: Demo: Interactive Report
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region ir (
+        name: IR
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       TASK_NAME,
+                       START_DATE,
+                       END_DATE,
+                       STATUS,
+                       ASSIGNED_TO,
+                       COST,
+                       BUDGET,
+                       case STATUS
+                         when 'Closed'  then 'success'
+                         when 'Open'    then 'danger'
+                         when 'Pending' then 'warning'
+                         else 'info'
+                       end as BADGE_STATE,
+                       case STATUS
+                         when 'Closed'  then 'fa-check'
+                         when 'Open'    then 'fa-exclamation'
+                         when 'Pending' then 'fa-question'
+                         else 'fa-info'
+                       end as BADGE_ICON
+                  from EBA_UT_CHART_TASKS
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo-interactive-report
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: IRDemo
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        searchBar {
+            includeSearchBar: false
+        }
+        heading {
+            fixedTo: none
+        }
+        advanced {
+            savedReportMappingIdentifier: 397340642362089731
+        }
+
+        column ASSIGNED_TO (
+            type: hidden
+            heading {
+                heading: Assigned To
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column BADGE_ICON (
+            type: hidden
+            heading {
+                heading: Badge Icon
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column BADGE_STATE (
+            type: hidden
+            heading {
+                heading: Badge State
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column BUDGET (
+            type: plainText
+            heading {
+                heading: Budget
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column COST (
+            type: hidden
+            heading {
+                heading: Cost
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column END_DATE (
+            type: plainText
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column START_DATE (
+            type: plainText
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: DD-MON
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column STATUS (
+            type: themeTemplateComponent/badge
+            heading {
+                heading: Status
+                alignment: center
+            }
+            settings {
+                label: Status
+                value: STATUS
+                state: BADGE_STATE
+            }
+            layout {
+                sequence: 110
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+            }
+        )
+
+        column TASK_NAME (
+            type: plainText
+            heading {
+                heading: Task Name
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        savedReport 4008729 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ASSIGNED_TO (
+                sequence: 6
+            )
+
+            displayColumn BADGE_ICON (
+                sequence: 10
+            )
+
+            displayColumn BADGE_STATE (
+                sequence: 9
+            )
+
+            displayColumn BUDGET (
+                sequence: 8
+            )
+
+            displayColumn COST (
+                sequence: 7
+            )
+
+            displayColumn END_DATE (
+                sequence: 4
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn START_DATE (
+                sequence: 3
+            )
+
+            displayColumn STATUS (
+                sequence: 5
+            )
+
+            displayColumn TASK_NAME (
+                sequence: 2
+            )
+
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    The <strong>Badge</strong> partial is useful for displaying badges or counters. 
+                    This partial can be used to display a single badge, or can be applied in report templates to display a badge for each report row.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query-classic-report (
+        name: Sample SQL Query: Classic Report
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 30
+            parentRegion: @demo-classic-report
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: CRDemo
+        }
+    )
+
+    region sample-sql-query-interactive-report (
+        name: Sample SQL Query: Interactive Report
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 30
+            parentRegion: @demo-interactive-report
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: IRDemo
+        }
+    )
+
+)
+

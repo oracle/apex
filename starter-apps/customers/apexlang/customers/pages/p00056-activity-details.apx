@@ -1,0 +1,730 @@
+page 56 (
+    name: Activity Details
+    alias: ACTIVITY-DETAILS
+    title: Activity Details
+    pageGroup: @activities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region activity-details (
+        name: Activity Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P56_ACTIVITY_DATE (
+        type: datePicker
+        label {
+            label: Activity Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACTIVITY_DATE
+            used: always
+        }
+    )
+
+    pageItem P56_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DESCRIPTION
+            used: always
+        }
+    )
+
+    pageItem P56_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @activity-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P56_LOCATION (
+        type: textField
+        label {
+            label: Location
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 60
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LOCATION
+            used: always
+        }
+    )
+
+    pageItem P56_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NAME
+            used: always
+        }
+    )
+
+    pageItem P56_OWNER (
+        type: textField
+        label {
+            label: Owner
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: OWNER
+            used: always
+        }
+    )
+
+    pageItem P56_REFERENCES (
+        type: displayOnly
+        label {
+            label: References
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select count(*)
+                from eba_cust_activity_ref
+                where activity_id = :P56_ID
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P56_SET_DATE (
+        type: switch
+        label {
+            label: Set Date
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 3
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                case
+                    when :P56_ACTIVITY_DATE is null then 'N' else 'Y'
+                end
+                ```
+            used: always
+        }
+        help {
+            helpText: <p>If this activity happens on a single, specific date (such as for a conference), select "Yes". If the activity can happen on different dates for each customer, select "No".</p>
+        }
+    )
+
+    pageItem P56_SET_LOCATION (
+        type: switch
+        label {
+            label: Set Location
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 3
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                case
+                    when :P56_LOCATION is null then 'N' else 'Y'
+                end
+                ```
+            used: always
+        }
+        help {
+            helpText: <p>If this activity has a single location, select "Yes". If the activity can have a different location for each customer, select "No".</p>
+        }
+    )
+
+    pageItem P56_SET_OWNER (
+        type: switch
+        label {
+            label: Set Owner
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+            columnSpan: 3
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                case
+                    when :P56_OWNER is null then 'N' else 'Y'
+                end
+                ```
+            used: always
+        }
+        help {
+            helpText: <p>If this activity has a single owner, select "Yes". If the activity can have a different owner for each customer, select "No".</p>
+        }
+    )
+
+    pageItem P56_TYPE_ID (
+        type: selectList
+        label {
+            label: Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @activity-types
+        }
+        layout {
+            sequence: 20
+            region: @activity-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TYPE_ID
+            used: always
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P56_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P56_ID is not null and :P56_REFERENCES = 0
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P56_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-date (
+        name: Show Date
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P56_SET_DATE
+        }
+        clientSideCondition {
+            type: item=value
+            item: P56_SET_DATE
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P56_ACTIVITY_DATE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P56_ACTIVITY_DATE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-location (
+        name: Show Location
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P56_SET_LOCATION
+        }
+        clientSideCondition {
+            type: item=value
+            item: P56_SET_LOCATION
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P56_LOCATION
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P56_LOCATION
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-owner (
+        name: Show Owner
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P56_SET_OWNER
+        }
+        clientSideCondition {
+            type: item=value
+            item: P56_SET_OWNER
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P56_OWNER
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P56_OWNER
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process clear-unused (
+        name: Clear Unused
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :P56_SET_DATE = 'N' then :P56_ACTIVITY_DATE := null; end if;
+                if :P56_SET_OWNER = 'N' then :P56_OWNER := null; end if;
+                if :P56_SET_LOCATION = 'N' then :P56_LOCATION := null; end if;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 18167452646860751987
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 18144231040525877053
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process fetch-row-from-eba-cust-activities (
+        name: Fetch Row from EBA_CUST_ACTIVITIES
+        type: autoRowFetch
+        source {
+            tableName: EBA_CUST_ACTIVITIES
+            pkColumn: ID
+            pkItem: P56_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 18144229797953877050
+        }
+    )
+
+    process process-row-of-eba-cust-activities (
+        name: Process Row of EBA_CUST_ACTIVITIES
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CUST_ACTIVITIES
+            pkColumn: ID
+            pkItem: P56_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 18144230198061877052
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 18144230653141877053
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

@@ -1,0 +1,404 @@
+page 79 (
+    name: Close Opportunity
+    alias: CLOSE-OPPORTUNITY
+    title: Close Opportunity
+    pageGroup: @opportunities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--showBreadcrumb
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: button bar
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region opportunity-details (
+        name: Opportunity Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.id,
+                  d.row_key,
+                  d.deal_name,
+                  c.customer_name account,
+                  d.deal_amount,
+                  d.qtr || ' ' || 
+                    to_char(deal_close_date,'Day DD-MON-YYYY') || 
+                    ' (' || apex_util.get_since(deal_close_date) || ')' deal_close_date,
+                  dsc.status_code,
+                  sr.rep_first_name || ' ' || sr.rep_last_name as sales_rep_name
+                from eba_sales_deals d
+                join eba_sales_customers c
+                  on c.id = d.customer_id
+                left join eba_sales_deal_status_codes dsc
+                  on dsc.id = d.deal_status_code_id
+                left join eba_sales_salesreps sr
+                  on sr.id = d.salesrep_id_01
+                where d.id = :P79_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ACCOUNT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column DEAL_AMOUNT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Amount
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D99
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEAL_CLOSE_DATE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Close Date
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEAL_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+        column ROW_KEY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 8
+            }
+        )
+
+        column SALES_REP_NAME (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: &REP_TITLE.
+            }
+            layout {
+                sequence: 6
+            }
+        )
+
+        column STATUS_CODE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P79_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @opportunity-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button lost (
+        buttonName: Lost
+        label: Opportunity Lost
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button won (
+        buttonName: Won
+        label: Oppotunity Won
+        layout {
+            sequence: 30
+            region: @button-bar
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-as-lost (
+        name: close as lost
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                select id
+                from EBA_SALES_DEAL_STATUS_CODES
+                where CORRESPONDING_PROB_PCT = 0) loop
+                
+                update EBA_SALES_DEALS 
+                set DEAL_STATUS_CODE_ID = c1.id, DEAL_PROBABILITY = 0
+                where id = :P79_ID;
+                
+                end loop;
+                commit;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Opportunity Marked as Lost
+        }
+        advanced {
+            executionMappingIdentifier: 8997102065173381553
+        }
+        serverSideCondition {
+            whenButtonPressed: @lost
+        }
+    )
+
+    process close-as-won (
+        name: close as won
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                select id
+                from EBA_SALES_DEAL_STATUS_CODES
+                where CORRESPONDING_PROB_PCT = 100) loop
+                
+                update EBA_SALES_DEALS 
+                set DEAL_STATUS_CODE_ID = c1.id ,
+                    DEAL_CLOSE_DATE = least (sysdate, deal_close_date),
+                    DEAL_PROBABILITY = 100
+                where id = :P79_ID;
+                
+                end loop;
+                commit;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Opportunity Marked as Won
+        }
+        advanced {
+            executionMappingIdentifier: 8997161348682386263
+        }
+        serverSideCondition {
+            whenButtonPressed: @won
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &LAST_PAGE.
+            }
+        }
+        comments {
+            comments: Created 25-JAN-2012 13:01 by MIKE
+        }
+    )
+
+)
+

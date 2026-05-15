@@ -1,0 +1,563 @@
+page 51 (
+    name: Calendar with Report
+    alias: CALENDAR-WITH-REPORT
+    title: Calendar with Report
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            function formatYYYYMMDDhhmmss( pDate ) {
+                var date = pDate || new Date();
+            
+                return (
+                    ( "0000" + date.getFullYear() ).substr( -4 ) +
+                    ( "00" + ( date.getMonth() + 1 ) ).substr( -2 ) +
+                    ( "00" + date.getDate() ).substr( -2 ) +
+                    ( "00" + date.getHours() ).substr( -2 ) +
+                    ( "00" + date.getMinutes() ).substr( -2 ) +
+                    ( "00" + date.getSeconds() ).substr( -2 )
+                );
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Upon a view change (navigate to next or previous month), the calendar Component sends a <b>View changed [Calendar]</b> event for which a <i>dynamic action</i> can be created. The event passes the current view's begin (attribute <b>startDate</b>) and end (<b>endDate</b>) timestamps as the <b>data</b> object (<b>this.data</b>). In this example, the <b>Set Value</b> action stores the timestamps in hidden APEX items <b>P51_CAL_START_DATE</b> and <b>P51_CAL_END_DATE</b> and then refreshes the classic report region.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region tasks (
+        name: Tasks
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   project,
+                   task_name,
+                   status,
+                   assigned_to,
+                   cost,
+                   start_date,
+                   end_date,
+                       case STATUS
+                           when 'Open'    then 'apex-cal-green'
+                           when 'Pending' then 'apex-cal-yellow'
+                           when 'Closed'  then 'apex-cal-red'
+                           when 'On-Hold' then 'apex-cal-black'
+                       end as css_class
+                from eba_demo_cal_projects
+                where (nvl(:P51_PROJECTS,'0') = '0' or project = :P51_PROJECTS)
+                order by end_date
+                ```
+            pageItemsToSubmit: P51_PROJECTS
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: tasks_cal
+        }
+        settings {
+            displayColumn: TASK_NAME
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            multipleLineEvents: false
+            additionalCalendarViews: navigation
+            viewEditLink: {
+                page: 3
+                items: {
+                    P3_ID: &ID.
+                    P3_LASTVIEW: &APP_PAGE_ID.
+                }
+                action: resetPagination
+            }
+            maxEventsDay: 5
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    region tasks-2 (
+        name: "Tasks "
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   project,
+                   task_name,
+                   status,
+                   assigned_to,
+                   cost,
+                   start_date,
+                   end_date,
+                          case STATUS
+                           when 'Open'    then 'apex-cal-green'
+                           when 'Pending' then 'apex-cal-yellow'
+                           when 'Closed'  then 'apex-cal-red'
+                           when 'On-Hold' then 'apex-cal-black'
+                       end as css_class
+                from eba_demo_cal_projects
+                where (nvl(:P51_PROJECTS,'0') = '0' or project = :P51_PROJECTS)
+                and (:P51_CAL_END_DATE is null or :P51_CAL_START_DATE is null or (
+                    start_date < next_day(to_date(:P51_CAL_END_DATE, 'YYYYMMDDHH24MISS'),1) -1  and 
+                    end_date   > next_day(to_date(:P51_CAL_START_DATE, 'YYYYMMDDHH24MISS')-7,1)
+                ))
+                order by start_date
+                ```
+            pageItemsToSubmit: [
+                P51_PROJECTS
+                P51_CAL_START_DATE
+                P51_CAL_END_DATE
+            ]
+        }
+        layout {
+            sequence: 40
+            parentRegion: @tasks
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--horizontalBorders
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No tasks found.
+        }
+
+        column ASSIGNED_TO (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column COST (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+        column CSS_CLASS (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 2
+            }
+            columnFormatting {
+                htmlExpression: <div class="fc"><div class="fc-event  #CSS_CLASS#">#STATUS#</div></div>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column END_DATE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: to
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column START_DATE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: from
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column TASK_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Task name
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P51_CAL_END_DATE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            region: @tasks-2
+            slot: regionBody
+        }
+    )
+
+    pageItem P51_CAL_START_DATE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @tasks-2
+            slot: regionBody
+        }
+    )
+
+    pageItem P51_PROJECTS (
+        type: selectList
+        label {
+            label: Project
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @distinct-projects
+            nullDisplayValue: - All Projects -
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                margin-left-none
+            ]
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: 0
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    dynamicAction calendar-view-changed-refresh-report (
+        name: Calendar View Changed: Refresh Report
+        execution {
+            sequence: 20
+        }
+        when {
+            event: region/calendar/apexcalendarviewchange
+            selectionType: region
+            region: @tasks
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tasks-2
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.data.startDate
+            }
+            affectedElements {
+                selectionType: items
+                items: P51_CAL_START_DATE
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.data.endDate
+            }
+            affectedElements {
+                selectionType: items
+                items: P51_CAL_END_DATE
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction change-project-refresh-calendar (
+        name: Change Project - Refresh Calendar
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P51_PROJECTS
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tasks
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tasks-2
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction page-load-restrict-report-to-current-month (
+        name: Page Load: Restrict Report to current Month
+        execution {
+            sequence: 30
+        }
+        when {
+            event: ready
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tasks-2
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: formatYYYYMMDDhhmmss( apex.region("tasks_cal").widget().data("fullCalendar").view.activeStart )
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P51_CAL_START_DATE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: formatYYYYMMDDhhmmss( apex.region("tasks_cal").widget().data("fullCalendar").view.activeEnd )
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P51_CAL_END_DATE
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+)
+

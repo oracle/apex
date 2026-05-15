@@ -1,0 +1,575 @@
+page 60 (
+    name: People (paging)
+    alias: PEOPLE-PAGING
+    title: People (paging)
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-people-paging (
+        name: Overview: People (paging)
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This example demonstrates editing a larger data set using traditional paging.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region people-paging (
+        name: People (paging)
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID, RATING, NAME, COUNTRY, FROM_YR,
+                        TO_YR,
+                        LINK, CATEGORY,
+                        coalesce( to_yr, extract(year from sysdate) ) - FROM_YR as AGE,
+                        GENDER
+                    from EBA_DEMO_IG_PEOPLE
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: people
+            regionDisplaySelector: true
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        heading {
+            fixedTo: region
+            fixedReportHeight: 500
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(config) {
+                    config.defaultGridViewOptions = {
+                        rowHeader: "sequence"
+                    };
+                    return config; // don't forget to return this!
+                }
+                ```
+        }
+        advanced {
+            savedReportMappingIdentifier: 716924760920058434
+        }
+
+        savedReport Main (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @RATING
+                layout {
+                    width: 89
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @NAME
+                layout {
+                    width: 172
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @COUNTRY
+                layout {
+                    width: 108
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @FROM_YR
+                layout {
+                    width: 66
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @TO_YR
+                layout {
+                    width: 62
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @AGE
+                layout {
+                    width: 61
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @LINK
+                layout {
+                    width: 132
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @CATEGORY
+                layout {
+                    width: 143
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @GENDER
+                layout {
+                    width: 71
+                    sequence: 11
+                }
+            )
+
+            sort (
+                column: @FROM_YR
+                sort {
+                    direction: desc
+                    nulls: first
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column AGE (
+            type: displayOnly
+            heading {
+                heading: Age
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: AGE
+                dataType: number
+                queryOnly: true
+            }
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column CATEGORY (
+            type: selectList
+            heading {
+                heading: Category
+            }
+            lov {
+                type: sharedComponent
+                lov: @people-categories
+                displayExtraValues: false
+                displayNullValue: false
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: CATEGORY
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column COUNTRY (
+            type: textField
+            heading {
+                heading: Country
+            }
+            layout {
+                sequence: 60
+            }
+            validation {
+                maxLength: 50
+            }
+            source {
+                databaseColumn: COUNTRY
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column FROM_YR (
+            type: numberField
+            heading {
+                heading: Born
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: FROM_YR
+                dataType: number
+            }
+        )
+
+        column GENDER (
+            type: selectList
+            heading {
+                heading: Gender
+            }
+            lov {
+                type: sharedComponent
+                lov: @people-gender
+                displayExtraValues: false
+                displayNullValue: false
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: GENDER
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column LINK (
+            type: textField
+            heading {
+                heading: Link
+            }
+            layout {
+                sequence: 100
+            }
+            validation {
+                maxLength: 255
+            }
+            source {
+                databaseColumn: LINK
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column NAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                maxLength: 255
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column RATING (
+            type: numberField
+            heading {
+                heading: Rating
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: RATING
+                dataType: number
+            }
+        )
+
+        column TO_YR (
+            type: numberField
+            heading {
+                heading: Died
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: TO_YR
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 54
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 58
+                action: resetPagination
+            }
+        }
+    )
+
+    process new-save-interactive-grid-data (
+        name: New - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @people-paging
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 719436936577737788
+        }
+    )
+
+)
+

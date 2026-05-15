@@ -1,0 +1,146 @@
+plugin componentInstructions (
+    name: Component Instructions
+    staticId: COM.ORACLE.APEX.TEMPLATE_INSTRUCTIONS
+    type: region
+    source {
+        plsqlCode:
+            ```plsql
+            c_workspace constant varchar2(100) := apex_util.find_workspace(:workspace_id);
+            
+            subtype t_region_type is varchar2(40);
+            c_region_type_list       constant t_region_type := 'NATIVE_LIST';
+            c_region_type_breadcrumb constant t_region_type := 'NATIVE_BREADCRUMB';
+            c_region_type_report     constant t_region_type := 'NATIVE_SQL_REPORT';
+            c_region_type_tmpl_comp  constant t_region_type := 'TMPL_THEME_42$%';
+            
+            function render (
+                p_region              in apex_plugin.t_region,
+                p_plugin              in apex_plugin.t_plugin,
+                p_is_printer_friendly in boolean )
+                return apex_plugin.t_region_render_result
+            is
+            
+                c_component_type                constant varchar2(1000) := p_region.attribute_01;
+                c_component_static_id           constant varchar2(1000) := p_region.attribute_02;
+                c_component_text                constant varchar2(4000) := p_region.attribute_03;
+            
+                function get_tmpl_comp_src (
+                    p_static_id in varchar2 ) 
+                    return varchar2
+                is
+                    l_source VARCHAR2(1000);
+                begin
+                    l_source := regexp_substr(p_static_id, '\$(.*)', 1, 1, NULL, 1);
+            
+                    return initcap(lower(replace(l_source, '_', ' ')));
+                    -- return initcap(
+                    --            lower(
+                    --                replace(
+                    --                    regexp_substr( p_static_id, '\$(.*)', 1, 1, NULL, 1 ),
+                    --                    '_',
+                    --                    ' '
+                    --                )
+                    --            )
+                    --        );
+                end get_tmpl_comp_src;
+            begin
+            
+                if apex_application.g_debug then
+                    apex_plugin_util.debug_region ( 
+                        p_plugin => p_plugin, 
+                        p_region => p_region );
+                end if;
+            
+                if c_component_type = 'REGION' then
+                    for i in ( select * from apex_application_page_regions where workspace = c_workspace and application_id = :app_id and page_id = :app_page_id and static_id =  c_component_static_id ) loop
+                        sys.htp.p( '<ol>
+                                <li>In <strong>Page Designer</strong>, select a <strong>region</strong></li>
+                                <li>Go to the <strong>Property Editor</strong></li>
+                                <li>Under the <strong>Region</strong> tab
+                                    <ol class="margin-top-none margin-bottom-none">' );
+            
+                        if i.source_type_plugin_name = c_region_type_report then
+                            sys.htp.p( '
+                                <li>Find <strong>Identification &rightarrow; Type</strong>, use <strong>'||apex_lang.message('CLASSIC_REPORT')||'</strong></li>' );
+                        elsif i.source_type_plugin_name like c_region_type_tmpl_comp then
+                            sys.htp.p( '
+                                <li>Find <strong>Identification &rightarrow; Type</strong>, use <strong>'||get_tmpl_comp_src(i.source_type_plugin_name)||'</strong></li>' );
+                        else
+                            sys.htp.p( '
+                                <li>Find <strong>Identification &rightarrow; Type</strong>, use <strong>'||apex_lang.message('REGION_NAME.'||i.source_type_plugin_name)||'</strong></li>' );
+                        end if;
+            
+                        if i.source_type_plugin_name not in ( c_region_type_list, c_region_type_breadcrumb, c_region_type_report ) and 
+                           i.template != 'No Template' 
+                        then
+                            sys.htp.p( '
+                                <li>Find <strong>Appearance &rightarrow; Template</strong>, use <strong>'||i.template||'</strong></li>' );
+                        end if;
+                            
+                        sys.htp.p( '</ol></li>' );   
+            
+                        if i.source_type_plugin_name = c_region_type_report then
+                            sys.htp.p( '
+                                <li>Under the <strong>Attributes</strong> tab
+                                    <ol class="margin-top-none margin-bottom-none">
+                                        <li>Find <strong>Appearance &rightarrow; Template</strong>, use <strong>'||i.report_template||'</strong></li>
+                                    </ol>
+                                </li>' );
+                        elsif i.source_type_plugin_name = c_region_type_list then
+                            sys.htp.p( '
+                                <li>Under the <strong>Attributes</strong> tab
+                                    <ol class="margin-top-none margin-bottom-none">
+                                        <li>Find <strong>Appearance &rightarrow; Template</strong>, use <strong>'||i.list_template_override||'</strong></li>
+                                    </ol>
+                                </li>' );
+                        elsif i.source_type_plugin_name = c_region_type_breadcrumb then
+                            sys.htp.p( '
+                                <li>Under the <strong>Attributes</strong> tab
+                                    <ol class="margin-top-none margin-bottom-none">
+                                        <li>Find <strong>Appearance &rightarrow; Template</strong>, use <strong>'||i.breadcrumb_template||'</strong></li>
+                                    </ol>
+                                </li>' );
+                        end if;
+            
+                        sys.htp.p( '</ol>' );
+                    end loop;
+                elsif c_component_type = 'ITEM' then
+                    for i in ( select * from apex_application_page_items where workspace = c_workspace and application_id = :app_id and page_id = :app_page_id and item_name =  c_component_static_id ) loop
+                        sys.htp.p( '<ol>
+                            <li>In <strong>Page Designer</strong>, select an <strong>item</strong></li>
+                            <li>Go to the <strong>Property Editor</strong></li>
+                            <li>Find <strong>Identification &rightarrow; Type</strong>, use <strong>'||apex_lang.message('ITEM_NAME.'||i.display_as_code)||'</strong></li>
+                            <li>Find <strong>Appearance &rightarrow; Template</strong>, use <strong>'||i.item_label_template||'</strong></li>
+                            </ol>' );
+                    end loop;
+                elsif c_component_type = 'BUTTON' then
+                    for i in ( select * from apex_application_page_buttons where workspace = c_workspace and application_id = :app_id and page_id = :app_page_id and ( button_name = c_component_static_id or button_static_id = c_component_static_id ) ) loop
+                        sys.htp.p( '<ol>
+                            <li>In <strong>Page Designer</strong>, select a <strong>button</strong></li>
+                            <li>Go to the <strong>Property Editor</strong></li>
+                            <li>Find <strong>Appearance &rightarrow; Template</strong>, use <strong>'||i.button_template||'</strong></li>
+                            '||case when i.button_is_hot = 'Yes' then '<li>Activate option <strong>Hot</strong></li>' end ||'
+                            </ol>' );
+                    end loop;
+                end if;
+            
+                if c_component_text is not null then
+                    sys.htp.p( '<div class="margin-md">'||c_component_text||'</div>' );
+                end if;
+            
+                return null;
+            end render;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    information {
+        version: 1.0
+    }
+)
+

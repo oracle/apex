@@ -1,0 +1,52 @@
+plugin markdownRegion (
+    name: Markdown Region
+    staticId: MARKDOWN
+    type: region
+    source {
+        plsqlCode:
+            ```plsql
+            procedure render (
+                p_plugin in            apex_plugin.t_plugin,
+                p_region in            apex_plugin.t_region,
+                p_param  in            apex_plugin.t_region_render_param,
+                p_result in out nocopy apex_plugin.t_region_render_result )
+            as
+                l_clob_md   clob;
+                l_clob_html clob;
+                l_based_on  varchar2(23) := p_region.attributes.get_varchar2('source');
+                l_file_name varchar2(200);
+                l_to_return apex_plugin.t_region_render_result;
+            begin
+                if l_based_on = 'INLINE' then
+                    l_clob_md := p_region.attributes.get_varchar2('content');
+                elsif l_based_on = 'APPLICATION_STATIC_FILE' then
+                    l_file_name := p_region.attributes.get_varchar2('file_name');
+                    begin
+                        select replace(to_clob( file_content ),'#'||'APP_FILES'||'#',V('APP_FILES'))
+                          into l_clob_md
+                          from apex_application_static_files
+                         where application_id = :APP_ID
+                           and file_name      = l_file_name
+                           and mime_type      like 'text/%';
+                    exception
+                        when no_data_found then
+                            raise_application_error( -20000, 'Application static file "' || l_file_name || '" not found or is not text/%' );
+                    end;
+                end if;
+                l_clob_html := apex_markdown.to_html( l_clob_md );
+            
+                apex_util.prn(
+                    p_clob      => '<div class="is-markdownified">' || l_clob_html || '</div>',
+                    p_escape    => false );
+            end render;
+            ```
+    }
+    callbacks {
+        renderProcedureName: render
+    }
+    information {
+        version: 1.0
+        helpText: Displays HTML for Markdown content from a static application file or entered directly by the developer.
+    }
+)
+

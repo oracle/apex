@@ -1,0 +1,129 @@
+customAttribute attribute_01 (
+    apexlangName: itemContainingCenterXValue
+    attribute: 1
+    name: Item containing Center X value
+    type: pageItem
+    appearance {
+        sequence: 10
+    }
+    dependingOn {
+        attribute: @attribute_05/component
+        conditionType: inList
+        list: [
+            CENTER
+            CENTERZOOM
+        ]
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: itemContainingCenterYValue
+    attribute: 2
+    name: Item containing Center Y value
+    type: pageItem
+    appearance {
+        sequence: 20
+    }
+    dependingOn {
+        attribute: @attribute_05/component
+        conditionType: inList
+        list: [
+            CENTER
+            CENTERZOOM
+        ]
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: coordinateSystem
+    attribute: 3
+    name: Coordinate System
+    type: selectList
+    appearance {
+        sequence: 30
+    }
+    default {
+        value: WGS84
+    }
+    dependingOn {
+        attribute: @attribute_05/component
+        conditionType: inList
+        list: [
+            CENTER
+            CENTERZOOM
+        ]
+    }
+    help {
+        helpText: "SRID of the coordinate values to set the map center. Choose <b>WGS84</b> for standard latitude/longitude values or <b>MAP</b> for values in the map region coordinate system. "
+    }
+
+    entry longitudeLatitudeWgs84 (
+        sequence: 10
+        display: Longitude/Latitude (WGS84)
+        return: WGS84
+    )
+
+    entry useMapRegionCoordinateSystem (
+        sequence: 20
+        display: Use Map Region Coordinate System
+        return: MAP
+    )
+
+)
+
+customAttribute attribute_04 (
+    apexlangName: itemContainingZoomLevelValue
+    attribute: 4
+    name: Item containing Zoom Level value
+    type: pageItem
+    appearance {
+        sequence: 40
+    }
+    dependingOn {
+        attribute: @attribute_05/component
+        conditionType: inList
+        list: [
+            ZOOM
+            CENTERZOOM
+        ]
+    }
+    help {
+        helpText: Specify the item containing the new Zoom Level value here.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: set
+    attribute: 5
+    name: Set
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 5
+    }
+    default {
+        value: CENTER
+    }
+
+    entry setMapCenter (
+        sequence: 10
+        display: Set Map Center
+        return: CENTER
+    )
+
+    entry setMapCenterAndZoomlevel (
+        sequence: 30
+        display: Set Map Center and Zoomlevel
+        return: CENTERZOOM
+    )
+
+    entry setZoomlevel (
+        sequence: 20
+        display: Set Zoomlevel
+        return: ZOOM
+    )
+
+)
+

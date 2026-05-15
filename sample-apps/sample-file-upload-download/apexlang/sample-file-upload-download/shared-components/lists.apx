@@ -1,0 +1,228 @@
+list administration (
+    name: administration
+
+    entry delete-files (
+        label: Delete Files
+        icon {
+            imageIconCssClasses: fa-remove
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Delete all rows from the EBA_DEMO_FILES table.
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Recreate example projects data in the EBA_DEMO_FILE_PROJECTS table.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: HELP
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 14
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                7
+                10
+                11
+                12
+                13
+                6
+            ]
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry files (
+        label: Files
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 3
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                12
+            ]
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 1
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                4
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry projects (
+        label: Projects
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 2
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                13
+            ]
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry sql-syntax (
+        label: SQL Syntax
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 4
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+)
+

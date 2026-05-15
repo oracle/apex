@@ -1,0 +1,901 @@
+page 133 (
+    name: Lead
+    alias: LEAD
+    title: Lead
+    pageGroup: @leads
+    appearance {
+        pageTemplate: @/marquee
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Manage a lead's details, links, attachments, and/or comments. You can also covert a lead to an opportunity and/or validate the lead.
+    }
+    config {
+        buildOption: @leads
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region lead-actions (
+        name: Lead Actions
+        type: list
+        source {
+            list: @actions-lead
+        }
+        layout {
+            sequence: 10
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/links-list
+            templateOptions: [
+                #DEFAULT#
+                t-LinksList--actions
+                t-LinksList--showTopIcons
+            ]
+        }
+    )
+
+    region lead-details (
+        name: Lead Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select l.id, 
+                  l.row_key,
+                  l.lead_priority,
+                  l.lead_name_01 lead,
+                  l.lead_details,
+                  l.lead_email_01,
+                  l.opportunity_id,
+                  case
+                    when opportunity_id is null
+                    then '<a href="' || apex_util.prepare_url('f?p=' || :APP_ID || ':63:' || :APP_SESSION || ':::63:P63_LEAD_ID:'||l.id) || '" class="simpleButton">Convert</a>'
+                    else '<a href="' || apex_util.prepare_url('f?p=' || :APP_ID || ':80:' || :APP_SESSION || ':::80:P80_ID:' || l.OPPORTUNITY_ID) || '" class="simpleButton">Opportunity</a>'
+                  end action,
+                  l.tags,
+                  l.created,
+                  lower(l.created_by) created_by,
+                  l.updated,
+                  lower(l.updated_by) updated_by,
+                  t.id territory_id,
+                  t.territory_name,
+                  c.id account_id,
+                  c.customer_name account_name,
+                  slsc.status_code lead_status,
+                  ls.lead_source
+                from eba_sales_leads l
+                left join eba_sales_customers c
+                  on c.id = l.account_id
+                left join eba_sales_territories t
+                  on t.id = c.customer_territory_id 
+                left join eba_sales_lead_status_codes slsc
+                  on slsc.id = l.lead_status_id
+                left join eba_sales_lead_sources ls
+                  on ls.id = l.lead_source_id
+                where l.id = :P133_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ACCOUNT_ID (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 19
+            }
+        )
+
+        column ACCOUNT_NAME (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 3
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_ID: #ACCOUNT_ID#
+                    }
+                    clearCache: 94
+                    action: resetPagination
+                }
+                linkText: #ACCOUNT_NAME#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ACTION (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 12
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: #CREATED# by #CREATED_BY#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 13
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column LEAD (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 16
+            }
+        )
+
+        column LEAD_DETAILS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Details
+            }
+            layout {
+                sequence: 9
+            }
+        )
+
+        column LEAD_EMAIL_01 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column LEAD_PRIORITY (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LEAD_SOURCE (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: Source
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LEAD_STATUS (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OPPORTUNITY_ID (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 17
+            }
+        )
+
+        column ROW_KEY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TERRITORY_ID (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 18
+            }
+        )
+
+        column TERRITORY_NAME (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Account Territory
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Territories'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 14
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: #UPDATED# by #UPDATED_BY#
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 15
+            }
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region usage-metrics-90-days (
+        name: Usage Metrics - 90 days
+        type: plugin/badgeList
+        source {
+            sqlQuery:
+                ```sql
+                select count(*) c,
+                  'Views' l,
+                  1 disp
+                from eba_sales_clicks
+                where lead_id = :P133_ID 
+                  and view_timestamp > sysdate - 90
+                union all
+                select count(distinct(app_username)) c,
+                    'Users' l,
+                    2 disp
+                from eba_sales_clicks
+                where lead_id = :P133_ID 
+                    and view_timestamp > sysdate - 90
+                order by disp
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        config {
+            buildOption: @usage-metrics
+        }
+        settings {
+            badgeStyle: circular
+            value: C
+            bottomLabel: L
+            linkTarget: {
+                page: 138
+                items: {
+                    P138_ENTITY_TYPE: LEAD
+                    P138_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 138
+            }
+            layout: 2Columns
+        }
+    )
+
+    region validations (
+        name: Validations
+        type: plugin/contentValidator
+        source {
+            sqlQuery:
+                ```sql
+                select v.verified_by,
+                  v.created
+                from eba_sales_verifications v
+                where lead_id = :P133_ID
+                order by v.created desc
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+            ]
+            cssClasses: js-validateRegion
+        }
+        config {
+            buildOption: @validations
+        }
+        settings {
+            validationLink: {
+                page: 146
+                items: {
+                    P146_ENTITY_TYPE: LEAD
+                    P146_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 146
+            }
+            previousValidationsLink: {
+                page: 147
+                items: {
+                    P147_ENTITY_TYPE: LEAD
+                    P147_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 147
+                action: resetPagination
+            }
+        }
+    )
+
+    pageItem P133_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @lead-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button convert (
+        buttonName: CONVERT
+        label: Convert Lead
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 63
+                items: {
+                    P63_LEAD_ID: &P133_ID.
+                }
+                clearCache: 63
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-lead (
+        buttonName: EDIT_LEAD
+        label: Edit Lead
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 29
+                items: {
+                    P29_ID: &P133_ID.
+                }
+                clearCache: 29
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button pop-link (
+        buttonName: POP_LINK
+        label: Add Link
+        layout {
+            sequence: 240
+            region: @/links
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: LEAD
+                    P114_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 114
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button popattachment (
+        buttonName: POPATTACHMENT
+        label: Add Attachment
+        layout {
+            sequence: 10
+            region: @/attachments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: LEAD
+                    P99_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 99
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button popcomment (
+        buttonName: POPCOMMENT
+        label: Add Comment
+        layout {
+            sequence: 260
+            region: @/comments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: LEAD
+                    P22_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 22
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button view-attachments (
+        buttonName: VIEW_ATTACHMENTS
+        label: View Attachments
+        layout {
+            sequence: 20
+            region: @/attachments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 92
+                items: {
+                    P92_ENTITY_TYPE: LEAD
+                    P92_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 92
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-comments (
+        buttonName: VIEW_COMMENTS
+        label: View Comments
+        layout {
+            sequence: 270
+            region: @/comments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 88
+                items: {
+                    P88_ENTITY_TYPE: LEAD
+                    P88_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 88
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-links (
+        buttonName: VIEW_LINKS
+        label: View Links
+        layout {
+            sequence: 250
+            region: @/links
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 89
+                items: {
+                    P89_ENTITY_TYPE: LEAD
+                    P89_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 89
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction edit-lead-dialog-closed (
+        name: Edit Lead dialog closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId === 29
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('.t-Breadcrumb-item.is-active > span').text(this.data.P29_LEAD_NAME_01);
+                    apex.message.showPageSuccess('Action Processed.');
+                    ```
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @lead-details
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction link-details-dialog-closed (
+        name: Link Details dialog closed
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId === 114
+        }
+    )
+
+    dynamicAction refresh-validations (
+        name: Refresh Validations
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId ===130
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @validations
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process init-page (
+        name: Init page
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                insert into eba_sales_clicks (
+                  entity_type,
+                  lead_id,
+                    app_username
+                ) values (
+                  'LEAD',
+                  :P133_ID,
+                    lower(:APP_USER)
+                );
+                
+                delete from eba_sales_clicks 
+                where view_timestamp < (sysdate - 90) 
+                  and lead_id = :P133_ID;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 7378375536519605013
+        }
+    )
+
+)
+

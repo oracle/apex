@@ -1,0 +1,263 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: "&APP_NAME. "
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region airport-pages (
+        name: Airport Pages
+        type: list
+        source {
+            list: @all-maps
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            listTemplate: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--featured force-fa-lg
+                t-Cards--displayIcons
+                t-Cards--4cols
+                t-Cards--iconsRounded
+                t-Cards--animColorFill
+            ]
+        }
+    )
+
+    region info (
+        name: Info
+        type: staticContent
+        source {
+            htmlCode: Welcome to the <strong>Sample Maps</strong> Application. This application contains numerous examples which make use of the Map Region and Oracle Spatial, a feature which is included in every Oracle Database.
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region map-app-pages (
+        name: Map App Pages
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    list_entry_id as id,
+                    display_sequence,
+                    entry_text as title,
+                    CURRENT_FOR_PAGES_EXPRESSION as card_link_page_id,
+                    'fa ' || entry_image as card_icon,
+                    entry_attribute_01 as description,
+                    entry_attribute_02 as screenshot_img_path
+                from
+                    apex_application_list_entries
+                where
+                    application_id = :APP_ID
+                and
+                    list_name = 'All Maps'
+                order by
+                    display_sequence asc
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+        componentAppearance {
+            gridColumns: 4
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: <h4 class="a-CardView-subTitle">&DESCRIPTION!RAW.</h4>
+        }
+        media {
+            source: imageUrl
+            url: #APP_IMAGES#&SCREENSHOT_IMG_PATH.
+            position: first
+            appearance: widescreen
+            imageDescription: &TITLE.
+        }
+        performance {
+            lazyLoading: true
+        }
+        pagination {
+            type: page
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: &CARD_LINK_PAGE_ID.
+                }
+            }
+        )
+
+    )
+
+    region map-app-pages-2 (
+        name: Map App Pages
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    list_entry_id as id,
+                    display_sequence,
+                    entry_text as title,
+                    CURRENT_FOR_PAGES_EXPRESSION as card_link_page_id,
+                    'fa ' || entry_image as card_icon,
+                    entry_attribute_01 as description,
+                    entry_attribute_02 as screenshot_img_path
+                from
+                    apex_application_list_entries
+                where
+                    application_id = :APP_ID
+                and
+                    list_name = 'All Maps'
+                and 
+                    condition_type_code is null
+                order by
+                    display_sequence asc
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+        componentAppearance {
+            gridColumns: 4
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: <h4 class="a-CardView-subTitle">&DESCRIPTION!RAW.</h4>
+        }
+        media {
+            source: imageUrl
+            url: #APP_IMAGES#&SCREENSHOT_IMG_PATH.
+            position: first
+            appearance: widescreen
+        }
+        performance {
+            lazyLoading: true
+        }
+        pagination {
+            type: page
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: &CARD_LINK_PAGE_ID.
+                }
+            }
+        )
+
+    )
+
+    region sample-maps-application (
+        name: Sample Maps Application
+        type: staticContent
+        source {
+            htmlCode: This application contains usage examples for the APEX Map Region.
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

@@ -1,0 +1,316 @@
+page 1208 (
+    name: Region - Wizard
+    alias: WIZARD-REGION
+    title: Wizards - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 11
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: Demo1
+            additionalText: <strong>Tip.</strong> Create a sub-region within the Wizard Container to store your form items and other content to be place in your wizard body.
+        }
+    )
+
+    region modal-dialog-wizard (
+        name: Modal Dialog Wizard
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>A modal dialog wizard can be used to perform a complex flow while maintaining context of the page.</p>
+                <div class="dm-Hero-steps margin-bottom-md">
+                  <p><strong>Step 1.</strong> Use the Create Page wizard and select <strong>Wizard</strong>.</p>
+                  <p><strong>Step 2.</strong> Enter the number of pages you want in the wizard, and then set Page Mode to <strong>Modal Dialog</strong></p>
+                  <p><strong>Step 3.</strong> Follow the rest of the steps in the wizard to completion.</p>
+                </div>
+                <p>Now you have a modal dialog wizard created with the page numbers you specified in the creation wiard.</p>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Wizards can be very useful in simplifying complex flows into smaller, more manageable steps.  This page describes full page Wizards, modal dialog Wizards, and the Wizard Progress list template.</p>
+        }
+        layout {
+            sequence: 1
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region wizard (
+        name: Wizard
+        type: list
+        source {
+            list: @ut-wizard-progress
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: subRegions
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/wizard-container
+            templateOptions: [
+                #DEFAULT#
+                t-Wizard--hideStepsSmall
+            ]
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayCurrentLabelOnly
+            ]
+            cssClasses: dm-TemplateOption-previewTarget
+        }
+    )
+
+    region wizard-form-sub-region (
+        name: Wizard Form Sub Region
+        type: staticContent
+        source {
+            htmlCode: <p>Sub Region with Form Items</p>
+        }
+        layout {
+            sequence: 690
+            parentRegion: @wizard
+            slot: wizardSubRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: dm-Placeholder
+        }
+    )
+
+    button def-wiz-next (
+        buttonName: DEF_WIZ_NEXT
+        label: Next
+        layout {
+            sequence: 140
+            region: @wizard
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button def-wiz-prev (
+        buttonName: DEF_WIZ_PREV
+        label: Previous
+        layout {
+            sequence: 130
+            region: @wizard
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button open-modal-wiz (
+        buttonName: OPEN_MODAL_WIZ
+        label: Open Modal Dialog Wizard
+        layout {
+            sequence: 10
+            region: @modal-dialog-wizard
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1920
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

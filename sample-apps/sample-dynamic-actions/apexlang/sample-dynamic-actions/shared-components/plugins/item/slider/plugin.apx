@@ -1,0 +1,127 @@
+plugin slider (
+    name: Slider
+    staticId: COM.ORACLE.APEX.SLIDER
+    type: item
+    component {
+        supports: pageItems
+        standardAttributes: [
+            visibleWidget
+            sessionStateChangeable
+            sourceAttrs
+            elementAttrs
+            encryptSessionStateAttr
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            c_min_value constant number := 0;
+            c_max_value constant number := 1000;
+            
+            function render_slider (
+                p_item                in apex_plugin.t_page_item,
+                p_plugin              in apex_plugin.t_plugin,
+                p_value               in varchar2,
+                p_is_readonly         in boolean,
+                p_is_printer_friendly in boolean )
+                return apex_plugin.t_page_item_render_result
+            is
+                l_escaped_value varchar2(32767) := apex_escape.html(p_value);
+            
+                l_name          varchar2(30);
+                l_result        apex_plugin.t_page_item_render_result;
+            
+                l_value_suffix  p_item.attribute_06%type := nvl(p_item.attribute_06, ' %'); 
+            begin
+                --*********************
+                -- NOTE: This plug-in isn't a good example because it's missing the readonly/print code!
+                --       But it shows you how a widget can provide it's own events for dynamic actions.
+                --*********************
+                if apex_application.g_debug then
+                    apex_plugin_util.debug_page_item (
+                        p_plugin              => p_plugin,
+                        p_page_item           => p_item,
+                        p_value               => p_value,
+                        p_is_readonly         => p_is_readonly,
+                        p_is_printer_friendly => p_is_printer_friendly );
+                end if;
+            
+                l_name := apex_plugin.get_input_name_for_page_item (
+                              p_is_multi_value => false );
+            
+                -- render the div for the slider and the input field
+                htp.p('<div class="apex-slider-container">');
+                htp.p('<div class="apex-slider-control" id="' || p_item.name || '_control" ' || p_item.element_attributes || '></div>');
+                htp.p('<span class="apex-slider-value" id="'  || p_item.name || '_display">' || l_escaped_value || l_value_suffix || '</span>');
+                htp.p('<input type="hidden" id="' || p_item.name || '" name="' || l_name || '" value="' || l_escaped_value || '">');
+                htp.p('</div>');
+            
+                -- initialize the slider when the page has been rendered    
+                apex_javascript.add_onload_code (
+                    p_code => 'apex.jQuery("#'||p_item.name||'_control").slider({' ||
+                                  apex_javascript.add_attribute( 'orientation', p_item.attribute_01 ) ||
+                                  apex_javascript.add_attribute( 'range', 'min' ) ||
+                                  apex_javascript.add_attribute( 'min',  coalesce( to_number(p_item.attribute_02), c_min_value )) ||
+                                  apex_javascript.add_attribute( 'max',  coalesce( to_number(p_item.attribute_03), c_max_value )) ||
+                                  apex_javascript.add_attribute( 'step', coalesce( to_number(p_item.attribute_04), 1 )) ||
+                                  apex_javascript.add_attribute( 'animation', case when p_item.attribute_05 = 'Y' then 'true' else 'false' end ) ||
+                                  apex_javascript.add_attribute( 'value', coalesce( to_number( coalesce( p_value, p_item.attribute_02 )), c_min_value )) ||
+                                  'start: function(pEvent, pUi){apex.jQuery("#'||p_item.name||'").trigger("slidestart", pUi);},' ||
+                                  'slide: function(pEvent, pUi){' ||
+                                         '  $s("' || p_item.name || '", pUi.value);' ||
+                                         '  $s("' || p_item.name || '_display", pUi.value+'||apex_escape.js_literal( l_value_suffix, '"' ) || ');' ||
+                                         '  apex.jQuery("#'||p_item.name||'").trigger("slide", pUi);'||
+                                         '},'||
+                                  'change: function(pEvent, pUi){apex.jQuery("#' || p_item.name || '").trigger("slidechange", pUi);},' ||
+                                  'stop: function(pEvent, pUi){apex.jQuery("#' || p_item.name || '").trigger("slidestop", pUi);}});' );
+                
+                -- Tell APEX that this field is navigable
+                l_result.is_navigable := true;
+            
+                return l_result;
+            end render_slider;
+            
+            function validate_slider (
+                p_item   in apex_plugin.t_page_item,
+                p_plugin in apex_plugin.t_plugin,
+                p_value  in varchar2 )
+                return apex_plugin.t_page_item_validation_result
+            is
+                l_result apex_plugin.t_page_item_validation_result;
+            begin
+                if apex_application.g_debug then
+                    apex_plugin_util.debug_page_item(p_plugin,p_item);
+                end if;
+            
+                if p_value is null then return null; end if;
+                
+                if wwv_flow_utilities.is_numeric(p_value) and
+                   not to_number(p_value) between to_number(nvl(p_item.attribute_02, c_min_value)) and to_number(nvl(p_item.attribute_03, c_max_value))
+                then
+                    l_result.message := apex_escape.html(p_value)||' is not in the valid range of '||
+                                        nvl(p_item.attribute_02, c_min_value)||' - '||
+                                        nvl(p_item.attribute_03, c_max_value);
+                end if;
+                
+                return l_result;
+            end validate_slider;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render_slider
+        validationProcedureName: validate_slider
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    javaScript {
+        fileUrls: #JQUERYUI_DIRECTORY#ui/widgets/#MIN_DIRECTORY#slider#MIN#.js
+    }
+    information {
+        version: 5.0.1
+        aboutUrl: http://apex.oracle.com/plugins
+        helpText: <p>Sliders are useful for allowing users to easily review and maintain numerical data represented on a scale.</p>
+    }
+)
+

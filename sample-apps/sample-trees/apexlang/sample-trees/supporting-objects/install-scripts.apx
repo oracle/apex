@@ -1,0 +1,54 @@
+installScript "Create Tables" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-tables.sql
+    }
+)
+
+installScript "Create Triggers" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: create-triggers.sql
+    }
+)
+
+installScript "Create View" (
+    execution {
+        sequence: 25
+    }
+    script {
+        contentFile: create-view.sql
+    }
+)
+
+installScript "Create funtion" (
+    execution {
+        sequence: 27
+    }
+    script {
+        contentFile: create-funtion.sql
+    }
+)
+
+installScript "Sample Data" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: sample-data.sql
+    }
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+

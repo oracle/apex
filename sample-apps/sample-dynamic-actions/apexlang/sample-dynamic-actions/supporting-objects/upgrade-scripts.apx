@@ -1,0 +1,9 @@
+upgradeScript "Refresh Data" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: refresh-data.sql
+    }
+)
+

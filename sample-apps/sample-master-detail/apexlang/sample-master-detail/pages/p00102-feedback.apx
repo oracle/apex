@@ -1,0 +1,298 @@
+page 102 (
+    name: Feedback
+    alias: FEEDBACK
+    title: Feedback
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region feedback (
+        name: Feedback
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region wizard-buttons (
+        name: Wizard Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardButtons
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P102_APPLICATION_ID (
+        type: displayOnly
+        label {
+            label: Application:
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+            showLineBreaks: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select application_id||'. '||application_name d, application_id v from apex_applications where application_id = :P102_APPLICATION_ID
+        }
+        layout {
+            sequence: 1
+            region: @feedback
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            customAttributes: class="fielddatabold"
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Identifies Application.
+        }
+    )
+
+    pageItem P102_FEEDBACK (
+        type: textarea
+        label {
+            label: Feedback
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 22
+            region: @feedback
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter your feedback and press the submit feedback button.
+        }
+    )
+
+    pageItem P102_FEEDBACK_TYPE (
+        type: selectList
+        label {
+            label: Feedback Type
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select the_name, id from APEX_FEEDBACK_TYPES order by id
+            displayNullValue: false
+        }
+        layout {
+            sequence: 12
+            region: @feedback
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: staticValue
+            staticValue: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Please identify the type of feedback you are providing.
+        }
+    )
+
+    pageItem P102_PAGE_ID (
+        type: displayOnly
+        label {
+            label: Page:
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+            showLineBreaks: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select page_id||'. '||page_name d, page_id v from apex_application_pages where page_id = :P102_PAGE_ID and application_id = :P102_APPLICATION_ID
+        }
+        layout {
+            sequence: 2
+            region: @feedback
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            customAttributes: class="fielddatabold"
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Identifies page within application.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @wizard-buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button submit (
+        buttonName: SUBMIT
+        label: Submit Feedback
+        layout {
+            sequence: 20
+            region: @wizard-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-window (
+        name: Close Window
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 4549900426731305687
+        }
+    )
+
+    process submit-feedback (
+        name: Submit Feedback
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_util.submit_feedback (
+                    p_comment         => :P102_FEEDBACK,
+                    p_type            => :P102_FEEDBACK_TYPE,
+                    p_application_id  => :P102_APPLICATION_ID,
+                    p_page_id         => :P102_PAGE_ID,
+                    p_email           => null);
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Thanks for your feedback!
+        }
+        advanced {
+            executionMappingIdentifier: 4549900013757305687
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit
+        }
+    )
+
+)
+

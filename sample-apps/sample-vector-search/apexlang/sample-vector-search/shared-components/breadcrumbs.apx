@@ -1,0 +1,259 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry administration (
+        name: Administration
+        pageNumber: 50
+        execution {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 52
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry basic-vector-search (
+        name: Basic Vector Search
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @vector-search-2
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry basic-vector-search-2 (
+        name: Basic Vector Search
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @vector-search
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry custom-vector-search (
+        name: Custom Vector Search
+        pageNumber: 24
+        execution {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry mixed-languages (
+        name: Mixed Languages
+        pageNumber: 42
+        execution {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry movie-recommendation (
+        name: Movie Recommendation
+        pageNumber: 41
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry movie-vector-search (
+        name: Movie Vector Search
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry reset-sample-data-tables (
+        name: Reset Sample Data Tables
+        pageNumber: 51
+        execution {
+            sequence: 5
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry set-ai-provider (
+        name: Set AI Provider
+        pageNumber: 54
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry vector-and-oracle-text-search (
+        name: Vector and Oracle Text Search
+        pageNumber: 33
+        execution {
+            sequence: 40
+        }
+        appearance {
+            parentEntry: @vector-search
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry vector-and-oracle-text-search-2 (
+        name: Vector and Oracle Text Search
+        pageNumber: 17
+        execution {
+            sequence: 50
+        }
+        appearance {
+            parentEntry: @vector-search-2
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry vector-search (
+        name: Vector Search
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @custom-vector-search
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry vector-search-2 (
+        name: Vector Search
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @movie-vector-search
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry vector-vs-oracle-text-search (
+        name: Vector vs. Oracle Text Search
+        pageNumber: 32
+        execution {
+            sequence: 20
+        }
+        appearance {
+            parentEntry: @vector-search
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry vector-vs-oracle-text-search-2 (
+        name: Vector vs. Oracle Text Search
+        pageNumber: 16
+        execution {
+            sequence: 30
+        }
+        appearance {
+            parentEntry: @vector-search-2
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+)
+

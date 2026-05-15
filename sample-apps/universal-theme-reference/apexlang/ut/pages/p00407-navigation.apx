@@ -1,0 +1,429 @@
+page 407 (
+    name: Navigation
+    alias: NAVIGATION
+    title: Navigation - &APP_TITLE.
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region mega-menu (
+        name: Mega Menu
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The <b>Top Navigation Mega Menu</b> template renders your application navigation in a popup panel that can be opened or closed from the header menu button.</p>
+                <p>Mega menus are especially useful when you want to display all navigation items at once to your user, and is a very common pattern you will see across the web.</p>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region menu-bar (
+        name: Menu Bar
+        type: staticContent
+        source {
+            htmlCode: <p>The <b>Top Navigation Menu</b> template renders your application navigation as a menu bar, similar to what you find on most desktop applications. This is commonly used for more complex applications with several layers of hierarchy within the navigation.</p>
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region navigation-bar (
+        name: Navigation Bar
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The Navigation Bar is positioned near the end of the application's header, and typically contains links for user authentication, help, feedback, and other global items.</p>
+                
+                <p>Navigation Bars are also based on the <b>List</b> component in APEX. However, as of APEX 5.1, you may only have a two-level deep menu.</p>
+                
+                <p>To change your application's Navigation Bar settings, navigate to Shared Components &rarr; User Interface Defaults and then click on the edit icon next to the Desktop User Interface. From here, you can navigate to the Navigation Bar region and change the options listed.</p>
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region navigation-menus (
+        name: Navigation Menus
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The primary navigation structure for your application is defined as a <b>Navigation Menu</b> and is based on the <b>List</b> component in APEX. Navigation Menus are hierarchical and can be any level deep.  This navigation control and can be both dynamic (based on a query), or static (based on static list entries).  In addition, you can choose to position your navigation to the top or side of your screen.</p>
+                
+                <p>To change your application's Navigation Menu settings, navigate to Shared Components &rarr; User Interface Defaults and then click on the edit icon next to the Desktop User Interface. From here, you can navigate to the Navigation Menu region and change the options listed.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Navigation is an important part of your application and can determine the how your users navigate within your application.  There are two navigation concepts that are key for Universal Theme: Navigation Menus and Navigation Bar.
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region side-tree-navigation (
+        name: Side Tree Navigation
+        type: staticContent
+        source {
+            htmlCode: <p>The <b>Side Navigation Menu</b> template renders your application navigation in a collapsible side panel. The navigation items are rendered as tree nodes that can be expanded.</p>
+        }
+        layout {
+            sequence: 60
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region tabs (
+        name: Tabs
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The <b>Top Navigation Tabs</b> template renders your application navigation as tabs and is ideally suited for simple applications where you have approximately 6 or fewer tabs.</p>
+                
+                <p>This navigation template will automatically be positioned to the bottom of the screen for small screen or mobile devices so it is more comfortable to access.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button open-preview-mega-menu (
+        buttonName: OPEN_PREVIEW_MEGA_MENU
+        label: View
+        layout {
+            sequence: 30
+            region: @mega-menu
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-external-link
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button open-preview-menu-bar (
+        buttonName: OPEN_PREVIEW_MENU_BAR
+        label: View
+        layout {
+            sequence: 10
+            region: @menu-bar
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-external-link
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button open-preview-side-tree (
+        buttonName: OPEN_PREVIEW_SIDE_TREE
+        label: View
+        layout {
+            sequence: 40
+            region: @side-tree-navigation
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-external-link
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button open-preview-tabs (
+        buttonName: OPEN_PREVIEW_TABS
+        label: View
+        layout {
+            sequence: 20
+            region: @tabs
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-external-link
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction mega-menu-preview (
+        name: Mega Menu Preview
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-preview-mega-menu
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.theme42demo.openSamplePage('f?p=&APP_ID.:1122:&APP_SESSION.','Mega Menu Preview');
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction menu-bar-preview (
+        name: Menu Bar Preview
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-preview-menu-bar
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.theme42demo.openSamplePage('f?p=&APP_ID.:1120:&APP_SESSION.','Menu Bar Preview');
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction side-nav-preview (
+        name: Side Nav Preview
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-preview-side-tree
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.theme42demo.openSamplePage('f?p=&APP_ID.:1123:&APP_SESSION.','Side Navigation Menu Preview');
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction tabs-preview (
+        name: Tabs Preview
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @open-preview-tabs
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.theme42demo.openSamplePage('f?p=&APP_ID.:1121:&APP_SESSION.','Tabs Preview');
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,231 @@
+plugin contentValidator (
+    name: Content Validator
+    staticId: COM.ORACLE.APEX.VALIDATOR
+    type: region
+    component {
+        standardAttributes: regionSourceIsSqlQuery
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function validator_render (
+              p_region              in apex_plugin.t_region,
+              p_plugin              in apex_plugin.t_plugin,
+              p_is_printer_friendly in boolean
+            ) 
+            
+              return apex_plugin.t_region_render_result
+            
+            is
+            
+              c_validated_by_col      constant pls_integer := 1;
+              c_created_col           constant pls_integer := 2;
+              c_success               constant varchar2(30) := 'success';
+              c_warning               constant varchar2(30) := 'warning';
+              c_expired               constant varchar2(30) := 'danger';
+              l_region_link           varchar2(4000);
+              l_prev_validations_link varchar2(4000);
+              l_valid_data_type_list  wwv_flow_global.vc_arr2;
+              l_column_value_list     apex_plugin_util.t_column_value_list2;
+              l_status                varchar2(30);
+              l_validated_by          varchar2(300);
+              l_created               timestamp with time zone;
+              l_message               varchar2(4000);
+              l_onload_code           varchar2(4000);
+              l_lf                    varchar2(1) := chr(10);
+            
+            begin
+            
+              -- Define the valid column data types for the region query
+              l_valid_data_type_list(c_validated_by_col) := apex_plugin_util.c_data_type_varchar2;
+              l_valid_data_type_list(c_created_col) := apex_plugin_util.c_data_type_timestamp_tz;
+            
+              l_region_link := apex_util.prepare_url(p_region.attribute_01);
+            
+              -- Prepare URL would have converted the URL to a JS function call if the target
+              -- page is a dialog. If not, we'll do that manually.
+              if instr(l_region_link, 'javascript:') = 0
+              then
+                l_region_link := 'apex.navigation.redirect(''' || l_region_link || ''');';
+              end if;
+            
+              if p_region.attribute_02 is not null
+              then
+                l_prev_validations_link := apex_util.prepare_url(p_region.attribute_02);
+              end if;
+            
+              -- Prepare URL would have converted the URL to a JS function call if the target
+              -- page is a dialog. If not, we'll do that manually.
+              if l_prev_validations_link is not null
+                and instr(l_prev_validations_link, 'javascript:') = 0
+              then
+                l_prev_validations_link := 'apex.navigation.redirect(''' || l_prev_validations_link || ''');';
+              end if;
+            
+              -- get the data to be displayed
+              l_column_value_list := apex_plugin_util.get_data2(
+                p_sql_statement  => p_region.source,
+                p_min_columns    => 2,
+                p_max_columns    => 2,
+                p_data_type_list => l_valid_data_type_list,
+                p_component_name => p_region.name
+              );
+            
+              if l_column_value_list(c_created_col).value_list.count = 0
+              then
+                l_status := c_expired;
+                l_validated_by := 'Unvalidated';
+              else
+                -- Get the most recent verification data for display
+                l_validated_by := apex_escape.html(lower(l_column_value_list(c_validated_by_col).value_list(1).varchar2_value));
+                l_created := l_column_value_list(c_created_col).value_list(1).timestamp_tz_value;
+            
+                if l_created > current_timestamp - interval '7' day
+                then
+                  l_status := c_success;
+                else
+                  l_status := c_warning;
+                end if;
+              end if;
+            
+              sys.htp.p('<div class="t-Validation">');
+            
+              sys.htp.p('<div class="t-Validation-icon">');
+                sys.htp.p('<span class="a-Icon icon-' || 
+                  case l_status 
+                    when c_success then 'check'
+                    when c_warning then 'warning'
+                    else 'remove'
+                  end || ' u-' || l_status || '"></span>'
+                );
+              sys.htp.p('</div>');
+              sys.htp.p('<div class="t-Validation-body">');
+                sys.htp.p('<span class="t-Validation-date">' || apex_util.get_since(l_created) || '</span>');
+                sys.htp.p('<span class="t-Validation-user">' || l_validated_by || '</span>');
+                sys.htp.p('<span class="t-Validation-actions">');
+                sys.htp.prn('<button class="t-Button t-Button--pill t-Button--pillStart" ' || 
+                  'onclick="' || l_region_link || '" type="button">Validate</button>'
+                );
+            
+                if l_prev_validations_link is not null
+                then
+                  sys.htp.p('<button class="t-Button t-Button--pill t-Button--pillEnd t-Button--icon t-Button--slim" ' || 
+                    'title="View Previous Validations" ' ||
+                    'onclick="' || l_prev_validations_link || '" type="button">' || 
+                    '<span class="a-Icon icon-open-in-dialog"></span></button>'
+                  );
+                end if;
+            
+                sys.htp.p('</span>'); -- actions
+              sys.htp.p('</div>'); -- body
+              sys.htp.p('</div>'); -- validation
+              
+              l_onload_code := 'apex.jQuery("#' || p_region.static_id || '").content_validator({ ' || l_lf ||
+                  '   ' || apex_javascript.add_attribute('ajaxIdentifier', apex_plugin.get_ajax_identifier(), false, true) || l_lf ||
+                  '});';
+              
+              apex_javascript.add_onload_code (
+                p_code => l_onload_code
+              );
+            
+              return null;
+            
+            end validator_render;
+            
+            function validator_ajax (
+              p_region in apex_plugin.t_region,
+              p_plugin in apex_plugin.t_plugin
+            )
+            
+              return apex_plugin.t_region_ajax_result
+            
+            is
+            
+              c_validated_by_col     constant pls_integer := 1;
+              c_created_col          constant pls_integer := 2;
+              l_ajax_result          apex_plugin.t_region_ajax_result;
+              l_valid_data_type_list wwv_flow_global.vc_arr2;
+              l_column_value_list    apex_plugin_util.t_column_value_list2;
+            
+            begin
+            
+              l_valid_data_type_list(c_validated_by_col) := apex_plugin_util.c_data_type_varchar2;
+              l_valid_data_type_list(c_created_col) := apex_plugin_util.c_data_type_timestamp_tz;
+            
+              l_column_value_list := apex_plugin_util.get_data2(
+                p_sql_statement  => p_region.source,
+                p_min_columns    => 2,
+                p_max_columns    => 2,
+                p_data_type_list => l_valid_data_type_list,
+                p_component_name => p_region.name
+              );
+            
+              apex_json.open_object;
+            
+              if l_column_value_list(c_created_col).value_list.count = 0 
+              then
+                apex_json.write('validated', false);
+                apex_json.write('validatedBy', 'Unvalidated');
+              else
+                apex_json.write('validated', apex_util.get_since(l_column_value_list(c_created_col).value_list(1).timestamp_tz_value));
+                apex_json.write('validatedBy', apex_escape.html(l_column_value_list(c_validated_by_col).value_list(1).varchar2_value));
+                apex_json.write('expired', l_column_value_list(c_created_col).value_list(1).timestamp_tz_value < current_timestamp - interval '7' day);
+              end if;
+            
+              apex_json.close_object;
+            
+              return l_ajax_result;
+            
+            end validator_ajax;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: validator_render
+        ajaxProcedureName: validator_ajax
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    javaScript {
+        fileUrls: #PLUGIN_FILES#content_validator.js
+    }
+    information {
+        version: 5.0.1
+        helpText:
+            ```
+            <p>
+            	This plugin displays when the page content was last validated and who validated the content. To implement this plugin correctly you will need to also do the following 3 things:</p>
+            <ol>
+              <li>Create a modal region on the page that has this plugin that does a report of past validations.</li>
+              <li>Create a validation page. This is a form that captures validation text entered by the end-user who is validating the content.</li>
+              <li>Create a button in the region that takes the user to the validation page (described above).</li>
+            </ol>
+            ```
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        sqlQuery {
+            minColumns: 2
+            maxColumns: 2
+        }
+        examples {
+            examples:
+                ```
+                select
+                    verified_by,
+                    to_char(created,'DD-MON-YYYY HH.MI.SS.FF PM') as created
+                from
+                    your_content_validation_table 
+                where
+                    primary_key_column = :P###_ID
+                order by
+                    created desc
+                
+                ```
+        }
+    )
+
+)
+

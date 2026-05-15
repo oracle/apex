@@ -1,0 +1,33 @@
+.db-ValidStatus {
+    padding: 8px 16px;
+    text-align: center;
+}
+.db-ValidStatus-status {
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 0 0 2px rgba(0,0,0,.1) inset;
+    margin-bottom: 8px;
+    color: #000;
+}
+.db-ValidStatus-status.green {
+    background-color: #A3F079;
+}
+.db-ValidStatus-status.red {
+    background-color: #F00000;
+    color: #FFF;
+}
+.db-ValidStatus-status.yellow {
+    background-color: #F3D834;
+}
+.db-ValidStatus-link {
+    font-size: 11px;
+    color: #707070;
+}
+.uSideRegion span.uButtonContainer {
+display: block;
+padding: 8px 16px;
+}
+.uSideRegion span.uButtonContainer .uButtonLarge {
+    display: block;
+}

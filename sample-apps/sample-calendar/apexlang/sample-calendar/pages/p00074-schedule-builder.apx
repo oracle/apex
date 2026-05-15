@@ -1,0 +1,921 @@
+page 74 (
+    name: Schedule Builder
+    alias: SCHEDULE-BUILDER
+    title: Schedule Builder
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            function formatYYYYMMDDhhmmss( pDate ) {
+                var date = pDate || new Date();
+            
+                return (
+                    ( "0000" + date.getFullYear() ).substr( -4 ) +
+                    "-" +
+                    ( "00" + ( date.getMonth() + 1 ) ).substr( -2 ) +
+                    "-" +
+                    ( "00" + date.getDate() ).substr( -2 ) +
+                    " " +
+                    ( "00" + date.getHours() ).substr( -2 ) +
+                    ":" +
+                    ( "00" + date.getMinutes() ).substr( -2 ) +
+                    ":" +
+                    ( "00" + date.getSeconds() ).substr( -2 )
+                );
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demomstrates how to build a <i>schedule builder</i> using the Application Express Calendar Component. On the right side, you see a list of available sessions; on the left side is the personal schedule. Click an event on the right hand side to copy to your schedule; clicking in the personal schedule deletes it. With the mouse and the text fields, additional events can be added to the personal schedule.</p>
+                <p>This example makes use of the <i>FullCalendar API</i> <b>EventObject / CalendarObject</b> and its methods <b>setProp</b>, <b>setDates</b> and <b>addEvent</b> (<a href="https://fullcalendar.io/docs/" target="_blank">FullCalendar Documentation</a>).</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region items-container (
+        name: Items Container
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region my-sessions (
+        name: My Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   case when speaker is not null then 
+                       title || ' (' || speaker || ')' 
+                       else title
+                   end as title,
+                   speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when status       = 'INACTIVE' then  'apex-cal-gray'
+                      when session_type = 'BREAK'    then  'apex-cal-silver'
+                      when session_type = 'BUSINESS' then  'apex-cal-orange'
+                      when session_type = 'GENERAL'  then  'apex-cal-blue'
+                      when session_type = 'TECHNICAL' then 'apex-cal-green'
+                      when session_type = 'HANDS_ON' then 'apex-cal-lime'
+                      when session_type = 'PERSONAL' then 'apex-cal-red'
+                   end as css_class
+                from eba_demo_cal_mysessions
+                
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-showMaximizeButton
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: my_session_calendar
+            regionDisplaySelector: true
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            pkColumn: ID
+            showTime: true
+            timeFormat: 24Hour
+            firstHour: 7
+            supplementalInfo: &ABSTRACT.
+            calendarViewsAndNavigation: [
+                week
+                list
+            ]
+            showWeekend: false
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function ( pOptions) {
+                    pOptions.titleFormat            = function( pDate ) { return "My Schedule" };
+                    pOptions.slotMinTime            = "08:00:00";
+                    pOptions.slotMaxTime            = "18:00:00";
+                    pOptions.dayHeaderFormat        = { weekday: 'short', month: 'numeric', day: 'numeric' };
+                    pOptions.slotDuration           = "00:15:00";
+                    return pOptions;
+                }
+                
+                ```
+        }
+    )
+
+    region sessions (
+        name: Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   case when speaker is not null then 
+                       title || ' (' || speaker || ')' 
+                       else title
+                   end as title,
+                   speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when status       = 'INACTIVE' then  'apex-cal-gray'
+                      when session_type = 'BREAK'    then  'apex-cal-silver'
+                      when session_type = 'BUSINESS' then  'apex-cal-orange'
+                      when session_type = 'GENERAL'  then  'apex-cal-blue'
+                      when session_type = 'TECHNICAL' then 'apex-cal-green'
+                      when session_type = 'HANDS_ON' then 'apex-cal-lime'
+                      when session_type = 'PERSONAL' then 'apex-cal-red'
+                   end as css_class
+                from eba_demo_cal_sessions
+                
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-showMaximizeButton
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: session_calendar
+            regionDisplaySelector: true
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            pkColumn: ID
+            showTime: true
+            timeFormat: 24Hour
+            firstHour: 7
+            calendarViewsAndNavigation: week
+            showWeekend: false
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function ( pOptions) {
+                    pOptions.titleFormat            = function( pDate ) { return "Conference Sessions" };
+                    pOptions.slotMinTime            = "08:00:00";
+                    pOptions.slotMaxTime            = "18:00:00";
+                    pOptions.dayHeaderFormat        = { weekday: 'short', month: 'numeric', day: 'numeric' };
+                    pOptions.slotDuration           = "00:15:00";
+                    return pOptions;
+                }
+                ```
+        }
+    )
+
+    pageItem P74_ENDDATE (
+        type: datePicker
+        label {
+            label: To
+            alignment: left
+        }
+        settings {
+            showTime: true
+        }
+        layout {
+            sequence: 50
+            region: @items-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD HH24:MI:SS
+            width: 30
+        }
+        default {
+            type: expression
+            plsqlExpression: to_char(sysdate, 'YYYY-MM-DD')||' 11:00:00'
+        }
+    )
+
+    pageItem P74_MY_SESSION_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            region: @my-sessions
+            slot: regionBody
+        }
+    )
+
+    pageItem P74_STARTDATE (
+        type: datePicker
+        label {
+            label: From
+            alignment: left
+        }
+        settings {
+            showTime: true
+        }
+        layout {
+            sequence: 40
+            region: @items-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD HH24:MI:SS
+            width: 30
+        }
+        default {
+            type: expression
+            plsqlExpression: to_char(sysdate, 'YYYY-MM-DD')||' 09:00:00'
+        }
+    )
+
+    pageItem P74_TITLE (
+        type: textField
+        label {
+            label: Title
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @items-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        default {
+            type: static
+            staticValue: My Session
+        }
+    )
+
+    button clear (
+        buttonName: CLEAR
+        label: Clear Schedule
+        layout {
+            sequence: 30
+            region: @items-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save-in-database (
+        buttonName: SAVE_IN_DATABASE
+        label: Save to Database
+        layout {
+            sequence: 20
+            region: @items-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button show-in-calendar (
+        buttonName: SHOW_IN_CALENDAR
+        label: Show in Calendar
+        layout {
+            sequence: 10
+            region: @items-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction change-topic (
+        name: Change topic
+        execution {
+            sequence: 120
+        }
+        when {
+            selectionType: items
+            items: P74_TYPE
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction clear-schedule (
+        name: Clear Schedule
+        execution {
+            sequence: 110
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @clear
+        }
+
+        action native-confirm (
+            action: confirm
+            settings {
+                message: Clear your schedule: Really?
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: delete from eba_demo_cal_mysessions;
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess("Schedule cleared.")
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-sessions
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction create-javascript-event (
+        name: Create Javascript Event
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @show-in-calendar
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var calendar = apex.region( "my_session_calendar" ).widget().data( "fullCalendar" );
+                    var event = calendar.getEventById( "javascript-event-id" );
+                    
+                    if ( event ) {
+                        event.setProp( "title", $v( "P74_TITLE" ) );
+                        event.setDates( $v( "P74_STARTDATE" ), $v( "P74_ENDDATE" ), { allDay: false } );
+                    } else {
+                        calendar.addEvent( {
+                            id: "javascript-event-id",
+                            description: 'this is a "client-only" event which is not stored in the database so far',
+                            title: $v( "P74_TITLE" ),
+                            start: $v( "P74_STARTDATE" ),
+                            end: $v( "P74_ENDDATE" ),
+                            className: "apex-cal-red",
+                            backgroundColor: "rgba(255,0,0,0.75)",
+                            overlap: true,
+                            allDay: false
+                        } );
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction date-range-selected (
+        name: Date Range Selected
+        execution {
+            sequence: 90
+        }
+        when {
+            event: region/calendar/apexcalendardateselect
+            selectionType: region
+            region: @my-sessions
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $("#P74_STARTDATE,#P74_ENDDATE")
+                             .animate({"background-color": "#FFEC8B"}, 300)
+                             .animate({"background-color": "white"},300)
+                        ;
+                    
+                    apex.event.trigger(this.affectedElements, "click");
+                    ```
+            }
+            affectedElements {
+                selectionType: button
+                button: @show-in-calendar
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: formatYYYYMMDDhhmmss( this.data.dates.newStartDate )
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P74_STARTDATE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: formatYYYYMMDDhhmmss( this.data.dates.newEndDate )
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P74_ENDDATE
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction delete-selected-event (
+        name: Delete Selected Event
+        execution {
+            sequence: 80
+        }
+        when {
+            event: region/calendar/apexcalendareventselect
+            selectionType: region
+            region: @my-sessions
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.data && this.data.event.id != 'javascript-event-id'
+                
+                ```
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    begin
+                      delete from  eba_demo_cal_mysessions where id = :P74_MY_SESSION_ID;
+                    end;    
+                    ```
+                itemsToSubmit: P74_MY_SESSION_ID
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess("\u0022" + this.data.event.title + "\u0022 removed.")
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-sessions
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.data.event.id
+            }
+            affectedElements {
+                selectionType: items
+                items: P74_MY_SESSION_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction event-data-changed-show-in-calendar (
+        name: Event Data Changed: Show in Calendar
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: [
+                P74_TITLE
+                P74_STARTDATE
+                P74_ENDDATE
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.event.trigger(this.affectedElements, "click");
+            }
+            affectedElements {
+                selectionType: button
+                button: @show-in-calendar
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction event-selected-copy-to-my-sessions (
+        name: Event selected: Copy to "My Sessions"
+        execution {
+            sequence: 70
+        }
+        when {
+            event: region/calendar/apexcalendareventselect
+            selectionType: region
+            region: @sessions
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    begin
+                      insert into eba_demo_cal_mysessions (select * from eba_demo_cal_sessions where id = :P74_MY_SESSION_ID);
+                    exception
+                      when dup_val_on_index then null;
+                    end;    
+                    ```
+                itemsToSubmit: P74_MY_SESSION_ID
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess("\u0022" + this.data.event.title + "\u0022 added.")
+            }
+            execution {
+                sequence: 70
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-sessions
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.data.event.id
+            }
+            affectedElements {
+                selectionType: items
+                items: P74_MY_SESSION_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction save-event-to-database (
+        name: Save Event to Database
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @save-in-database
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    begin
+                        insert into eba_demo_cal_mysessions (id, title, status, session_type, speaker, start_date, end_date)
+                        values (to_number(sys_guid(),'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'), :P74_TITLE, 'ACTIVE', 'PERSONAL', '', to_date(:P74_STARTDATE, 'YYYY-MM-DD HH24:MI:SS'), to_date(:P74_ENDDATE, 'YYYY-MM-DD HH24:MI:SS'));
+                            
+                    end;
+                            
+                    ```
+                itemsToSubmit: [
+                    P74_TITLE
+                    P74_STARTDATE
+                    P74_ENDDATE
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess("\u0022" + $v("P74_TITLE") + "\u0022 added.")
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-sessions
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction search-changed-refresh (
+        name: Search Changed - Refresh
+        execution {
+            sequence: 100
+        }
+        when {
+            selectionType: items
+            items: P74_SEARCH
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-calendar-aspectratio (
+        name: Set Calendar AspectRatio
+        execution {
+            sequence: 140
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    apex.region("session_calendar").widget().data("fullCalendar").setOption("aspectRatio", 1.3);
+                    apex.region("my_session_calendar").widget().data("fullCalendar").setOption("aspectRatio", 1.3);
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction sync-conf-session-scroll-with-my-session-scroll (
+        name: Sync "Conf Session" Scroll with "My Session" Scroll
+        execution {
+            sequence: 130
+        }
+        when {
+            event: scroll
+            selectionType: jQuerySelector
+            jquerySelector: #my_session_calendar .fc-scroller
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $("#session_calendar .fc-scroller").scrollTop($("#my_session_calendar .fc-scroller").scrollTop());
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

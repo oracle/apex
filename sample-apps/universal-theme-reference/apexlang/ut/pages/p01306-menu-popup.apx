@@ -1,0 +1,294 @@
+page 1306 (
+    name: Menu Popup
+    alias: MENU-POPUP
+    title: Menu Popup - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region customized-menu (
+        name: Customized Menu
+        type: staticContent
+        source {
+            htmlCode: <p>This example shows a customized menu which has icons and a separator item that can help group menu items together. This menu also has a callout that points to the menu button.</p>
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region customized-menu-2 (
+        name: Customized Menu
+        type: list
+        source {
+            list: @ut-sample-menu-popup-actions
+        }
+        layout {
+            sequence: 10
+            parentRegion: @customized-menu
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: customized
+        }
+        componentAppearance {
+            listTemplate: @/menu-popup
+            templateOptions: [
+                #DEFAULT#
+                js-addActions
+                js-menu-callout
+            ]
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <strong>Step 1. Create a Menu list region</strong><br>
+                <ol>
+                  <li>Create a List Region</li>
+                  <li>Set the Region Template to <em>Blank with Attributes</em></li>
+                  <li>Set the Static ID to <em>actions</em></li>
+                  <li>Set the List Template for this region to <em>Menu Popup</em></li>
+                </ol>
+                
+                <strong>Step 2. Associate a Button to open the menu</strong><br>
+                <ol>
+                  <li>Create a Button on the page</li>
+                  <li>Update Behavior to <em>Defined by Dynamic Action</em></li>
+                  <li>Update Custom Attributes to add <em>data-menu="<strong>actions</strong>_menu"</em></li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region menu-popup (
+        name: Menu Popup
+        type: list
+        source {
+            list: @ut-sample-menu-popup
+        }
+        layout {
+            sequence: 10
+            parentRegion: @multi-level-menu-example
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: actions
+        }
+        componentAppearance {
+            listTemplate: @/menu-popup
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region multi-level-menu-example (
+        name: Multi Level Menu Example
+        type: staticContent
+        source {
+            htmlCode: <p>Pop up menus can have many levels. This menu demonstrates a menu with several sub menus.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>You can easily create a popup menu in your application by using Lists and associating a button with the menu.  To create a popup menu in your application, you must first have a list region on your page which contains the menu items.  Then you need to associate a button on your page with the menu so it will open the menu when clicked.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    button menu-button (
+        buttonName: MENU_BUTTON
+        label: Menu Button
+        layout {
+            sequence: 10
+            region: @multi-level-menu-example
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-angle-down
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            customAttributes: data-menu="actions_menu"
+        }
+    )
+
+    button menu-button-2 (
+        buttonName: MENU_BUTTON_1
+        label: Menu Button
+        layout {
+            sequence: 10
+            region: @customized-menu
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            icon: fa-angle-down
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            customAttributes: data-menu="customized_menu"
+        }
+    )
+
+)
+

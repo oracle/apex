@@ -1,0 +1,290 @@
+searchConfig OCI_ADVANCED_VECTOR_SEARCH (
+    name: OCI-BASIC-VECTOR-SEARCH-DATATABLE
+    type: vector
+    source {
+        tableName: EBA_VECTOR_DATATABLE
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OCI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: COL1
+        subtitleColumn: COL2
+        descriptionColumn: COL3
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-sitemap-vertical
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+
+searchConfig OCI_BASIC_VECTOR_SEARCH (
+    name: OCI-BASIC-VECTOR-SEARCH-MOVIEDATA
+    type: vector
+    source {
+        tableName: EBA_VECTOR_MOVIEDATA
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OCI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+
+searchConfig OCI_MOVIE_RECOMMENDATION (
+    name: OCI-MOVIE-RECOMMENDATION
+    type: vector
+    source {
+        whereClause: SUBSTR(moviedescription, 1, 40) <> SUBSTR(:P41_SEARCH, 1, 40)
+        tableName: EBA_VECTOR_MOVIEDATA
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OCI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 49
+            items: {
+                P49_SEARCH_ID: &ID.
+            }
+            clearCache: 49
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+
+searchConfig OPENAI_ADVANCED_VECTOR_SEARCH (
+    name: OPENAI-BASIC-VECTOR-SEARCH-DATATABLE
+    type: vector
+    source {
+        tableName: EBA_VECTOR_DATATABLE
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OPENAI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: COL1
+        subtitleColumn: COL2
+        descriptionColumn: COL3
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-sitemap-vertical
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+
+searchConfig OPENAI_BASIC_VECTOR_SEARCH (
+    name: OPENAI-BASIC-VECTOR-SEARCH-MOVIEDATA
+    type: vector
+    source {
+        tableName: EBA_VECTOR_MOVIEDATA
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OPENAI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+
+searchConfig OPENAI_MOVIE_RECOMMENDATION (
+    name: OPENAI-MOVIE-RECOMMENDATION
+    type: vector
+    source {
+        whereClause: SUBSTR(moviedescription, 1, 40) <> SUBSTR(:P41_SEARCH, 1, 40)
+        tableName: EBA_VECTOR_MOVIEDATA
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OPENAI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 49
+            items: {
+                P49_SEARCH_ID: &ID.
+            }
+            clearCache: 49
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+
+searchConfig ORACLE_TEXT_SEARCH (
+    name: ORACLE-TEXT-SEARCH-DATATABLE
+    type: text
+    source {
+        tableName: EBA_VECTOR_DATATABLE
+        oracleTextIndexColumn: COL1
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: COL1
+        subtitleColumn: COL2
+        descriptionColumn: COL3
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-sitemap-vertical
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+
+searchConfig ORACLE_TEXT_SEARCH_AND_VECTOR (
+    name: ORACLE-TEXT-SEARCH-AND-VECTOR-MOVIEDATA
+    type: text
+    source {
+        tableName: EBA_VECTOR_MOVIEDATA
+        oracleTextIndexColumn: MOVIEDESCRIPTION
+    }
+    orderBy {
+        orderByClause:
+            ```sql
+            VECTOR_DISTANCE(embedding_vector, 
+                apex_ai.get_vector_embeddings(
+                    p_value =>             :P17_SEARCH, 
+                    p_service_static_id => case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_VECTOR_OCI' else 'EBA_VECTOR_OPENAI' end), DOT) ASC
+            ```
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+
+searchConfig oracle_text_search_and_vector_datatable (
+    name: ORACLE-TEXT-SEARCH-AND-VECTOR-DATATABLE
+    type: text
+    source {
+        tableName: EBA_VECTOR_DATATABLE
+        oracleTextIndexColumn: COL1
+    }
+    orderBy {
+        orderByClause:
+            ```sql
+            VECTOR_DISTANCE(embedding_vector, 
+                apex_ai.get_vector_embeddings(
+                    p_value =>             :P33_SEARCH, 
+                    p_service_static_id => case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_VECTOR_OCI' else 'EBA_VECTOR_OPENAI' end), DOT) ASC
+            ```
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: COL1
+        subtitleColumn: COL2
+        descriptionColumn: COL3
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+
+searchConfig oracle_text_search_moviedata (
+    name: ORACLE-TEXT-SEARCH-MOVIEDATA
+    type: text
+    source {
+        tableName: EBA_VECTOR_MOVIEDATA
+        oracleTextIndexColumn: MOVIEDESCRIPTION
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+

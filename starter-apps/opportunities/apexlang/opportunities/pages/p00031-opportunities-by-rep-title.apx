@@ -1,0 +1,352 @@
+page 31 (
+    name: Opportunities by &REP_TITLE.
+    alias: OPPORTUNITIES-BY-REP-TITLE
+    title: Opportunities by &REP_TITLE_RAW.
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This is an interactive report of all opportunities listed by &REP_TITLE.. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region opportunities-by-rep (
+        name: Opportunities by Rep
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select	 
+                	 "EBA_SALES_OPP_V"."REP_FIRST_NAME" ||' '||
+                	 "EBA_SALES_OPP_V"."REP_LAST_NAME" as "REP",
+                	 "EBA_SALES_OPP_V"."REP_EMAIL" as "REP_EMAIL",
+                         count(*) deal_count,
+                	 sum("EBA_SALES_OPP_V"."DEAL_AMOUNT") total_amount,
+                         sum("EBA_SALES_OPP_V"."DEAL_PROBABILITY"*.01
+                            *"EBA_SALES_OPP_V"."DEAL_AMOUNT") weighted,
+                         min("EBA_SALES_OPP_V"."DEAL_PROBABILITY") minimum_probability,
+                         max("EBA_SALES_OPP_V"."DEAL_PROBABILITY") maximum_probability
+                 from	 "EBA_SALES_OPP_V" "EBA_SALES_OPP_V"
+                --where DEAL_PROBABILITY > 0 and deal_probability < 100
+                group by "EBA_SALES_OPP_V"."REP_FIRST_NAME" ||' '||
+                	 "EBA_SALES_OPP_V"."REP_LAST_NAME","EBA_SALES_OPP_V"."REP_EMAIL"
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+            ]
+            filename: opportunities_by_rep.csv
+        }
+        advanced {
+            savedReportMappingIdentifier: 3724008223760858718
+        }
+
+        column DEAL_COUNT (
+            type: plainText
+            heading {
+                heading: Opportunity Count
+                alignment: end
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column MAXIMUM_PROBABILITY (
+            type: plainText
+            heading {
+                heading: Maximum Probability
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column MINIMUM_PROBABILITY (
+            type: plainText
+            heading {
+                heading: Minimum Probability
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column REP (
+            type: link
+            heading {
+                heading: &REP_TITLE.
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 1
+                    items: {
+                        IREQ_SALES_REP_NAME: #REP#
+                        P1_DISPLAY_AS: GRID
+                    }
+                    clearCache: [
+                        1
+                        RIR
+                        CIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #REP#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column REP_EMAIL (
+            type: plainText
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column TOTAL_AMOUNT (
+            type: plainText
+            heading {
+                heading: Total &AMT_HDR.
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column WEIGHTED (
+            type: plainText
+            heading {
+                heading: Weighted &AMT_HDR.
+                alignment: end
+            }
+            layout {
+                sequence: 5
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 8964545 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DEAL_COUNT (
+                sequence: 3
+            )
+
+            displayColumn MAXIMUM_PROBABILITY (
+                sequence: 7
+            )
+
+            displayColumn MINIMUM_PROBABILITY (
+                sequence: 6
+            )
+
+            displayColumn REP (
+                sequence: 1
+            )
+
+            displayColumn REP_EMAIL (
+                sequence: 2
+            )
+
+            displayColumn TOTAL_AMOUNT (
+                sequence: 4
+            )
+
+            displayColumn WEIGHTED (
+                sequence: 5
+            )
+
+            sort (
+                column: WEIGHTED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: REP
+                sort {
+                    sequence: 2
+                }
+            )
+
+            aggregate (
+                column: TOTAL_AMOUNT
+            )
+
+            aggregate (
+                column: WEIGHTED
+            )
+
+            aggregate (
+                column: DEAL_COUNT
+            )
+
+        )
+
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @opportunities-by-rep
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 31
+                clearCache: [
+                    31
+                    RIR
+                    CIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

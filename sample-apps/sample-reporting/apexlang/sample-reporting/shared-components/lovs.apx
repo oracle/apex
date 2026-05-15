@@ -1,0 +1,72 @@
+lov distinct-status-values (
+    name: DISTINCT STATUS VALUES
+    source {
+        type: legacySqlQuery
+        sqlQuery: select distinct status d, status r from EBA_DEMO_IR_PROJECTS order by 1
+    }
+)
+
+lov number-of-rows-per-page (
+    name: NUMBER OF ROWS PER PAGE
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 7
+        display: 1
+        return: 1
+    )
+
+    entry lov_data-2 (
+        sequence: 10
+        display: 5
+        return: 5
+    )
+
+    entry lov_data-3 (
+        sequence: 20
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-4 (
+        sequence: 30
+        display: 15
+        return: 15
+    )
+
+    entry lov_data-5 (
+        sequence: 40
+        display: 20
+        return: 20
+    )
+
+    entry lov_data-6 (
+        sequence: 50
+        display: 100
+        return: 100
+    )
+
+    entry lov_data-7 (
+        sequence: 60
+        display: 500
+        return: 500
+    )
+
+    entry lov_data-8 (
+        sequence: 80
+        display: 1,000
+        return: 1000
+    )
+
+)
+
+lov projects (
+    name: PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery: select distinct project d, project r from EBA_DEMO_IR_PROJECTS order by 1
+    }
+)
+

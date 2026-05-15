@@ -1,0 +1,45 @@
+classicNavigationBarEntry administration (
+    label: Administration
+    layout {
+        sequence: 10
+    }
+    link {
+        target: {
+            page: 35
+        }
+    }
+)
+
+classicNavigationBarEntry help (
+    label: Help
+    layout {
+        sequence: 20
+    }
+    link {
+        target: {
+            page: 8
+        }
+    }
+    serverSideCondition {
+        type: currentPage!=page
+        page: 101
+    }
+)
+
+classicNavigationBarEntry logout (
+    label: Logout
+    layout {
+        sequence: 30
+    }
+    link {
+        target: {
+            type: url
+            url: &LOGOUT_URL.
+        }
+    }
+    serverSideCondition {
+        type: currentPage!=page
+        page: 101
+    }
+)
+

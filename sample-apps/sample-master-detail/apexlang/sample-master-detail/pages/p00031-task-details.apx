@@ -1,0 +1,873 @@
+page 31 (
+    name: Task Details
+    alias: TASK-DETAILS
+    title: Task Details
+    appearance {
+        pageTemplate: @/marquee
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region links (
+        name: Links
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select l.id
+                , l.link_type
+                , l.url
+                , l.application_id || decode(l.application_page, null, null, ' : ' || l.application_page) application
+                , l.description
+                , l.created
+                , l.updated last_updated
+                from eba_demo_md_task_links l
+                where l.task_id = :P31_TASK_ID
+                order by created
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: links
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: No links for this task.
+        }
+
+        column APPLICATION (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Application
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 6
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Edit
+                alignment: center
+            }
+            layout {
+                sequence: 1
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_ID: #ID#
+                    }
+                    clearCache: 23
+                    action: resetPagination
+                }
+                linkText: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+                alignment: center
+            }
+            layout {
+                sequence: 7
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Link Type
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column URL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: URL
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region master-task (
+        name: Master Task
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.description
+                , (select name from eba_demo_md_projects p where p.id = t.project_id) project
+                , (select name || '  [' || m.due_date || ']' from eba_demo_md_milestones m where m.id = t.milestone_id) milestone
+                , (select full_name from eba_demo_md_team_members tm where tm.id = t.assignee) assignee
+                , t.start_date
+                , t.end_date
+                , decode(t.is_complete_yn, 'Y', 'Yes', 'No') completed
+                , t.created
+                , t.updated last_updated
+                from eba_demo_md_tasks t
+                where t.id = :P31_TASK_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No data found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ASSIGNEE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Assignee
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+        column COMPLETED (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Completed?
+            }
+            layout {
+                sequence: 7
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column END_DATE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 6
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MILESTONE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Milestone
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column START_DATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 5
+            }
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region task-actions (
+        name: Task Actions
+        type: list
+        source {
+            list: @task-actions
+        }
+        layout {
+            sequence: 40
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: actions
+        }
+        componentAppearance {
+            listTemplate: @/links-list
+            templateOptions: [
+                #DEFAULT#
+                t-LinksList--actions
+                t-LinksList--showIcons
+            ]
+        }
+    )
+
+    region to-dos (
+        name: To Dos
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.id
+                , d.name
+                , d.description
+                , (select full_name from eba_demo_md_team_members tm where tm.id = d.assignee) assignee
+                , decode(nvl(d.is_complete_yn,'N'),
+                    'N','<span class="u-VisuallyHidden">No</span>',
+                    'Y','<span class="fa fa-check"><span class="u-VisuallyHidden">Yes</span></span>'
+                  ) completed  
+                , d.created
+                , d.updated last_updated
+                from eba_demo_md_task_todos d
+                where d.task_id = :P31_TASK_ID
+                order by created
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: todos
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: No to dos for this task.
+        }
+
+        column ASSIGNEE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Assignee
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMPLETED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Completed?
+                alignment: center
+            }
+            layout {
+                sequence: 5
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 6
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Edit
+                alignment: center
+            }
+            layout {
+                sequence: 1
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 15
+                    items: {
+                        P15_ID: #ID#
+                    }
+                    clearCache: 15
+                    action: resetPagination
+                }
+                linkText: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+                alignment: center
+            }
+            layout {
+                sequence: 7
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P31_LAST_PAGE (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @master-task
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P31_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @master-task
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P31_TASK_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @master-task
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P31_TASK_NAME (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @master-task
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-link (
+        buttonName: ADD_LINK
+        label: Add to do
+        layout {
+            sequence: 10
+            region: @links
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 23
+                items: {
+                    P23_PROJECT_ID: &P31_PROJECT_ID.
+                    P23_TASK_ID: &P31_TASK_ID.
+                }
+                clearCache: 23
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: add-link
+        }
+    )
+
+    button add-todo (
+        buttonName: ADD_TODO
+        label: Add to do
+        layout {
+            sequence: 50
+            region: @to-dos
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 15
+                items: {
+                    P15_PROJECT_ID: &P31_PROJECT_ID.
+                    P15_TASK_ID: &P31_TASK_ID.
+                }
+                clearCache: 15
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: add-todo
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &P31_LAST_PAGE.
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button edit-task (
+        buttonName: EDIT_TASK
+        label: Edit Task
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                items: {
+                    P9_ID: &P31_TASK_ID.
+                }
+                clearCache: 9
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction link-updates (
+        name: Link Updates
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: #links, #add-link, #actions
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId == "23"
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @links
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction task-updates (
+        name: Task Updates
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @edit-task
+        }
+
+        action native-submit-page (
+            action: submitPage
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction todo-updates (
+        name: ToDo Updates
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: #todos, #add-todo, #actions
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId == "15"
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @to-dos
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p31-last-page (
+        itemName: P31_LAST_PAGE
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 8
+        }
+        serverSideCondition {
+            type: itemIsNullOrZero
+            item: P31_LAST_PAGE
+        }
+    )
+
+    computation p31-task-name (
+        itemName: P31_TASK_NAME
+        execution {
+            sequence: 20
+            point: afterHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select name
+                from eba_demo_md_tasks
+                where id = :P31_TASK_ID
+                ```
+        }
+    )
+
+)
+

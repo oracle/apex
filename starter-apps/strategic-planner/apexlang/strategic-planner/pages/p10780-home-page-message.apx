@@ -1,0 +1,429 @@
+page 10780 (
+    name: Home Page Message
+    alias: HOME-PAGE-MESSAGE
+    title: Home Page Message
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region home-page-message (
+        name: Home Page Message
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_APPLICATION_NOTIFICATIONS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P10780_FROM_DATE (
+        type: datePicker
+        label {
+            label: From Date
+            alignment: left
+        }
+        settings {
+            showTime: true
+        }
+        layout {
+            sequence: 100
+            region: @home-page-message
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @home-page-message
+            column: FROM_DATE
+            dataType: date
+        }
+        help {
+            helpText: Only display this message if the current date is greater than, or equal to, this date.
+        }
+    )
+
+    pageItem P10780_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @home-page-message
+            slot: regionBody
+        }
+        source {
+            formRegion: @home-page-message
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10780_IS_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @home-page-message
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @home-page-message
+            column: IS_ACTIVE_YN
+            dataType: varchar2
+        }
+        help {
+            helpText: If active, the message will display (assuming it meets other display criteria).
+        }
+    )
+
+    pageItem P10780_NOTIFICATION_DESC (
+        type: textarea
+        label {
+            label: Message
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @home-page-message
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            formRegion: @home-page-message
+            column: NOTIFICATION_DESCRIPTION
+            dataType: varchar2
+        }
+        help {
+            helpText: This is the text which displays in the message.
+        }
+    )
+
+    pageItem P10780_NOTIFICATION_NAME (
+        type: textField
+        label {
+            label: Message Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @home-page-message
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 128
+        }
+        source {
+            formRegion: @home-page-message
+            column: NOTIFICATION_NAME
+            dataType: varchar2
+        }
+        help {
+            helpText: This is the name of the message and is not displayed to the end user.
+        }
+    )
+
+    pageItem P10780_REQUIRED_USER_TAG (
+        type: textField
+        label {
+            label: Required User Tag
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 50
+            region: @home-page-message
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            formRegion: @home-page-message
+            column: REQUIRED_USER_TAG
+            dataType: varchar2
+        }
+        help {
+            helpText: Enter a single tag.  If a user has this tag, the system will display this message (assuming other display criteria are met).
+        }
+    )
+
+    pageItem P10780_TO_DATE (
+        type: datePicker
+        label {
+            label: To Date
+            alignment: left
+        }
+        settings {
+            showTime: true
+        }
+        layout {
+            sequence: 110
+            region: @home-page-message
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @home-page-message
+            column: TO_DATE
+            dataType: date
+        }
+        help {
+            helpText: Only display this message if the current date is less than, or equal to, this date.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10780_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10780_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10780_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 4476941865634835676
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-application-notification (
+        name: Initialize form Application Notification
+        type: formInitialization
+        formRegion: @home-page-message
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 4476940940622835675
+        }
+    )
+
+    process process-form-application-notification (
+        name: Process form Application Notification
+        type: formAutoRowProcessing
+        formRegion: @home-page-message
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 4476941491570835676
+        }
+    )
+
+)
+

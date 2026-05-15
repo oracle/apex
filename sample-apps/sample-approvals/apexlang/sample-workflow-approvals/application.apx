@@ -1,0 +1,92 @@
+app SAMPLE-WORKFLOW-APPROVALS (
+    name: Sample Workflow, Approvals, and Tasks
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: text
+        text: Sample Workflow, Approvals, and Tasks
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: 24
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        autoDismissSuccessMessages: true
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    css {
+        fileUrls: #APP_FILES#app#MIN#.css
+    }
+    authentication {
+        scheme: @demo-purposes-only-custom-auth-scheme
+        publicUser: APEX_PUBLIC_USER
+    }
+    security {
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        checksumSalt: 073D2A321C647E45DE1D181F58E08FF828CFF5DDD1FEE2D7FF84D619829C3794
+    }
+    globalization {
+        documentDirection: leftToRight
+        languageDerivedFrom: browserPreference
+    }
+    progressiveWebApp {
+        installable: true
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        emailFromAddress: Oracle APEX Samples <sample-approvals@example.com>
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c)2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0 as shown 
+            at https://oss.oracle.com/licenses/upl/
+            ```
+        vacationRuleProcedureName: eba_demo_appr.approval_vacation_handler
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Workflow, Approvals, and Tasks
+        }
+    )
+
+    appSetting DEMO_NOTIFICATION_EMAIL (
+    )
+
+    appSetting EMP_APPRAISAL_EXTRA_VP_REVIEWERS (
+    )
+
+    appSetting TEMPORARY_BUSINESS_ADMIN (
+    )
+
+)
+

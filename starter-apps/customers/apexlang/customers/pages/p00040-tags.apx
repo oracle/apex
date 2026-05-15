@@ -1,0 +1,161 @@
+page 40 (
+    name: Tags
+    alias: TAGS
+    title: Tags
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    config {
+        buildOption: @reports
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region contacts-tag-cloud (
+        name: Contacts Tag Cloud
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, tag_count
+                  from eba_cust_tags_type_sum
+                 where content_type = 'CONTACT'
+                   and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            linkTarget: {
+                page: 18
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+    region customers-tag-cloud (
+        name: Customers Tag Cloud
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, tag_count
+                  from eba_cust_tags_type_sum
+                 where content_type = 'CUSTOMER'
+                   and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            linkTarget: {
+                page: 59
+                items: {
+                    IRC_TAGS: #TAG#
+                    P59_DISPLAY_AS: REPORT
+                }
+                clearCache: [
+                    59
+                    RIR
+                ]
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+    region products-tag-cloud (
+        name: Products Tag Cloud
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, tag_count
+                  from eba_cust_tags_type_sum
+                 where content_type = 'PRODUCT'
+                   and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            linkTarget: {
+                page: 44
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+)
+

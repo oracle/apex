@@ -1,0 +1,1055 @@
+page 1000 (
+    name: Getting Started
+    alias: GETTING-STARTED
+    title: Getting Started
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .step-container { max-width: 768px; margin: 1.6rem auto }
+            .step-container .t-HeroRegion:not(.t-HeroRegion--featured) .t-HeroRegion-wrap { padding: 0 }
+            .t-Alert--info .t-Alert-icon { vertical-align: top }
+            .t-Alert--horizontal .t-Alert-title { line-height: 2.8rem }
+            .content-well { background: rgba(0, 0, 0, .05); border-radius: 2px; padding: 1.6rem }
+            .users-table .t-Report-report thead { display: none }
+            .users-table .t-Report-cell { padding: 0.8rem 0; font-size: 1.4rem; line-height: 1.5 }
+            .cta-button {padding: 16px 32px; font-size: 16px;}
+            .t-Card-info {
+              margin-top: 0;
+            }
+            
+            .t-Card-desc {
+              display: none;
+            }
+            
+            .t-Card-title {
+              font-weight: 400;
+            }
+            .apex-item-yes-no {white-space:pre;}
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region access-control (
+        name: Access Control
+        type: staticContent
+        source {
+            htmlCode: <p>Access Control enables you to control the level of access users have to the application.  Your user account is automatically configured as an Administrator.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-1
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region acl-level (
+        name: ACL Level
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @access-control
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region application-options (
+        name: Application Options
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-4
+        }
+        headerAndFooter {
+            footerText: <p>Additional options are available, to view and set these navigate to the build option console under administration.</p>
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from apex_application_build_options
+                 where application_id = :APP_ID
+                   and eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'YES'
+                ```
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+            cssClasses: step-container
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region default-email-address (
+        name: Default Email Address
+        type: staticContent
+        source {
+            htmlCode: Define the email address that this application will use to send emails to end-users and poll-takers.
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-5
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region feature-configuration (
+        name: Feature Configuration
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    build_option_id ID, 
+                    build_option_name build_option, 
+                    build_option_status, 
+                    apex_item.hidden(p_idx => 1, p_value => build_option_id) ||
+                    apex_item.hidden(p_idx => 2, p_value => build_option_status) ||
+                    apex_item.switch ( 
+                       p_idx => 3,
+                       p_value => build_option_status,
+                       p_on_value => 'Include',
+                       p_on_label => 'Yes',
+                       p_off_value => 'Exclude',
+                       p_off_label => 'No',
+                       p_item_id => 'BO_OPT_' || rownum,
+                       p_item_label => apex_escape.html(build_option_name) || ': Is Enabled',
+                       p_attributes => 'style="white-space:pre;"') toggle_build_option,
+                    component_comment,
+                    last_updated_on updated,
+                    lower(last_updated_by) updated_by
+                from
+                    apex_application_build_options bo
+                where
+                    application_id = :APP_ID
+                order by
+                    2 asc
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @application-options
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 500
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--horizontalBorders
+            ]
+            showNullValuesAs: -
+        }
+
+        column BUILD_OPTION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Feature
+            }
+            layout {
+                sequence: 2
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <strong>#BUILD_OPTION#</strong><br>
+                    #COMPONENT_COMMENT#
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BUILD_OPTION_STATUS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+        )
+
+        column COMPONENT_COMMENT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column TOGGLE_BUILD_OPTION (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Enabled
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+    )
+
+    region first-time-setup-completed (
+        name: First Time Setup Completed
+        type: staticContent
+        source {
+            htmlCode: The first time setup has already been completed for &APPLICATION_TITLE..
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'NO'
+        }
+    )
+
+    region introduction-wizard (
+        name: Introduction Wizard
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: step-container
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region sample-data (
+        name: Sample Data
+        type: staticContent
+        source {
+            htmlCode: Loading Sample Data will enable you to explore the functionality of the app with pre-populated sample data.
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-3
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region users (
+        name: Users
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-2
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region users-2 (
+        name: Users
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    apex_util.prepare_url( 'f?p=' || :APP_ID || ':92:' || :APP_SESSION
+                                          || '::::P92_USERNAME,P92_ROLE_ID,P92_SEQUENCE:'
+                                          || lower(apex_escape.html(c001)) || ',' || C002 || ',' || seq_id ) as card_link,
+                    lower(c001) as username,
+                    c002 card_subtext,
+                    case c002 
+                        when 'Administrator' then 'fa-user-wrench' 
+                        when 'Contributor' then 'fa-user-edit' 
+                        when 'Reader' then 'fa-user'
+                    end as card_icon,
+                    case c002 
+                        when 'Administrator' then 'u-color-15' 
+                        when 'Contributor' then 'u-color-4' 
+                        when 'Reader' then 'u-color-1'
+                    end as card_color,
+                    rownum,
+                    lower(c001) card_title,
+                    null card_text
+                from
+                    apex_collections
+                where
+                    collection_name = 'NEW_USERS'
+                order by n001 desc, c001
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @users
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 500
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                t-Cards--compact
+                t-Cards--displayIcons
+                t-Cards--4cols
+                t-Cards--animColorFill
+            ]
+            cssClasses: users-table
+        }
+
+        column CARD_COLOR (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card color
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_ICON (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card icon
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_LINK (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROWNUM (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column USERNAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Username
+            }
+            layout {
+                sequence: 1
+            }
+            columnFormatting {
+                htmlExpression: <a href="#CARD_LINK#" role="button" class="t-Button t-Button--icon t-Button--noUI t-Button--iconLeft"><span aria-hidden="true" class="t-Icon t-Icon--left fa #CARD_ICON#" title="#USERNAME# - #CARD_SUBTEXT#"></span>#USERNAME#</a>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region welcome-to-application-title (
+        name: Welcome to &APPLICATION_TITLE.
+        type: staticContent
+        source {
+            htmlCode: Please take a moment to complete this first time setup.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @introduction-wizard
+            slot: subRegions
+        }
+        appearance {
+            template: @/hero
+            templateOptions: t-HeroRegion--noPadding
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    pageItem P1000_ACL_CONFIG (
+        type: radioGroup
+        label {
+            label: Access Control Level
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-control-scope
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @acl-level
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: PUBLIC_READONLY
+        }
+    )
+
+    pageItem P1000_FROM (
+        type: textField
+        label {
+            label: From Email Address
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @default-email-address
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            width: 50
+            valuePlaceholder: live-poll@mycompany.com
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+    )
+
+    pageItem P1000_LOAD_SAMPLE_YN (
+        type: radioGroup
+        label {
+            label: Load Sample Data
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Yes - Load Sample Data;Y,No - Do Not Load Sample Data;N
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @sample-data
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+    )
+
+    pageItem P1000_USERNAME_FORMAT (
+        type: radioGroup
+        label {
+            label: Username Format
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username-format
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @acl-level
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value ('USERNAME_FORMAT')
+            used: always
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: instr(:APP_USER,'@') > 0
+        }
+    )
+
+    button add-user (
+        buttonName: ADD_USER
+        label: Add User
+        layout {
+            sequence: 10
+            region: @users-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-user-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 92
+                clearCache: 92
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            customAttributes: style="margin-top:10px;"
+        }
+    )
+
+    button complete (
+        buttonName: COMPLETE
+        label: Complete Setup
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--iconRight
+            ]
+            cssClasses: cta-button
+            icon: fa-check-circle
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    button ok (
+        buttonName: OK
+        label: Continue
+        layout {
+            sequence: 10
+            region: @first-time-setup-completed
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'NO'
+        }
+    )
+
+    dynamicAction refresh-on-edit (
+        name: Refresh on edit
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @users-2
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @users-2
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation from-email-address-is-valid (
+        name: From email address is valid
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P1000_FROM
+            regexp: "^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$"
+        }
+        error {
+            errorMessage: Please enter a valid email address.
+            associatedItem: @P1000_FROM
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P1000_FROM
+        }
+    )
+
+    process add-current-user-to-collection (
+        name: Add Current User to Collection
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                   select role_id
+                     from APEX_APPL_ACL_ROLES 
+                    where application_id = :APP_ID 
+                      and role_name = 'Administrator'
+                ) loop
+                   apex_collection.add_member(
+                      p_collection_name => 'NEW_USERS',
+                      p_c001            => lower(:APP_USER),
+                      p_n001            => c1.role_id );
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 30
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8058982099037534678
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_collection.collection_member_count(p_collection_name => 'NEW_USERS') = 0
+        }
+    )
+
+    process create-new-users-collection (
+        name: Create NEW_USERS Collection
+        type: executeCode
+        source {
+            plsqlCode: apex_collection.create_or_truncate_collection(p_collection_name => 'NEW_USERS');
+        }
+        execution {
+            sequence: 20
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8058981686985534677
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody: return not apex_collection.collection_exists(p_collection_name => 'NEW_USERS');
+        }
+    )
+
+    process process-page-data (
+        name: Process Page Data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    -- Enable ACL
+                    eba_qpoll_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_ENABLED',
+                        p_preference_value => 'Y' );
+                    
+                    -- Set ACL Scope
+                    eba_qpoll_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_SCOPE',
+                        p_preference_value => :P1000_ACL_CONFIG );
+                
+                    -- Define Username Preference
+                    if instr(:APP_USER,'@') > 0 then
+                        eba_qpoll_fw.set_preference_value (
+                            p_preference_name  => 'USERNAME_FORMAT',
+                            p_preference_value => :P1000_USERNAME_FORMAT );
+                    end if;
+                
+                    -- Add Users
+                    begin
+                       for c1 in (
+                          select c001 as username,
+                                 n001 as role_id
+                            from apex_collections
+                           where collection_name = 'NEW_USERS'
+                             and lower(c001) not in (select distinct user_name_lc
+                                                       from APEX_APPL_ACL_USERS
+                                                      where APPLICATION_ID = :APP_ID)
+                       ) loop
+                          apex_acl.add_user_role (
+                              p_application_id => :APP_ID, 
+                              p_user_name => c1.username, 
+                              p_role_id => c1.role_id );
+                       end loop;
+                    exception
+                      when others then
+                        null;
+                    end;
+                
+                    -- Get rid of the collection
+                    apex_collection.delete_collection(p_collection_name => 'NEW_USERS');
+                
+                    -- Load Sample Data
+                    if :P1000_LOAD_SAMPLE_YN = 'Y' then
+                        eba_qpoll.eba_qpoll_data_load;
+                    end if;
+                
+                    -- Set Build Options
+                    for i in 1..apex_application.g_f01.count
+                    loop
+                        for c1 in ( select application_id, build_option_name, build_option_status
+                                    from apex_application_build_options
+                                    where apex_application.g_f01(i) = build_option_id
+                                       and application_Id = :APP_ID)
+                        loop
+                            if c1.build_option_status != apex_application.g_f03(i) then
+                                apex_util.set_build_option_status(  p_application_id => :APP_ID,
+                                                                    p_id => apex_application.g_f01(i),
+                                                                    p_build_status => upper(apex_application.g_f03(i)) );
+                            end if;
+                        end loop;
+                    end loop;
+                
+                    -- Set Email From Address
+                    eba_qpoll_fw.set_preference_value('NOTIFICATION_EMAIL_FROM',lower(:P1000_FROM));
+                
+                    -- Set First Run to No
+                    eba_qpoll_fw.set_preference_value (
+                        p_preference_name  => 'FIRST_RUN',
+                        p_preference_value => 'NO' );
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Access Control has been enabled, defined users have been added, and application settings have been successfully updated.
+        }
+        advanced {
+            executionMappingIdentifier: 8058983275398534680
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete
+        }
+    )
+
+    process reset-user-collection (
+        name: Reset User Collection
+        type: executeCode
+        source {
+            plsqlCode: apex_collection.truncate_collection(p_collection_name => 'NEW_USERS');
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8058982906454534680
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :REQUEST = 'CC' and apex_collection.collection_exists(p_collection_name => 'NEW_USERS')
+        }
+    )
+
+    process set-username-format-based-on-current-user-s-username (
+        name: Set Username Format based on current user's username
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if instr(:APP_USER,'@') > 0 then
+                    eba_qpoll_fw.set_preference_value ('USERNAME_FORMAT','EMAIL');
+                else
+                    eba_qpoll_fw.set_preference_value ('USERNAME_FORMAT','STRING');
+                end if;
+                ```
+        }
+        execution {
+            sequence: 40
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8058982520545534678
+        }
+    )
+
+    branch (
+        name: Go To Page HOME
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: HOME_DESKTOP
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete
+        }
+    )
+
+)
+

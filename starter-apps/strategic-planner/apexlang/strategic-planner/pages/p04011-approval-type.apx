@@ -1,0 +1,466 @@
+page 4011 (
+    name: Approval Type
+    alias: APPROVAL-TYPE
+    title: Approval Type
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @approvals
+    }
+
+    region approval-type (
+        name: Approval Type
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_APPROVAL_TYPES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region existing-types (
+        name: Existing Types
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select display_seq, approval_type, decode(active_yn,'Y','Active','Inactive') active
+                  from SP_APPROVAL_TYPES
+                 order by display_seq
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_APPROVAL_TYPES
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+        }
+
+        column ACTIVE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column APPROVAL_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Approval Type
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DISPLAY_SEQ (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Display Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P4011_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @approval-type
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @approval-type
+            column: ACTIVE_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+    )
+
+    pageItem P4011_APPROVAL_TYPE (
+        type: textField
+        label {
+            label: Approval Type
+            alignment: right
+        }
+        layout {
+            sequence: 20
+            region: @approval-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        source {
+            formRegion: @approval-type
+            column: APPROVAL_TYPE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4011_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @approval-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @approval-type
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4011_DISPLAY_SEQ (
+        type: numberField
+        label {
+            label: Display Sequence
+            alignment: left
+        }
+        settings {
+            virtualKeyboard: numeric
+        }
+        layout {
+            sequence: 30
+            region: @approval-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            valueRequired: true
+            maxLength: 10
+        }
+        source {
+            formRegion: @approval-type
+            column: DISPLAY_SEQ
+            dataType: number
+        }
+    )
+
+    pageItem P4011_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @approval-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @approval-type
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P4011_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P4011_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P4011_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation check-approval-type-unique (
+        name: check approval type unique
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_APPROVAL_TYPES
+                 where lower(approval_type) = lower(:P4011_APPROVAL_TYPE)
+                   and (:P4011_ID is null or :P4011_ID != id)
+                ```
+        }
+        error {
+            errorMessage: Approval Type already exists.
+            associatedItem: @P4011_APPROVAL_TYPE
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 11752922027636426740
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-approval-type (
+        name: Initialize form Approval Type
+        type: formInitialization
+        formRegion: @approval-type
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 11752921218666426739
+        }
+    )
+
+    process process-form-approval-type (
+        name: Process form Approval Type
+        type: formAutoRowProcessing
+        formRegion: @approval-type
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 11752921608599426739
+        }
+    )
+
+)
+

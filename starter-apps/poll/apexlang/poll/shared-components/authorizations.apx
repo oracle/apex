@@ -1,0 +1,240 @@
+authorization administration-rights (
+    name: Administration Rights
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            if eba_qpoll.get_access_role (
+                  p_app_id   => :APP_ID,
+                  p_username => :APP_USER ) = 'ADMINISTRATOR' then
+            return TRUE;
+            else return FALSE;
+            end if;
+            ```
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not an Administrator
+    }
+)
+
+authorization application-sentry (
+    name: APPLICATION SENTRY
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            if :APP_PAGE_ID in (14,50,51,63,64,65,66,68,69,500,101,1000,170,180) then
+                return true;
+            elsif eba_qpoll.get_access_role (
+                     p_app_id   => :APP_ID,
+                     p_username => :APP_USER) != 'NONE' then
+                  return true;
+            else 
+               return false;
+            end if;
+            
+            ```
+    }
+    error {
+        errorMessage: You are not authorized to view this application, either because you have not been granted access, or your account has been locked. Please contact the application administrator.
+    }
+)
+
+authorization can-delete-test-data (
+    name: Can Delete Test Data
+    type: existsSqlQuery
+    settings {
+        sqlQuery:
+            ```sql
+            select 1
+              from eba_qpoll_results
+             where poll_id = :POLL_ID
+               and nvl(is_valid_yn,'Y') = 'Y'
+               and preactive_yn = 'Y'
+               and eba_qpoll.get_access_role (
+                       p_app_id   => :APP_ID,
+                       p_username => :APP_USER) in ('CONTRIBUTOR','ADMINISTRATOR')
+            ```
+    }
+    error {
+        errorMessage: There is no test data for this poll.
+    }
+)
+
+authorization can-take-poll (
+    name: Can Take Poll
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            if eba_qpoll.poll_take_status (
+                            p_app_id   => :APP_ID,
+                            p_poll_id  => :POLL_ID,
+                            p_app_user => :APP_USER,
+                            p_app_session => :APP_SESSION) = 'CAN_TAKE_IT'
+            then return true;
+            else return false;
+            end if;
+            ```
+    }
+    error {
+        errorMessage: You have already taken this poll.
+    }
+)
+
+authorization can-update-your-response (
+    name: Can Update Your Response
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            if eba_qpoll.poll_take_status (
+                            p_app_id   => :APP_ID,
+                            p_poll_id  => :POLL_ID,
+                            p_app_user => :APP_USER,
+                            p_app_session => :APP_SESSION) = 'CAN_UPDATE'
+            then return true;
+            else return false;
+            end if;
+            ```
+    }
+    error {
+        errorMessage: Your cannot update your response.
+    }
+)
+
+authorization can-view-poll-results-closed-active-or-staged-and-contributor (
+    name: Can View Poll Results (closed, active, or staged and contributor)
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            begin
+            
+            if eba_qpoll.get_access_role (
+                  p_app_id   => :APP_ID,
+                  p_username => :APP_USER) in ('CONTRIBUTOR','ADMINISTRATOR') then
+               return true;
+            end if;
+            
+            for c1 in (
+               select all_view_results_yn
+                 from eba_qpoll_polls
+                where id = :POLL_ID 
+                  and status_id in (3,4)
+            ) loop
+               if eba_qpoll.get_access_role (
+                     p_app_id   => :APP_ID,
+                     p_username => :APP_USER) != 'NONE' then
+                  return true;
+               elsif c1.all_view_results_yn = 'Y' then -- invitees can view
+                  for c2 in (
+                     select 1
+                      from eba_qpoll_comm_invites c,
+                           eba_qpoll_invites i
+                    where c.poll_id = :POLL_ID
+                        and c.id = i.comm_invite_id
+                        and upper(respondent_email) = :APP_USER
+                  ) loop
+                     return true;
+                  end loop;
+               end if;
+            end loop;
+            
+            return false;
+            
+            end;
+            ```
+    }
+    error {
+        errorMessage: You do not have access to view the results for this poll.
+    }
+)
+
+authorization can-view-your-response (
+    name: Can View Your Response
+    type: existsSqlQuery
+    settings {
+        sqlQuery:
+            ```sql
+            select 1
+              from eba_qpoll_polls p
+             where id = :POLL_ID
+              and ( (anonymous_yn = 'Y' and
+                     exists (select 1
+                               from eba_qpoll_results
+                              where poll_id = p.id
+                                and APEX_SESSION_ID = :APP_SESSION) ) 
+                     or
+                     (anonymous_yn = 'N' and
+                      exists (select 1
+                                from eba_qpoll_results
+                               where poll_id = p.id
+                                 and apex_user = :APP_USER) ) )
+            ```
+    }
+    error {
+        errorMessage: You cannot view your results.
+    }
+)
+
+authorization contribution-rights (
+    name: Contribution Rights
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            if eba_qpoll.get_access_role (
+                  p_app_id   => :APP_ID,
+                  p_username => :APP_USER ) in ('ADMINISTRATOR','CONTRIBUTOR') then
+            return TRUE;
+            else return FALSE;
+            end if;
+            ```
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not a Contributor
+    }
+)
+
+authorization reader-rights (
+    name: Reader Rights
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            if eba_qpoll.get_access_role (
+                   p_app_id   => :APP_ID,
+                   p_username => :APP_USER) != 'NONE' then
+                   return true;
+            else
+               return false;
+            end if;
+            ```
+    }
+    error {
+        errorMessage: You are not authorized to view this application, either because you have not been granted access, or your account has been locked. Please contact the application administrator.
+    }
+)
+
+authorization response-has-errors (
+    name: Response Has Errors
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            if eba_qpoll.poll_take_status(
+                            p_app_id   => :APP_ID,
+                            p_poll_id  => :POLL_ID,
+                            p_app_user => :APP_USER,
+                            p_app_session => :APP_SESSION) = 'HAS_ERRORS'
+            then return true;
+            else return false;
+            end if;
+            ```
+    }
+    error {
+        errorMessage: You have already taken this poll.
+    }
+)
+

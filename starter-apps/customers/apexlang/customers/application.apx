@@ -1,0 +1,137 @@
+app CUSTOMERS (
+    name: Customers
+    version: 26.1.0
+    group: @starter-apps
+    logo {
+        type: text
+        text: &APPLICATION_TITLE.
+    }
+    navigation {
+        homeUrl: {
+            page: 59
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @application-navigation
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        usersCanChooseThemeStyle: true
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+    }
+    javaScript {
+        includeLegacyJavascript: [
+            pre18
+            18
+        ]
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css
+    }
+    authentication {
+        scheme: @apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: @application-sentry
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: F69AADE21055FA93F74648144646DA410A26D54BFD1521EAD958D9A330D4A6C9
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+        maxSessionLength: 28800
+        maxSessionIdleTime: 28800
+    }
+    globalization {
+        primaryLanguage: en-us
+        documentDirection: leftToRight
+        autoCsvEncoding: false
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    errorHandling {
+        errorHandlingFunctionName: eba_cust_fw.apex_error_handling
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c)2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0 as shown 
+            at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments:
+            ```
+            2.0.19 -> 2.0.20: Changed Notifications region(s) from plsql to report.
+                Changed navigation bar to native APEX list.
+            2.0.20 -> 2.0.21: Changed Authentication scheme to use new "APEX_PACKAGED_APPLICATIONS" cookie
+            2.0.21 -> 2.0.22: Added confirm modal when enabling ACL
+            2.0.22 -> 2.0.23: Replaced mixed case column aliases in select statement for "Top Users" Interactive report
+            2.0.23 -> 2.0.24: Added "Rename Application" page and supporting application items, computations, substitution strings, item and region  changes on login pages, and UI Logo text replacement.
+            2.0.27 -> 2.0.28: Added Notifications to Mobile home page (400)
+            2.0.28 -> 2.0.29: Added "Username Format" and "Bulk Add Users" pages
+            2.2.35 -> 2.2.36: Error handling procedure updated to resolve bug 17516350
+            2.2.36 -> 2.2.37: Implemented redesigned administrative ACL controls
+            2.2.37 -> 2.2.38: Added Usage Metrics region plugin to page 50 (Customer details)
+            ```
+    }
+
+    substitution APP_DATE_FORMAT (
+        value {
+            staticValue: DD-MON-YYYY
+        }
+    )
+
+    substitution GETTING_STARTED_URL (
+        value {
+            staticValue: http://www.oracle.com/technetwork/developer-tools/apex/index.html
+        }
+    )
+
+    substitution APP_DATETIME_FORMAT (
+        value {
+            staticValue: DD-MON-YYYY HH24:MI
+        }
+    )
+
+    substitution APP_NAME (
+        value {
+            staticValue: Customers
+        }
+    )
+
+)
+

@@ -1,0 +1,13 @@
+upgradeScript "Create EBA_DEMO_CS_EMP Table" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: create-eba-demo-cs-emp-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select table_name from user_tables where table_name = 'EBA_DEMO_CS_EMP'
+    }
+)
+

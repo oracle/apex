@@ -1,0 +1,324 @@
+page 12 (
+    name: Faceted Search with Cards
+    alias: FACETED-SEARCH-WITH-CARDS
+    title: &APP_NAME. - Faceted Search
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>You can combine Cards region with a Faceted Search. This provides an easy-to-use interface for narrowing down the results and quickly locating specific data.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-filter
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            showTotalRowCount: true
+            displayChartForTopNValues: 10
+        }
+
+        facet P12_DEPTNO (
+            type: checkboxGroup
+            label {
+                label: Department
+            }
+            lov {
+                type: sharedComponent
+                lov: @dept-dname
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            actionsMenu {
+                filter: false
+            }
+            advanced {
+                collapsible: true
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+        )
+
+        facet P12_JOB (
+            type: checkboxGroup
+            label {
+                label: Job
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            actionsMenu {
+                filter: false
+            }
+            advanced {
+                collapsible: true
+            }
+            source {
+                databaseColumn: JOB
+            }
+        )
+
+        facet P12_MGR (
+            type: checkboxGroup
+            label {
+                label: Manager
+            }
+            lov {
+                type: sharedComponent
+                lov: @emp-mgr
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            actionsMenu {
+                filter: false
+            }
+            advanced {
+                collapsible: true
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+        )
+
+        facet P12_SAL (
+            type: range
+            label {
+                label: Salary
+            }
+            settings {
+                selectMultiple: true
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC2:<900;|900,900 - 1#G#300;900|1300,1#G#300 - 2#G#000;1300|2000,2#G#000 - 2#G#500;2000|2500,>=2#G#500;2500|
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 100
+            }
+            actionsMenu {
+                filter: false
+            }
+            advanced {
+                collapsible: true
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        facet P12_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: ENAME,JOB,MGR,DEPTNO,MIMETYPE,FILENAME
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Search Results
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select "EMPNO",
+                       "ENAME",
+                       "JOB",
+                       "MGR",
+                       ( select l1."ENAME" from eba_demo_card_emp l1 where l1."EMPNO" = m."MGR") "MGR_L$1",
+                       "HIREDATE",
+                       "SAL",
+                       "COMM",
+                       "DEPTNO",
+                       ( select l2."DNAME" from eba_demo_card_dept l2 where l2."DEPTNO" = m."DEPTNO") "DEPTNO_L$2",
+                       "PROFILE_IMAGE",
+                       "MIMETYPE",
+                       "FILENAME",
+                       "IMAGE_LAST_UPDATE"
+                from eba_demo_card_emp m
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        card {
+            primaryKeyColumn1: EMPNO
+        }
+        title {
+            column: ENAME
+        }
+        subtitle {
+            column: JOB
+        }
+        iconAndBadge {
+            iconSource: imageBlobColumn
+            imageColumn: PROFILE_IMAGE
+            iconDescription: &ENAME!ATTR.
+            badgeColumn: DEPTNO_L$2
+        }
+        blobAttributes {
+            mimeTypeColumn: MIMETYPE
+            lastUpdatedColumn: IMAGE_LAST_UPDATE
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 12
+                clearCache: 12
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

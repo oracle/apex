@@ -1,0 +1,1309 @@
+page 3 (
+    name: Service Details
+    alias: SERVICE-DETAILS
+    title: Service Details
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            app.setupCopyHandlersForInteractiveReport("attributes-tab");
+            app.setupCopyHandlersForInteractiveReport("child-objects-tab");
+            ```
+    }
+    css {
+        inline:
+            ```css
+            th#action,
+            td[headers=action]
+            {
+              width:60px;
+              text-align: center !important;
+            }
+            
+            th#action,
+            td[headers=cardinality]
+            {
+              width:60px;
+              text-align: center !important;
+            }
+            
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region attributes (
+        name: Attributes
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select a.ID,
+                       a.ENDPOINT_ID,
+                       a.ATTR_NAME,
+                       a.ATTR_TYPE,
+                       apex_escape.html(a.ATTR_LEN) attr_len,
+                       a.ATTR_TITLE,
+                       a.ATTR_DESCRIPTION,
+                       a.ATTR_LOV,
+                       a.LOV_HREF,
+                       case a.ATTR_CONTROL_TYPE
+                         when 'combo_lov' then 'Popup LOV'
+                         when 'choice' then 'Select List'
+                         when 'delimited_ids_choice' then 'Multiselect'
+                         when 'check_box' then 'Switch'
+                         when 'date'      then 'Date Picker'
+                         else attr_control_type
+                       end as attr_control_type,
+                       a.ATTR_IS_QUERYABLE,
+                       a.ATTR_IS_REQUIRED,
+                       a.ATTR_HAS_DEF_EXPR,
+                       case a.ATTR_ALLOW_CHANGES
+                         when 'ReadOnly' then 'N'
+                         when 'Always' then 'Y'
+                         when 'CreateOnly' then 'On Create'
+                       end as attr_allow_changes,
+                       a.ATTR_IS_PRIMARY_KEY,
+                       a.ATTR_IS_CUSTOM,
+                       a.ALLOWED_OPERATORS,
+                       a.POSITION
+                  from eba_util_farest_endpoint_attrs a
+                 where endpoint_id = :P3_ID
+                   and (:P3_SHOW_HIDDEN_ATTRS = 'Y' 
+                        or 
+                        a.attr_name in (    select column_selector
+                                              from apex_appl_data_profile_cols c
+                                             where (c.application_id,c.data_profile_name) = 
+                                                   (select m.application_id, m.data_profile_name
+                                                      from eba_util_farest_endpoints e
+                                                      left join apex_appl_web_src_modules m 
+                                                             on m.application_id   = e.application_id
+                                                            and m.module_static_id = e.module_static_id
+                                                      where e.id = a.endpoint_id)
+                                             and c.is_hidden = 'No'
+                                        )
+                        )
+                ```
+            pageItemsToSubmit: [
+                P3_ID
+                P3_SHOW_HIDDEN_ATTRS
+            ]
+        }
+        layout {
+            sequence: 5
+            parentRegion: @tabs
+            slot: tabs
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: attributes-tab
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 9107133043978633
+        }
+
+        column ALLOWED_OPERATORS (
+            type: plainText
+            heading {
+                heading: Only Operators?
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column ATTR_ALLOW_CHANGES (
+            type: plainText
+            heading {
+                heading: Editable?
+            }
+            layout {
+                sequence: 140
+            }
+            columnFormatting {
+                htmlExpression: <span style="white-space:nowrap">#ATTR_ALLOW_CHANGES#</span>
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ATTR_CONTROL_TYPE (
+            type: plainText
+            heading {
+                heading: Preferred UI
+            }
+            layout {
+                sequence: 100
+            }
+            columnFormatting {
+                htmlExpression: <span style="white-space:nowrap">#ATTR_CONTROL_TYPE#</span>
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column ATTR_DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column ATTR_HAS_DEF_EXPR (
+            type: plainText
+            heading {
+                heading: Defaulted?
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column ATTR_IS_CUSTOM (
+            type: plainText
+            heading {
+                heading: Custom?
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column ATTR_IS_PRIMARY_KEY (
+            type: plainText
+            heading {
+                heading: Remote PK?
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column ATTR_IS_QUERYABLE (
+            type: plainText
+            heading {
+                heading: Queryable?
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column ATTR_IS_REQUIRED (
+            type: plainText
+            heading {
+                heading: Required?
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column ATTR_LEN (
+            type: plainText
+            heading {
+                heading: Attr Len
+            }
+            layout {
+                sequence: 220
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column ATTR_LOV (
+            type: plainText
+            heading {
+                heading: Attr Lov
+            }
+            layout {
+                sequence: 210
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column ATTR_NAME (
+            type: plainText
+            heading {
+                heading: Attribute Name
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                htmlExpression: <tt>#ATTR_NAME#</tt>
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column ATTR_TITLE (
+            type: plainText
+            heading {
+                heading: Label
+            }
+            layout {
+                sequence: 60
+            }
+            columnFormatting {
+                htmlExpression: <span style="white-space:nowrap">#ATTR_TITLE#</span>
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column ATTR_TYPE (
+            type: plainText
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 40
+            }
+            columnFormatting {
+                htmlExpression: #ATTR_TYPE#{if ATTR_LEN/}(#ATTR_LEN#){endif/}
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column ENDPOINT_ID (
+            type: hidden
+            heading {
+                heading: Endpoint Id
+            }
+            layout {
+                sequence: 200
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: Id
+                alignment: end
+            }
+            layout {
+                sequence: 190
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column LOV_HREF (
+            type: plainText
+            heading {
+                heading: LOV Endpoint
+                alignment: center
+            }
+            layout {
+                sequence: 90
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if LOV_HREF/}<button type="button" title="Copy #ATTR_NAME# LOV endpoint URL to clipboard" aria-label="Copy #ATTR_NAME# LOV endpoint URL to clipboard" data-text="#LOV_HREF#"
+                    class="t-Button t-Button--noLabel t-Button--icon">
+                        <span aria-hidden="true" class="t-Icon fa fa-clone"></span>
+                    </button>{endif/}
+                    ```
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column POSITION (
+            type: plainText
+            heading {
+                heading: Position
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Attributes
+        }
+
+        savedReport 144276 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 100000
+            }
+
+            displayColumn ALLOWED_OPERATORS (
+                sequence: 13
+            )
+
+            displayColumn ATTR_ALLOW_CHANGES (
+                sequence: 10
+            )
+
+            displayColumn ATTR_CONTROL_TYPE (
+                sequence: 6
+            )
+
+            displayColumn ATTR_DESCRIPTION (
+                sequence: 4
+            )
+
+            displayColumn ATTR_HAS_DEF_EXPR (
+                sequence: 9
+            )
+
+            displayColumn ATTR_IS_CUSTOM (
+                sequence: 12
+            )
+
+            displayColumn ATTR_IS_PRIMARY_KEY (
+                sequence: 11
+            )
+
+            displayColumn ATTR_IS_QUERYABLE (
+                sequence: 7
+            )
+
+            displayColumn ATTR_IS_REQUIRED (
+                sequence: 8
+            )
+
+            displayColumn ATTR_NAME (
+                sequence: 1
+            )
+
+            displayColumn ATTR_TITLE (
+                sequence: 3
+            )
+
+            displayColumn ATTR_TYPE (
+                sequence: 2
+            )
+
+            displayColumn LOV_HREF (
+                sequence: 5
+            )
+
+            sort (
+                column: POSITION
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+        savedReport ALL (
+            visibility: alternativeDefault
+            name: All
+            view {
+                rowsPerPage: 100000
+            }
+
+            displayColumn ALLOWED_OPERATORS (
+                sequence: 13
+            )
+
+            displayColumn ATTR_ALLOW_CHANGES (
+                sequence: 10
+            )
+
+            displayColumn ATTR_CONTROL_TYPE (
+                sequence: 6
+            )
+
+            displayColumn ATTR_DESCRIPTION (
+                sequence: 4
+            )
+
+            displayColumn ATTR_HAS_DEF_EXPR (
+                sequence: 9
+            )
+
+            displayColumn ATTR_IS_CUSTOM (
+                sequence: 12
+            )
+
+            displayColumn ATTR_IS_PRIMARY_KEY (
+                sequence: 11
+            )
+
+            displayColumn ATTR_IS_QUERYABLE (
+                sequence: 7
+            )
+
+            displayColumn ATTR_IS_REQUIRED (
+                sequence: 8
+            )
+
+            displayColumn ATTR_NAME (
+                sequence: 1
+            )
+
+            displayColumn ATTR_TITLE (
+                sequence: 3
+            )
+
+            displayColumn ATTR_TYPE (
+                sequence: 2
+            )
+
+            displayColumn LOV_HREF (
+                sequence: 5
+            )
+
+            sort (
+                column: POSITION
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+        savedReport EDITABLE (
+            visibility: alternativeDefault
+            name: Editable
+            view {
+                rowsPerPage: 100000
+            }
+
+            displayColumn ALLOWED_OPERATORS (
+                sequence: 13
+            )
+
+            displayColumn ATTR_ALLOW_CHANGES (
+                sequence: 10
+            )
+
+            displayColumn ATTR_CONTROL_TYPE (
+                sequence: 6
+            )
+
+            displayColumn ATTR_DESCRIPTION (
+                sequence: 4
+            )
+
+            displayColumn ATTR_HAS_DEF_EXPR (
+                sequence: 9
+            )
+
+            displayColumn ATTR_IS_CUSTOM (
+                sequence: 12
+            )
+
+            displayColumn ATTR_IS_PRIMARY_KEY (
+                sequence: 11
+            )
+
+            displayColumn ATTR_IS_QUERYABLE (
+                sequence: 7
+            )
+
+            displayColumn ATTR_IS_REQUIRED (
+                sequence: 8
+            )
+
+            displayColumn ATTR_NAME (
+                sequence: 1
+            )
+
+            displayColumn ATTR_TITLE (
+                sequence: 3
+            )
+
+            displayColumn ATTR_TYPE (
+                sequence: 2
+            )
+
+            displayColumn LOV_HREF (
+                sequence: 5
+            )
+
+            sort (
+                column: POSITION
+                sort {
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: ATTR_ALLOW_CHANGES
+                operator: !=
+                value: N
+            )
+
+        )
+
+        savedReport QUERYABLE (
+            visibility: alternativeDefault
+            name: Queryable
+            view {
+                rowsPerPage: 100000
+            }
+
+            displayColumn ALLOWED_OPERATORS (
+                sequence: 13
+            )
+
+            displayColumn ATTR_ALLOW_CHANGES (
+                sequence: 10
+            )
+
+            displayColumn ATTR_CONTROL_TYPE (
+                sequence: 6
+            )
+
+            displayColumn ATTR_DESCRIPTION (
+                sequence: 4
+            )
+
+            displayColumn ATTR_HAS_DEF_EXPR (
+                sequence: 9
+            )
+
+            displayColumn ATTR_IS_CUSTOM (
+                sequence: 12
+            )
+
+            displayColumn ATTR_IS_PRIMARY_KEY (
+                sequence: 11
+            )
+
+            displayColumn ATTR_IS_QUERYABLE (
+                sequence: 7
+            )
+
+            displayColumn ATTR_IS_REQUIRED (
+                sequence: 8
+            )
+
+            displayColumn ATTR_NAME (
+                sequence: 1
+            )
+
+            displayColumn ATTR_TITLE (
+                sequence: 3
+            )
+
+            displayColumn ATTR_TYPE (
+                sequence: 2
+            )
+
+            displayColumn LOV_HREF (
+                sequence: 5
+            )
+
+            sort (
+                column: POSITION
+                sort {
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: ATTR_IS_QUERYABLE
+                value: Y
+            )
+
+        )
+
+        savedReport READONLY (
+            visibility: alternativeDefault
+            name: Read-Only
+            view {
+                rowsPerPage: 100000
+            }
+
+            displayColumn ALLOWED_OPERATORS (
+                sequence: 13
+            )
+
+            displayColumn ATTR_ALLOW_CHANGES (
+                sequence: 10
+            )
+
+            displayColumn ATTR_CONTROL_TYPE (
+                sequence: 6
+            )
+
+            displayColumn ATTR_DESCRIPTION (
+                sequence: 4
+            )
+
+            displayColumn ATTR_HAS_DEF_EXPR (
+                sequence: 9
+            )
+
+            displayColumn ATTR_IS_CUSTOM (
+                sequence: 12
+            )
+
+            displayColumn ATTR_IS_PRIMARY_KEY (
+                sequence: 11
+            )
+
+            displayColumn ATTR_IS_QUERYABLE (
+                sequence: 7
+            )
+
+            displayColumn ATTR_IS_REQUIRED (
+                sequence: 8
+            )
+
+            displayColumn ATTR_NAME (
+                sequence: 1
+            )
+
+            displayColumn ATTR_TITLE (
+                sequence: 3
+            )
+
+            displayColumn ATTR_TYPE (
+                sequence: 2
+            )
+
+            displayColumn LOV_HREF (
+                sequence: 5
+            )
+
+            sort (
+                column: POSITION
+                sort {
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: ATTR_ALLOW_CHANGES
+                value: N
+            )
+
+        )
+
+        savedReport WITHLOV (
+            visibility: alternativeDefault
+            name: With LOV
+            view {
+                rowsPerPage: 100000
+            }
+
+            displayColumn ALLOWED_OPERATORS (
+                sequence: 13
+            )
+
+            displayColumn ATTR_ALLOW_CHANGES (
+                sequence: 10
+            )
+
+            displayColumn ATTR_CONTROL_TYPE (
+                sequence: 6
+            )
+
+            displayColumn ATTR_DESCRIPTION (
+                sequence: 4
+            )
+
+            displayColumn ATTR_HAS_DEF_EXPR (
+                sequence: 9
+            )
+
+            displayColumn ATTR_IS_CUSTOM (
+                sequence: 12
+            )
+
+            displayColumn ATTR_IS_PRIMARY_KEY (
+                sequence: 11
+            )
+
+            displayColumn ATTR_IS_QUERYABLE (
+                sequence: 7
+            )
+
+            displayColumn ATTR_IS_REQUIRED (
+                sequence: 8
+            )
+
+            displayColumn ATTR_NAME (
+                sequence: 1
+            )
+
+            displayColumn ATTR_TITLE (
+                sequence: 3
+            )
+
+            displayColumn ATTR_TYPE (
+                sequence: 2
+            )
+
+            displayColumn LOV_HREF (
+                sequence: 5
+            )
+
+            sort (
+                column: POSITION
+                sort {
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: LOV_HREF
+                operator: isNotNull
+            )
+
+        )
+
+    )
+
+    region child-objects (
+        name: Child Objects
+        type: interactiveReport
+        source {
+            location: localDatabase
+            tableName: EBA_UTIL_FAREST_ENDPOINT_CHOBJ
+            whereClause: endpoint_id = :P3_ID
+            orderByClause: obj_name
+            pageItemsToSubmit: P3_ID
+        }
+        layout {
+            sequence: 10
+            parentRegion: @tabs
+            slot: tabs
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: child-objects-tab
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 9106533723978627
+        }
+
+        column CARDINALITY (
+            type: plainText
+            heading {
+                heading: Cardinality
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                htmlDomId: cardinality
+                endUserAlias: D
+            }
+        )
+
+        column ENDPOINT_ID (
+            type: hidden
+            heading {
+                heading: Endpoint Id
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column OBJ_HREF (
+            type: plainText
+            heading {
+                heading: Endpoint&nbsp;URL
+            }
+            layout {
+                sequence: 50
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <button type="button" title="Copy #OBJ_NAME# child object endpoint URL to clipboard" aria-label="Copy #OBJ_NAME# child object endpoint URL to clipboard" data-text="#OBJ_HREF#"
+                    class="t-Button t-Button--noLabel t-Button--icon">
+                        <span aria-hidden="true" class="t-Icon fa fa-clone"></span>
+                    </button>
+                    ```
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                htmlDomId: action
+                endUserAlias: E
+            }
+        )
+
+        column OBJ_NAME (
+            type: plainText
+            heading {
+                heading: Object Name
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Child Objects
+        }
+
+        savedReport 144010 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 100000
+            }
+
+            displayColumn CARDINALITY (
+                sequence: 2
+            )
+
+            displayColumn OBJ_HREF (
+                sequence: 1
+            )
+
+            displayColumn OBJ_NAME (
+                sequence: 3
+            )
+
+        )
+
+    )
+
+    region help (
+        name: Help
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="info"><p>Use this page to explore the <code>&P3_NAME.</code> data source's attributes and child objects.</p><p>Click the application icon to return to the data source list...</p></span>
+                
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-size480x320
+            ]
+        }
+    )
+
+    region tabs (
+        name: Tabs
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/tabs-container
+            templateOptions: [
+                #DEFAULT#
+                t-TabsRegion-mod--simple
+            ]
+        }
+        advanced {
+            htmlDomId: tabs
+        }
+    )
+
+    region title-bar (
+        name: Title Bar
+        type: staticContent
+        source {
+            htmlCode: <span class="apex-logo-text"> -&nbsp; Service Details:  &P3_NAME.</span>
+        }
+        layout {
+            sequence: 40
+            slot: afterLogo
+        }
+    )
+
+    pageItem P3_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_NAME (
+        type: hidden
+        layout {
+            sequence: 40
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_SHOW_HIDDEN_ATTRS (
+        type: selectList
+        label {
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Show Only Visible Attributes;N,Show All Attributes;Y
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            slot: beforeNavigationBar
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            cssClasses: u-nowrap
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+    )
+
+    button close (
+        buttonName: Close
+        label: Close
+        layout {
+            sequence: 20
+            region: @help
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button help (
+        buttonName: Help
+        label: Help
+        layout {
+            sequence: 60
+            slot: beforeNavigationBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--primary
+            ]
+            icon: fa-info-circle-o
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction on-close-clicked (
+        name: On Close Clicked
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @close
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @help
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction on-help-clicked (
+        name: On Help Clicked
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @help
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @help
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-change-hidden-switch (
+        name: When Change Hidden Switch
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P3_SHOW_HIDDEN_ATTRS
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @attributes
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-tab-changed (
+        name: When Tab Changed
+        execution {
+            sequence: 40
+        }
+        when {
+            event: custom
+            customEvent: atabsactivate
+            selectionType: jQuerySelector
+            jquerySelector: #tabs
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // Find the active tab and its associated region
+                    let active_tab = apex.region(this.triggeringElement.id).widget().aTabs("getActive");
+                    let active_region = $('[id$=-tab]',$(active_tab.panel$));
+                    
+                    // If we have region, find its ID and record that for use in the regions
+                    if(active_region){
+                        let active_id = $(active_region).attr('id');
+                        if ( active_id == "attributes-tab" ) {
+                            apex.items.P3_SHOW_HIDDEN_ATTRS.show();
+                        }
+                        else {
+                            apex.items.P3_SHOW_HIDDEN_ATTRS.hide();
+                        }
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p3-name (
+        itemName: P3_NAME
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select wsm.module_name
+                from eba_util_farest_endpoints e
+                left join apex_appl_web_src_modules wsm on wsm.module_static_id = e.module_static_id
+                                                        and wsm.application_id  = e.application_id
+                where e.id = :P3_ID
+                
+                ```
+        }
+    )
+
+)
+

@@ -1,0 +1,52 @@
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+
+installScript "data load spec" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: data-load-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_DEMO_FILE_DATA
+    )
+
+)
+
+installScript "demo load body" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: demo-load-body.sql
+    }
+)
+
+installScript files (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: files.sql
+    }
+)
+
+installScript projects (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: projects.sql
+    }
+)
+

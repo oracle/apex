@@ -1,0 +1,492 @@
+page 175 (
+    name: Application Error Log
+    alias: APPLICATION-ERROR-LOG
+    title: Application Error Log
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+            t-Dialog--noPadding
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>This page provides an interactive report of all unexpected errors logged by this application.  Click on column headings to sort and filter data, click on the <strong>Actions</strong> menu to customize column display and many additional advanced features.</p>
+    }
+
+    region errors (
+        name: Errors
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    ID,
+                    ERR_TIME,
+                    ERR_TIME time_since,
+                    APP_ID,
+                    APP_PAGE_ID,
+                    APP_USER,
+                    USER_AGENT,
+                    IP_ADDRESS,
+                    IP_ADDRESS2,
+                    MESSAGE,
+                    PAGE_ITEM_NAME,
+                    REGION_ID,
+                    COLUMN_ALIAS,
+                    ROW_NUM,
+                    APEX_ERROR_CODE,
+                    ORA_SQLCODE,
+                    ORA_SQLERRM,
+                    ERROR_BACKTRACE
+                from eba_cust_errors
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        link {
+            linkColumn: singleRowView
+            uniquelyIdentifyRowsBy: uniqueColumn
+            uniqueColumn: ID
+            linkIcon: <span role="img" aria-label="View" class="fa fa-file-o" title="View"></span>
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2644149708267490018
+        }
+
+        column APEX_ERROR_CODE (
+            type: plainText
+            heading {
+                heading: Error Code
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column APP_ID (
+            type: hidden
+            heading {
+                heading: Application ID
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column APP_PAGE_ID (
+            type: plainText
+            heading {
+                heading: Page
+                alignment: end
+            }
+            layout {
+                sequence: 17
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column APP_USER (
+            type: plainText
+            heading {
+                heading: User
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column COLUMN_ALIAS (
+            type: plainText
+            heading {
+                heading: Column Alias
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column ERROR_BACKTRACE (
+            type: plainText
+            heading {
+                heading: Error Backtrace
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column ERR_TIME (
+            type: plainText
+            heading {
+                heading: Time
+            }
+            layout {
+                sequence: 2
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH24:MI:SS
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: ID
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IP_ADDRESS (
+            type: plainText
+            heading {
+                heading: IP Address
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column IP_ADDRESS2 (
+            type: plainText
+            heading {
+                heading: IP Address 2
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column MESSAGE (
+            type: plainText
+            heading {
+                heading: Error Message
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column ORA_SQLCODE (
+            type: plainText
+            heading {
+                heading: SQLCODE
+                alignment: end
+            }
+            layout {
+                sequence: 14
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ORA_SQLERRM (
+            type: plainText
+            heading {
+                heading: SQLERRM
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column PAGE_ITEM_NAME (
+            type: plainText
+            heading {
+                heading: Page Item
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column REGION_ID (
+            type: plainText
+            heading {
+                heading: Region ID
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column ROW_NUM (
+            type: plainText
+            heading {
+                heading: Row Number
+                alignment: end
+            }
+            layout {
+                sequence: 12
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column TIME_SINCE (
+            type: plainText
+            heading {
+                heading: Since
+            }
+            layout {
+                sequence: 18
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column USER_AGENT (
+            type: plainText
+            heading {
+                heading: User Agent
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        savedReport 26441516 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn APEX_ERROR_CODE (
+                sequence: 6
+            )
+
+            displayColumn APP_PAGE_ID (
+                sequence: 4
+            )
+
+            displayColumn APP_USER (
+                sequence: 3
+            )
+
+            displayColumn ERR_TIME (
+                sequence: 1
+            )
+
+            displayColumn MESSAGE (
+                sequence: 7
+            )
+
+            displayColumn PAGE_ITEM_NAME (
+                sequence: 5
+            )
+
+            displayColumn TIME_SINCE (
+                sequence: 2
+            )
+
+            sort (
+                column: ERR_TIME
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: APP_USER
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @errors
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 175
+                clearCache: RIR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

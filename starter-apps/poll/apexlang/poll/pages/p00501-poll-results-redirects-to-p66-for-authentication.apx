@@ -1,0 +1,40 @@
+page 501 (
+    name: Poll Results - redirects to p66 for authentication
+    alias: POLL-RESULTS-REDIRECTS-TO-P66-FOR-AUTHENTICATION
+    title: Poll Results
+    pageGroup: @polls
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    branch (
+        name: branch to page 66
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 66
+                clearCache: 66
+                successMessage: false
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,302 @@
+installScript "Framework Body" (
+    execution {
+        sequence: 375
+    }
+    script {
+        contentFile: framework-body.sql
+    }
+)
+
+installScript "Framework Spec" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: framework-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_CA_FW
+    )
+
+)
+
+installScript "Sample Data" (
+    execution {
+        sequence: 660
+    }
+    script {
+        contentFile: sample-data.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_CA_SAMPLE_DATA
+    )
+
+)
+
+installScript "Set First Run Preference" (
+    execution {
+        sequence: 670
+    }
+    script {
+        contentFile: set-first-run-preference.sql
+    }
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 1
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+
+installScript "acl tables" (
+    execution {
+        sequence: 370
+    }
+    script {
+        contentFile: acl-tables.sql
+    }
+)
+
+installScript "admins (to be replaced with new std code)" (
+    execution {
+        sequence: 230
+    }
+    script {
+        contentFile: admins-to-be-replaced-with-new-std-code-.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select null from all_tables where table_name = 'EBA_CA_ADMINS';
+    }
+)
+
+installScript calendars (
+    execution {
+        sequence: 207
+    }
+    script {
+        contentFile: calendars.sql
+    }
+)
+
+installScript "color prefs" (
+    execution {
+        sequence: 190
+    }
+    script {
+        contentFile: color-prefs.sql
+    }
+)
+
+installScript "eba_ca body" (
+    execution {
+        sequence: 380
+    }
+    script {
+        contentFile: eba-ca-body.sql
+    }
+)
+
+installScript "eba_ca specs" (
+    execution {
+        sequence: 340
+    }
+    script {
+        contentFile: eba-ca-specs.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_CA
+    )
+
+)
+
+installScript "eba_ca_api  body" (
+    execution {
+        sequence: 300
+    }
+    script {
+        contentFile: eba-ca-api-body.sql
+    }
+)
+
+installScript "eba_ca_api  spec" (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: eba-ca-api-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_CA_API
+    )
+
+)
+
+installScript "error log" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: error-log.sql
+    }
+)
+
+installScript "event groups" (
+    execution {
+        sequence: 215
+    }
+    script {
+        contentFile: event-groups.sql
+    }
+)
+
+installScript "event notes" (
+    execution {
+        sequence: 211
+    }
+    script {
+        contentFile: event-notes.sql
+    }
+)
+
+installScript "event types" (
+    execution {
+        sequence: 200
+    }
+    script {
+        contentFile: event-types.sql
+    }
+)
+
+installScript events (
+    execution {
+        sequence: 210
+    }
+    script {
+        contentFile: events.sql
+    }
+)
+
+installScript "events history trigger" (
+    execution {
+        sequence: 410
+    }
+    script {
+        contentFile: events-history-trigger.sql
+    }
+)
+
+installScript "events triggers" (
+    execution {
+        sequence: 400
+    }
+    script {
+        contentFile: events-triggers.sql
+    }
+)
+
+installScript events_seq (
+    execution {
+        sequence: 202
+    }
+    script {
+        contentFile: events-seq.sql
+    }
+)
+
+installScript files (
+    execution {
+        sequence: 212
+    }
+    script {
+        contentFile: files.sql
+    }
+)
+
+installScript "group members" (
+    execution {
+        sequence: 220
+    }
+    script {
+        contentFile: group-members.sql
+    }
+)
+
+installScript history (
+    execution {
+        sequence: 203
+    }
+    script {
+        contentFile: history.sql
+    }
+)
+
+installScript "install the acl seed data" (
+    execution {
+        sequence: 630
+    }
+    script {
+        contentFile: install-the-acl-seed-data.sql
+    }
+)
+
+installScript notifications (
+    execution {
+        sequence: 235
+    }
+    script {
+        contentFile: notifications.sql
+    }
+)
+
+installScript series (
+    execution {
+        sequence: 205
+    }
+    script {
+        contentFile: series.sql
+    }
+)
+
+installScript tags (
+    execution {
+        sequence: 206
+    }
+    script {
+        contentFile: tags.sql
+    }
+)
+
+installScript timeframes (
+    execution {
+        sequence: 225
+    }
+    script {
+        contentFile: timeframes.sql
+    }
+)
+
+installScript "tz prefs" (
+    execution {
+        sequence: 245
+    }
+    script {
+        contentFile: tz-prefs.sql
+    }
+)
+

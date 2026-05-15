@@ -1,0 +1,511 @@
+plugin legacyOracleHtml5MapsRegion (
+    name: Legacy: Oracle HTML5 Maps - Region
+    staticId: COM.ORACLE.APEX.ORAMAPS.HTML5
+    type: region
+    component {
+        standardAttributes: [
+            regionSourceIsSqlQuery
+            pageItemsToSubmitAttr
+            escapeSpecialCharsRegionAttr
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            procedure intfunc_printjsonforgeom(
+              p_attr_name  varchar2
+             ,p_geom       mdsys.sdo_geometry
+            ) is 
+            begin
+              apex_json.open_object(p_attr_name);
+              apex_json.write('sdo_gtype', p_geom.sdo_gtype );
+              apex_json.write('sdo_srid',  p_geom.sdo_srid);
+              if p_geom.sdo_point is not null then
+                apex_json.open_object('sdo_point');
+                apex_json.write('x', nvl(replace(to_char(p_geom.sdo_point.x), ',', '.'),'null'));
+                apex_json.write('y', nvl(replace(to_char(p_geom.sdo_point.y), ',', '.'),'null'));
+                apex_json.write('z', nvl(replace(to_char(p_geom.sdo_point.z), ',', '.'),'null'));
+                apex_json.close_object;
+              elsif  p_geom.sdo_gtype = 2001 and p_geom.sdo_ordinates.count >= 2 then
+                apex_json.open_object('sdo_point');
+                apex_json.write('x', nvl(replace(to_char(p_geom.sdo_ordinates( 1 )), ',', '.'),'null'));
+                apex_json.write('y', nvl(replace(to_char(p_geom.sdo_ordinates( 2 )), ',', '.'),'null'));
+                apex_json.write('z', 'null');
+                apex_json.close_object;  
+              else 
+                apex_json.write('sdo_point', 'null');
+              end if;
+              if p_geom.sdo_elem_info is not null then
+                apex_json.open_array('sdo_elem_info');
+                for i in p_geom.sdo_elem_info.first.. p_geom.sdo_elem_info.last loop
+                  apex_json.write(replace(to_char(p_geom.sdo_elem_info(i)),',','.'));
+                end loop;
+                apex_json.close_array;
+              else
+                apex_json.write('sdo_elem_info', 'null');
+              end if;
+              if p_geom.sdo_ordinates is not null then
+                apex_json.open_array('sdo_ordinates');
+                for i in p_geom.sdo_ordinates.first.. p_geom.sdo_ordinates.last loop
+                  apex_json.write(replace(to_char(p_geom.sdo_ordinates(i)), ',', '.'));
+                end loop;
+                apex_json.close_array;
+              else
+                apex_json.write('sdo_ordinates', 'null');
+              end if;
+              apex_json.close_object;
+            end intfunc_printjsonforgeom;
+            
+            function render_map_ajax( 
+                p_region              in apex_plugin.t_region,
+                p_plugin              in apex_plugin.t_plugin
+            ) return apex_plugin.t_region_ajax_result is
+              l_maxrows   apex_application_page_regions.attribute_14%type := p_region.attribute_14;
+              l_output    clob;
+            begin
+             if apex_application.g_x10 = 'FOIDATA' then
+               apex_debug.message(
+                 p_message => 'ORACLE MAPS PLUGIN: Current Zoom Level %s.',
+                 p0 => apex_application.g_x07,
+                 p_level   => apex_debug.c_log_level_info
+               );
+            
+               if p_region.source is not null then 
+                 declare
+                   l_sql               varchar2(32767);
+                   l_where             varchar2(32767);
+                   l_cur               apex_plugin_util.t_sql_handler;
+            
+                   l_bidx              pls_integer := 1;
+                   l_bsrid             boolean := true;
+                   l_bbbox             boolean := false;
+                   l_bzoom             boolean := false;
+            
+                   l_geomcol           varchar2(128);
+                   l_minzoom           boolean := false;
+                   l_maxzoom           boolean := false;
+            
+                   l_geom              mdsys.sdo_geometry; 
+                   l_dummy             pls_integer;
+                   l_firstrow          boolean := true;
+                   l_column_value_list apex_plugin_util.t_column_value_list2; 
+                   l_bindlist          apex_plugin_util.t_bind_list;
+                 begin
+                   
+                   -- parse the original SQL 
+                   l_cur := apex_plugin_util.get_sql_handler(
+                     p_sql_statement  => apex_plugin_util.replace_substitutions(p_region.source),
+                     p_min_columns    => 3,
+                     p_max_columns    => null,
+                     p_component_name => p_region.name
+                   );
+            
+                   l_sql := 'select ';
+                   for i in 1..l_cur.column_list.count loop
+                    -- Select ONLY columns consumable by the plugin
+                    if upper(l_cur.column_list(i).col_name) in ('ID', 'INFOTEXT', 'INFOTIP', 'GEOMETRY', 'STYLE', 'MAXZOOM', 'MINZOOM', 'MARKERTEXT', 'IMAGEURL', 'LAYER', 'MARKERSIZE') then
+             
+                     -- test for object types in general 
+                     if l_cur.column_list(i).col_type = 109 then 
+                       -- handle MDSYS.SDO_GEOMETRY only
+                       if l_cur.column_list(i).col_schema_name = 'MDSYS' and l_cur.column_list(i).col_type_name = 'SDO_GEOMETRY' then
+                         l_geomcol := l_cur.column_list(i).col_name;
+                         l_sql := l_sql || 'sdo_cs.transform('||l_cur.column_list(i).col_name||', to_number(:SRID)) as '||l_cur.column_list(i).col_name||',';
+                         l_bsrid := true;
+                       end if;
+                       -- and ignore all others
+                     else 
+                       l_sql := l_sql || l_cur.column_list(i).col_name || ',';
+                     end if;
+                     if upper(l_cur.column_list(i).col_name) = 'MINZOOM' then l_minzoom := true; end if; 
+                     if upper(l_cur.column_list(i).col_name) = 'MAXZOOM' then l_maxzoom := true; end if; 
+                    end if;
+                   end loop;
+                   -- remove last comma
+                   l_sql := substr(l_sql, 1, length(l_sql) - 1);
+            
+                   apex_debug.message(
+                     p_message => 'ORACLE MAPS PLUGIN: Generated SELECT list: %s',
+                     p0 => l_sql,
+                     p_level   => apex_debug.c_log_level_info
+                   );
+                   
+                   l_sql := l_sql || ' from (';
+                   l_sql := l_sql ||    apex_plugin_util.replace_substitutions(p_region.source);
+                   l_sql := l_sql || ') e ';
+            
+                   l_where := '';
+            
+                   if apex_application.g_x06 = 'Y' then 
+                     l_where := l_where || 'where sdo_filter(';
+                     l_where := l_where ||   'e.' || l_geomcol || ', ';
+                     l_where := l_where ||   'mdsys.sdo_geometry(';
+                     l_where := l_where ||     '2003, ';
+                     l_where := l_where ||     ':SRID, ';
+                     l_where := l_where ||     'null, ';
+                     l_where := l_where ||     'mdsys.sdo_elem_info_array(1, 1003, 3), ';
+                     l_where := l_where ||     'mdsys.sdo_ordinate_array(';
+                     l_where := l_where ||       '(to_number(:MINX)/1000000000),';
+                     l_where := l_where ||       '(to_number(:MINY)/1000000000),';
+                     l_where := l_where ||       '(to_number(:MAXX)/1000000000),';
+                     l_where := l_where ||       '(to_number(:MAXY)/1000000000)';
+                     l_where := l_where ||     ')';
+                     l_where := l_where ||   ')';
+                     l_where := l_where || ') = ''TRUE'' ';
+                     l_bbbox := true;
+                   else 
+                     l_where := l_where || 'where 1 = 1 ';
+                   end if;
+                   if l_minzoom and apex_application.g_x06 = 'Y' then 
+                     l_where := l_where || ' and minzoom <= to_number(:ZOOMLEVEL) ';
+                     l_bzoom := true;
+                   end if;
+                   if l_maxzoom and apex_application.g_x06 = 'Y' then 
+                     l_where := l_where || ' and maxzoom >= to_number(:ZOOMLEVEL) ';
+                     l_bzoom := true;
+                   end if;
+                   apex_debug.message(
+                     p_message => 'ORACLE MAPS PLUGIN: new WHERE clause generated: %s',
+                     p0 => l_where,
+                     p_level   => apex_debug.c_log_level_info
+                   );
+            
+                   l_sql := l_sql || l_where;
+            
+                   apex_plugin_util.free_sql_handler(
+                     p_sql_handler => l_cur
+                   );
+                   l_cur := null;
+            
+                   --
+                   -- SECTION II: Prepare Bind Array and Call APEX_PLUGIN_UTIL.GET_DATA2
+                   --
+            
+                   if l_bsrid then
+                     l_bindlist(l_bidx).name := 'SRID';
+                     l_bindlist(l_bidx).value := apex_application.g_x01;
+                     l_bidx := l_bidx + 1;
+                   end if;
+                   if l_bbbox then
+                     l_bindlist(l_bidx).name := 'MINX';
+                     l_bindlist(l_bidx).value := apex_application.g_x02;
+                     l_bindlist(l_bidx+1).name := 'MINY';
+                     l_bindlist(l_bidx+1).value := apex_application.g_x03;
+                     l_bindlist(l_bidx+2).name := 'MAXX';
+                     l_bindlist(l_bidx+2).value := apex_application.g_x04;
+                     l_bindlist(l_bidx+3).name := 'MAXY';
+                     l_bindlist(l_bidx+3).value := apex_application.g_x05;
+                     l_bidx := l_bidx + 4;
+                   end if;
+                   if l_bzoom then
+                     l_bindlist(l_bidx).name := 'ZOOMLEVEL';
+                     l_bindlist(l_bidx).value := apex_application.g_x07;
+                   end if;
+            
+                   l_column_value_list :=
+                      apex_plugin_util.get_data2 (
+                        p_sql_statement    => l_sql,
+                        p_min_columns      => 3,
+                        p_max_columns      => null,
+                        p_component_name   => p_region.name,
+                        p_bind_list        => l_bindlist,
+                        p_max_rows         => l_maxrows 
+                     );
+            
+                   -- 
+                   -- SECTION III: FETCH RESULTS and build JSON
+                   --
+            
+                   apex_debug.message(
+                     p_message => 'ORACLE MAPS PLUGIN: found %s rows',
+                     p0 => l_column_value_list(1).value_list.count,
+                     p_level   => apex_debug.c_log_level_info
+                   );
+            
+                   apex_json.open_object;
+                   apex_json.open_array('row');
+                   for row in 1 .. l_column_value_list(1).value_list.count loop
+                     apex_json.open_object;
+                     for col in 1 .. l_column_value_list.count loop
+                       if l_column_value_list(col).data_type = 'SDO_GEOMETRY' then
+                         -- Object Type columns are always returned using ANYDATA and we have to
+                         -- use GETOBJECT to transform them back into the original object type
+                         l_dummy := l_column_value_list(col).value_list(row).anydata_value.getobject( l_geom );
+                         intfunc_printjsonforgeom(l_column_value_list(col).name, l_geom);
+                       else
+                         apex_json.write(
+                           l_column_value_list(col).name,
+                           apex_plugin_util.get_value_as_varchar2(
+                             p_data_type => l_column_value_list(col).data_type,
+                             p_value     => l_column_value_list(col).value_list(row)
+                           )
+                         );
+                       end if;
+                     end loop;
+                     apex_json.close_object;
+                     apex_debug.message(
+                       p_message => 'ORACLE MAPS PLUGIN: row fetched.',
+                       p_level   => apex_debug.c_log_level_info
+                     );
+                   end loop;
+                   apex_json.close_array;
+                   apex_json.close_object;
+                 exception 
+                   when others then 
+                     begin
+                       -- Close the cursor, if open
+                         apex_plugin_util.free_sql_handler(
+                           p_sql_handler => l_cur
+                         );
+                     exception
+                       -- ERROR during close cursor - do nothing.
+                       when others then null;
+                     end;
+                     apex_debug.message(
+                       p_message => 'ORACLE MAPS PLUGIN: error: %s.',
+                       p0 => sqlerrm,
+                       p_level   => apex_debug.c_log_level_info
+                     );
+                     apex_json.open_object;
+                     apex_json.write('error', sqlerrm);
+                     apex_json.close_object;
+                 end;
+               else 
+                 apex_json.open_object;
+                 apex_json.open_array('row');
+                 apex_json.close_array;
+                 apex_json.close_object;
+               end if;
+             elsif apex_application.g_x10 = 'TRANSFORM' then
+               declare
+                 l_trgeom      mdsys.sdo_geometry;
+                 l_xarray      APEX_APPLICATION_GLOBAL.VC_ARR2;
+                 l_yarray      APEX_APPLICATION_GLOBAL.VC_ARR2;
+               begin
+                 apex_debug.message(
+                   p_message => 'ORACLE MAPS PLUGIN: GOT TRANSFORM DATA %s %s %s %s',
+                   p0 => apex_application.g_x01, -- Array of X coordinates
+                   p1 => apex_application.g_x02, -- Array of Y coordinates
+                   p2 => apex_application.g_x03, -- FROM SRID
+                   p3 => apex_application.g_x04, -- TO   SRID
+                   p_level   => apex_debug.c_log_level_info
+                 );
+                 l_xarray := apex_util.string_to_table(apex_application.g_x01, ':');
+                 l_yarray := apex_util.string_to_table(apex_application.g_x02, ':');
+             
+                 apex_json.open_array;
+             
+                 for i in l_xarray.first..l_xarray.last loop 
+                   l_trgeom := mdsys.sdo_cs.transform(
+                     mdsys.sdo_geometry(
+                       2001, 
+                       to_number(apex_application.g_x03), 
+                       mdsys.sdo_point_type(
+                          to_number(l_xarray(i))/1000000000,
+                          to_number(l_yarray(i))/1000000000,
+                          null
+                       ),
+                       null, 
+                       null
+                     ), 
+                     to_number(apex_application.g_x04)
+                   );
+                   apex_json.open_object;
+                   apex_json.write('x', to_char(l_trgeom.sdo_point.x, '9999999990D9999999999','nls_numeric_characters=''.,'''));
+                   apex_json.write('y', to_char(l_trgeom.sdo_point.y, '9999999990D9999999999','nls_numeric_characters=''.,'''));
+                   apex_json.close_object;
+                 end loop;
+            
+                 apex_json.close_array;
+               end;
+             end if;
+             return null;
+            end;
+            
+            function render_map (
+                p_region              in apex_plugin.t_region,
+                p_plugin              in apex_plugin.t_plugin,
+                p_is_printer_friendly in boolean 
+            ) return apex_plugin.t_region_render_result
+            is
+                l_baseurl_host  apex_application_page_regions.attribute_01%type := p_region.attribute_01;
+                l_mapsize       apex_application_page_regions.attribute_03%type := p_region.attribute_03;
+                l_basemap       apex_application_page_regions.attribute_04%type := p_region.attribute_04;
+                l_mapcenter     apex_application_page_regions.attribute_06%type := p_region.attribute_06;
+                l_zoomlevel     apex_application_page_regions.attribute_07%type := p_region.attribute_07;
+                l_nav           apex_application_page_regions.attribute_08%type := p_region.attribute_08;
+                l_navopt        apex_application_page_regions.attribute_09%type := p_region.attribute_09;
+                l_additional    apex_application_page_regions.attribute_13%type := p_region.attribute_13;
+                l_copyright     apex_application_page_regions.attribute_20%type := p_region.attribute_20;
+            
+                l_showsqlfoi    apex_application_page_regions.attribute_17%type := p_region.attribute_17;
+                l_sqlfoiinfow   apex_application_page_regions.attribute_16%type := p_region.attribute_16;
+                l_sqlfoiinfoh   apex_application_page_regions.attribute_15%type := p_region.attribute_15;
+                l_sqlfoilazy    apex_application_page_regions.attribute_19%type := p_region.attribute_19;
+                l_sqlfoimaxrow  apex_application_page_regions.attribute_14%type := p_region.attribute_14;
+                l_usecookie     apex_application_page_regions.attribute_18%type := p_region.attribute_18;
+                l_sizetype      apex_application_page_regions.attribute_21%type := p_region.attribute_21;
+                l_unitsystem    apex_application_page_regions.attribute_22%type := nvl(p_region.attribute_22, 'METRIC');
+                l_unitsystem_it apex_application_page_regions.attribute_23%type := nvl(p_region.attribute_23, 'ORACLEMAPS_UNITSYSTEM');
+                l_use_eloc      apex_application_page_regions.attribute_24%type := nvl(p_region.attribute_24, 'YES');
+            
+                l_onloadCode    varchar2(32767);
+            
+                l_mapWidth      number;
+                l_mapHeight     number;
+                l_mapCenterX    number;
+                l_mapCenterY    number;
+            
+                l_escape_html   varchar2(1);
+            begin
+                if l_unitsystem = 'ITEM' then
+                  l_unitsystem := v(l_unitsystem_it);
+                end if;
+            
+                if l_mapcenter is null then
+                  l_mapcenter := '-100,38';
+                  l_zoomlevel := 1;
+                end if;
+              
+                begin
+                  l_mapCenterX := to_number(substr(l_mapcenter, 1, instr(l_mapcenter, ',') - 1), '999999999D999999','nls_numeric_characters=''.,''');
+                  l_mapCenterY := to_number(substr(l_mapcenter, instr(l_mapcenter,',') + 1), '999999999D999999','nls_numeric_characters=''.,''');
+                exception
+                  when others then
+                    raise_application_error(-20000, 'error in parsing MAP CENTER attribute:'||l_mapcenter);
+                end;
+            
+                begin
+                  l_mapWidth := to_number(substr(l_mapsize, 1, instr(l_mapsize, ',') - 1));
+                  l_mapHeight := to_number(substr(l_mapsize, instr(l_mapsize, ',') + 1));
+                exception
+                  when others then
+                    raise_application_error(-20000, 'error in parsing MAP WIDTH and HEIGHT attribute');
+                end;
+            
+                if p_region.escape_output then 
+                  l_escape_html := 'Y';
+                else 
+                  l_escape_html := 'N';
+                end if;
+            
+                if l_basemap is null and l_use_eloc = 'NONE' then 
+                  raise_application_error(-20000, 'At least one custom or external Map Tile Layer is required.');
+                end if;
+            
+                apex_javascript.add_library (
+                    p_name           => 'oraclemapsv2.js',
+                    p_directory      => l_baseurl_host || '/jslib/v19.1/', 
+                    p_version        => null,
+                    p_skip_extension => true );
+            
+              
+                if l_sizetype = 'PIXEL' then
+                sys.htp.p('<div id="'||p_region.static_id||'_map" style="width:'||l_mapWidth||'px; height:'||l_mapHeight||'px"></div>');
+                else 
+                sys.htp.p('<div id="'||p_region.static_id||'_map" style="width:'||l_mapWidth||'%; height:'||l_mapHeight||'px"></div>');
+                end if;
+                l_onloadCode := 'createPluginMap(' ||
+                  apex_javascript.add_value(p_region.static_id,              true) ||
+                  apex_javascript.add_value(apex_plugin.get_ajax_identifier, true) ||
+                  apex_javascript.add_value(p_plugin.file_prefix,            true) ||
+                  apex_javascript.add_value(l_baseurl_host,                  true) ||
+                  apex_javascript.add_value(l_basemap,                       true) ||
+                  apex_javascript.add_value(l_mapCenterX,                    true) ||
+                  apex_javascript.add_value(l_mapCenterY,                    true) ||
+                  apex_javascript.add_value(l_zoomlevel,                     true) ||
+                  apex_javascript.add_value(l_nav,                           true) ||
+                  apex_javascript.add_value(l_navopt,                        true) ||
+                  apex_javascript.add_value(l_mapwidth,                      true) ||
+                  apex_javascript.add_value(l_mapHeight,                     true) ||
+                  apex_javascript.add_value(l_additional,                    true) ||
+                  apex_javascript.add_value(nvl(l_sqlfoiinfow, 0),           true) ||
+                  apex_javascript.add_value(nvl(l_sqlfoiinfoh, 0),           true) ||
+                  apex_javascript.add_value(apex_util.host_url('SCRIPT'),    true) ||
+                  apex_javascript.add_value(l_escape_html,                   true) ||
+                  apex_javascript.add_value(p_region.ajax_items_to_submit,   true) ||
+                  apex_javascript.add_value(l_showsqlfoi,                    true) ||
+                  apex_javascript.add_value(l_usecookie,                     true) ||
+                  apex_javascript.add_value(l_copyright,                     true) ||
+                  apex_javascript.add_value(l_sqlfoilazy,                    true) ||
+                  apex_javascript.add_value(l_sizetype,                      true) ||
+                  apex_javascript.add_value(l_unitsystem,                    true) ||
+                  apex_javascript.add_value(lower(v('BROWSER_LANGUAGE')),    true) ||
+                  apex_javascript.add_value(l_use_eloc,                      true) ||
+                  apex_javascript.add_value(substr(to_char((1/2), 'FM0D0'), 2,1), false)||
+                  ');' || chr(10);
+            
+                apex_javascript.add_onload_code (l_onloadCode);
+                return null;
+            end;
+            
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render_map
+        ajaxProcedureName: render_map_ajax
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    javaScript {
+        fileUrls: #PLUGIN_FILES#apx-maps-plugin-html5.js
+    }
+    information {
+        version: 21.1
+        aboutUrl: http://apex.oracle.com/plugins
+        helpText:
+            ```
+            <p>
+            	This plugin integrates Oracle Maps as a region into an APEX application. This plugins requires an running installation of Oracle&#39;s Fusion Middleware MapViewer in order to run properly. The Map Tile Layers and Features of Interest to be displayed are being configured as Plugin parameters.</p>
+            <p>
+            	<br />
+            	&nbsp;</p>
+            ```
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        sqlQuery {
+            minColumns: 3
+        }
+        examples {
+            examples:
+                ```
+                <p>The <i>Feature Of Interest</i> (FOI) display style and information text depends on your SQL query. Make sure that it returns the following columns.</p>
+                <ul>
+                <li><b>ID</b> (Mandatory): Must uniquely identify a row - use the primary key for this. </li>
+                <li><b>GEOMETRY</b> (Mandatory): Must be a column of type SDO_GEOMETRY. Currently only point geometries are supported.</li>
+                <li><b>STYLE</b> (Mandatory): Determines the marker style: <b>blue|red|green|purple|yellow|gray</b>: Displays the marker as a pin in the given color. <b>IMAGE</b> allows to use custom images as markers. The image will be loaded from the URL given in the <b>IMAGEURL</b> column.</li>
+                <li><b>MARKERSIZE</b> (Optional): Provide a value in the form <b>R|C{size})</b> (e.g. R10 or C5). Values starting with a <b>C</b> are rendered as a circle with the specifed radius. Values starting with <b>R</b> are rendered as a rectangle with the specified size. The no MARKERSIZE is given, a pin image will be used as the marker.</li>
+                <li><b>IMAGEURL</b> (Optional): Provide a URL to the image you want to use as marker here. You can use APEX Application images with #APP_IMAGES#. Note that images need a transparent background for optimal display.</li>
+                <li><b>LAYER</b> (Optional): Assign this row to a layer number from 0 to 9. Layer 9 is the top layer. Use this to determine which FOI are to be layered on top of others. If not given, the row will be assigned to layer 1. Use <b>HEAT</b> as Layer to generate a heat map from the data. A Heat Map is always Layer 0.</li>
+                <li><b>INFOTIP</b> (Optional): This column content will be displayed when hovering the marker with the mouse.</li>
+                <li><b>INFOTEXT</b> (Optional): If given, the marker will get a clickable information window with the content of this column.</li>
+                <li><b>MINZOOM</b> (Optional): Display the FOI only, if the map is zoomed at least to this level. Only supported, when "Lazy Load" is set to <b>Yes</b>.</li>
+                <li><b>MAXZOOM</b> (Optional): Display the FOI only unitl the map is zoomed to this level. Only supported, when "Lazy Load" is set to <b>Yes</b>.</li>
+                </ul>
+                <p>
+                SQL Query for simple marker display.
+                </p>
+                <pre>
+                select 
+                  id, 
+                  name as infotip,
+                  'Customer: '||name||'&lt;br/&gt;Revenue: '||revenue as infotext, 
+                  geometry, 
+                  case 
+                    when revenue < 5000 then 'blue' 
+                    when revenue between 5000 and 10000 then 'red' 
+                    else 'purple' 
+                  end as style 
+                from customers
+                where revenue is not null
+                </pre>
+                ```
+        }
+    )
+
+)
+

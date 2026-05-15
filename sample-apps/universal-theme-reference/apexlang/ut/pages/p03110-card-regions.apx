@@ -1,0 +1,881 @@
+page 3110 (
+    name: Card Regions
+    alias: CARD-REGIONS
+    title: Card Regions
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline: .te_padding {padding: 8px 0px 8px 8px;}
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region all-settings-cards (
+        name: All Settings Cards
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       category,
+                       title,
+                       subtitle,
+                       substr(body,1,100)||'...' as agenda,
+                       secondary_body as speakers,
+                       icon_class,
+                       badge,
+                       '#APP_FILES#' || image_url as image,
+                       to_char(start_date, 'fmDDfm Month YYYY fmHHfm:MI PM') || ' - ' || to_char(end_date, 'fmHHfm:MI PM') as event_date
+                  from eba_ut_demo_cards
+                 where category = 'conference'
+                   and id >= 4
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @with-all-attributes-buttons-and-pagination
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc
+                t-CardsRegion--styleC
+            ]
+        }
+        componentAppearance {
+            gridColumns: 2
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            column: SUBTITLE
+        }
+        body {
+            column: AGENDA
+        }
+        secondaryBody {
+            column: EVENT_DATE
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_CLASS
+            iconCssClasses: fa
+            badgeColumn: BADGE
+            badgeLabel: Fee:
+        }
+        media {
+            source: imageUrl
+            url: &IMAGE.
+            appearance: widescreen
+            sizing: cover
+            imageDescription: &TITLE.
+        }
+        pagination {
+            type: page
+            cardsPerPage: 2
+        }
+
+        action action (
+            label: Details
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                hot: true
+            }
+        )
+
+        action action-2 (
+            label: Favorite
+            layout {
+                position: secondary
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                displayType: icon
+                icon: fa-heart-o
+            }
+        )
+
+    )
+
+    region backgrounds-cards (
+        name: Backgrounds Cards
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       category,
+                       title,
+                       subtitle,
+                       substr(body,1,100)||'...' as agenda,
+                       secondary_body as speakers,
+                       icon_class,
+                       badge,
+                       '#APP_FILES#' || image_url as image,
+                       to_char(start_date, 'fmDDfm Month YYYY fmHHfm:MI PM') || ' - ' || to_char(end_date, 'fmHHfm:MI PM') as event_date
+                  from eba_ut_demo_cards
+                 where category = 'conference'
+                   and id >= 4
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @with-backgrounds
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleA
+            ]
+        }
+        componentAppearance {
+            gridColumns: 3
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            column: SUBTITLE
+        }
+        body {
+            column: AGENDA
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_CLASS
+            iconCssClasses: fa
+        }
+        media {
+            source: imageUrl
+            url: &IMAGE.
+            position: background
+            sizing: cover
+            imageDescription: &TITLE.
+        }
+
+        action action (
+            label: Details
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                hot: true
+            }
+        )
+
+    )
+
+    region badges-cards (
+        name: Badges Cards
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       category,
+                       title,
+                       subtitle,
+                       body,
+                       secondary_body,
+                       icon_class,
+                       'badge' badge,
+                       '#APP_FILES#' || image_url as image,
+                       to_char(start_date, 'fmDDfm Month YYYY fmHHfm:MI PM') as start_date,
+                       to_char(end_date, 'fmHHfm:MI PM') as end_date
+                  from eba_ut_demo_cards
+                 where category = 'badge';
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @with-badges
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        componentAppearance {
+            gridColumns: 3
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        iconAndBadge {
+            iconSource: imageUrl
+            imageUrl: &IMAGE.
+            iconDescription: &TITLE.
+            badgeColumn: SUBTITLE
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region configuration (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <b>Type</b>: Cards<br>
+                <b>Grid Columns</b>: 2<br>
+                <b>Pagination</b>: enabled with 2 entries.<br>
+                <br>
+                <h4>Card Attributes</h4>
+                Top area has an <i>icon class, title, subtitle</i> and <i>badge</i> information.
+                Below the media is a paragraph as the <i>body</i> and a small timestamp as <i>secondary body</i>.<br>
+                <br>
+                <h4>Media</h4>
+                <b>Source</b>: Image URL<br>
+                <b>Position</b>: Body<br>
+                <b>Appearance</b>: Auto<br>
+                <b>Sizing</b>: Cover<br>
+                <br>
+                <h4>Actions</h4>
+                <ol>
+                <li>Button in Primary position that opens a modal page.</li>
+                <li>Button in Secondary position, only icon.</li>
+                </ol>
+                <br>
+                <h4>Live Template Options</h4>
+                <b>Style</b>: C
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @with-all-attributes-buttons-and-pagination
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Configuration All Settings
+        }
+    )
+
+    region configuration-2 (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <b>Type</b>: Cards<br>
+                <b>Grid Columns</b>: 3<br>
+                <b>Pagination</b>: scroll (default)<br>
+                <br>
+                <h4>Card Attributes</h4>
+                Top area has an <i>icon class, title, subtitle</i> and <i>badge</i> information.
+                Media is set as background, on top is a paragraph as the <i>body</i> with no <i>secondary body</i>.<br>
+                <br>
+                <h4>Media</h4>
+                <b>Source</b>: Image URL<br>
+                <b>Position</b>: As Background Image<br>
+                <b>Appearance</b>: Auto<br>
+                <b>Sizing</b>: Cover<br>
+                <br>
+                <h4>Actions</h4>
+                <ol>
+                <li>Button in Primary position that opens a modal page.</li>
+                </ol>
+                <br>
+                <h4>Live Template Options</h4>
+                <b>Style</b>: A
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @with-backgrounds
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Configuration Backgrounds
+        }
+    )
+
+    region configuration-3 (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <b>Type</b>: Cards<br>
+                <b>Grid Columns</b>: 3<br>
+                <b>Pagination</b>: scroll (default)<br>
+                <br>
+                <h4>Card Attributes</h4>
+                From top to bottom there is an <i>image, icon, title, subtitle, badge</i> and <i>body</i> information.<br>
+                <br>
+                <h4>Media</h4>
+                <b>Source</b>: URL Column<br>
+                <b>Position</b>: First<br>
+                <b>Appearance</b>: Widescreen<br>
+                <b>Sizing</b>: Cover<br>
+                <br>
+                <h4>Actions</h4>
+                <ol>
+                <li>Entire Card as a link.</li>
+                </ol>
+                <br>
+                <h4>Live Template Options</h4>
+                <b>Style</b>: B
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @with-image-first
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Configuration Image First
+        }
+    )
+
+    region configuration-4 (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <b>Type</b>: Cards<br>
+                <b>Grid Columns</b>: Auto<br>
+                <b>Pagination</b>: scroll (default)<br>
+                <br>
+                <h4>Card Attributes</h4>
+                From top to bottom there is an <i>icon, title</i> and <i>subtitle</i>. No Media.<br>
+                <br>
+                <h4>Icon</h4>
+                <b>Source</b>: Icon Class Column<br>
+                <b>Position</b>: Top<br>
+                <br>
+                <h4>Actions</h4>
+                <ol>
+                <li>Entire Card as a link.</li>
+                </ol>
+                <br>
+                <h4>Live Template Options</h4>
+                <b>Style</b>: B
+                <b>Label Alignment</b>: Right
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @with-grid-layout
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Configuration Grid Layout
+        }
+    )
+
+    region configuration-5 (
+        name: Configuration
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <b>Type</b>: Cards<br>
+                <b>Grid Columns</b>: 3<br>
+                <b>Pagination</b>: scroll (default)<br>
+                <br>
+                <h4>Card Attributes</h4>
+                From top to bottom there is an <i>icon with image URL, title, subtitle</i> and <i>body</i> information.
+                Media is not set.<br>
+                <br>
+                <h4>Icon</h4>
+                <b>Source</b>: Image URL<br>
+                <b>Position</b>: Start<br>
+                <br>
+                <h4>Actions</h4>
+                <ol>
+                <li>Entire Card as a link.</li>
+                </ol>
+                <br>
+                <h4>Live Template Options</h4>
+                <b>Style</b>: B
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @with-badges
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Configuration Badges
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region grid-layout-cards (
+        name: Grid Layout Cards
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       category,
+                       title,
+                       subtitle,
+                       substr(body,1,100)||'...' as agenda,
+                       secondary_body as speakers,
+                       icon_class,
+                       badge,
+                       '#APP_FILES#' || image_url as image,
+                       to_char(start_date, 'fmDDfm Month YYYY fmHHfm:MI PM') as start_date,
+                       to_char(end_date, 'fmHHfm:MI PM') as end_date
+                  from eba_ut_demo_cards
+                 where category = 'workshop'
+                   and id >= 9
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @with-grid-layout
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            column: SUBTITLE
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_CLASS
+            iconCssClasses: fa
+            iconPosition: top
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region image-first-cards (
+        name: Image First Cards
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       category,
+                       title,
+                       subtitle,
+                       substr(body,1,100)||'...' as agenda,
+                       secondary_body as speakers,
+                       icon_class,
+                       badge,
+                       '#APP_FILES#' || image_url as image,
+                       to_char(start_date, 'fmDDfm Month YYYY fmHHfm:MI PM') as start_date,
+                       to_char(end_date, 'fmHHfm:MI PM') as end_date
+                  from eba_ut_demo_cards
+                 where category = 'workshop'
+                   and id < 10
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @with-image-first
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        componentAppearance {
+            gridColumns: 3
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        body {
+            column: AGENDA
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON_CLASS
+            iconCssClasses: fa
+            badgeColumn: BADGE
+            badgeLabel: Fee:
+        }
+        media {
+            source: urlColumn
+            urlColumn: IMAGE
+            position: first
+            appearance: widescreen
+            sizing: cover
+            imageDescription: &TITLE.
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Cards Regions are useful for presenting a variety of information in small blocks and can be heavily customized. They can be displayed in three styles, with icons or initials, images as part of the body or as the background, to enhance each card presentation and you can control the layout.</p>
+                <p>Actions can be added to each card's image, title, subtitle, as new buttons or even using the entire card to enhance user experience.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query (
+        name: Sample SQL Query
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="dm-Code lang-sql te_padding"><code>select
+                  -- data
+                  card_primary_key,    -- primary key
+                  card_secondary_key,  -- secondary key if needed
+                  card_title,          -- title
+                  card_subtitle,       -- subtitle
+                  card_body,           -- card body text
+                  card_secondary_body, -- card secondary text, positioned near bottom
+                
+                  -- ui and other attributes
+                  card_icon,           -- icon class, e.g. fa-cloud
+                  card_badge,          -- badge, can be a small text
+                  card_image           -- image url, url or blob columns
+                from dual</code></pre>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region with-all-attributes-buttons-and-pagination (
+        name: With All Attributes, Buttons and Pagination
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region with-backgrounds (
+        name: With Backgrounds
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region with-badges (
+        name: With Badges
+        type: staticContent
+        layout {
+            sequence: 50
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region with-grid-layout (
+        name: With Grid Layout
+        type: staticContent
+        layout {
+            sequence: 70
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region with-image-first (
+        name: With Image First
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+)
+

@@ -1,0 +1,197 @@
+page 14 (
+    name: Welcome Text
+    alias: WELCOME-TEXT
+    title: Welcome Text
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region welcome-text (
+        name: Welcome Text
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P14_WELCOME_TEXT (
+        type: textarea
+        label {
+            label: Welcome Text, displayed on home page
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 10
+            region: @welcome-text
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 4
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   c integer := 0;
+                   t varchar2(4000) := null;
+                begin
+                select count(*) into c from eba_cust_preferences where preference_name = 'WELCOME_TEXT';
+                if c = 0 then 
+                    return null;
+                else
+                    t := EBA_CUST_FW.get_preference_value ('WELCOME_TEXT');
+                    if t = '&'||'nbsp;' then 
+                       return null;
+                    else 
+                       return t;
+                    end if;
+                end if;
+                exception when others then return null;
+                end;
+                ```
+            used: always
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY_CHANGES
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process set-preference (
+        name: set preference
+        type: executeCode
+        source {
+            plsqlCode: EBA_CUST_FW.set_preference_value('WELCOME_TEXT',nvl(:P14_WELCOME_TEXT,'&'||'nbsp;'));
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Welcome text preference changed.
+        }
+        advanced {
+            executionMappingIdentifier: 15066475800317033882
+        }
+        serverSideCondition {
+            whenButtonPressed: @apply-changes
+        }
+    )
+
+    branch (
+        name: back to admin
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+)
+

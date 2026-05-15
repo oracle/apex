@@ -1,0 +1,46 @@
+actionTemplate button (
+    name: Button
+    type: button
+    template {
+        actionTemplate:
+            ```html
+            {with/}
+            LINK_URL:=#LINK_URL#
+            LINK_ATTR:=#LINK_ATTR#
+            LABEL:=#LABEL#
+            ICON_CLASSES:=#ICON_CLASSES#
+            CSS_CLASSES:=#CSS_CLASSES#
+            IS_HOT:=#IS_HOT#
+            IS_ICON_ONLY:=#IS_ICON_ONLY#
+            IS_DISABLED:=#IS_DISABLED#
+            {apply THEME$BUTTON/}
+            ```
+    }
+    advanced {
+        staticId: button
+    }
+)
+
+actionTemplate menu (
+    name: Menu
+    type: menu
+    template {
+        actionTemplate:
+            ```html
+            {with/}
+            MENU_ID:=#MENU_ID#
+            LABEL:=#LABEL#
+            ICON_CLASSES:=#ICON_CLASSES#
+            CSS_CLASSES:=#CSS_CLASSES#
+            IS_HOT:=#IS_HOT#
+            IS_DISABLED:=#IS_DISABLED#
+            IS_ICON_ONLY:=#IS_ICON_ONLY#
+            {apply THEME$BUTTON/}
+            #MENU#
+            ```
+    }
+    advanced {
+        staticId: menu
+    }
+)
+

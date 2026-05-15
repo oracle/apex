@@ -1,0 +1,1388 @@
+page 101 (
+    name: Roadmap
+    alias: ROADMAP
+    title: Roadmap
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region apex (
+        name: APEX 23.2
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  11 id,
+                  'QR Code Generator' list_title,
+                  'Let users easily share data using a QR code based on an APEX page URL or content' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-qrcode' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  13 id,
+                  'Image Upload' list_title,
+                  'Modern image upload experience so users can edit images before saving' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-image' icon_class
+                from sys.dual
+                
+                order by id
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 9999
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--stack
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Icon Color Class
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Link
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Link Attr
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: List Class
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: List Text
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: List Title
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region apex-2 (
+        name: APEX 23.1
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  1 id,
+                  'Push Notifications' list_title,
+                  'Deliver push notifications to users from an APEX application' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-bell-o' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  8 id,
+                  'Improve application icon fidelity' list_title,
+                  'Generate great looking icons for all operating systems out of the box' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-design' icon_class
+                from sys.dual
+                
+                order by id
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 9999
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--stack
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Icon Color Class
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Link
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Link Attr
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: List Class
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: List Text
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: List Title
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region apex-3 (
+        name: APEX 21.2
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  1 id,
+                  'Declarative PWA' list_title,
+                  'Create an installable PWA in a single click' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-mobile' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  2 id,
+                  'Improved App Performance' list_title,
+                  'Cache resources automatically for snappier page loading in installed apps' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-mobile' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  3 id,
+                  'Make your APEX application installable' list_title,
+                  'Let users install your APEX app on their device''s home screen and launch it like a native app' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-download' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  4 id,
+                  'Custom Offline Page' list_title,
+                  'Customize the page your users see when their installed app has no internet connection' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-file-x' icon_class
+                from sys.dual
+                
+                order by id
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 9999
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--stack
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Icon Color Class
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Link
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Link Attr
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: List Class
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: List Text
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: List Title
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region apex-4 (
+        name: APEX 22.1
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  1 id,
+                  'Application Icon' list_title,
+                  'Brand your app with a custom icon that automatically appears everywhere its needed' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-apex' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  2 id,
+                  'Persistent Authentication' list_title,
+                  'Improve usability of your app by letting users stay logged in to focus immediately on getting their job done' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-lock' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  3 id,
+                  'PWA in Shared Components' list_title,
+                  'Configure all PWA attributes in a dedicated Shared Components page' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-list-alt' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  4 id,
+                  'Pick a Service Worker Strategy' list_title,
+                  'Extend the default APEX service worker to implement push notifications, web app payments, push app updates in the background and more' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-puzzle-piece' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  5 id,
+                  'Share Your Custom Service Worker' list_title,
+                  'Reuse your service worker code easily across multiple applications' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-share-alt' icon_class
+                from sys.dual
+                
+                order by id
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 9999
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--stack
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Icon Color Class
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Link
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Link Attr
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: List Class
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: List Text
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: List Title
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region apex-5 (
+        name: APEX 22.2
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  1 id,
+                  'Feature Detection' list_title,
+                  'Show Install App button only when current combination of device and browser supports it' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-lightbulb-o' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  2 id,
+                  'App Screenshots' list_title,
+                  'Provide users a visual preview of your app at installation time' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-image' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  3 id,
+                  'App Shortcuts' list_title,
+                  'Provide frequently-used actions as quick picks for users to access from your installed app icon' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-box-arrow-out-ne' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  4 id,
+                  'Device Geolocation' list_title,
+                  'Retrieve the device''s current location, speed, and altitude using a dynamic action' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-location-arrow-o' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  5 id,
+                  'Web Share' list_title,
+                  'Share data declaratively with other apps on the user''s device using the native share sheet' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-share' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  6 id,
+                  'Declarative Meta Tags' list_title,
+                  'Improve how shared public app pages render on social media and appear in search engine results' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-tags' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  7 id,
+                  'Improved PWA Install Dialog' list_title,
+                  'Incentivize users to install your app by fully leveraging the redesigned install experience' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-download' icon_class
+                from sys.dual
+                
+                order by id
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 9999
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--stack
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Icon Color Class
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Link
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Link Attr
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: List Class
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: List Text
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: List Title
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Region Display Selector
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region roadmap (
+        name: Roadmap
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  4 id,
+                  'Declarative Badging' list_title,
+                  'Control badges for installed PWAs to notify users that there is new activity that require their attention' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-badge' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  4 id,
+                  'Multi apps PWA' list_title,
+                  'Build a PWA that includes pages from multiple APEX applications' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-shapes' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  5 id,
+                  'PWA-enable APEX App Builder' list_title,
+                  'Deliver your APEX applications with a builder launched like a native app' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-apex' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  6 id,
+                  'Deploy APEX apps to app stores' list_title,
+                  'Automate deploying APEX apps to popular application stores from APEX Builder' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-object-group' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  9 id,
+                  'PWA-only APEX applications' list_title,
+                  'Optionally compel end users to install your application as a PWA when that delivers the best user experience' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-mobile' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  10 id,
+                  'Basic offline capabilities' list_title,
+                  'Offer initial declarative support for targeted offline use cases' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-signal' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  13 id,
+                  'PWA Analytics' list_title,
+                  'Useful analytics on the installation, push notifications and general usage of your APEX PWA' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-analytics' icon_class
+                from sys.dual
+                
+                order by id
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 9999
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--stack
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Icon Color Class
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Link
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Link Attr
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: List Class
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: List Text
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: List Title
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+)
+

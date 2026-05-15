@@ -1,0 +1,682 @@
+page 13 (
+    name: Icon and Detail Views
+    alias: ICON-AND-DETAIL-VIEWS
+    title: Icon and Detail Views
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region icon-and-detail-views (
+        name: Icon and Detail Views
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       DEPTNO,
+                       ONLEAVE,
+                       NOTES,
+                       case when job = 'MANAGER' or job = 'PRESIDENT' then 'fa fa-users' else 'fa fa-user' end as icon
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            showTotalCount: false
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        heading {
+            fixedTo: none
+        }
+        iconView {
+            show: true
+            icon: ICON
+            linkTarget: {
+                page: 400
+                items: {
+                    P400_EMPNO: &EMPNO.
+                }
+                action: resetPagination
+            }
+            labelColumn: ENAME
+        }
+        detailView {
+            show: true
+            beforeRows:
+                ```html
+                <table class="u-Report">
+                <thead>
+                    <tr>
+                        <th>Name</th><th>Manager</th><th>Job</th><th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                ```
+            forEachRow:
+                ```html
+                <tr>
+                <td>&ENAME.</td><td>&MGR.</td><td>&JOB.</td><td>&NOTES.</td>
+                </tr>
+                ```
+            afterRows: </tbody></table>
+        }
+        advanced {
+            savedReportMappingIdentifier: 3988073085586278009
+        }
+
+        savedReport 14454 (
+            visibility: primary
+            view {
+                default: icon
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ICON
+                layout {
+                    sequence: 12
+                }
+            )
+
+            displayColumn (
+                column: @SRV
+                layout {
+                    width: 60
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 80
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    width: 105
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 94
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 84
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    width: 114
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 40
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    width: 111
+                    sequence: 11
+                }
+            )
+
+            sort (
+                column: @DEPTNO
+                sort {
+                    direction: desc
+                    nulls: first
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Comm
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select dname, deptno 
+                    from eba_demo_ig_dept
+                    ```
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 40
+            }
+            link {
+                target: {
+                    page: 400
+                    items: {
+                        P400_EMPNO: &EMPNO.
+                    }
+                    action: resetPagination
+                }
+                linkText: <span class="fa &ICON."></span><span>&ENAME.</span>
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column ICON (
+            type: hidden
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column JOB (
+            type: textField
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                maxLength: 9
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ename, empno 
+                    from eba_demo_ig_emp
+                    ```
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textField
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 120
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ONLEAVE (
+            type: switch
+            heading {
+                heading: On Leave
+            }
+            layout {
+                sequence: 110
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        column SRV (
+            type: htmlExpression
+            heading {
+                alternativeLabel: Single Row View
+            }
+            settings {
+                htmlExpression:
+                    ```html
+                    <button type="button" class="t-Button t-Button--icon t-Button--noLabel" data-action="single-row-view">
+                    <span class="fa fa-pencil-square-o"></span><span class="u-VisuallyHidden">View &ENAME.</span>
+                    </button>
+                    ```
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                type: none
+            }
+            advanced {
+                columnInitJavaScriptFunction:
+                    ```javascript-browser
+                    function(config) {
+                        config.features = {
+                            aggregate: false,
+                            canHide: false,
+                            compute: false,
+                            controlBreak: false,
+                            groupBy: false,
+                            highlight: false,
+                            pivot: false,
+                            sort: false
+                        };
+                        return config;
+                    }
+                    ```
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    region overview-icon-and-detail-views (
+        name: Overview: Icon and Detail Views
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This example adds Icon and Detail views to the previous example. To switch views
+                use the view icon buttons in the toolbar.
+                Icon and detail views are similar to the corresponding functionality in Interactive Reports.
+                The icon view configuration is somewhat simplified. It is not necessary to specify the
+                number of columns because the columns adjust based on available width. It also has
+                better accessibility. With detail view and a custom icon view you are responsible for all
+                the markup and CSS styles. The CSS rules can be added to a theme or application css file
+                or included inline on the page. The main difference between icon view and detail view is that
+                icon view supports selection and keyboard navigation.
+                </p>
+                <p>For icon view a simple css based icon column is added to the SQL query that chooses an 
+                icon based on if the employee is a manager or president or not. 
+                For both icon and grid views the name is made a link. 
+                The fact that a column's link text can include markup is leveraged to include
+                the icon in the name column as part of the link. Normally no Link Text is needed. 
+                The link to page 400 is just to show how links can be used in icon view.
+                See <a href="f?p=&APP_ID.:5:&SESSION.:">Add Toolbar Button</a> for an editing using a dialog example.
+                This example uses a non-custom icon view. An important requirement of icon view is that
+                each item in the view must have the same width and height and the item content must not
+                overflow. The width and height are set with CSS rules on element with class a-IconList-item.
+                </p>
+                <p>The detail view uses table markup with styles that make it use the browser auto table layout.
+                This may not be a common use case, since the grid view also shows the data in a table, but 
+                it points out an important difference between Interactive Reports, which uses auto table layout,
+                and Interactive Grid, which uses fixed table layout. Auto table layout lets the browser give
+                space to columns that need it. Fixed table layout is more efficient and lets us put the user 
+                in control of the column widths as well as supporting frozen columns and scroll paging.
+                </p>
+                <p>See also the pagination examples that borrow some Universal Theme list styles for icon and detail views
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 14
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10
+                action: resetPagination
+            }
+        }
+    )
+
+    dynamicAction refresh-on-edit (
+        name: Refresh on Edit
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @icon-and-detail-views
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @icon-and-detail-views
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

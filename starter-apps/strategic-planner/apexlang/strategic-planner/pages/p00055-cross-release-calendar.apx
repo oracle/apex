@@ -1,0 +1,575 @@
+page 55 (
+    name: Cross-Release Calendar
+    alias: CROSS-RELEASE-CALENDAR
+    title: Cross-Release Milestone Calendar
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @releases
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region release (
+        name: Release
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.ID,
+                       r.RELEASE_TRAIN||' '||r.RELEASE release,
+                       decode(r.RELEASE_TARGET_DATE,null,    'No Date',to_char(r.RELEASE_TARGET_DATE,   'DD-MON-YY')) RELEASE_TARGET_DATE,
+                       decode(r.RELEASE_OPEN_DATE,null,      'No Date',to_char(r.RELEASE_OPEN_DATE,     'DD-MON-YY')) RELEASE_OPEN_DATE,
+                       greatest(round(r.RELEASE_TARGET_DATE - sysdate),0) days_remaining,
+                       --
+                       -- projects
+                       --
+                       (select count(*) 
+                          from sp_projects p 
+                         where p.release_id = r.id  
+                           and p.ARCHIVED_YN = 'N'  
+                           and p.DUPLICATE_OF_PROJECT_ID is null) projects,
+                       --
+                       --
+                       round(r.RELEASE_TARGET_DATE - r.RELEASE_OPEN_DATE) release_length,
+                       --
+                       -- owner
+                       --
+                       t.first_name||' '||t.last_name owner,
+                       --
+                       -- release open and close
+                       --
+                       decode(r.RELEASE_OPEN_COMPLETED,'Y','Yes','N','No','Unknown') release_opened,
+                       decode(r.RELEASE_COMPLETED,'Y','Yes','N','No','Unknown') release_completed
+                  from SP_RELEASE_TRAINS r,
+                       SP_TEAM_MEMBERS t
+                 where r.id = :P55_RELEASE_ID and 
+                       r.RELEASE_OWNER_ID = t.id(+)
+                ```
+            pageItemsToSubmit: P55_RELEASE_ID
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+                t-Region-orderBy--end
+                margin-left-md
+            ]
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+            ]
+        }
+
+        column DAYS_REMAINING (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 99999
+            }
+            columnFormatting {
+                htmlExpression: #DAYS_REMAINING# days
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECTS.
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column RELEASE_COMPLETED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Release Completed
+            }
+            layout {
+                sequence: 130
+            }
+        )
+
+        column RELEASE_LENGTH (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Length
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #RELEASE_LENGTH# days
+            }
+        )
+
+        column RELEASE_OPENED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Release Opened
+            }
+            layout {
+                sequence: 140
+            }
+        )
+
+        column RELEASE_OPEN_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Open
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON-YY
+            }
+        )
+
+        column RELEASE_TARGET_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Filters
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            displayChartForTopNValues: 10
+        }
+
+        facet P55_FULL_RELEASE (
+            type: checkboxGroup
+            label {
+                label: Release
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: FULL_RELEASE
+            }
+        )
+
+        facet P55_MILESTONE_COMPLETED (
+            type: checkboxGroup
+            label {
+                label: Milestone Status
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: MILESTONE_COMPLETED
+            }
+        )
+
+        facet P55_MILESTONE_TYPE (
+            type: checkboxGroup
+            label {
+                label: Milestone Type
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: MILESTONE_TYPE
+            }
+        )
+
+        facet P55_RELEASE_COMPLETED (
+            type: checkboxGroup
+            label {
+                label: Release Status
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: RELEASE_COMPLETED
+            }
+        )
+
+        facet P55_RELEASE_TRAIN (
+            type: checkboxGroup
+            label {
+                label: Release Train
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: RELEASE_TRAIN
+            }
+        )
+
+        facet P55_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: DISPLAY_COL,EVENT_DETAIL
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Search Results
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id release_id,
+                       r.release_train,
+                       r.release_train||' '||r.release as full_release,
+                       r.release_train||' '||r.release ||': '||m.milestone_name as display_col,
+                       nvl(m.milestone_start_date,m.milestone_date)  as START_DATE,
+                       m.milestone_date         as END_DATE,
+                       t.milestone_type         as milestone_type,
+                       m.milestone_name         as milestone,
+                       m.milestone_description  as event_detail,
+                       decode(m.milestone_completed_yn,'Y','Completed','Open') as milestone_completed,
+                       decode(r.release_completed,'Y','Completed','Open')      as release_completed,
+                       case when t.calendar_event_color is not null
+                            then 'apex-cal-'||t.calendar_event_color
+                            end milestone_color
+                  from sp_release_milestones m,
+                       sp_release_trains r,
+                       sp_release_milestone_types t
+                 where r.id = m.release_id
+                   and m.milestone_type_id = t.id (+)
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        headerAndFooter {
+            footerText: &nbsp;&nbsp;Event colors come from Release Milestone Types
+        }
+        settings {
+            displayColumn: DISPLAY_COL
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            supplementalInfo:
+                ```html
+                Type: &MILESTONE_TYPE.<br/>
+                Status: &MILESTONE_COMPLETED.
+                ```
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+            viewEditLink: {
+                page: 117
+                items: {
+                    P117_RELEASE_ID: &RELEASE_ID.
+                }
+                clearCache: 117
+            }
+            maxEventsDay: 15
+            cssClass: MILESTONE_COLOR
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function (pOptions) {   
+                
+                    //If you like to know what pOptions contains, uncomment below
+                    console.log(pOptions);
+                
+                    pOptions.contentHeight = 500;
+                    //return pOptions
+                    return pOptions;
+                }
+                ```
+        }
+    )
+
+    pageItem P55_RELEASE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @release
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P55_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @release
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 55
+                clearCache: 55
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p55-release (
+        itemName: P55_RELEASE
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select release_train||' '||release d 
+                  from sp_release_trains
+                 where id = :P55_RELEASE_ID
+                ```
+        }
+    )
+
+)
+

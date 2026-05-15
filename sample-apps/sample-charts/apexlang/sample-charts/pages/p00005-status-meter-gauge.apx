@@ -1,0 +1,2233 @@
+page 5 (
+    name: Status Meter Gauge
+    alias: STATUS-METER-GAUGE
+    title: Status Meter Gauge
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Status Meter Gauge chart, using Oracle JET Data Visualizations, is showcased on this page. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your charts.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-dial-gauge-chart
+        }
+    )
+
+    region breadcrumbs (
+        name: breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region circular (
+        name: Circular
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeCircular" target="_blank">Status Meter Gauge - Circular</a> example.</strong>
+        }
+    )
+
+    region horizontal (
+        name: Horizontal
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeHorizontal" target="_blank">Status Meter Gauge - Horizontal</a> example.</strong>
+        }
+    )
+
+    region indicator-size (
+        name: Indicator Size
+        type: chart
+        layout {
+            sequence: 110
+            parentRegion: @horizontal
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+            indicatorSize: 10
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                label: MY_LABEL
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                display: onIndicator
+            }
+        )
+
+    )
+
+    region indicator-size-2 (
+        name: Indicator Size
+        type: chart
+        layout {
+            sequence: 110
+            parentRegion: @vertical
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 21
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+            indicatorSize: 10
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                label: MY_LABEL
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                display: onIndicator
+            }
+        )
+
+    )
+
+    region indicator-size-3 (
+        name: Indicator Size
+        type: chart
+        layout {
+            sequence: 60
+            parentRegion: @circular
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 90
+            height: 100
+        }
+        gauge {
+            indicatorSize: 0.5
+            innerRadius: 0.6
+        }
+        value {
+            valueType: percent
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #EDBD45
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region indicator-size-information (
+        name: Indicator Size Information
+        type: staticContent
+        source {
+            htmlCode: This example demonstrates the rendering of a larger indicator, through the setting of the attribute <strong>Indicator Size</strong> to 10.  The default value is 1.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @indicator-size
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region indicator-size-information-2 (
+        name: Indicator Size Information
+        type: staticContent
+        source {
+            htmlCode: This example demonstrates a variation of the <strong>Indicator Size</strong> attribute, to render a larger indicator on the circular Status Meter Gauge.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @indicator-size-3
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region inner-radius (
+        name: Inner Radius
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @circular
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 90
+            height: 100
+        }
+        gauge {
+            indicatorSize: 0.5
+            innerRadius: 0.9
+        }
+        value {
+            valueType: percent
+            format: percent
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #1A3AD9
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region inner-radius-information (
+        name: Inner Radius Information
+        type: staticContent
+        source {
+            htmlCode: This example demonstrates a variation of the <strong>Inner Radius</strong> attribute, used to define the distance from the center of the gauge to the innermost edge of the indicator and plot area of a circular Status Meter Gauge.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @inner-radius
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region label-and-value (
+        name: Label and Value
+        type: chart
+        layout {
+            sequence: 60
+            parentRegion: @vertical
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 21
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                label: MY_LABEL
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #FFFF00
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region label-and-value-2 (
+        name: Label and Value
+        type: chart
+        layout {
+            sequence: 50
+            parentRegion: @circular
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 90
+            height: 100
+        }
+        gauge {
+            innerRadius: 0.7
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                label: MY_LABEL
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region label-and-value-information (
+        name: Label and Value Information
+        type: staticContent
+        source {
+            htmlCode: This example demonstrates the setting of the series-level <strong>Label</strong> column mapping, to display a label of 'Sales' in the center of the circular gauge, alongside the <strong>Value</strong> of the chart.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @label-and-value-2
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region number-formatting (
+        name: Number Formatting
+        type: chart
+        layout {
+            sequence: 80
+            parentRegion: @horizontal
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+            indicatorSize: 0.8
+        }
+        value {
+            format: currency
+            decimalPlaces: 2
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #FA0F0F
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region number-formatting-2 (
+        name: Number Formatting
+        type: chart
+        layout {
+            sequence: 80
+            parentRegion: @vertical
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 30
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+            indicatorSize: 0.8
+        }
+        value {
+            format: currency
+            decimalPlaces: 2
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #FA0F0F
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region number-formatting-3 (
+        name: Number Formatting
+        type: chart
+        layout {
+            sequence: 70
+            parentRegion: @circular
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 90
+            height: 100
+        }
+        gauge {
+            innerRadius: 0.6
+        }
+        value {
+            format: currency
+            decimalPlaces: 2
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region number-formatting-information (
+        name: Number Formatting Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates the formatting of the value as a currency, using the following attributes:<p/> 
+                <strong>Format</strong> - set to Currency<br/>
+                <strong>Decimal Places</strong> - set to 2<br/>
+                <strong>Currency</strong> - left blank, to automatically apply the NLS setting for currency.<p/> At series-level, the <strong>Color</strong> attribute has been set to red, to color the gauge indicator.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @number-formatting
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region number-formatting-information-2 (
+        name: Number Formatting Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates the formatting of the value as a currency, using the following attributes:<p/> 
+                <strong>Format</strong> - set to Currency<br/>
+                <strong>Decimal Places</strong> - set to 2<br/>
+                <strong>Currency</strong> - left blank, to automatically apply the NLS setting for currency.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @number-formatting-3
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region percent-formatting (
+        name: Percent Formatting
+        type: chart
+        layout {
+            sequence: 100
+            parentRegion: @horizontal
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+            indicatorSize: 0.5
+        }
+        value {
+            valueType: percent
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region percent-formatting-2 (
+        name: Percent Formatting
+        type: chart
+        layout {
+            sequence: 100
+            parentRegion: @vertical
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 21
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+            indicatorSize: 0.5
+        }
+        value {
+            valueType: percent
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region percent-formatting-information (
+        name: Percent Formatting Information
+        type: staticContent
+        source {
+            htmlCode: This example demonstrates the rendering of the value as a percent, using the <strong>Value Type</strong> attribute.  While no formatting of the value has been applied in this example, the <strong>Format</strong> attribute would be used to apply such formatting to the value rendered on the gauge.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @percent-formatting
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region plot-area-and-indicator-size (
+        name: Plot Area and Indicator Size
+        type: chart
+        layout {
+            sequence: 90
+            parentRegion: @horizontal
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+            indicatorSize: 0.4
+        }
+        value {
+            show: false
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                plotAreaColor: #4BB521
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region plot-area-and-indicator-size-2 (
+        name: Plot Area and Indicator Size
+        type: chart
+        layout {
+            sequence: 90
+            parentRegion: @vertical
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 21
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+            indicatorSize: 0.4
+        }
+        value {
+            show: false
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                plotAreaColor: #4BB521
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region plot-area-and-indicator-size-information (
+        name: Plot Area and Indicator Size Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates the setting of the series-level attribute, <strong>Plot Area Color</strong>, to green, to color the empty part of the gauge.
+                 The <strong>Indicator Size</strong> attribute has been changed from a default of 1 to .4, to reduce the size of the indicator in relation to the plot area.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @plot-area-and-indicator-size
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region start-angle-and-angle-extent (
+        name: Start Angle and Angle Extent
+        type: chart
+        layout {
+            sequence: 30
+            parentRegion: @circular
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 90
+            height: 100
+        }
+        gauge {
+            innerRadius: 0.7
+            startAngle: 180
+            angleExtent: 180
+        }
+        value {
+            valueType: percent
+            format: percent
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           10 low,
+                           20 high
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #F50000
+            }
+            thresholds {
+                display: onIndicator
+            }
+            referenceLines {
+                values: 7,14
+                colors: yellow
+            }
+            label {
+                show: true
+                position: start
+            }
+        )
+
+    )
+
+    region start-angle-and-angle-extent-information (
+        name: Start Angle and Angle Extent Information
+        type: staticContent
+        source {
+            htmlCode: This example demonstrates a variation of the <strong>Start Angle</strong> and <strong>Angle Extent</strong> attributes, to render a semi-circular Status Meter Gauge. <strong>Reference Lines</strong> are also declaratively defined at series-level, to identify value ranges on the chart.
+        }
+        layout {
+            sequence: 40
+            parentRegion: @start-angle-and-angle-extent
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region thresholds (
+        name: Thresholds
+        type: chart
+        layout {
+            sequence: 120
+            parentRegion: @horizontal
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+            indicatorSize: 0.9
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                values: 4,12,20
+                colors: #FF0000,#FFFF00,#008000
+                display: all
+            }
+        )
+
+    )
+
+    region thresholds-2 (
+        name: Thresholds
+        type: chart
+        layout {
+            sequence: 120
+            parentRegion: @vertical
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 21
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+            indicatorSize: 0.9
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                values: 4,12,14
+                colors: #FF0000,#FFFF00,#008000
+                display: all
+            }
+        )
+
+    )
+
+    region thresholds-current-threshold-only (
+        name: Thresholds - Current Threshold Only
+        type: chart
+        layout {
+            sequence: 140
+            parentRegion: @horizontal
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+            indicatorSize: 0.9
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                values: 4,12,20
+                colors: #FF0000,#FFFF00,#008000
+                display: currentThresholdOnly
+            }
+        )
+
+    )
+
+    region thresholds-current-threshold-only-2 (
+        name: Thresholds - Current Threshold Only
+        type: chart
+        layout {
+            sequence: 140
+            parentRegion: @vertical
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 21
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+            indicatorSize: 0.9
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                values: 4,12,20
+                colors: #FF0000,#FFFF00,#008000
+                display: currentThresholdOnly
+            }
+        )
+
+    )
+
+    region thresholds-current-threshold-only-information (
+        name: Thresholds - Current Threshold Only Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates the declarative definition of thresholds on a Status Meter Gauge, using the following series-level Threshold attributes:<p/> 
+                <strong>Values</strong> - set to a comma-delimited string, <strong>4,12,20</strong> - Note that this attribute supports substitutions of application and page items, as well as columns referenced in the chart SQL query..<br/>
+                <strong>Colors</strong> - set to <strong>#FF0000,#FFFF00,#008000</strong>.  As with the Values, this attributes supports substitutions.<br/>
+                <strong>Display</strong> - set to <strong>Current Threshold Only</strong>, to display the current threshold, defined using the Threshold Values attribute, on the plot area of the chart.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @thresholds-current-threshold-only
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region thresholds-information (
+        name: Thresholds Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates the declarative definition of thresholds on a Status Meter Gauge, using the following series-level Threshold attributes:<p/> 
+                <strong>Values</strong> - set to a comma-delimited string, <strong>4,12,20</strong> - Note that this attribute supports substitutions of application and page items, as well as columns referenced in the chart SQL query..<br/>
+                <strong>Colors</strong> - set to <strong>#FF0000,#FFFF00,#008000</strong>.  As with the Values, this attributes supports substitutions.<br/>
+                <strong>Display</strong> - set to <strong>All</strong>, to display all thresholds, defined in the <strong>Values</strong> attribute, in the plot area of the chart.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @thresholds
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region thresholds-information-2 (
+        name: Thresholds Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates the declarative definition of thresholds on a Status Meter Gauge, using the following series-level Threshold attributes:<p/> 
+                <strong>Values</strong> - set to a comma-delimited string, <strong>4,8,14</strong> - Note that this attribute supports substitutions of application and page items, as well as columns referenced in the chart SQL query..<br/>
+                <strong>Colors</strong> - set to <strong>red,yellow,green</strong>.  As with the Values, this attributes supports substitutions.<br/>
+                <strong>Display</strong> - set to <strong>All</strong>, to display all thresholds, defined in the <strong>Values</strong> attribute, in the plot area of the chart.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @thresholds-using-custom-tooltip
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region thresholds-on-indicator (
+        name: Thresholds - On Indicator
+        type: chart
+        layout {
+            sequence: 130
+            parentRegion: @horizontal
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+            indicatorSize: 0.9
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                values: 4,12,20
+                colors: #FF0000,#FFFF00,#008000
+                display: onIndicator
+            }
+        )
+
+    )
+
+    region thresholds-on-indicator-2 (
+        name: Thresholds - On Indicator
+        type: chart
+        layout {
+            sequence: 130
+            parentRegion: @vertical
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 21
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+            indicatorSize: 0.9
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            thresholds {
+                values: 4,12,20
+                colors: #FF0000,#FFFF00,#008000
+                display: onIndicator
+            }
+        )
+
+    )
+
+    region thresholds-on-indicator-information (
+        name: Thresholds - On Indicator Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates the declarative definition of thresholds on a Status Meter Gauge, using the following series-level Threshold attributes:<p/> 
+                <strong>Values</strong> - set to a comma-delimited string, <strong>4,12,20</strong> - Note that this attribute supports substitutions of application and page items, as well as columns referenced in the chart SQL query..<br/>
+                <strong>Colors</strong> - set to <strong>#FF0000,#FFFF00,#008000</strong>.  As with the Values, this attributes supports substitutions.<br/>
+                <strong>Display</strong> - set to <strong>On Indicator</strong>, to display the current threshold, defined using the Threshold Values attribute, on the indicator of the chart.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @thresholds-on-indicator
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region thresholds-using-custom-tooltip (
+        name: Thresholds - Using Custom Tooltip
+        type: chart
+        layout {
+            sequence: 80
+            parentRegion: @circular
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 90
+            height: 100
+        }
+        gauge {
+            indicatorSize: 0.5
+            innerRadius: 0.8
+            startAngle: 180
+            angleExtent: 180
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select value, 
+                           max_value,
+                           my_label,
+                           'Value: '|| value || '<br/>' ||'Thresholds: Low: 4, Medium: 8, High: 14' my_tooltip
+                    from ( select sum(case when COMM is null 
+                                           then 0 
+                                           when COMM = 0 
+                                           then 0 
+                                           else 1 
+                                      end) value, 
+                                  count(*) max_value,
+                                 'Sales' as my_label 
+                             from eba_demo_chart_emp )
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+                customTooltip: MY_TOOLTIP
+            }
+            appearance {
+                color: BLACK
+            }
+            thresholds {
+                values: 4,8,14
+                colors: red,yellow,green
+                display: all
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region value-and-label-information (
+        name: Value and Label Information
+        type: staticContent
+        source {
+            htmlCode: This example demonstrates the setting of the series-level <strong>Label</strong> column mapping, to display a label of 'Sales' in the center of the horizontal gauge, alongside the <strong>Value</strong> of the chart. The label <strong>Position</strong> attribute places the label in the center of the gauge.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @value-and-label-positioned-in-center
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region value-and-label-positioned-in-center (
+        name: Value and Label - Positioned in Center
+        type: chart
+        layout {
+            sequence: 50
+            parentRegion: @horizontal
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                label: MY_LABEL
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #FFFF00
+                plotAreaColor: GRAY
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region value-information (
+        name: Value Information
+        type: staticContent
+        source {
+            htmlCode: This example demonstrates the setting of the chart-level Value <strong>Position</strong> attribute, placing the value in the center of the gauge.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @value-position
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region value-position (
+        name: Value Position
+        type: chart
+        layout {
+            sequence: 70
+            parentRegion: @horizontal
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 300
+        }
+        gauge {
+            orientation: horizontal
+        }
+        value {
+            position: center
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #FFFF00
+                plotAreaColor: GRAY
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region value-position-2 (
+        name: Value Position
+        type: chart
+        layout {
+            sequence: 70
+            parentRegion: @vertical
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 21
+            height: 200
+        }
+        gauge {
+            orientation: vertical
+        }
+        value {
+            position: outsideIndicatorEdge
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series commission (
+            name: Commission
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT sum(case when COMM is null 
+                                         then 0 
+                                    when COMM = 0 
+                                         then 0 
+                                    else 1 
+                                    end) value, 
+                           count(*) max_value,
+                           'Sales' as my_label 
+                    FROM   eba_demo_chart_emp
+                    ```
+            }
+            columnMapping {
+                value: VALUE
+                maxValue: MAX_VALUE
+            }
+            appearance {
+                color: #FFFF00
+            }
+            thresholds {
+                display: onIndicator
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region vertical (
+        name: Vertical
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeVertical" target="_blank">Status Meter Gauge - Vertical</a> example.</strong>
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

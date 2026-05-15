@@ -1,0 +1,527 @@
+page 73 (
+    name: Calendar Client Events
+    alias: CALENDAR-CLIENT-EVENTS
+    title: Calendar Client Events
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            function formatYYYYMMDDhhmmss( pDate ) {
+                var date = pDate || new Date();
+            
+                return (
+                    ( "0000" + date.getFullYear() ).substr( -4 ) +
+                    "-" +
+                    ( "00" + ( date.getMonth() + 1 ) ).substr( -2 ) +
+                    "-" +
+                    ( "00" + date.getDate() ).substr( -2 ) +
+                    " " +
+                    ( "00" + date.getHours() ).substr( -2 ) +
+                    ":" +
+                    ( "00" + date.getMinutes() ).substr( -2 ) +
+                    ":" +
+                    ( "00" + date.getSeconds() ).substr( -2 )
+                );
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page shows, how additional, <i>client-only</i> events can be placed onto the calendar view. Fill out the text fields and click the <b>Show in Calendar</b> button. You'll then see your input displayed as a "red" event. That event is only visible in your browser and not saved to the database so far. You can also select a date range with the mouse, after finishing, the text fields will be updated and the "red" event will appear. Click the <b>Save to Database</b> button to make the event persistent.</p>
+                <p>This example uses the <i>FullCalendar API</i>'s <b>EventObject / CalendarObject</b> and its methods <b>setProp</b>, <b>setDates</b> and <b>addEvent</b> (<a href="https://fullcalendar.io/docs/" target="_blank">FullCalendar Documentation</a>). For example:
+                <pre>
+                var calendar = apex.region( "week_calendar" ).widget().data( "fullCalendar" );
+                
+                calendar.addEvent( {
+                    id:     "javascript-event-id",
+                    title:  "a client-only event",
+                    start:  "2016-05-03T14:00:00",
+                    end:    "2016-05-03T16:00:00",
+                    allDay: false
+                } );
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region items-container (
+        name: Items Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region sessions (
+        name: Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   case when speaker is not null then 
+                       title || ' (' || speaker || ')' 
+                       else title
+                   end as title,
+                   speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when status       = 'INACTIVE' then  'apex-cal-gray'
+                      when session_type = 'BREAK'    then  'apex-cal-silver'
+                      when session_type = 'BUSINESS' then  'apex-cal-orange'
+                      when session_type = 'GENERAL'  then  'apex-cal-blue'
+                      when session_type = 'TECHNICAL' then 'apex-cal-green'
+                      when session_type = 'HANDS_ON' then 'apex-cal-lime'
+                   end as css_class
+                from eba_demo_cal_sessions
+                where status='ACTIVE'
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            htmlDomId: week_calendar
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            showTime: true
+            calendarViewsAndNavigation: week
+            viewEditLink: {
+                page: 301
+                items: {
+                    P301_ID: &ID.
+                }
+                action: resetPagination
+            }
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    pageItem P73_ENDDATE (
+        type: datePicker
+        label {
+            label: To
+            alignment: left
+        }
+        settings {
+            showTime: true
+        }
+        layout {
+            sequence: 50
+            region: @items-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD HH24:MI:SS
+            width: 30
+        }
+        default {
+            type: expression
+            plsqlExpression: to_char(sysdate, 'YYYY-MM-DD')||' 11:00:00'
+        }
+    )
+
+    pageItem P73_SESSION_TYPE (
+        type: selectList
+        label {
+            label: Session Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @session-types
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @items-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P73_STARTDATE (
+        type: datePicker
+        label {
+            label: From
+            alignment: left
+        }
+        settings {
+            showTime: true
+        }
+        layout {
+            sequence: 40
+            region: @items-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD HH24:MI:SS
+            width: 30
+        }
+        default {
+            type: expression
+            plsqlExpression: to_char(sysdate, 'YYYY-MM-DD')||' 09:00:00'
+        }
+    )
+
+    pageItem P73_TITLE (
+        type: textField
+        label {
+            label: Title
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @items-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        default {
+            type: static
+            staticValue: My Session
+        }
+    )
+
+    button save-in-database (
+        buttonName: SAVE_IN_DATABASE
+        label: Save to Database
+        layout {
+            sequence: 20
+            region: @items-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button show-in-calendar (
+        buttonName: SHOW_IN_CALENDAR
+        label: Show in Calendar
+        layout {
+            sequence: 10
+            region: @items-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction create-javascript-event (
+        name: Create Javascript Event
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @show-in-calendar
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var calendar = apex.region( "week_calendar" ).widget().data( "fullCalendar" );
+                    var event = calendar.getEventById( "javascript-event-id" );
+                    
+                    if ( event ) {
+                    
+                        event.setProp( "title", $v( "P73_TITLE" ) );
+                        event.setDates( $v( "P73_STARTDATE" ), $v( "P73_ENDDATE" ), { allDay: false } );
+                    
+                    } else {
+                    
+                        calendar.addEvent( {
+                            id: "javascript-event-id",
+                            description: 'this is a "client-only" event which is not stored in the database so far',
+                            title: $v( "P73_TITLE" ),
+                            start: $v( "P73_STARTDATE" ),
+                            end: $v( "P73_ENDDATE" ),
+                            className: "apex-cal-red",
+                            backgroundColor: "rgba(255,0,0,0.75)",
+                            overlap: true,
+                            allDay: false
+                        } );
+                        
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction date-range-selected-create-new-event (
+        name: Date Range Selected: Create new Event
+        execution {
+            sequence: 30
+        }
+        when {
+            event: region/calendar/apexcalendardateselect
+            selectionType: region
+            region: @sessions
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $("#P73_STARTDATE,#P73_ENDDATE")
+                             .animate({"background-color": "#FFEC8B"}, 300)
+                             .animate({"background-color": "white"},300)
+                        ;
+                    
+                    apex.event.trigger(this.affectedElements, "click");
+                    ```
+            }
+            affectedElements {
+                selectionType: button
+                button: @show-in-calendar
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: formatYYYYMMDDhhmmss( this.data.dates.newStartDate )
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P73_STARTDATE
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: formatYYYYMMDDhhmmss( this.data.dates.newEndDate )
+            }
+            affectedElements {
+                selectionType: items
+                items: P73_ENDDATE
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction event-data-changed-show-in-calendar (
+        name: Event Data Changed: Show in Calendar
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: [
+                P73_TITLE
+                P73_STARTDATE
+                P73_ENDDATE
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.event.trigger(this.affectedElements, "click");
+            }
+            affectedElements {
+                selectionType: button
+                button: @show-in-calendar
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction save-event-to-database (
+        name: Save Event to Database
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @save-in-database
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    begin
+                        insert into eba_demo_cal_sessions (title, speaker, session_type, status, start_date, end_date)
+                        values (:P73_TITLE, 'TBD', :P73_SESSION_TYPE, 'ACTIVE', to_date(:P73_STARTDATE, 'YYYY-MM-DD HH24:MI:SS'), to_date(:P73_ENDDATE, 'YYYY-MM-DD HH24:MI:SS'));
+                            
+                    end;
+                            
+                    ```
+                itemsToSubmit: [
+                    P73_TITLE
+                    P73_SESSION_TYPE
+                    P73_STARTDATE
+                    P73_ENDDATE
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

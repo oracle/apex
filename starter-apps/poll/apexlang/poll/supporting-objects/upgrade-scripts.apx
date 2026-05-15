@@ -1,0 +1,19 @@
+upgradeScript "TIMESTAMP Fix (BUGID: 31352674)" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: timestamp-fix-bugid-31352674-.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery:
+            ```sql
+            select null
+              from all_tab_cols
+             where table_name like 'EBA_QPOLL_%'
+               and data_type = 'TIMESTAMP(6) WITH LOCAL TIME ZONE'
+            ```
+    }
+)
+

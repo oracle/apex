@@ -1,0 +1,553 @@
+workflow EMPLOYEE_APPRAISAL (
+    name: Employee Appraisal
+    title: Appraisal for &SUBJECT.
+
+    parameter SUBJECT (
+        label {
+            label: Subject
+        }
+        validation {
+            required: true
+        }
+    )
+
+    version 1.0 (
+        additionalData {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select a.id, a.appraisal_date
+                from eba_demo_appr_appraisals a
+                left join eba_demo_appr_emp e
+                       on e.empno = a.empno
+                where a.id = :APEX$WORKFLOW_DETAIL_PK
+                ```
+        }
+        advanced {
+            diagram: orthogonal
+        }
+        comments {
+            comments: This workflow orchestrates the employee evaluation process beginning with an employee self evaluation. It's detail primary key is the ID column in the EBA_DEMO_APPR_APPRAISALS system of record table. This is configured in the "Additional Data" section above.
+        }
+
+        activity AppraisalOriginated (
+            name: Appraisal Originated
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: UPDATE_APPRAISAL_STATUS
+            }
+            layout {
+                sequence: 20
+            }
+            advanced {
+                diagram: {"position":{"x":1020,"y":710},"z":-72}
+            }
+            comments {
+                comments: Mark the appraisal as ORIGINATED.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @SelfEvaluation
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.091%\",\"dy\":\"33.333%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"54.545%\",\"dy\":\"16.667%\",\"rotate\":true}},\"vertices\":[{\"x\":1040,\"y\":800}],\"z\":17,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_status (
+                value {
+                    type: staticValue
+                    staticValue: ORIGINATED
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+        )
+
+        activity AppraisalSubmitted (
+            name: Appraisal Submitted
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: UPDATE_APPRAISAL_STATUS
+            }
+            layout {
+                sequence: 40
+            }
+            advanced {
+                diagram: {"position":{"x":1200,"y":840},"z":-73}
+            }
+            comments {
+                comments: Mark the appraisal as SUBMITTED by the employee.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @ManagerAppraisal
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":\"59.091%\",\"dy\":\"83.333%\",\"rotate\":true},\"name\":\"topLeft\"},\"target\":{\"args\":{\"dx\":\"54.545%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[{\"x\":1020,\"y\":930}],\"z\":11,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_status (
+                value {
+                    type: staticValue
+                    staticValue: SUBMITTED
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+        )
+
+        activity DetermineVP (
+            name: Determine VP
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: DETERMINE_APPRAISAL_VP
+            }
+            layout {
+                sequence: 110
+            }
+            advanced {
+                diagram: {"position":{"x":850,"y":1080},"z":-77}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_3
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"31.818%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"63.638%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":14,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_appraisal_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+            parameter p_vp_username (
+                parameter {
+                    direction: inOut
+                }
+                value {
+                    item: VP_USERNAME
+                }
+                advanced {
+                    displaySequence: 30
+                }
+            )
+
+        )
+
+        activity ManagerAppraisal (
+            name: Manager Appraisal
+            type: humanTaskCreate
+            humanTask {
+                definition: @APPRAISAL_MANAGER_INPUT
+                detailsPkItem: APEX$WORKFLOW_DETAIL_PK
+            }
+            overrides {
+                initiatorCanComplete: false
+            }
+            layout {
+                sequence: 50
+            }
+            advanced {
+                diagram: {"position":{"x":850,"y":960},"z":-75}
+            }
+            comments {
+                comments: Next, have the employee's manager add their evaluation.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @ManagerSubmitted
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":\"54.545%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"81.818%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":9,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity ManagerSubmitted (
+            name: Manager Submitted
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: UPDATE_APPRAISAL_STATUS
+            }
+            layout {
+                sequence: 60
+            }
+            advanced {
+                diagram: {"position":{"x":1200,"y":960},"z":-76}
+            }
+            comments {
+                comments: Mark the appraisal as MGR_SUBMITTED by the manager.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @DetermineVP
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.091%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"45.455%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[{\"x\":840,\"y\":1060}],\"z\":19,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_status (
+                value {
+                    type: staticValue
+                    staticValue: MGR_SUBMITTED
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+        )
+
+        activity New (
+            name: Start
+            type: workflowStart
+            layout {
+                sequence: 10
+            }
+            advanced {
+                diagram: {"position":{"x":690,"y":710},"z":-83}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @AppraisalOriginated
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"68.182%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":4,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_2 (
+            name: End
+            type: workflowEnd
+            layout {
+                sequence: 100
+            }
+            advanced {
+                diagram: {"position":{"x":690,"y":1300},"z":-82}
+            }
+        )
+
+        activity New_3 (
+            name: VP Required?
+            type: switch
+            condition {
+                conditionType: workflowVarNotEqualsValue
+                workflowVar: VP_USERNAME
+                value: NONE
+            }
+            layout {
+                sequence: 120
+            }
+            advanced {
+                diagram: {"position":{"x":1200,"y":1080},"z":-78}
+            }
+
+            connection (
+                name: No VP Available
+                condition {
+                    when: false
+                }
+                activity {
+                    to: @VPReviewed_1
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":\"31.822%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"target\":{\"args\":{\"dx\":\"63.636%\",\"dy\":\"66.667%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[{\"x\":1460,\"y\":1160}],\"z\":24,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: Yes
+                condition {
+                    when: true
+                }
+                activity {
+                    to: @VPReview
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"59.093%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[{\"x\":1090,\"y\":1170}],\"z\":25,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity SelfEvaluation (
+            name: Self-Evaluation
+            type: humanTaskCreate
+            humanTask {
+                definition: @APPRAISAL_EMPLOYEE_INPUT
+                detailsPkItem: APEX$WORKFLOW_DETAIL_PK
+            }
+            overrides {
+                initiatorCanComplete: false
+            }
+            deadline {
+                dueOnType: expression
+                plsqlExpression: :APPRAISAL_DATE
+            }
+            layout {
+                sequence: 30
+            }
+            advanced {
+                diagram: {"position":{"x":850,"y":840},"z":-74}
+            }
+            comments {
+                comments: Start with the employee's completing a self-evaluation.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @AppraisalSubmitted
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"18.182%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"90.909%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":8,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity VPReview (
+            name: VP Review
+            type: humanTaskCreate
+            humanTask {
+                definition: @APPRAISAL_VP_REVIEW
+                detailsPkItem: APEX$WORKFLOW_DETAIL_PK
+            }
+            overrides {
+                initiatorCanComplete: false
+            }
+            layout {
+                sequence: 70
+            }
+            advanced {
+                diagram: {"position":{"x":850,"y":1210},"z":-79}
+            }
+            comments {
+                comments: Finally, have the VP review the evaluation.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @VPReviewed
+                }
+                advanced {
+                    diagram: "{\"source\":{\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":5,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter (
+                name: @P_VP_USERNAME
+                value {
+                    type: item
+                    item: VP_USERNAME
+                }
+            )
+
+        )
+
+        activity VPReviewed (
+            name: VP Reviewed
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: UPDATE_APPRAISAL_STATUS
+            }
+            layout {
+                sequence: 80
+            }
+            advanced {
+                diagram: {"position":{"x":1200,"y":1210},"z":-80}
+            }
+            comments {
+                comments: Mark the appraisal as VP_REVIEWED by the VP.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @VPReviewed_1
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"54.545%\",\"dy\":\"16.667%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"68.182%\",\"dy\":\"33.333%\",\"rotate\":true}},\"vertices\":[{\"x\":1290,\"y\":1320}],\"router\":{\"name\":\"orthogonal\",\"args\":{\"padding\":20}},\"z\":23,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_status (
+                value {
+                    type: staticValue
+                    staticValue: VP_REVIEWED
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+        )
+
+        activity VPReviewed_1 (
+            name: Appraisal Completed
+            type: invokeApi
+            invoke {
+                package: EBA_DEMO_APPR
+                procedureOrFunction: UPDATE_APPRAISAL_STATUS
+            }
+            layout {
+                sequence: 90
+            }
+            advanced {
+                diagram: {"position":{"x":1020,"y":1300},"z":-81}
+            }
+            comments {
+                comments: Mark the appraisal as VP_REVIEWED by the VP.
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_2
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"22.727%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"66.667%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":22,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: APEX$WORKFLOW_DETAIL_PK
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_status (
+                value {
+                    type: staticValue
+                    staticValue: COMPLETED
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+        )
+
+        variable VP_USERNAME (
+            label {
+                label: VP Username
+            }
+        )
+
+        participant (
+            name: New
+            value {
+                type: expression
+                plsqlExpression: eba_demo_appr.userlist_for_department('OPERATIONS')
+            }
+        )
+
+        participant (
+            name: New_1
+            type: admin
+            value {
+                staticValue: PAT
+            }
+        )
+
+    )
+
+)
+

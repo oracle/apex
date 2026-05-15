@@ -1,0 +1,10 @@
+aiAgent openai (
+    name: OPENAI
+    genAI {
+        service: @EBA_GENAI_OPENAI
+    }
+    comments {
+        comments: Not used in the application, but needed to connect the application to the AI Service.
+    }
+)
+

@@ -1,0 +1,42 @@
+authorization administrator (
+    name: Administrator
+    type: isInRoleOrGroup
+    settings {
+        names: Administrator
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not an Administrator
+    }
+)
+
+authorization allow-user-requests (
+    name: ALLOW_USER_REQUESTS
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            if qask_util.get_setting('allow_account_requests_yn') = 'Y' then
+               return TRUE;
+            else return FALSE;
+            end if;
+            ```
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+
+authorization host (
+    name: Host
+    type: isInRoleOrGroup
+    settings {
+        names: [
+            Administrator
+            Host
+        ]
+    }
+    error {
+        errorMessage: Insufficient privileges, user is not a Host
+    }
+)
+

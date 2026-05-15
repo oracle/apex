@@ -1,0 +1,254 @@
+installScript "Add SALES_DATA column to OOW_DEMO_SALES_HISTORY table" (
+    execution {
+        sequence: 240
+    }
+    script {
+        contentFile: add-sales-data-column-to-oow-demo-sales-history-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select null from all_tab_columns where table_name = 'OOW_DEMO_SALES_HISTORY' and column_name = 'SALES_DATA';
+    }
+)
+
+installScript "Create BIU_OOW_DEMO_SALES_HIST trigger" (
+    execution {
+        sequence: 250
+    }
+    script {
+        contentFile: create-biu-oow-demo-sales-hist-trigger.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select null from all_triggers where trigger_name = 'BIU_OOW_DEMO_SALES_HIST';
+    }
+)
+
+installScript "History Generation Process table" (
+    execution {
+        sequence: 140
+    }
+    script {
+        contentFile: history-generation-process-table.sql
+    }
+)
+
+installScript "Load Sample Data" (
+    execution {
+        sequence: 190
+    }
+    script {
+        contentFile: load-sample-data.sql
+    }
+)
+
+installScript Preferences (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: preferences.sql
+    }
+)
+
+installScript "alter statements" (
+    execution {
+        sequence: 120
+    }
+    script {
+        contentFile: alter-statements.sql
+    }
+)
+
+installScript "create indexes" (
+    execution {
+        sequence: 130
+    }
+    script {
+        contentFile: create-indexes.sql
+    }
+)
+
+installScript "event log" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: event-log.sql
+    }
+)
+
+installScript "event pkg" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: event-pkg.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: OOW_DEMO_EVENT_PKG
+    )
+
+)
+
+installScript history (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: history.sql
+    }
+)
+
+installScript items (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: items.sql
+    }
+)
+
+installScript "oow_demo_gen_data_pkg BODY" (
+    execution {
+        sequence: 180
+    }
+    script {
+        contentFile: oow-demo-gen-data-pkg-body.sql
+    }
+)
+
+installScript "oow_demo_gen_data_pkg SPEC" (
+    execution {
+        sequence: 170
+    }
+    script {
+        contentFile: oow-demo-gen-data-pkg-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: OOW_DEMO_GEN_DATA_PKG
+    )
+
+)
+
+installScript "oow_demo_sample_data BODY" (
+    execution {
+        sequence: 160
+    }
+    script {
+        contentFile: oow-demo-sample-data-body.sql
+    }
+)
+
+installScript "oow_demo_sample_data SPEC" (
+    execution {
+        sequence: 150
+    }
+    script {
+        contentFile: oow-demo-sample-data-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: OOW_DEMO_SAMPLE_DATA
+    )
+
+)
+
+installScript "oow_demo_timing body" (
+    execution {
+        sequence: 230
+    }
+    script {
+        contentFile: oow-demo-timing-body.sql
+    }
+)
+
+installScript "oow_demo_timing spec " (
+    execution {
+        sequence: 220
+    }
+    script {
+        contentFile: oow-demo-timing-spec-.sql
+    }
+)
+
+installScript products (
+    execution {
+        sequence: 110
+    }
+    script {
+        contentFile: products.sql
+    }
+)
+
+installScript regions (
+    execution {
+        sequence: 80
+    }
+    script {
+        contentFile: regions.sql
+    }
+)
+
+installScript scope (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: scope.sql
+    }
+)
+
+installScript "seed sample history data" (
+    execution {
+        sequence: 200
+    }
+    script {
+        contentFile: seed-sample-history-data.sql
+    }
+)
+
+installScript sequence (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: sequence.sql
+    }
+)
+
+installScript start (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: start.sql
+    }
+)
+
+installScript stores (
+    execution {
+        sequence: 90
+    }
+    script {
+        contentFile: stores.sql
+    }
+)
+
+installScript summary (
+    execution {
+        sequence: 210
+    }
+    script {
+        contentFile: summary.sql
+    }
+)
+

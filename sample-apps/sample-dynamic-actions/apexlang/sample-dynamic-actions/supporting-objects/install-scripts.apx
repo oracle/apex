@@ -1,0 +1,27 @@
+installScript "Create Tables" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-tables.sql
+    }
+)
+
+installScript "Insert Data" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: insert-data.sql
+    }
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+

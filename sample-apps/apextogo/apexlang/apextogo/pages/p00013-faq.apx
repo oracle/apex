@@ -1,0 +1,233 @@
+page 13 (
+    name: FAQ
+    alias: FAQ
+    title: FAQ
+    pageGroup: @user-settings
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Fix Alignment on Mobile */
+            .t-Region-titleButton {
+              text-align: inherit;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region can-i-see-a-history-of-my-previous-orders (
+        name: Can I see a history of my previous orders?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Yes, you can view your order history by logging into your account.
+                    Simply navigate to the Orders section and select "Past Orders".
+                    There, you can see details of all your previous orders.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region general (
+        name: General
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-Region--removeHeader js-removeLandmark
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region how-do-i-place-an-order (
+        name: How do I place an order?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    
+                    Placing an order with APEXToGo is simple! Just look for a restaurant,
+                    add your desired items to the cart, and proceed to checkout.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region how-do-i-report-a-problem-with-my-delivery (
+        name: How do I report a problem with my delivery?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    
+                    If you encounter any issues with your delivery driver, please contact
+                    our customer support team immediately. Provide details of the incident
+                    so we can address it promptly.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 80
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region is-there-a-minimum-order-amount (
+        name: Is there a minimum order amount?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    
+                    No, there is no minimum order amount. You can order as little or as much
+                    as you like. We aim to provide flexibility and convenience for all our
+                    customers.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region what-is-apextogo (
+        name: What is APEXToGo?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    
+                    APEXToGo is a convenient food delivery service that brings your favorite
+                    meals from local restaurants right to your doorstep. Whether you're craving
+                    a quick snack or a full meal, we've got you covered.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    button back (
+        buttonName: BACK
+        label: Account
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--iconLeft
+                t-Button--gapBottom
+            ]
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 20000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

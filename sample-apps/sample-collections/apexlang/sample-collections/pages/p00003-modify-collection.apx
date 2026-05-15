@@ -1,0 +1,713 @@
+page 3 (
+    name: Modify Collection
+    alias: MODIFY-COLLECTION
+    title: Modify Collection
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>Use this page to add members (records) into your collection. Note that this application does not use all of the fields available in APEX collections.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumbs
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region collection (
+        name: Collection
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+            columnAttributes: valign=top
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region member-attributes (
+        name: Member Attributes
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P3_ATTR1 (
+        type: textField
+        label {
+            label: Character Attribute 1
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_ATTR2 (
+        type: textField
+        label {
+            label: Character Attribute 2
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_ATTR3 (
+        type: textField
+        label {
+            label: Character Attribute 3
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_ATTR4 (
+        type: textField
+        label {
+            label: Character Attribute 4
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_ATTR5 (
+        type: textField
+        label {
+            label: Character Attribute 5
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_DATE_ATTR1 (
+        type: datePicker
+        label {
+            label: Date Attribute 1
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_DATE_ATTR2 (
+        type: datePicker
+        label {
+            label: Date Attribute 2
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_DATE_ATTR3 (
+        type: datePicker
+        label {
+            label: Date Attribute 3
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_NAME (
+        type: textField
+        label {
+            label: Collection Name
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @collection
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        source {
+            type: item
+            item: P2_NAME
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_NUM_ATTR1 (
+        type: numberField
+        label {
+            label: Numeric Attribute 1
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 70
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_NUM_ATTR2 (
+        type: numberField
+        label {
+            label: Numeric Attribute 2
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 80
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_NUM_ATTR3 (
+        type: numberField
+        label {
+            label: Numeric Attribute 3
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 90
+            region: @member-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-member (
+        buttonName: Add_Member
+        label: Add Member
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button add-member-add-another (
+        buttonName: Add_Member_Add_Another
+        label: Add Member & Add Another
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button delete-collection (
+        buttonName: Delete_Collection
+        label: Delete Collection
+        layout {
+            sequence: 20
+            region: @collection
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button resequence (
+        buttonName: Resequence
+        label: Resequence
+        layout {
+            sequence: 30
+            region: @collection
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button truncate-collection (
+        buttonName: Truncate_Collection
+        label: Truncate Collection
+        layout {
+            sequence: 10
+            region: @collection
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation collection-name-not-null (
+        name: Collection Name not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P3_NAME
+        }
+        error {
+            errorMessage: Collection name cannot be null
+            associatedItem: @P3_NAME
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :REQUEST in ('Truncate_Collection','Delete_Collection','Resequence','Add_Member','Add_Member_Add_Another')
+        }
+    )
+
+    process add-member (
+        name: Add Member
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                --
+                -- This application uses the Application Level Date format to control the default date format for the application.
+                -- Without this, then you would need to specify explict date format masks in the TO_DATE conversions.
+                apex_collection.add_member(
+                    p_collection_name => :P3_NAME,
+                    p_c001            => :P3_ATTR1,
+                    p_c002            => :P3_ATTR2,
+                    p_c003            => :P3_ATTR3,
+                    p_c004            => :P3_ATTR4,
+                    p_c005            => :P3_ATTR5,
+                    p_n001            => :P3_NUM_ATTR1,
+                    p_n002            => :P3_NUM_ATTR2,
+                    p_n003            => :P3_NUM_ATTR3,
+                    p_d001            => to_date(:P3_DATE_ATTR1),
+                    p_d002            => to_date(:P3_DATE_ATTR2),
+                    p_d003            => to_date(:P3_DATE_ATTR3),
+                    p_generate_md5    => 'YES' );
+                commit;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Successfully added member to collection <b>&P3_NAME.</b>.
+        }
+        error {
+            errorMessage: Error adding member to collection <b>&P3_NAME.</b>.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8866821999791263447
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression: :REQUEST in ('Add_Member','Add_Member_Add_Another')
+        }
+    )
+
+    process clear-cache (
+        name: Clear Cache
+        type: clearSessionState
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 7960446708983693505
+        }
+    )
+
+    process delete-collection (
+        name: Delete Collection
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.delete_collection(
+                    p_collection_name => :P3_NAME );
+                --
+                commit;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Successfully deleted collection <b>&P3_NAME.</b>.
+        }
+        error {
+            errorMessage: Error deleting collection <b>&P3_NAME.</b>.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867118501872213764
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete-collection
+        }
+    )
+
+    process resequence (
+        name: Resequence
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.resequence_collection(
+                    p_collection_name => :P3_NAME );
+                commit;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Successfully resequenced members in collection <b>&P3_NAME.</b>.
+        }
+        error {
+            errorMessage: Error resequencing members in collection <b>&P3_NAME.</b>.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867114121497204602
+        }
+        serverSideCondition {
+            whenButtonPressed: @resequence
+        }
+    )
+
+    process truncate-collection (
+        name: Truncate Collection
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.truncate_collection(
+                    p_collection_name => :P3_NAME );
+                --
+                commit;
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Successfully truncated collection <b>&P3_NAME.</b>.
+        }
+        error {
+            errorMessage: Error truncating collection <b>&P3_NAME.</b>.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867181195690657249
+        }
+        serverSideCondition {
+            whenButtonPressed: @truncate-collection
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 20
+        }
+        behavior {
+            type: page
+            pageNumber: 1
+        }
+        comments {
+            comments: Created 16-JUL-2002 15:56 by JOEL
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            type: page
+            pageNumber: 3
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-member-add-another
+        }
+    )
+
+)
+

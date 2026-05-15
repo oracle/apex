@@ -1,0 +1,700 @@
+page 14 (
+    name: Release Change History
+    alias: RELEASE-CHANGE-HISTORY-OLD
+    title: Release Change History
+    pageGroup: @projects
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region release (
+        name: Release
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.ID,
+                       r.RELEASE_TRAIN||' '||r.RELEASE release,
+                       decode(r.RELEASE_TARGET_DATE,null,    'No Date',to_char(r.RELEASE_TARGET_DATE,   'DD-MON-YY')) RELEASE_TARGET_DATE,
+                       decode(r.RELEASE_OPEN_DATE,null,      'No Date',to_char(r.RELEASE_OPEN_DATE,     'DD-MON-YY')) RELEASE_OPEN_DATE,
+                       greatest(round(r.RELEASE_TARGET_DATE - sysdate),0) days_remaining,
+                       --
+                       -- projects
+                       --
+                       (select count(*) 
+                          from sp_projects p 
+                         where p.release_id = r.id  
+                           and p.ARCHIVED_YN = 'N'  
+                           and p.DUPLICATE_OF_PROJECT_ID is null) projects,
+                       --
+                       --
+                       --
+                       round(r.RELEASE_TARGET_DATE - r.RELEASE_OPEN_DATE) release_length,
+                       --
+                       -- owner
+                       --
+                       t.first_name||' '||t.last_name owner,
+                       --
+                       -- release open and close
+                       --
+                       decode(r.RELEASE_OPEN_COMPLETED,'Y','Yes','N','No','Unknown') release_opened,
+                       decode(r.RELEASE_COMPLETED,'Y','Yes','N','No','Unknown') release_completed
+                  from SP_RELEASE_TRAINS r,
+                       SP_TEAM_MEMBERS t
+                 where r.id = :P14_RELEASE_ID and 
+                       r.RELEASE_OWNER_ID = t.id(+)
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+                t-Region-orderBy--end
+                margin-left-md
+            ]
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+            ]
+        }
+
+        column DAYS_REMAINING (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 99999
+            }
+            columnFormatting {
+                htmlExpression: #DAYS_REMAINING# days
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECTS.
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column RELEASE_COMPLETED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Release Completed
+            }
+            layout {
+                sequence: 140
+            }
+        )
+
+        column RELEASE_LENGTH (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Length
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #RELEASE_LENGTH# days
+            }
+        )
+
+        column RELEASE_OPENED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Release Opened
+            }
+            layout {
+                sequence: 150
+            }
+        )
+
+        column RELEASE_OPEN_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Open
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON-YY
+            }
+        )
+
+        column RELEASE_TARGET_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Filters
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            showTotalRowCount: true
+            displayChartForTopNValues: 10
+        }
+
+        facet P14_ATTRIBUTE_CHANGE_MONTH (
+            type: checkboxGroup
+            label {
+                label: Month
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: ATTRIBUTE_CHANGE_MONTH
+            }
+        )
+
+        facet P14_ATTRIBUTE_COLUMN (
+            type: checkboxGroup
+            label {
+                label: Attribute
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: ATTRIBUTE_COLUMN
+            }
+        )
+
+        facet P14_CHANGED_BY (
+            type: checkboxGroup
+            label {
+                label: Changed By
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CHANGED_BY
+            }
+        )
+
+        facet P14_CHANGE_TYPE (
+            type: checkboxGroup
+            label {
+                label: Change
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CHANGE_TYPE
+            }
+        )
+
+        facet P14_PARENT_TYPE (
+            type: checkboxGroup
+            label {
+                label: Type
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CHANGE_TO
+            }
+        )
+
+        facet P14_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: PROJECT,OWNER,ATTRIBUTE_COLUMN,OLD_VALUE,NEW_VALUE
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Search Results
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select :NOMENCLATURE_PROJECT change_to,
+                       p.project                           project,
+                       (select tm.first_name||' '||tm.last_name
+                          from sp_team_members TM  
+                         where tm.id = p.OWNER_ID)         owner,               
+                       --
+                       pc.changed_on ATTRIBUTE_CHANGE_DATE,
+                       to_char(pc.changed_on,'YYYY.MM') ATTRIBUTE_CHANGE_Month,
+                       --
+                       :NOMENCLATURE_PROJECT||' '||initcap(replace(pc.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       case pc.change_type when 'CREATE' then 'Added'
+                                           when 'UPDATE' then 'Updated'
+                                           when 'DELETE' then 'Deleted'
+                                           else pc.change_type
+                            end change_type,
+                       decode(old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       changed_by
+                  from SP_PROJECT_HISTORY pc,
+                       sp_projects p
+                 where p.release_id = :P14_RELEASE_ID 
+                   and p.id = pc.project_id
+                   and p.ARCHIVED_YN = 'N'
+                   and p.duplicate_of_project_id is null
+                union all
+                select 'Release' change_to,
+                       null         project,
+                       (select tm.first_name||' '||tm.last_name
+                        from   sp_team_members TM  
+                        where  tm.id = r.RELEASE_OWNER_ID)         owner,                 
+                       --
+                       h.changed_on ATTRIBUTE_CHANGE_DATE,
+                       to_char(h.changed_on,'YYYY.MM') ATTRIBUTE_CHANGE_Month,
+                       --
+                       initcap(replace(h.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       case h.change_type when 'CREATE' then 'Added'
+                                           when 'UPDATE' then 'Updated'
+                                           when 'DELETE' then 'Deleted'
+                                           else h.change_type
+                            end change_type,
+                       decode(old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       changed_by
+                  from sp_release_history h,
+                       sp_release_trains r
+                 where r.id = :P14_RELEASE_ID 
+                   and r.id = h.release_id
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column ATTRIBUTE_CHANGE_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: When
+            }
+            layout {
+                sequence: 92
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+        column ATTRIBUTE_CHANGE_MONTH (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 102
+            }
+        )
+
+        column ATTRIBUTE_COLUMN (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Attribute
+            }
+            layout {
+                sequence: 42
+            }
+        )
+
+        column CHANGED_BY (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Changed By
+            }
+            layout {
+                sequence: 82
+            }
+        )
+
+        column CHANGE_TO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Change To
+            }
+            layout {
+                sequence: 12
+            }
+        )
+
+        column CHANGE_TYPE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Change
+            }
+            layout {
+                sequence: 52
+            }
+        )
+
+        column NEW_VALUE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: New Value
+            }
+            layout {
+                sequence: 72
+            }
+        )
+
+        column OLD_VALUE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Old Value
+            }
+            layout {
+                sequence: 62
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 32
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 22
+            }
+        )
+
+    )
+
+    pageItem P14_RELEASE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @release
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P14_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @release
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button refresh (
+        buttonName: refresh
+        label: Refresh
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 14
+                items: {
+                    P14_RELEASE_ID: &P14_RELEASE_ID.
+                }
+                clearCache: 14
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 117
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p14-release (
+        itemName: P14_RELEASE
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select release_train||' '||release d from sp_release_trains where id = :P14_RELEASE_ID
+        }
+    )
+
+)
+

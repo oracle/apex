@@ -1,0 +1,620 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Sample DocGen
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode: Welcome to the <strong>Sample Document Generator</strong> Application. This application contains a few examples to generate PDF documents using JSON data and DOCX templates.
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region dwrole-grant-is-missing (
+        name: DWROLE grant is missing
+        type: dynamicContent
+        source {
+            plsqlFunctionBody: return '<pre>grant DWROLE to ' || :WORKSPACE_SCHEMA || ';</pre>';
+        }
+        layout {
+            sequence: 10
+            parentRegion: @privs
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--danger
+            ]
+        }
+        headerAndFooter {
+            headerText: Please execute the following as ADMIN user:
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from user_role_privs
+                 where granted_role  = 'DWROLE'
+                ```
+        }
+    )
+
+    region examples (
+        name: Examples
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select list_entry_id as id,
+                       display_sequence,
+                       entry_text as title,
+                       entry_attribute_01 as description,
+                       entry_attribute_02 as screenshot_img_path,
+                       entry_attribute_03 as template_path,
+                       entry_attribute_04 as static_id,
+                       'Screenshot of '||entry_text||' PDF document' as alt
+                  from apex_application_list_entries
+                 where application_id = :APP_ID
+                   and list_name = 'Examples'
+                 order by display_sequence asc
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            gridColumns: 2
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: <h4 class="a-CardView-subTitle">&DESCRIPTION!RAW.</h4>
+        }
+        media {
+            source: imageUrl
+            url: #APP_IMAGES#&SCREENSHOT_IMG_PATH.
+            position: first
+            appearance: widescreen
+            imageDescription: &ALT.
+        }
+
+        action action (
+            label: Generate PDF
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 1
+                    request: &STATIC_ID.
+                }
+                linkAttributes: title="Generate PDF Document"
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-print
+                hot: true
+            }
+            serverSideCondition {
+                type: item=value
+                item: P1_PRIVS_MISSING_YN
+                value: N
+            }
+        )
+
+        action action-2 (
+            label: JSON
+            layout {
+                position: secondary
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 1
+                    items: {
+                        P1_STATIC_ID: &STATIC_ID.
+                    }
+                    request: JSON
+                }
+                linkAttributes: title="Download JSON Document"
+            }
+            appearance {
+                displayType: icon
+                icon: fa-file-json-o
+            }
+        )
+
+        action action-3 (
+            label: Template
+            layout {
+                position: secondary
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #APP_IMAGES#&TEMPLATE_PATH.
+                linkAttributes: download title="Download MS Word Document"
+            }
+            appearance {
+                displayType: icon
+                icon: fa-file-word-o
+            }
+        )
+
+    )
+
+    region installed-on-oracle-cloud (
+        name: Installed on Oracle Cloud
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_application_global.g_cloud
+        }
+    )
+
+    region not-installed-on-oracle-cloud (
+        name: Not installed on Oracle Cloud
+        type: staticContent
+        source {
+            htmlCode: In order to work properly, this application must be installed in an APEX Service or Autonomous Database in the Oracle Cloud.
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--danger
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: not apex_application_global.g_cloud
+        }
+    )
+
+    region oci-resource-principal-is-missing (
+        name: OCI$RESOURCE_PRINCIPAL is missing
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                return 'Please execute the following as ADMIN user:<pre>begin
+                    dbms_cloud_admin.enable_resource_principal();
+                    dbms_cloud_admin.enable_resource_principal(username => ''' || :WORKSPACE_SCHEMA || ''');
+                end</pre>';
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @privs
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--danger
+            ]
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from all_credentials
+                 where credential_name  = 'OCI$RESOURCE_PRINCIPAL'
+                ```
+        }
+    )
+
+    region prerequisites (
+        name: Prerequisites
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This application can only be used on an Autonomous Database on OCI.</p>
+                <strong>Configuration steps:</strong>
+                <ol>
+                    <li><a target="_blank" rel="noopener noreferrer" href="https://docs.oracle.com/en-us/iaas/Content/Functions/Tasks/functions_pbf_catalog_document_generator.htm#functions_pbf_catalog_document_generator">Configure the Document Generator Function</a></li>
+                    <li>Create an Object Storage Bucket</li>
+                    <li>Create a Dynamic Group for the Autonomous Database
+                        <code><pre>resource.id = '&lt;db_ocid>'</pre></code></li>
+                    </li>
+                     <li>Create a Policy for the Dynamic Group to manage objects and invoke the function
+                        <code><pre>
+                Allow dynamic-group &lt;group_name> to manage objects in compartment &lt;compartment_name>
+                Allow dynamic-group &lt;group_name> to manage buckets in compartment &lt;compartment_name>
+                Allow dynamic-group &lt;group_name> to use functions-family in compartment &lt;compartment_name>
+                        </pre></code>
+                    </li>
+                     <li>Enable the Resource Principal in the database as <code>ADMIN</code> user
+                        <code><pre>
+                EXEC DBMS_CLOUD_ADMIN.ENABLE_RESOURCE_PRINCIPAL();
+                EXEC DBMS_CLOUD_ADMIN.ENABLE_RESOURCE_PRINCIPAL(username => '&WORKSPACE_SCHEMA.');
+                        </pre></code>
+                    </li>
+                     <li>Grant the role <code>DWROLE</code> to the workspace schema as <code>ADMIN</code> user
+                        <code><pre>grant DWROLE to &WORKSPACE_SCHEMA.;</pre></code>
+                    </li> 
+                     <li>Configure the "OCI Document Generator - Print Document" Plug-In Component Settings
+                    </li>  
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @installed-on-oracle-cloud
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region privs (
+        name: Privs
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @installed-on-oracle-cloud
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P1_PRIVS_MISSING_YN
+            value: Y
+        }
+    )
+
+    region sample-document-generator (
+        name: Sample Document Generator
+        type: staticContent
+        source {
+            htmlCode: Demonstration of invoking the Oracle Document Generator Pre-Built Function in APEX.
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    pageItem P1_PRIVS_MISSING_YN (
+        type: hidden
+        layout {
+            sequence: 70
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P1_STATIC_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @examples
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    computation p1-privs-missing-yn (
+        itemName: P1_PRIVS_MISSING_YN
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_priv_count pls_integer;
+                begin
+                    select sum(priv)
+                      into l_priv_count
+                      from (select 1 as priv
+                              from all_credentials
+                             where credential_name  = 'OCI$RESOURCE_PRINCIPAL'
+                             union all
+                            select 1
+                              from user_role_privs
+                             where granted_role  = 'DWROLE');
+                    
+                    return 
+                        case 
+                            when nvl( l_priv_count, 0 ) < 2 
+                            then 'Y'
+                            else 'N'
+                        end;
+                end;
+                ```
+        }
+    )
+
+    process download-json (
+        name: Download JSON
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_sql       varchar2( 32767 );
+                    l_context   pls_integer;
+                    l_data      sys.json_object_t;
+                    l_clob      clob;
+                    l_export    apex_data_export.t_export;
+                    l_static_id varchar2(100) := v('P1_STATIC_ID');
+                begin
+                
+                    select attribute_01 as sql_query,
+                           attribute_03 as filename
+                      into l_sql,
+                           l_export.file_name
+                      from apex_application_page_proc
+                     where page_id = 1
+                       and condition_expression1 = l_static_id;
+                
+                    l_context := apex_exec.open_query_context(
+                        p_location  => apex_exec.c_location_local_db,
+                        p_sql_query => l_sql );
+                
+                    if apex_exec.next_row( p_context => l_context ) then
+                
+                        l_data := sys.json_object_t( apex_exec.get_clob( l_context, 1 ) );
+                
+                        l_export.content_blob   := l_data.to_blob();
+                        l_export.format         := apex_data_export.c_format_json;
+                        l_export.mime_type      := 'application/json';
+                
+                        apex_data_export.download(
+                            p_export    => l_export );
+                
+                    end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 80
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 34681176403474144
+        }
+        serverSideCondition {
+            type: request=Value
+            value: JSON
+        }
+    )
+
+    process print-employees (
+        name: Print Employees
+        type: plugin/ociDocumentGeneratorPrintDocument
+        settings {
+            template: templates/employees.docx
+            reportSourceQuery:
+                ```sql
+                select json_object( 
+                        'currentDate'   value to_char( sysdate, 'DD MON YYYY' ),
+                        'employees'     value
+                            json_arrayagg( 
+                                json_object('name'      value e.ename,
+                                           'job'        value e.job,
+                                           'hiredate'   value to_char( e.hiredate, 'DD MON YYYY'),
+                                           'salary'     value e.sal,
+                                           'commission' value nvl(e.comm,0),
+                                           'department' value d.dname,
+                                           'location'   value d.loc,
+                                           'manager'    value nvl(m.ename,'-') ) pretty ) ) as report_data
+                  from eba_demo_dg_emp e
+                  join eba_demo_dg_dept d
+                    on e.deptno = d.deptno
+                  left join eba_demo_dg_emp m
+                    on e.mgr = m.empno
+                ```
+            filename: employees
+        }
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 34680475001474137
+        }
+        serverSideCondition {
+            type: request=Value
+            value: EMPLOYEES
+        }
+    )
+
+    process print-employees-per-department (
+        name: Print Employees per Department
+        type: plugin/ociDocumentGeneratorPrintDocument
+        settings {
+            template: templates/emp_per_dept.docx
+            reportSourceQuery:
+                ```sql
+                select json_serialize(
+                                json_object(
+                                    'departments' value 
+                                        json_arrayagg(
+                                            json_object(
+                                                'id' value d.deptno,
+                                                'dname' value d.dname,
+                                                'loc' value d.loc,
+                                                'page' value 'true',
+                                                'employees' value
+                                                    (
+                                                        select json_arrayagg(
+                                                            json_object(
+                                                                'ename' value e.ename,
+                                                                'job' value e.job,
+                                                                'mgr' value nvl( m.ename, '-' ),
+                                                                'hiredate' value to_char( e.hiredate, 'DD MON YYYY'),
+                                                                'sal' value e.sal,
+                                                                'comm' value nvl( e.comm, 0 )
+                                                            )
+                                                        returning clob)
+                                                        from eba_demo_dg_emp e
+                                                        left join eba_demo_dg_emp m
+                                                          on e.mgr = m.empno
+                                                        where e.deptno = d.deptno
+                                                    )
+                                            returning clob)
+                                        returning clob)
+                                returning clob)
+                            returning clob pretty) as data
+                from eba_demo_dg_dept d
+                where exists (select 1 
+                                from eba_demo_dg_emp 
+                               where deptno = d.deptno)
+                ```
+            filename: emp-per-dept
+        }
+        execution {
+            sequence: 70
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 7675465400984308
+        }
+        serverSideCondition {
+            type: request=Value
+            value: EMP_PER_DEPT
+        }
+    )
+
+    process print-orders (
+        name: Print Orders
+        type: plugin/ociDocumentGeneratorPrintDocument
+        settings {
+            template: templates/customer-order.docx
+            reportSourceQuery:
+                ```sql
+                select json_object( 
+                    'order' value
+                    json_object(
+                        'id'        value o.order_id,
+                        'date'      value to_char(o.order_datetime, 'DD MON YYYY'),
+                        'customer'  value c.full_name,
+                        'email'     value c.email_address,
+                        'count'     value count(i.line_item_id),
+                        'items'     value json_arrayagg(
+                            json_object (
+                                'id'            value i.line_item_id,
+                                'unitPrice'     value i.unit_price,
+                                'quantity'      value i.quantity,
+                                'total'         value (i.unit_price * i.quantity),
+                                'productName'   value p.product_name
+                            )
+                        order by i.line_item_id  ) )
+                    ) as data
+                  from eba_demo_dg_orders sample(1) o 
+                  join eba_demo_dg_customers c
+                    on c.customer_id = o.customer_id
+                  join eba_demo_dg_order_items i
+                    on i.order_id = o.order_id
+                  join eba_demo_dg_products p
+                    on i.product_id = p.product_id
+                 group by o.order_id,
+                       o.order_datetime,
+                       c.full_name,
+                       c.email_address
+                ```
+            filename: customer-order
+        }
+        execution {
+            sequence: 60
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 34681496476474147
+        }
+        serverSideCondition {
+            type: request=Value
+            value: ORDER
+        }
+    )
+
+)
+

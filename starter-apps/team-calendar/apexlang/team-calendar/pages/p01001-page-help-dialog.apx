@@ -1,0 +1,122 @@
+page 1001 (
+    name: Page Help Dialog
+    alias: PAGE-HELP-DIALOG
+    title: Help
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this Page
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in 
+                (
+                    select page_title, help_text 
+                      from apex_application_pages
+                     where page_id = :P1001_PAGE_ID 
+                       and application_id = :APP_ID
+                )
+                loop
+                    if c1.help_text is null then
+                        sys.htp.p(apex_escape.html('No help is available for this page.'));
+                    else
+                        if substr(c1.help_text, 1, 3) != '<p>' then
+                            sys.htp.p('<p>');
+                        end if;
+                
+                        sys.htp.p(apex_application.do_substitutions(c1.help_text, 'ESC'));
+                
+                        if substr(trim(c1.help_text), -4) != '</p>' then
+                            sys.htp.p('</p>');
+                        end if;
+                    end if;
+                end loop;
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--slimPadding
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P1001_PAGE_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @about-this-page
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button about-this-app (
+        buttonName: ABOUT_THIS_APP
+        label: Learn More about &APP_TITLE.
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--small
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: HELP
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

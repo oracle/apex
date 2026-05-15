@@ -1,0 +1,123 @@
+customAttribute attribute_01 (
+    apexlangName: regionName
+    attribute: 1
+    name: Region Name
+    scope: app
+    appearance {
+        sequence: 10
+    }
+    examples {
+        examples: us-phoenix-1
+    }
+)
+
+customAttribute attribute_01 (
+    apexlangName: reportSourceQuery
+    attribute: 1
+    name: Report Source Query
+    type: sqlQuery
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: The query has to return JSON.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: documentGeneratorFunctionOcid
+    attribute: 2
+    name: Document Generator Function OCID
+    scope: app
+    appearance {
+        attributeGroup: @ociDocumentGeneratorFunction
+        sequence: 20
+    }
+    help {
+        helpText: Oracle-assigned unique ID called an Oracle Cloud Identifier (OCID) which identifies the DocGen Function.
+    }
+    examples {
+        examples: ocid1.fnfunc.oc1.phx.abcdefghijklmnopqrstuvwxyz
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: template
+    attribute: 2
+    name: Template
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: Location of the template in Static Application Files.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: bucketOutputFolder
+    attribute: 3
+    name: Bucket Output Folder
+    scope: app
+    appearance {
+        attributeGroup: @ociObjectStorageBucket
+        sequence: 70
+    }
+    default {
+        value: out/
+    }
+    help {
+        helpText: Specify the folder in the Bucket where the generated PDF will be stored.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: filename
+    attribute: 3
+    name: Filename
+    appearance {
+        sequence: 30
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: bucketNamespace
+    attribute: 5
+    name: Bucket Namespace
+    scope: app
+    appearance {
+        attributeGroup: @ociObjectStorageBucket
+        sequence: 40
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: bucketName
+    attribute: 6
+    name: Bucket Name
+    scope: app
+    appearance {
+        attributeGroup: @ociObjectStorageBucket
+        sequence: 50
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: bucketTemplateFolder
+    attribute: 7
+    name: Bucket Template Folder
+    scope: app
+    appearance {
+        attributeGroup: @ociObjectStorageBucket
+        sequence: 70
+    }
+    default {
+        value: template/
+    }
+)
+

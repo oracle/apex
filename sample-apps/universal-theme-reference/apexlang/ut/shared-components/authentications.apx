@@ -1,0 +1,8 @@
+authentication application-express (
+    name: Application Express
+    type: oracleApexAccounts
+    comments {
+        comments: Based on authentication scheme from gallery:Existing Login Page: Use Application Express Account Credentials
+    }
+)
+
