@@ -52,6 +52,7 @@
                     newEntry.description = entry.description ? entry.description : entry.i18n[lang] ? entry.i18n[lang].description : "";
                     newEntry.icon = entry.icon;
                     newEntry.url = entry.url;
+                    newEntry.apexlangZip = entry.apexlangZip;
                     newEntry.zip = entry.zip;
                     newEntry.source = entry.source;
 
@@ -75,7 +76,7 @@
                                             <p class="m-App-category">${entry.description}</p>
                                         </div>
                                         <div class="m-App-actions">
-                                            <a class="m-App-cta" href="${entry.zip || entry.source}" target="_blank" rel="noopener" download >${buttonLabel}</a>
+                                            <a class="m-App-cta" href="${entry.apexlangZip || entry.zip || entry.source}" target="_blank" rel="noopener" download >${buttonLabel}</a>
                                         </div>
                                     </div>
                                 </div>`
