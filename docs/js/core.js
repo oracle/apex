@@ -15,33 +15,22 @@
     }
 
     function loadAPEXVersions() {
-        const apiURL = "https://api.github.com/repos/oracle/apex/branches",
-              versionURL = getURLParamValue( "version" ),
-              allowedBranches = ["21.1", "21.2", "22.1", "22.2", "23.1", "23.2", "24.1", "24.2", "26.1"];
+        const versionURL = getURLParamValue( "version" ),
+              apexVersions = ["21.1", "21.2", "22.1", "22.2", "23.1", "23.2", "24.1", "24.2", "26.1"];
 
-        const applyVersions = function ( pData ) {
-            const data = pData || [],
-                  filteredData = data.filter( ( row ) =>  allowedBranches.includes( row.name ) );
-            let option;
+        // Newest versions are listed first and used as the default selection.
+        for ( let i = apexVersions.length - 1; i >= 0; i-- ) {
+            const version = apexVersions[i],
+                  selected = i === apexVersions.length - 1,
+                  option = new Option( "APEX " + version, version, selected, selected );
 
-            // reverse loop, thus branches api is sorted by name, and we want the most current version to be first & default
-            for ( let i = filteredData.length - 1; i >= 0; i-- ) {
-                if ( i === 0 ) {
-                    option = new Option( "APEX " + filteredData[i].name, filteredData[i].name, true, false );
-                } else {
-                    option = new Option( "APEX " + filteredData[i].name, filteredData[i].name, false, false );
-                }
-                apexVersionElement.add( option );
-            }
+            apexVersionElement.add( option );
+        }
 
-            if ( versionURL && apexVersionElement.querySelector( '[value="' + versionURL + '"]' ) ) {
-                apexVersionElement.value = versionURL;
-            }
-            apexVersionElement.dispatchEvent( new Event( "change" ) );
-        };
-        fetch( apiURL )
-            .then( ( response ) => response.json() )
-            .then( ( data ) => applyVersions( data ) );
+        if ( versionURL && apexVersionElement.querySelector( '[value="' + versionURL + '"]' ) ) {
+            apexVersionElement.value = versionURL;
+        }
+        apexVersionElement.dispatchEvent( new Event( "change" ) );
     }
 
     function loadContent() {
